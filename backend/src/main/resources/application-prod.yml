@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: ${OIDC_CLIENT_ID}
+            client-secret: ${OIDC_CLIENT_SECRET}
+            scope: openid,profile,email
+            redirect-uri: ${APP_ORIGIN}/login/oauth2/code/keycloak
+        provider:
+          keycloak:
+            issuer-uri: ${OIDC_ISSUER}
+server:
+  servlet:
+    session:
+      cookie:
+        secure: true
+        same-site: lax

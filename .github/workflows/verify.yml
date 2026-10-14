@@ -1,0 +1,67 @@
+name: Verify
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  phase1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - run: npm ci --ignore-scripts
+      - run: python3 -m unittest discover -s scripts -p 'test_*.py'
+      - run: npm run lint && npm run typecheck && npm run format:check
+      - run: npm run build
+      - run: docker compose up -d --wait postgres
+      - run: mvn -f backend/pom.xml spotless:check test
+      - run: npx playwright install --with-deps chromium
+      - name: Start synthetic integration environment
+        run: |
+          mvn -f backend/pom.xml spring-boot:run -Dspring-boot.run.profiles=local > /tmp/atlas-api.log 2>&1 &
+          npm start > /tmp/atlas-web.log 2>&1 &
+          for i in $(seq 1 30); do curl --fail http://127.0.0.1:8080/actuator/health && curl --fail http://127.0.0.1:3000 && break; sleep 2; done
+      - run: npm test
+      - name: Browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase1-evidence
+          path: |
+            playwright-report
+            backend/target/surefire-reports
+      - run: npm sbom --sbom-format=cyclonedx > frontend-sbom.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontend-sbom
+          path: frontend-sbom.json
+  dependency-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+      - run: npm ci --ignore-scripts
+      - name: Capture dependency audits and enforce severity gate
+        run: python3 scripts/audit_dependencies.py
+      - name: Preserve dependency evidence even when blocked
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-audit-evidence
+          path: docs/evidence/dependencies
+          if-no-files-found: error
+      - uses: aquasecurity/trivy-action@0.33.1
+        if: always()
+        with:
+          scan-type: fs
+          severity: HIGH,CRITICAL
+          exit-code: '1'

@@ -1,0 +1,1101 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Atlas Phase 1 API",
+    "version": "0.1.0",
+    "description": "Only implemented paths. UI sort/filter/pagination is over bounded authorised arrays in this phase. No arbitrary tenant input. Cookie sessions and CSRF. Sensitive responses no-store. Decision replay returns 409; submission replay returns same request."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:3000"
+    }
+  ],
+  "paths": {
+    "/api/v1/session": {
+      "get": {
+        "summary": "Get server-resolved identity",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Actor"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        }
+      }
+    },
+    "/api/v1/employees": {
+      "get": {
+        "summary": "List authorised employee records (maximum 1000)",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        }
+      }
+    },
+    "/api/v1/requests": {
+      "get": {
+        "summary": "List scoped approval requests (maximum 500)",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChangeRequest"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        }
+      },
+      "post": {
+        "summary": "Submit effective-dated change",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitChange"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/requests/{id}/decision": {
+      "post": {
+        "summary": "Approve or reject independently",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecideChange"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/employees/{id}/history": {
+      "get": {
+        "summary": "Read scoped audit history (maximum 100)",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditEntry"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/notifications": {
+      "get": {
+        "summary": "Read requester status notifications (maximum 50)",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notification"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        }
+      }
+    },
+    "/api/csrf": {
+      "get": {
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Session setup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "headerName": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "token",
+                    "headerName"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth-mode": {
+      "get": {
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Session setup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "mode": {
+                      "type": "string",
+                      "enum": [
+                        "local",
+                        "oidc"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "mode"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "summary": "Local profile only: URL-encoded username/password plus CSRF header",
+        "responses": {
+          "204": {
+            "description": "Authenticated; session rotates"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "403": {
+            "description": "Missing CSRF or unavailable profile"
+          }
+        }
+      }
+    },
+    "/api/logout": {
+      "post": {
+        "summary": "Invalidate session; OIDC mode redirects through provider logout",
+        "responses": {
+          "204": {
+            "description": "Local session ended"
+          },
+          "302": {
+            "description": "OIDC provider end-session redirect"
+          }
+        }
+      }
+    },
+    "/api/v1/directory": {
+      "get": {
+        "summary": "Search authorised effective-dated employees with server pagination",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectoryPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid query bounds or sort direction"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 120,
+              "default": ""
+            }
+          },
+          {
+            "name": "department",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 120,
+              "default": ""
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 40,
+              "default": ""
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 8
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "asc"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/people-summary": {
+      "get": {
+        "summary": "Count all authorised employees and submitted requests",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PeopleSummary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        }
+      }
+    },
+    "/api/v1/employees/{id}": {
+      "get": {
+        "summary": "Read an authorised effective-dated employee profile",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Employee"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/request-inbox": {
+      "get": {
+        "summary": "Page authorised requests with status filtering",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "SUBMITTED",
+                "APPROVED",
+                "REJECTED"
+              ],
+              "default": "SUBMITTED"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 12
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "session": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "JSESSIONID"
+      }
+    },
+    "schemas": {
+      "Actor": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "subject": {
+            "type": "string"
+          },
+          "tenant": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "subject",
+          "tenant",
+          "employeeId",
+          "name",
+          "role"
+        ]
+      },
+      "Employee": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "managerId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+          "phone",
+          "title",
+          "department",
+          "location",
+          "status",
+          "managerId",
+          "startDate",
+          "version"
+        ]
+      },
+      "SubmitChange": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string",
+            "enum": [
+              "phone",
+              "title",
+              "department",
+              "location"
+            ]
+          },
+          "newValue": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "employeeId",
+          "field",
+          "newValue",
+          "effectiveDate",
+          "reason",
+          "version",
+          "idempotencyKey"
+        ]
+      },
+      "DecideChange": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "decision",
+          "comment"
+        ]
+      },
+      "ChangeRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "employeeName": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string"
+          },
+          "oldValue": {
+            "type": "string"
+          },
+          "newValue": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "requestedBy": {
+            "type": "string"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "employeeVersion": {
+            "type": "integer"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "decidedBy": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "employeeName",
+          "field",
+          "oldValue",
+          "newValue",
+          "reason",
+          "status",
+          "requestedBy",
+          "effectiveDate",
+          "employeeVersion",
+          "recordedAt",
+          "decidedBy",
+          "comment"
+        ]
+      },
+      "AuditEntry": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string"
+          },
+          "oldValue": {
+            "type": "string"
+          },
+          "newValue": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "action",
+          "field",
+          "oldValue",
+          "newValue",
+          "reason",
+          "actor",
+          "correlationId",
+          "recordedAt",
+          "effectiveDate"
+        ]
+      },
+      "Notification": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "message",
+          "recordedAt"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "type": "integer"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "fieldErrors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Optional server-owned validation messages keyed by form field; never echoes submitted values."
+          }
+        },
+        "required": [
+          "status",
+          "detail",
+          "correlationId"
+        ]
+      },
+      "DirectoryPage": {
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size",
+          "departments"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Employee"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "departments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PeopleSummary": {
+        "type": "object",
+        "required": [
+          "total",
+          "active",
+          "onLeave",
+          "pending"
+        ],
+        "properties": {
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "active": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "onLeave": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pending": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "RequestPage": {
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/ChangeRequest"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        }
+      }
+    }
+  }
+}

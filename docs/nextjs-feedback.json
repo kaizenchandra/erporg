@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 5,
+  "triggerReason": "unexpected-behavior",
+  "title": "CSS loader edits remained stale until the development server restarted",
+  "setup": {
+    "mode": "development",
+    "bundler": "turbopack",
+    "relevantFeatures": [
+      "Custom CSS loader"
+    ]
+  },
+  "steps": [
+    "Start an App Router application using the Tailwind Turbopack CSS loader.",
+    "Change CSS text colours and inspect computed styles in fresh browser contexts."
+  ],
+  "observed": [
+    "Fresh browser contexts repeatedly used the previous colour values.",
+    "Restarting the development server applied the edited colours."
+  ],
+  "expected": "New requests should use the current CSS after an edit.",
+  "comparison": "Removing the unused custom loader and using native CSS avoided the stale-style behaviour.",
+  "frequency": "reproduced",
+  "outcome": "worked-around",
+  "nextVersion": "16.4.0",
+  "agent": "Codex"
+}

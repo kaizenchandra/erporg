@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generated backend and verification output
+backend/target/
+playwright-report/
+test-results/
+*.tsbuildinfo
+*.log
+.env
+!.env.example
+
+# Python delivery checks
+__pycache__/

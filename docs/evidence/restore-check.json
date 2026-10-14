@@ -1,0 +1,51 @@
+{
+  "recordedAt": "2026-10-14T06:30:34.497042+00:00",
+  "sourceSchema": "atlas_acceptance",
+  "targetDatabase": "atlas_restore_ae37d135a3274e1d",
+  "scope": "local synthetic PostgreSQL logical restore; not production RPO/RTO",
+  "status": "PASSED",
+  "backupBytes": 31372,
+  "backupSha256": "bb91a083028fd1a18c8b8189fce66126dbb85583a155b1894500da7a39ce3d17",
+  "restoreSeconds": 0.16,
+  "tableManifest": {
+    "flyway_schema_history": {
+      "rows": 4,
+      "sha256": "94ac90d07b0918b16755c0faccbcdf6c25249f16adfa9834f536175509d02b89"
+    },
+    "hr_employee": {
+      "rows": 13,
+      "sha256": "393ffde6282af67ac1f8ffdf9d9fd1866070e1c28a6b5641a029382af00a6be4"
+    },
+    "identity_membership": {
+      "rows": 7,
+      "sha256": "0dab100a473709a746313d1e1c1b079003ef1f7e8a4a91f0b88872e399998cf5"
+    },
+    "hr_request": {
+      "rows": 67,
+      "sha256": "94a5a04087085eaa02d02a25b1143bf73c7f79442f9e19a1d7b92982d4e6b0a2"
+    },
+    "hr_version": {
+      "rows": 18,
+      "sha256": "563c31f9fbe172a3e76319591c6657a66a2c879e6ad2f5bdad49785b55e8c483"
+    },
+    "hr_audit": {
+      "rows": 92,
+      "sha256": "87e228e2cf8c2ad4abaf5412f1eb64c40766ae941996113f93b553444481a2e2"
+    },
+    "hr_notification": {
+      "rows": 27,
+      "sha256": "1b0da3029c326c7a42a24eb11fb13b0fc905c1431cebf287c04df805270a536a"
+    }
+  },
+  "integrityChecks": {
+    "orphanRequests": 0,
+    "orphanVersions": 0,
+    "orphanAudit": 0,
+    "failedMigrations": 0
+  },
+  "auditTriggerRestored": true,
+  "approvedRequests": 18,
+  "auditMutationRejected": true,
+  "totalSeconds": 4.919,
+  "targetRetained": true
+}

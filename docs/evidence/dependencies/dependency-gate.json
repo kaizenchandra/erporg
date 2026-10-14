@@ -1,0 +1,25 @@
+{
+  "recordedAt": "2026-10-14T06:10:47.092577+00:00",
+  "lockSha256": "93c03aeb07c542af37cb6c8c75a4cc120f0a0dd10275695eb441e35f8f29c4c2",
+  "reports": {
+    "all": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 5,
+      "critical": 0,
+      "total": 5
+    },
+    "runtime": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "unavailableScopes": [],
+  "gate": "BLOCKED",
+  "scope": "npm dependency advisories only; not a production release decision"
+}

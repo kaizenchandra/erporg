@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-14",
+  "productionRelease": "NOT READY",
+  "sourceRequirements": 45,
+  "acceptanceCriteria": 356,
+  "java": {
+    "tests": 17,
+    "failures": 0,
+    "database": "PostgreSQL 18.6",
+    "architectureNegativeFixture": "passed",
+    "persistencePolicyNegativeFixture": "passed",
+    "directoryBeyond1000": "passed with rollback-isolated 1005 additional employees",
+    "uncappedSummaryAndDirectProfile": "passed: 1017 total fixture, scoped self total, forbidden record and tenant tests",
+    "inboxBeyond500": "passed: 507 pending requests, last page and scoped totals"
+  },
+  "browser": {
+    "localTestsPassed": 8,
+    "oidcTestSkippedInLocalSuite": 1,
+    "oidcMfaProviderLogoutSeparateTestPassed": 1,
+    "latestApiSecurityRerunPassed": 2,
+    "latestBoundaryRegressionPassed": 6,
+    "latestBoundaryRegressionSeconds": 8.4,
+    "latestDirectoryRegressionSeconds": 11.1,
+    "latestSummaryRegressionPassed": 7,
+    "latestInboxRegressionSeconds": 12.2,
+    "latestValidationRegressionPassed": 8,
+    "latestValidationRegressionSeconds": 12.3
+  },
+  "frontend": {
+    "lint": "passed",
+    "strictTypecheck": "passed",
+    "format": "passed",
+    "productionBuild": "passed"
+  },
+  "a11y": {
+    "axeTestedStates": [
+      "directory",
+      "approval inbox",
+      "profile",
+      "invalid form"
+    ],
+    "violations": 0,
+    "manualScreenReader": "not performed",
+    "conformanceClaim": false,
+    "errorSummaryFocusAndFieldLinks": "verified in browser; contrast failures corrected and axe rerun passed"
+  },
+  "performance": "not benchmarked",
+  "restore": {
+    "localSyntheticLogicalRestore": "passed",
+    "evidence": "docs/evidence/restore-check.json",
+    "wholeDrillSeconds": 4.919,
+    "productionRpoRto": "not measured",
+    "applicationOnRestoredDatabase": "not exercised"
+  },
+  "containerBuild": "not executed",
+  "remoteCI": "not executed",
+  "dependencyAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 5,
+    "critical": 0,
+    "total": 5
+  },
+  "dependencyAuditGate": "BLOCKED (executed; five high development-tool findings)",
+  "runtimeNpmAudit": {
+    "total": 0,
+    "scope": "npm runtime dependencies only; excludes Java, containers and application vulnerabilities"
+  },
+  "deliveryChecks": {
+    "tests": 6,
+    "failures": 0,
+    "traceabilityRegenerationPreservesEvidence": true
+  }
+}

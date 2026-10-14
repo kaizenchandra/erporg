@@ -1,0 +1,84 @@
+{
+  "realm": "atlas",
+  "enabled": true,
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "sslRequired": "none",
+  "bruteForceProtected": true,
+  "ssoSessionIdleTimeout": 1800,
+  "clients": [
+    {
+      "clientId": "atlas-web",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "local-synthetic-client-secret",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [
+        "http://127.0.0.1:3000/login/oauth2/code/keycloak"
+      ],
+      "webOrigins": [
+        "http://127.0.0.1:3000"
+      ],
+      "attributes": {
+        "post.logout.redirect.uris": "http://127.0.0.1:3000/"
+      }
+    }
+  ],
+  "users": [
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "username": "amelia",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Amelia",
+      "lastName": "Bennett",
+      "email": "amelia@example.test",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "atlas-demo",
+          "temporary": false
+        },
+        {
+          "type": "otp",
+          "userLabel": "Synthetic test authenticator",
+          "secretData": "{\"value\": \"JBSWY3DPEHPK3PXP\"}",
+          "credentialData": "{\"subType\": \"totp\", \"digits\": 6, \"counter\": 0, \"period\": 30, \"algorithm\": \"HmacSHA1\", \"secretEncoding\": \"BASE32\"}"
+        }
+      ]
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "username": "marcus",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Marcus",
+      "lastName": "Chen",
+      "email": "marcus@example.test",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "atlas-demo",
+          "temporary": false
+        }
+      ]
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000003",
+      "username": "sophia",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Sophia",
+      "lastName": "Martinez",
+      "email": "sophia@example.test",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "atlas-demo",
+          "temporary": false
+        }
+      ]
+    }
+  ]
+}

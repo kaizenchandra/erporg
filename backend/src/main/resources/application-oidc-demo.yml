@@ -1,0 +1,20 @@
+spring:
+  flyway:
+    locations: classpath:db/migration,classpath:db/demo
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: atlas-web
+            client-secret: local-synthetic-client-secret
+            scope: openid,profile,email
+            redirect-uri: http://127.0.0.1:3000/login/oauth2/code/keycloak
+        provider:
+          keycloak:
+            issuer-uri: http://127.0.0.1:8088/realms/atlas
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: lax
