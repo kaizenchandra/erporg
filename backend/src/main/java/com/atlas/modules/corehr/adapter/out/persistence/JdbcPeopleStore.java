@@ -23,10 +23,11 @@ public final class JdbcPeopleStore implements PeopleStore {
 
   public PeopleSummary summary(PeopleReadScope a) {
     return db.sql(
-            "select count(*) total, count(*) filter(where e.status='Active') active, count(*) filter(where e.status='On leave') on_leave, (select count(*) from hr_request r join hr_employee target on target.tenant=r.tenant and target.id=r.employee_id where r.tenant=:tenant and r.status='SUBMITTED' and (:all or r.requested_by=:subject or (:reports and target.manager_id=:self))) pending from hr_employee e where e.tenant=:tenant and (:all or e.id=:self or (:reports and e.manager_id=:self))")
+            "select count(*) total, count(*) filter(where e.status='Active') active, count(*) filter(where e.status='On leave') on_leave, (select count(*) from hr_request r join hr_employee target on target.tenant=r.tenant and target.id=r.employee_id where r.tenant=:tenant and r.status='SUBMITTED' and (:all or r.requested_by=:subject or (:reports and target.manager_id=:self)) and (r.employee_id=:self or r.field in (:fields))) pending from hr_employee e where e.tenant=:tenant and (:all or e.id=:self or (:reports and e.manager_id=:self))")
         .param("tenant", a.tenant())
         .param("all", a.allEmployees())
         .param("reports", a.directReports())
+        .param("fields", a.visibleRequestFields())
         .param("subject", a.subject())
         .param("self", a.employeeId())
         .query(PeopleSummary.class)
@@ -43,7 +44,7 @@ public final class JdbcPeopleStore implements PeopleStore {
   }
 
   private static final String SELECT =
-      "select e.id,e.name,e.email, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='phone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.phone) phone, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='title' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.title) title, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='department' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.department) department, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='location' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.location) location, e.status,e.manager_id,e.start_date,e.version from hr_employee e where e.tenant=:tenant";
+      "select e.id,e.name,e.email, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='phone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.phone) phone, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='title' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.title) title, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='department' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.department) department, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='location' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.location) location, e.status,e.manager_id,e.start_date,e.version, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='address' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.address) address, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactName' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.emergency_contact_name) emergency_contact_name, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactRelationship' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.emergency_contact_relationship) emergency_contact_relationship, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactPhone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.emergency_contact_phone) emergency_contact_phone from hr_employee e where e.tenant=:tenant";
 
   public DirectoryPage directory(PeopleReadScope a, DirectoryQuery q, LocalDate date) {
     String scoped = SELECT + " and (:all or e.id=:self or (:reports and e.manager_id=:self))";
@@ -122,7 +123,7 @@ public final class JdbcPeopleStore implements PeopleStore {
   public RequestPage requestPage(PeopleReadScope a, RequestQuery q) {
     String scoped =
         REQUEST
-            + " and (:all or r.requested_by=:subject or (:reports and e.manager_id=:self)) and (:status='ALL' or r.status=:status)";
+            + " and (:all or r.requested_by=:subject or (:reports and e.manager_id=:self)) and (r.employee_id=:self or r.field in (:fields)) and (:status='ALL' or r.status=:status)";
     var params =
         Map.<String, Object>of(
             "t",
@@ -136,7 +137,9 @@ public final class JdbcPeopleStore implements PeopleStore {
             "self",
             a.employeeId(),
             "status",
-            q.status());
+            q.status(),
+            "fields",
+            a.visibleRequestFields());
     long total =
         db.sql("select count(*) from (" + scoped + ") scoped")
             .params(params)
@@ -155,12 +158,13 @@ public final class JdbcPeopleStore implements PeopleStore {
   public List<ChangeRequest> requests(PeopleReadScope a) {
     return db.sql(
             REQUEST
-                + " and (:hr or r.requested_by=:s or (:manager and e.manager_id=:self)) order by r.recorded_at desc limit 500")
+                + " and (:hr or r.requested_by=:s or (:manager and e.manager_id=:self)) and (r.employee_id=:self or r.field in (:fields)) order by r.recorded_at desc limit 500")
         .param("t", a.tenant())
         .param("hr", a.allEmployees())
         .param("s", a.subject())
         .param("manager", a.directReports())
         .param("self", a.employeeId())
+        .param("fields", a.visibleRequestFields())
         .query(ChangeRequest.class)
         .list();
   }

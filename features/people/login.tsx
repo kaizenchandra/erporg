@@ -62,6 +62,7 @@ export function Login({
                 <option value="amelia">
                   Amelia Bennett · HR administrator
                 </option>
+                <option value="olivia">Olivia Taylor · HR reviewer</option>
                 <option value="marcus">Marcus Chen · Team manager</option>
                 <option value="sophia">Sophia Martinez · Employee</option>
               </select>

@@ -1,18 +1,22 @@
 "use client";
 import { Icon } from "@/components/ui/icon";
 import { Avatar } from "@/components/ui/primitives";
-import type { Employee } from "@/lib/contracts";
+import { DepartmentReference } from "./department-reference";
+import type { Employee, Actor } from "@/lib/contracts";
 export function Organisation({
   employees,
+  actor,
   total,
   onOpen,
 }: {
   employees: Employee[];
+  actor: Actor;
   total: number;
   onOpen: (e: Employee) => void;
 }) {
   return (
     <section className="org-view">
+      <DepartmentReference actor={actor} />
       <div className="section-heading">
         <h3>Your organisational view</h3>
         <span>

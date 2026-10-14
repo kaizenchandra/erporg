@@ -15,7 +15,7 @@ mvn -f backend/pom.xml spring-boot:run -Dspring-boot.run.profiles=local
 npm run dev -- --hostname 127.0.0.1
 ```
 
-Open **http://127.0.0.1:3000**. Select Amelia (HR), Marcus (manager), or Sophia (employee). Synthetic local password: `atlas-demo` (override backend with LOCAL_DEMO_PASSWORD and enter it in the form). All local identities/data are fictional. Java on this Mac: `export JAVA_HOME=$(/usr/libexec/java_home -v 21)`. The implementation session used `-Dmaven.repo.local=/private/tmp/atlas-m2`; normal installations may use their default Maven cache.
+Open **http://127.0.0.1:3000**. Select Amelia (HR), Olivia (independent HR reviewer), Marcus (manager), or Sophia (employee). Synthetic local password: `atlas-demo` (override backend with LOCAL_DEMO_PASSWORD and enter it in the form). All local identities/data are fictional. Java on this Mac: `export JAVA_HOME=$(/usr/libexec/java_home -v 21)`. The implementation session used `-Dmaven.repo.local=/private/tmp/atlas-m2`; normal installations may use their default Maven cache.
 
 Workflow: sign in as Sophia -> Request a change -> contact number/reason/effective date -> submit -> sign out -> sign in as Amelia -> Approvals -> review old/new value and impact -> approve with comment -> People -> Sophia -> inspect current contact and audit history. Future-dated changes stay pending in the current profile until the date; decisions are final and repeated approval returns 409. Old proposals must be rejected after an intervening approved change. A later effective change blocks backdated insertion; explicit corrections follow in Phase 2.
 
@@ -39,7 +39,7 @@ npm run typecheck
 npm run format:check
 npm run build
 mvn -f backend/pom.xml spotless:check test
-# local-profile backend and frontend running:
+# local,acceptance-profile backend and frontend running:
 npm test
 # oidc-demo backend + Keycloak running, separate suite:
 OIDC_TEST=1 npx playwright test tests/oidc.spec.ts
@@ -63,3 +63,11 @@ Directory/API lists are intentionally capped at 1,000 employees / 500 requests i
 Delivery checks: `python3 -m unittest discover -s scripts -p 'test_*.py'`. Refresh dependency evidence with `python3 scripts/audit_dependencies.py`; it currently exits 1 for five high development-tool findings. Full/runtime audit reports and the lockfile fingerprint are saved under `docs/evidence/dependencies`, including when the gate blocks.
 
 Local synthetic recovery drill: after browser acceptance tests have created approved changes, stop test activity and run `python3 scripts/restore_check.py`. It creates and retains a new isolated database and writes `docs/evidence/restore-check.json`; it never overwrites existing databases. See `docs/operations.md` for scope and production recovery gaps.
+
+To verify the application against that restored database, run `python3 scripts/restore_application_check.py` with Java 21 selected. It starts a temporary API on loopback port 8081, verifies authenticated read workflows and unchanged data, then stops that process. Existing services and databases are preserved. Evidence is saved to `docs/evidence/restore-application-check.json`.
+
+Phase 2 private-contact increment: employees can request home-address or emergency-contact changes through the existing approvals; HR reviews them. Team-manager responses redact these fields and exclude their private approval/audit data. Run `npx playwright test tests/private-contact.spec.ts` to verify the real UI workflow. This is a subset of Core HR; broader Phase 2 scope remains tracked.
+
+Phase 2 department increment: open People → Organisation view to create a department as HR, configure its start/parent/cost-centre code, and inspect its audit. Managers request transfers by selecting those references in the employee-change form. Run `npx playwright test tests/departments.spec.ts` for the creation-to-transfer-to-approval workflow. Seeded cost-centre codes marked DEMO are provisional reference mappings; payroll/finance costing is still planned.
+
+Hiring increment: sign in as Amelia, open People → Hiring and submit a hire using a configured department and existing manager ID. Sign in as Olivia to approve/reject it; approval opens the assigned employee in Onboarding. Payroll/access provisioning remain pending. Run `npx playwright test tests/z-hiring.spec.ts` for this workflow. The full browser suite should use backend profiles `local,acceptance`; the synthetic acceptance profile has bounded higher request budgets and cannot be combined with prod.

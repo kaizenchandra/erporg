@@ -2058,3 +2058,42 @@ tbody tr.selected {
 .change-form [aria-invalid="true"] {
   border-color: #9a463f;
 }
+
+.people-tabs button > span {
+  color: #205c4f;
+}
+
+.department-reference {
+  margin: 20px 0 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.department-reference .detail-grid article {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fcfdfd;
+  overflow-wrap: anywhere;
+}
+.department-reference .detail-grid article h4 {
+  margin: 0 0 10px;
+}
+.department-reference .detail-grid article p {
+  margin: 6px 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.change-form [aria-label="Hire request errors"] {
+  display: block;
+}
+.change-form [aria-label="Hire request errors"] a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.change-form [role="alert"] li a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+}

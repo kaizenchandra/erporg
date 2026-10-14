@@ -6,4 +6,5 @@ public record PeopleReadScope(
     String subject,
     String employeeId,
     boolean allEmployees,
-    boolean directReports) {}
+    boolean directReports,
+    java.util.List<String> visibleRequestFields) {}

@@ -72,8 +72,8 @@ if existing_path.exists():
   old_criteria={c['id']:c for c in old.get('criteria',[])}
   for criterion in row['criteria']:
    old_c=old_criteria.get(criterion['id'],{})
-   for key in ['implementation','verification','phase','evidence','limitation']:
-    if key in old_c:criterion[key]=old_c[key]
+   for key,value in old_c.items():
+    if key not in {'id','sourceBehaviour','derived','acceptance'}:criterion[key]=value
 Path('docs/traceability.json').write_text(json.dumps(out,indent=2)+'\n')
 header='# Requirement traceability\n\nAuthoritative source inventory: 45 (HR 6, TS 4, DS 2, PY 9, TM 7, ERP 7, SH 10). Behaviour-level acceptance and separate implementation/verification status: [traceability.json](traceability.json). Derived criteria are marked. Screens/APIs beyond Phase 1 are proposed contracts, not existing endpoints.\n\n| ID | Workflow / roles | Phase | Screen / API resource | Model | Frontend | Backend | Verification |\n|---|---|---|---|---|---|---|---|\n'
 for r in out:header+=f"| {r['id']} | {r['name']} / {r['roles']} | {r['phase']} | `{r['screen']}` / `{r['api']}` | {r['domainModel']} | {r['frontend']} | {r['backend']} | {r['verification']} |\n"

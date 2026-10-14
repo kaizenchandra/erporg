@@ -13,6 +13,7 @@ import { nav, type View } from "./navigation";
 import { Sidebar } from "./sidebar";
 import { Login } from "./login";
 import { PeopleStats } from "./people-stats";
+import { Hiring } from "./hiring";
 import { Organisation } from "./organisation";
 export function Workspace() {
   const {
@@ -272,6 +273,14 @@ export function Workspace() {
                       <Icon name="org" size={17} />
                       Organisation view
                     </button>
+                    {actor.role === "HR" && (
+                      <button
+                        className={tab === "hiring" ? "active" : ""}
+                        onClick={() => setTab("hiring")}
+                      >
+                        Hiring
+                      </button>
+                    )}
                     <span className="tabs-note">
                       <span className="connection-dot" />
                       All changes saved securely
@@ -284,8 +293,15 @@ export function Workspace() {
                       search={search}
                       setSearch={setSearch}
                     />
+                  ) : tab === "hiring" && actor.role === "HR" ? (
+                    <Hiring
+                      actor={actor}
+                      onRefresh={refresh}
+                      onOpen={setProfile}
+                    />
                   ) : (
                     <Organisation
+                      actor={actor}
                       employees={employees}
                       total={summary.total}
                       onOpen={setProfile}

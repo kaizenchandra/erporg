@@ -209,6 +209,115 @@ class PostgresWorkflowTest {
   }
 
   @Test
+  void privateContactChangesRequireHrReviewAndNeverLeakToManager() {
+    var manager = people.actor("marcus");
+    long visibleBefore = people.summary(manager).pending();
+    var privateFields =
+        java.util.Map.of(
+            "address",
+            "42 Synthetic Lane",
+            "emergencyContactName",
+            "Synthetic Contact",
+            "emergencyContactRelationship",
+            "Sibling",
+            "emergencyContactPhone",
+            "+1 202 555 9000");
+    for (var entry : privateFields.entrySet()) {
+      var e = people.profile(self(), "E003");
+      var input =
+          new Submit(
+              e.id(),
+              entry.getKey(),
+              entry.getValue(),
+              LocalDate.now(ZoneOffset.UTC),
+              "Private change",
+              e.version(),
+              UUID.randomUUID().toString());
+      var r = people.submit(self(), input, "private-submit");
+      assertEquals(r.id(), people.submit(self(), input, "replay").id());
+      assertEquals(visibleBefore, people.summary(manager).pending());
+      assertTrue(people.requests(manager).stream().noneMatch(x -> x.id().equals(r.id())));
+      assertTrue(
+          people.requestPage(manager, new RequestQuery("ALL", 0, 100)).items().stream()
+              .noneMatch(x -> x.id().equals(r.id())));
+      assertThrows(
+          ChangeRequest.Denied.class,
+          () -> people.decide(manager, r.id(), new Decide("APPROVED", "Not authorised"), "denied"));
+      assertThrows(
+          ChangeRequest.Denied.class,
+          () -> people.decide(self(), r.id(), new Decide("APPROVED", "Self"), "denied"));
+      people.decide(hr(), r.id(), new Decide("APPROVED", "HR reviewed"), "private-approved");
+      assertTrue(
+          people.history(manager, "E003").stream()
+              .noneMatch(a -> a.field().equals(entry.getKey())));
+    }
+    assertEquals("42 Synthetic Lane", people.profile(self(), "E003").address());
+    assertEquals("Synthetic Contact", people.profile(hr(), "E003").emergencyContactName());
+    assertEquals("Sibling", people.profile(self(), "E003").emergencyContactRelationship());
+    assertEquals("+1 202 555 9000", people.profile(self(), "E003").emergencyContactPhone());
+    var redacted = people.profile(manager, "E003");
+    assertNull(redacted.address());
+    assertNull(redacted.emergencyContactName());
+    assertNull(redacted.emergencyContactRelationship());
+    assertNull(redacted.emergencyContactPhone());
+    assertTrue(
+        people.employees(manager).stream()
+            .filter(e -> !e.id().equals(manager.employeeId()))
+            .allMatch(e -> e.address() == null));
+    assertTrue(
+        people.directory(manager, new DirectoryQuery("E003", "", "", 0, 8, "asc")).items().stream()
+            .allMatch(e -> e.emergencyContactName() == null));
+    assertThrows(
+        ChangeRequest.Denied.class,
+        () ->
+            people.submit(
+                manager,
+                new Submit(
+                    "E003",
+                    "address",
+                    "Forbidden",
+                    LocalDate.now(ZoneOffset.UTC),
+                    "No permission",
+                    4,
+                    UUID.randomUUID().toString()),
+                "denied"));
+  }
+
+  @Test
+  void privateFutureDateAndInvalidPhoneAreSafe() {
+    var request =
+        people.submit(
+            self(),
+            new Submit(
+                "E003",
+                "address",
+                "Future synthetic address",
+                LocalDate.now(ZoneOffset.UTC).plusDays(10),
+                "Future address",
+                0,
+                UUID.randomUUID().toString()),
+            "future-private");
+    people.decide(hr(), request.id(), new Decide("APPROVED", "Reviewed"), "approved");
+    assertEquals("", people.profile(self(), "E003").address());
+    assertEquals(1, people.profile(self(), "E003").version());
+    assertThrows(
+        ChangeRequest.Validation.class,
+        () ->
+            people.submit(
+                self(),
+                new Submit(
+                    "E003",
+                    "emergencyContactPhone",
+                    "bad contact",
+                    LocalDate.now(ZoneOffset.UTC),
+                    "Invalid",
+                    1,
+                    UUID.randomUUID().toString()),
+                "invalid"));
+    assertEquals(1, people.profile(self(), "E003").version());
+  }
+
+  @Test
   void conflictingReplayRejected() {
     var c = command(LocalDate.now(ZoneOffset.UTC));
     people.submit(self(), c, "original");

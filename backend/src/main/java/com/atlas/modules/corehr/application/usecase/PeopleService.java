@@ -9,6 +9,7 @@ import com.atlas.modules.corehr.application.model.PeopleReadScope;
 import com.atlas.modules.corehr.application.model.PeopleSummary;
 import com.atlas.modules.corehr.application.model.RequestPage;
 import com.atlas.modules.corehr.application.model.RequestQuery;
+import com.atlas.modules.corehr.application.port.in.OrganisationUseCases;
 import com.atlas.modules.corehr.application.port.in.PeopleUseCases;
 import com.atlas.modules.corehr.application.port.out.*;
 import com.atlas.modules.corehr.domain.model.*;
@@ -19,15 +20,24 @@ public final class PeopleService implements PeopleUseCases {
   private final PeopleStore store;
   private final UnitOfWork transactions;
   private final Clock clock;
+  private final OrganisationUseCases organisation;
 
-  public PeopleService(PeopleStore store, UnitOfWork transactions, Clock clock) {
+  public PeopleService(
+      PeopleStore store, UnitOfWork transactions, Clock clock, OrganisationUseCases organisation) {
     this.store = store;
     this.transactions = transactions;
     this.clock = clock;
+    this.organisation = organisation;
   }
 
   public DirectoryPage directory(Actor actor, DirectoryQuery query) {
-    return store.directory(readScope(actor), query, LocalDate.now(clock));
+    var page = store.directory(readScope(actor), query, LocalDate.now(clock));
+    return new DirectoryPage(
+        page.items().stream().map(e -> visibleEmployee(actor, e)).toList(),
+        page.total(),
+        page.page(),
+        page.size(),
+        page.departments());
   }
 
   public PeopleSummary summary(Actor actor) {
@@ -37,7 +47,7 @@ public final class PeopleService implements PeopleUseCases {
   public Employee profile(Actor actor, String id) {
     var employee = store.employee(actor, id, LocalDate.now(clock), false);
     if (!actor.canRead(employee)) throw new ChangeRequest.Denied();
-    return employee;
+    return visibleEmployee(actor, employee);
   }
 
   public RequestPage requestPage(Actor actor, RequestQuery query) {
@@ -49,21 +59,51 @@ public final class PeopleService implements PeopleUseCases {
   }
 
   public List<Employee> employees(Actor actor) {
-    return store.employees(readScope(actor), LocalDate.now(clock));
+    return store.employees(readScope(actor), LocalDate.now(clock)).stream()
+        .map(e -> visibleEmployee(actor, e))
+        .toList();
   }
 
   public List<ChangeRequest> requests(Actor actor) {
     return store.requests(readScope(actor));
   }
 
+  private Employee visibleEmployee(Actor actor, Employee e) {
+    if (actor.canReadField(e, "address")) return e;
+    return new Employee(
+        e.id(),
+        e.name(),
+        e.email(),
+        e.phone(),
+        null,
+        null,
+        null,
+        null,
+        e.title(),
+        e.department(),
+        e.location(),
+        e.status(),
+        e.managerId(),
+        e.startDate(),
+        e.version());
+  }
+
   private PeopleReadScope readScope(Actor actor) {
+    var fields =
+        ChangeRequest.FIELDS.stream()
+            .filter(f -> actor.hr() || !ChangeRequest.PRIVATE_FIELDS.contains(f))
+            .sorted()
+            .toList();
     return switch (actor.role()) {
       case "HR" ->
-          new PeopleReadScope(actor.tenant(), actor.subject(), actor.employeeId(), true, false);
+          new PeopleReadScope(
+              actor.tenant(), actor.subject(), actor.employeeId(), true, false, fields);
       case "MANAGER" ->
-          new PeopleReadScope(actor.tenant(), actor.subject(), actor.employeeId(), false, true);
+          new PeopleReadScope(
+              actor.tenant(), actor.subject(), actor.employeeId(), false, true, fields);
       case "EMPLOYEE" ->
-          new PeopleReadScope(actor.tenant(), actor.subject(), actor.employeeId(), false, false);
+          new PeopleReadScope(
+              actor.tenant(), actor.subject(), actor.employeeId(), false, false, fields);
       default -> throw new ChangeRequest.Denied();
     };
   }
@@ -98,12 +138,19 @@ public final class PeopleService implements PeopleUseCases {
           if (e.version() != c.version())
             throw new ChangeRequest.Conflict(
                 "This profile has changed. Refresh before submitting.");
+          if (c.field().equals("department"))
+            organisation.requireDepartment(actor, c.newValue().trim(), c.effectiveDate());
           String old =
               switch (c.field()) {
                 case "phone" -> e.phone();
                 case "title" -> e.title();
                 case "department" -> e.department();
-                default -> e.location();
+                case "location" -> e.location();
+                case "address" -> e.address();
+                case "emergencyContactName" -> e.emergencyContactName();
+                case "emergencyContactRelationship" -> e.emergencyContactRelationship();
+                case "emergencyContactPhone" -> e.emergencyContactPhone();
+                default -> throw new IllegalArgumentException("Unsupported field.");
               };
           if (old.equals(c.newValue().trim()))
             throw new IllegalArgumentException("The new value must differ from the current value.");
@@ -139,6 +186,8 @@ public final class PeopleService implements PeopleUseCases {
           if (c.decision().equals("APPROVED") && store.hasLaterChange(actor, r))
             throw new ChangeRequest.Conflict(
                 "A later effective change exists. Resolve it before approving this request.");
+          if (c.decision().equals("APPROVED") && r.field().equals("department"))
+            organisation.requireDepartment(actor, r.newValue(), r.effectiveDate());
           store.decide(actor, r, c.decision(), c.comment().trim(), clock.instant(), correlation);
           return store.request(actor, id, false);
         });
@@ -147,7 +196,9 @@ public final class PeopleService implements PeopleUseCases {
   public List<AuditEntry> history(Actor actor, String id) {
     var e = store.employee(actor, id, LocalDate.now(clock), false);
     if (!actor.canRead(e)) throw new ChangeRequest.Denied();
-    return store.history(actor, id);
+    return store.history(actor, id).stream()
+        .filter(entry -> actor.canReadField(e, entry.field()))
+        .toList();
   }
 
   public List<Notification> notifications(Actor actor) {

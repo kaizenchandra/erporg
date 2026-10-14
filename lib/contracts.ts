@@ -10,6 +10,10 @@ export type Employee = {
   name: string;
   email: string;
   phone: string;
+  address: string | null;
+  emergencyContactName: string | null;
+  emergencyContactRelationship: string | null;
+  emergencyContactPhone: string | null;
   title: string;
   department: string;
   location: string;

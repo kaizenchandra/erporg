@@ -55,7 +55,7 @@ public class SecurityConfiguration {
     var encoder = new BCryptPasswordEncoder();
     String password = System.getenv().getOrDefault("LOCAL_DEMO_PASSWORD", "atlas-demo");
     return new InMemoryUserDetailsManager(
-        java.util.stream.Stream.of("amelia", "marcus", "sophia", "outsider")
+        java.util.stream.Stream.of("amelia", "olivia", "marcus", "sophia", "outsider")
             .map(
                 n ->
                     User.withUsername(n)

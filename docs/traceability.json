@@ -23,7 +23,7 @@
     "frontend": "partial: Phase 1 scope implemented",
     "backend": "partial: Phase 1 scope implemented",
     "verification": "verified subset; remaining criteria open",
-    "reason": "Phase 1 directory/profile and effective-dated phone/title/department/location changes implemented. Full personal, emergency contact and employment record maintenance remains Phase 2; employee creation/identifier allocation is not yet implemented.",
+    "reason": "Phase 1 directory/profile plus effective-dated employment/contact changes; Phase 2 home address and single emergency contact implemented with field permissions. Full personal identity, identifier allocation, structured addresses, multiple contacts and employment record maintenance remain open.",
     "criteria": [
       {
         "id": "HR-01-F01",
@@ -39,17 +39,36 @@
         "sourceBehaviour": "View and maintain contact information",
         "acceptance": "Given an authorised HR, employee and valid scoped records, view and maintain contact information through the people workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
         "implementation": "partial",
-        "verification": "subset verified; full behaviour open",
+        "verification": "verified private-contact subset; full source behaviour open",
         "phase": 2,
-        "limitation": "Phase 1 directory/profile and effective-dated phone/title/department/location changes implemented. Full personal, emergency contact and employment record maintenance remains Phase 2; employee creation/identifier allocation is not yet implemented."
+        "limitation": "One emergency contact; 120-character free-text address; no structured country address, multiple contacts or blank-value removal",
+        "evidence": [
+          "PostgresWorkflowTest.privateContactChangesRequireHrReviewAndNeverLeakToManager",
+          "PostgresWorkflowTest.privateFutureDateAndInvalidPhoneAreSafe",
+          "tests/private-contact.spec.ts",
+          "tests/contracts.spec.ts"
+        ],
+        "verifiedBehaviours": [
+          "Home address or single emergency contact fields are edited through approved changes; current as-of data shown; manager payloads redacted; HR audit retained."
+        ]
       },
       {
         "id": "HR-01-F03",
         "sourceBehaviour": "View and maintain emergency contacts",
         "acceptance": "Given an authorised HR, employee and valid scoped records, view and maintain emergency contacts through the people workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial",
+        "verification": "verified private-contact subset; full source behaviour open",
+        "phase": 2,
+        "evidence": [
+          "PostgresWorkflowTest.privateContactChangesRequireHrReviewAndNeverLeakToManager",
+          "PostgresWorkflowTest.privateFutureDateAndInvalidPhoneAreSafe",
+          "tests/private-contact.spec.ts",
+          "tests/contracts.spec.ts"
+        ],
+        "limitation": "One emergency contact; 120-character free-text address; no structured country address, multiple contacts or blank-value removal",
+        "verifiedBehaviours": [
+          "Home address or single emergency contact fields are edited through approved changes; current as-of data shown; manager payloads redacted; HR audit retained."
+        ]
       },
       {
         "id": "HR-01-F04",
@@ -64,10 +83,14 @@
         "id": "HR-01-B01",
         "sourceBehaviour": "Assign unique employee identifiers",
         "acceptance": "Given an authorised HR, employee and valid scoped records, assign unique employee identifiers through the people workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "partial",
-        "verification": "subset verified; full behaviour open",
+        "implementation": "implemented for hiring workflow",
+        "verification": "verified identifier allocation, uniqueness constraints and one concurrent approval winner",
         "phase": 2,
-        "limitation": "Phase 1 directory/profile and effective-dated phone/title/department/location changes implemented. Full personal, emergency contact and employment record maintenance remains Phase 2; employee creation/identifier allocation is not yet implemented."
+        "limitation": "Migration/external identifier mapping remains SH-07 scope.",
+        "evidence": [
+          "HiringWorkflowTest.hireCreatesOneEmployeeOnlyAfterIndependentApproval",
+          "tests/z-hiring.spec.ts"
+        ]
       },
       {
         "id": "HR-01-B02",
@@ -138,6 +161,35 @@
       "implementation": "Uncapped scoped totals; directly authorised profile read; workspace no longer relies on full employee list",
       "verification": "15 Java and 7 local browser/API tests passed; OIDC not rerun",
       "evidence": "docs/evidence/java-summary-verification.txt"
+    },
+    "contractEvidence": {
+      "tests": "tests/contracts.spec.ts",
+      "verification": "live response schemas and negative validation fixtures passed",
+      "limits": "Response schema subset; not exhaustive source requirement completion"
+    },
+    "privateContactEvidence": {
+      "phase": 2,
+      "workflow": "Employee/HR submits address or emergency name/relationship/phone change; independent HR reviews; as-of profile and audit persist",
+      "implementation": "UI, API, migration V5, effective versions and backend field permissions",
+      "tests": [
+        "PostgresWorkflowTest.privateContactChangesRequireHrReviewAndNeverLeakToManager",
+        "PostgresWorkflowTest.privateFutureDateAndInvalidPhoneAreSafe",
+        "tests/private-contact.spec.ts",
+        "tests/contracts.spec.ts"
+      ],
+      "verification": "19 Java and 12 browser/API/contract tests passed; OIDC skipped in local run",
+      "limits": "One emergency contact; 120-character free-text address; no structured country address, multiple contacts or blank-value removal"
+    },
+    "hiringEvidence": {
+      "phase": 2,
+      "implementation": "HiringUseCases / HiringService, HireDetails/HireRequest/Employee.forHire, JDBC hiring port, immutable audit and transactional employee-created handoff; real submit/review/profile UI",
+      "tests": [
+        "HiringWorkflowTest",
+        "RequestGuardTest",
+        "tests/z-hiring.spec.ts"
+      ],
+      "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
+      "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
     }
   },
   {
@@ -146,9 +198,9 @@
     "roles": "HR, manager",
     "workflow": "Organisation structure",
     "phase": 2,
-    "screen": "/organisation",
-    "api": "/api/v1/organisation",
-    "useCase": "OrganisationstructureUseCases (planned)",
+    "screen": "/ (People / Organisation view / department create dialog)",
+    "api": "/api/v1/organisation/departments, /api/v1/organisation/history",
+    "useCase": "OrganisationUseCases / OrganisationService",
     "domainModel": "Department, Position, ReportingLine",
     "acceptanceTests": [
       "HR-02-F01",
@@ -161,10 +213,10 @@
       "HR-02-D01",
       "HR-02-D02"
     ],
-    "frontend": "not implemented",
-    "backend": "not implemented",
-    "verification": "not run",
-    "reason": "Scheduled Phase 2; all listed behaviours remain in scope.",
+    "frontend": "partial: department creation/reference browse and existing scoped employee preview",
+    "backend": "partial: tenant departments/parent references/effective start and transfer validation",
+    "verification": "verified department subset; chart/position/hierarchy editing open",
+    "reason": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration.",
     "criteria": [
       {
         "id": "HR-02-F01",
@@ -178,9 +230,14 @@
         "id": "HR-02-F02",
         "sourceBehaviour": "Browse departments",
         "acceptance": "Given an authorised HR, manager and valid scoped records, browse departments through the organisation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial",
+        "verification": "verified creation/browse/parent subset; full behaviour open",
+        "phase": 2,
+        "evidence": [
+          "OrganisationWorkflowTest",
+          "tests/departments.spec.ts"
+        ],
+        "limitation": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration."
       },
       {
         "id": "HR-02-F03",
@@ -202,9 +259,14 @@
         "id": "HR-02-B01",
         "sourceBehaviour": "Maintain hierarchies",
         "acceptance": "Given an authorised HR, manager and valid scoped records, maintain hierarchies through the organisation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial",
+        "verification": "verified creation/browse/parent subset; full behaviour open",
+        "phase": 2,
+        "evidence": [
+          "OrganisationWorkflowTest",
+          "tests/departments.spec.ts"
+        ],
+        "limitation": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration."
       },
       {
         "id": "HR-02-B02",
@@ -241,7 +303,17 @@
     ],
     "phases": [
       2
-    ]
+    ],
+    "departmentEvidence": {
+      "phase": 2,
+      "implementation": "OrganisationUseCases / OrganisationService; Department model; tenant-scoped JDBC references and audit; migrations V6/V7; HR create form and manager transfer select",
+      "tests": [
+        "OrganisationWorkflowTest",
+        "tests/departments.spec.ts"
+      ],
+      "verification": "23 Java and 13 browser/API/contract tests passed; OIDC skipped locally; new tables included in restore verification",
+      "limits": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration."
+    }
   },
   {
     "id": "HR-03",
@@ -358,6 +430,24 @@
         "tests/security.spec.ts"
       ],
       "verification": "17 Java and 8 browser/API tests passed; full source requirement remains partial"
+    },
+    "contractEvidence": {
+      "tests": "tests/contracts.spec.ts",
+      "verification": "live response schemas and negative validation fixtures passed",
+      "limits": "Response schema subset; not exhaustive source requirement completion"
+    },
+    "privateContactEvidence": {
+      "phase": 2,
+      "workflow": "Employee/HR submits address or emergency name/relationship/phone change; independent HR reviews; as-of profile and audit persist",
+      "implementation": "UI, API, migration V5, effective versions and backend field permissions",
+      "tests": [
+        "PostgresWorkflowTest.privateContactChangesRequireHrReviewAndNeverLeakToManager",
+        "PostgresWorkflowTest.privateFutureDateAndInvalidPhoneAreSafe",
+        "tests/private-contact.spec.ts",
+        "tests/contracts.spec.ts"
+      ],
+      "verification": "19 Java and 12 browser/API/contract tests passed; OIDC skipped in local run",
+      "limits": "One emergency contact; 120-character free-text address; no structured country address, multiple contacts or blank-value removal"
     }
   },
   {
@@ -477,7 +567,17 @@
     "evidence": [
       "backend/src/test/java/com/atlas/DomainTest.java: fieldAndRecordPolicy",
       "backend/src/test/java/com/atlas/PostgresWorkflowTest.java: rejectsSelfApprovalCrossTenantAndEmployeeJobEdit"
-    ]
+    ],
+    "departmentEvidence": {
+      "phase": 2,
+      "implementation": "OrganisationUseCases / OrganisationService; Department model; tenant-scoped JDBC references and audit; migrations V6/V7; HR create form and manager transfer select",
+      "tests": [
+        "OrganisationWorkflowTest",
+        "tests/departments.spec.ts"
+      ],
+      "verification": "23 Java and 13 browser/API/contract tests passed; OIDC skipped locally; new tables included in restore verification",
+      "limits": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration."
+    }
   },
   {
     "id": "HR-05",
@@ -485,9 +585,9 @@
     "roles": "HR, IT, payroll",
     "workflow": "Employment lifecycle",
     "phase": 2,
-    "screen": "/lifecycle",
-    "api": "/api/v1/lifecycle",
-    "useCase": "EmploymentlifecycleUseCases (planned)",
+    "screen": "/ (People / Hiring / submit and review dialogs)",
+    "api": "/api/v1/hiring/requests, /api/v1/hiring/requests/{id}/decision, /api/v1/hiring/requests/{id}/history",
+    "useCase": "HiringUseCases / HiringService; other lifecycle use cases planned",
     "domainModel": "Employment, LifecycleRequest",
     "acceptanceTests": [
       "HR-05-F01",
@@ -502,18 +602,24 @@
       "HR-05-D01",
       "HR-05-D02"
     ],
-    "frontend": "not implemented",
-    "backend": "not implemented",
-    "verification": "not run",
-    "reason": "Scheduled Phase 2; all listed behaviours remain in scope.",
+    "frontend": "partial: submit/review/approve/reject hire and open assigned employee",
+    "backend": "partial: approved hire atomically creates employee/audit/pending handoff",
+    "verification": "verified hiring subset; remaining lifecycle/dependent consumers open",
+    "reason": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only.",
     "criteria": [
       {
         "id": "HR-05-F01",
         "sourceBehaviour": "Process hiring",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, process hiring through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial",
+        "verification": "verified approved hire-to-onboarding subset",
+        "phase": 2,
+        "evidence": [
+          "HiringWorkflowTest",
+          "RequestGuardTest",
+          "tests/z-hiring.spec.ts"
+        ],
+        "limitation": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
       },
       {
         "id": "HR-05-F02",
@@ -551,9 +657,15 @@
         "id": "HR-05-B01",
         "sourceBehaviour": "Maintain employment status",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, maintain employment status through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial",
+        "verification": "verified approved hire-to-onboarding subset",
+        "phase": 2,
+        "evidence": [
+          "HiringWorkflowTest",
+          "RequestGuardTest",
+          "tests/z-hiring.spec.ts"
+        ],
+        "limitation": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
       },
       {
         "id": "HR-05-B02",
@@ -598,7 +710,18 @@
     ],
     "phases": [
       2
-    ]
+    ],
+    "hiringEvidence": {
+      "phase": 2,
+      "implementation": "HiringUseCases / HiringService, HireDetails/HireRequest/Employee.forHire, JDBC hiring port, immutable audit and transactional employee-created handoff; real submit/review/profile UI",
+      "tests": [
+        "HiringWorkflowTest",
+        "RequestGuardTest",
+        "tests/z-hiring.spec.ts"
+      ],
+      "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
+      "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+    }
   },
   {
     "id": "HR-06",
@@ -3459,6 +3582,36 @@
       ],
       "executed": "2026-10-14: 13 Java and 6 local browser/API tests passed; OIDC test skipped in local run",
       "status": "verified subset; remaining SH-01 behaviours open"
+    },
+    "sessionEvidence": {
+      "implementation": "JDBC sessions, migration V4, 30m idle timeout, peer logout and restart persistence",
+      "verification": "Two-process drill, 17 Java tests, 8 local browser/API tests and separate OIDC/MFA/logout passed",
+      "evidence": "docs/evidence/session-cluster-check.json",
+      "limits": "Admin revoke-all/backchannel revocation and production failover remain open"
+    },
+    "privateContactEvidence": {
+      "phase": 2,
+      "workflow": "Employee/HR submits address or emergency name/relationship/phone change; independent HR reviews; as-of profile and audit persist",
+      "implementation": "UI, API, migration V5, effective versions and backend field permissions",
+      "tests": [
+        "PostgresWorkflowTest.privateContactChangesRequireHrReviewAndNeverLeakToManager",
+        "PostgresWorkflowTest.privateFutureDateAndInvalidPhoneAreSafe",
+        "tests/private-contact.spec.ts",
+        "tests/contracts.spec.ts"
+      ],
+      "verification": "19 Java and 12 browser/API/contract tests passed; OIDC skipped in local run",
+      "limits": "One emergency contact; 120-character free-text address; no structured country address, multiple contacts or blank-value removal"
+    },
+    "hiringEvidence": {
+      "phase": 2,
+      "implementation": "HiringUseCases / HiringService, HireDetails/HireRequest/Employee.forHire, JDBC hiring port, immutable audit and transactional employee-created handoff; real submit/review/profile UI",
+      "tests": [
+        "HiringWorkflowTest",
+        "RequestGuardTest",
+        "tests/z-hiring.spec.ts"
+      ],
+      "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
+      "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
     }
   },
   {
@@ -3620,6 +3773,35 @@
         "tests/phase1.spec.ts: approval inbox navigates server pages and resets when filtering"
       ],
       "limits": "Delegation/multistage approval open; load latency unmeasured; SH-02 remains partial"
+    },
+    "contractEvidence": {
+      "tests": "tests/contracts.spec.ts",
+      "verification": "live response schemas and negative validation fixtures passed",
+      "limits": "Response schema subset; not exhaustive source requirement completion"
+    },
+    "privateContactEvidence": {
+      "phase": 2,
+      "workflow": "Employee/HR submits address or emergency name/relationship/phone change; independent HR reviews; as-of profile and audit persist",
+      "implementation": "UI, API, migration V5, effective versions and backend field permissions",
+      "tests": [
+        "PostgresWorkflowTest.privateContactChangesRequireHrReviewAndNeverLeakToManager",
+        "PostgresWorkflowTest.privateFutureDateAndInvalidPhoneAreSafe",
+        "tests/private-contact.spec.ts",
+        "tests/contracts.spec.ts"
+      ],
+      "verification": "19 Java and 12 browser/API/contract tests passed; OIDC skipped in local run",
+      "limits": "One emergency contact; 120-character free-text address; no structured country address, multiple contacts or blank-value removal"
+    },
+    "hiringEvidence": {
+      "phase": 2,
+      "implementation": "HiringUseCases / HiringService, HireDetails/HireRequest/Employee.forHire, JDBC hiring port, immutable audit and transactional employee-created handoff; real submit/review/profile UI",
+      "tests": [
+        "HiringWorkflowTest",
+        "RequestGuardTest",
+        "tests/z-hiring.spec.ts"
+      ],
+      "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
+      "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
     }
   },
   {
@@ -3725,7 +3907,18 @@
     ],
     "evidence": [
       "backend/src/test/java/com/atlas/PostgresWorkflowTest.java: notification inserted atomically with decision"
-    ]
+    ],
+    "hiringEvidence": {
+      "phase": 2,
+      "implementation": "HiringUseCases / HiringService, HireDetails/HireRequest/Employee.forHire, JDBC hiring port, immutable audit and transactional employee-created handoff; real submit/review/profile UI",
+      "tests": [
+        "HiringWorkflowTest",
+        "RequestGuardTest",
+        "tests/z-hiring.spec.ts"
+      ],
+      "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
+      "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+    }
   },
   {
     "id": "SH-04",
@@ -3971,7 +4164,46 @@
     "evidence": [
       "tests/phase1.spec.ts: profile displays approval history",
       "backend/src/test/java/com/atlas/PostgresWorkflowTest.java: audit atomically retained"
-    ]
+    ],
+    "contractEvidence": {
+      "tests": "tests/contracts.spec.ts",
+      "verification": "live response schemas and negative validation fixtures passed",
+      "limits": "Response schema subset; not exhaustive source requirement completion"
+    },
+    "privateContactEvidence": {
+      "phase": 2,
+      "workflow": "Employee/HR submits address or emergency name/relationship/phone change; independent HR reviews; as-of profile and audit persist",
+      "implementation": "UI, API, migration V5, effective versions and backend field permissions",
+      "tests": [
+        "PostgresWorkflowTest.privateContactChangesRequireHrReviewAndNeverLeakToManager",
+        "PostgresWorkflowTest.privateFutureDateAndInvalidPhoneAreSafe",
+        "tests/private-contact.spec.ts",
+        "tests/contracts.spec.ts"
+      ],
+      "verification": "19 Java and 12 browser/API/contract tests passed; OIDC skipped in local run",
+      "limits": "One emergency contact; 120-character free-text address; no structured country address, multiple contacts or blank-value removal"
+    },
+    "departmentEvidence": {
+      "phase": 2,
+      "implementation": "OrganisationUseCases / OrganisationService; Department model; tenant-scoped JDBC references and audit; migrations V6/V7; HR create form and manager transfer select",
+      "tests": [
+        "OrganisationWorkflowTest",
+        "tests/departments.spec.ts"
+      ],
+      "verification": "23 Java and 13 browser/API/contract tests passed; OIDC skipped locally; new tables included in restore verification",
+      "limits": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration."
+    },
+    "hiringEvidence": {
+      "phase": 2,
+      "implementation": "HiringUseCases / HiringService, HireDetails/HireRequest/Employee.forHire, JDBC hiring port, immutable audit and transactional employee-created handoff; real submit/review/profile UI",
+      "tests": [
+        "HiringWorkflowTest",
+        "RequestGuardTest",
+        "tests/z-hiring.spec.ts"
+      ],
+      "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
+      "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+    }
   },
   {
     "id": "SH-06",
@@ -3993,10 +4225,10 @@
       "SH-06-D01",
       "SH-06-D02"
     ],
-    "frontend": "not implemented",
-    "backend": "not implemented",
-    "verification": "not run",
-    "reason": "Scheduled Phase 2; all listed behaviours remain in scope.",
+    "frontend": "partial: department reference creation and browse",
+    "backend": "partial: validated effective department creation; other configuration planned",
+    "verification": "verified department subset; remaining configuration open",
+    "reason": "Department reference workflow implemented; calendars, templates, other rules and reference edits remain Phase 2 scope.",
     "criteria": [
       {
         "id": "SH-06-F01",
@@ -4026,9 +4258,14 @@
         "id": "SH-06-F04",
         "sourceBehaviour": "Maintain reference data",
         "acceptance": "Given an authorised configuration admin and valid scoped records, maintain reference data through the settings workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial",
+        "verification": "verified department reference subset",
+        "phase": 2,
+        "evidence": [
+          "OrganisationWorkflowTest",
+          "tests/departments.spec.ts"
+        ],
+        "limitation": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration."
       },
       {
         "id": "SH-06-B01",
@@ -4065,7 +4302,17 @@
     ],
     "phases": [
       2
-    ]
+    ],
+    "departmentEvidence": {
+      "phase": 2,
+      "implementation": "OrganisationUseCases / OrganisationService; Department model; tenant-scoped JDBC references and audit; migrations V6/V7; HR create form and manager transfer select",
+      "tests": [
+        "OrganisationWorkflowTest",
+        "tests/departments.spec.ts"
+      ],
+      "verification": "23 Java and 13 browser/API/contract tests passed; OIDC skipped locally; new tables included in restore verification",
+      "limits": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration."
+    }
   },
   {
     "id": "SH-07",
@@ -4247,7 +4494,18 @@
       4,
       6,
       7
-    ]
+    ],
+    "hiringEvidence": {
+      "phase": 2,
+      "implementation": "HiringUseCases / HiringService, HireDetails/HireRequest/Employee.forHire, JDBC hiring port, immutable audit and transactional employee-created handoff; real submit/review/profile UI",
+      "tests": [
+        "HiringWorkflowTest",
+        "RequestGuardTest",
+        "tests/z-hiring.spec.ts"
+      ],
+      "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
+      "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+    }
   },
   {
     "id": "SH-09",

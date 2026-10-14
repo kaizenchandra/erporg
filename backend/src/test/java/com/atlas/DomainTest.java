@@ -14,6 +14,10 @@ class DomainTest {
           "Employee",
           "test@example.test",
           "12345678",
+          "Synthetic address",
+          "Synthetic contact",
+          "Sibling",
+          "12345678",
           "Engineer",
           "Engineering",
           "London",
@@ -102,6 +106,10 @@ class DomainTest {
     assertTrue(self.canChange(employee, "phone"));
     assertFalse(self.canChange(employee, "title"));
     assertTrue(manager.canChange(employee, "title"));
+    assertFalse(manager.canReadField(employee, "address"));
+    assertFalse(manager.canChange(employee, "emergencyContactName"));
+    assertTrue(self.canChange(employee, "address"));
+    assertTrue(self.canChange(employee, "emergencyContactPhone"));
     assertFalse(new Actor("other", "t", "E9", "Other", "EMPLOYEE").canRead(employee));
   }
 }

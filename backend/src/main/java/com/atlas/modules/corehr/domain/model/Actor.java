@@ -24,9 +24,18 @@ public record Actor(String subject, String tenant, String employeeId, String nam
         || (role.equals("MANAGER") && employeeId.equals(employee.managerId()));
   }
 
-  public boolean canChange(Employee employee, String field) {
+  public boolean canReadField(Employee employee, String field) {
     return canRead(employee)
+        && (!ChangeRequest.PRIVATE_FIELDS.contains(field)
+            || hr()
+            || employeeId.equals(employee.id()));
+  }
+
+  public boolean canChange(Employee employee, String field) {
+    return canReadField(employee, field)
+        && ChangeRequest.FIELDS.contains(field)
         && (field.equals("phone")
+            || ChangeRequest.PRIVATE_FIELDS.contains(field)
             || hr()
             || (role.equals("MANAGER") && !employeeId.equals(employee.id())));
   }

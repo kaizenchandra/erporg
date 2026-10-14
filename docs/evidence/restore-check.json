@@ -1,51 +1,78 @@
 {
-  "recordedAt": "2026-10-14T06:30:34.497042+00:00",
+  "recordedAt": "2026-10-14T08:06:11.189308+00:00",
   "sourceSchema": "atlas_acceptance",
-  "targetDatabase": "atlas_restore_ae37d135a3274e1d",
+  "targetDatabase": "atlas_restore_c94140e68d104864",
   "scope": "local synthetic PostgreSQL logical restore; not production RPO/RTO",
   "status": "PASSED",
-  "backupBytes": 31372,
-  "backupSha256": "bb91a083028fd1a18c8b8189fce66126dbb85583a155b1894500da7a39ce3d17",
-  "restoreSeconds": 0.16,
+  "backupBytes": 77601,
+  "backupSha256": "1f26fd9e8cbe771416f9c398c32a34b6b9c9579e7f69721094a86b8d8ef653ca",
+  "restoreSeconds": 0.247,
+  "restoredSessionRows": 0,
+  "restoredSessionAttributeRows": 0,
   "tableManifest": {
     "flyway_schema_history": {
-      "rows": 4,
-      "sha256": "94ac90d07b0918b16755c0faccbcdf6c25249f16adfa9834f536175509d02b89"
+      "rows": 10,
+      "sha256": "43ae141e7c5e2cc66bbee75b396e9f0724d5a45be558852bc37d0e0d850686ec"
     },
     "hr_employee": {
-      "rows": 13,
-      "sha256": "393ffde6282af67ac1f8ffdf9d9fd1866070e1c28a6b5641a029382af00a6be4"
+      "rows": 20,
+      "sha256": "a041bef092da4dccbd024611d1aefa9fdb38d53634a7ae6e40ac29de4048f8f1"
     },
     "identity_membership": {
-      "rows": 7,
-      "sha256": "0dab100a473709a746313d1e1c1b079003ef1f7e8a4a91f0b88872e399998cf5"
+      "rows": 8,
+      "sha256": "51670ae74d3a6175582e7fae364f67ae78d77ebf85c815606f609a6ef7c3334f"
     },
     "hr_request": {
-      "rows": 67,
-      "sha256": "94a5a04087085eaa02d02a25b1143bf73c7f79442f9e19a1d7b92982d4e6b0a2"
+      "rows": 201,
+      "sha256": "82b881b7be5e3a1725f59ef9810663a06461c848d31b62bb1ff8b90d1382ff0c"
     },
     "hr_version": {
-      "rows": 18,
-      "sha256": "563c31f9fbe172a3e76319591c6657a66a2c879e6ad2f5bdad49785b55e8c483"
+      "rows": 47,
+      "sha256": "69fb81f706e50f16d87a884bd2bc538c96bb19a9b51812eb959a9ff723df8f5d"
     },
     "hr_audit": {
-      "rows": 92,
-      "sha256": "87e228e2cf8c2ad4abaf5412f1eb64c40766ae941996113f93b553444481a2e2"
+      "rows": 269,
+      "sha256": "b48dd969f943ceb1373818678c513c0e97c8af84187fd78c404803b019e30f96"
     },
     "hr_notification": {
-      "rows": 27,
-      "sha256": "1b0da3029c326c7a42a24eb11fb13b0fc905c1431cebf287c04df805270a536a"
+      "rows": 77,
+      "sha256": "56dc24585ea18ab448a0dcb3bca526343c801d5943822867e0d4558695f97ed6"
+    },
+    "hr_department": {
+      "rows": 14,
+      "sha256": "3ab55b1d0d540011600e69b37fd608367b6225f83f50ccd85293f5172080f7bd"
+    },
+    "hr_department_audit": {
+      "rows": 14,
+      "sha256": "2703ac05198da3c0a475786f94b6637c57b6b9e5a77b8fe79a2f8517a65d4dcc"
+    },
+    "hr_hire_request": {
+      "rows": 7,
+      "sha256": "390145e80628d7fdac87b79f5ba7b654edd23524ad02a803c541601b64871585"
+    },
+    "hr_hire_audit": {
+      "rows": 14,
+      "sha256": "ba4d0f5e36ce3b0b714af5d6f363d9f33b4961f16f79fdead3f96eefc8445676"
+    },
+    "hr_employee_event": {
+      "rows": 7,
+      "sha256": "dadaacd8bb72c716387ae9521d4bf11527569b3cd3e8cec19516dc1842f2b44e"
     }
   },
   "integrityChecks": {
     "orphanRequests": 0,
     "orphanVersions": 0,
     "orphanAudit": 0,
+    "orphanDepartments": 0,
+    "orphanDepartmentAudit": 0,
+    "orphanHires": 0,
+    "orphanHireAudit": 0,
+    "orphanEmployeeEvents": 0,
     "failedMigrations": 0
   },
   "auditTriggerRestored": true,
-  "approvedRequests": 18,
+  "approvedRequests": 47,
   "auditMutationRejected": true,
-  "totalSeconds": 4.919,
+  "totalSeconds": 8.572,
   "targetRetained": true
 }

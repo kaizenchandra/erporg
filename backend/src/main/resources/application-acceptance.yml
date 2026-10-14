@@ -1,0 +1,5 @@
+# Bounded synthetic browser workload; forbidden with prod.
+atlas:
+  security:
+    login-per-minute: 120
+    requests-per-minute: 1200

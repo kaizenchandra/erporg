@@ -1,0 +1,13 @@
+{
+  "recordedAt": "2026-10-14T06:51:23.654512+00:00",
+  "status": "PASSED",
+  "scope": "local JDBC sessions across two Java processes; synthetic password authentication",
+  "checks": [
+    "HttpOnly cookie",
+    "shared authentication",
+    "session survives restart",
+    "logout on peer rejects copied cookie on both instances",
+    "expired persisted session rejected"
+  ],
+  "totalSeconds": 18.288
+}

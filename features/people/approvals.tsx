@@ -7,6 +7,7 @@ import {
   Modal,
   formatDate,
 } from "@/components/ui/primitives";
+import { changeFieldLabels } from "./field-labels";
 import { Icon } from "@/components/ui/icon";
 import { api } from "@/lib/api";
 import type { Actor, ChangeRequest, PeopleSummary } from "@/lib/contracts";
@@ -106,16 +107,7 @@ export function Approvals({
                   <strong>{r.employeeName}</strong>
                   <Badge status={r.status} />
                 </div>
-                <h3>
-                  {r.field === "phone"
-                    ? "Contact information"
-                    : r.field === "title"
-                      ? "Job title / promotion"
-                      : r.field === "department"
-                        ? "Department transfer"
-                        : "Work location"}{" "}
-                  change
-                </h3>
+                <h3>{changeFieldLabels[r.field] ?? r.field} change</h3>
                 <p>
                   {r.oldValue}
                   <Icon name="arrow" size={14} />

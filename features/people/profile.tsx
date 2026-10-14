@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
 import { Modal, Avatar, Badge, formatDate } from "@/components/ui/primitives";
+import type { Department } from "./department-reference";
+import { changeFieldLabels } from "./field-labels";
 import { Icon } from "@/components/ui/icon";
 import { api, ApiError } from "@/lib/api";
 import type { Actor, AuditEvent, Employee } from "@/lib/contracts";
@@ -56,6 +58,28 @@ export function Profile({
           {[
             ["Work email", e.email],
             ["Contact number", e.phone],
+            [
+              "Home address",
+              e.address === null ? "Restricted" : e.address || "Not provided",
+            ],
+            [
+              "Emergency contact name",
+              e.emergencyContactName === null
+                ? "Restricted"
+                : e.emergencyContactName || "Not provided",
+            ],
+            [
+              "Emergency contact relationship",
+              e.emergencyContactRelationship === null
+                ? "Restricted"
+                : e.emergencyContactRelationship || "Not provided",
+            ],
+            [
+              "Emergency contact phone",
+              e.emergencyContactPhone === null
+                ? "Restricted"
+                : e.emergencyContactPhone || "Not provided",
+            ],
             ["Department", e.department],
             ["Location", e.location],
             ["Employment start", formatDate(e.startDate)],
@@ -85,7 +109,8 @@ export function Profile({
               <span className="timeline-dot" />
               <div>
                 <strong>
-                  {h.field} change · {h.action.toLowerCase()}
+                  {changeFieldLabels[h.field] ?? h.field} change ·{" "}
+                  {h.action.toLowerCase()}
                 </strong>
                 <p>
                   {h.oldValue} → {h.newValue}
@@ -160,6 +185,29 @@ export function ChangeForm({
     )
       onClose();
   };
+  const [departments, setDepartments] = useState<Department[]>([]);
+  const [departmentError, setDepartmentError] = useState("");
+  useEffect(() => {
+    if (field !== "department") return;
+    const controller = new AbortController();
+    api<Department[]>("/api/v1/organisation/departments", {
+      signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]),
+    })
+      .then((items) => {
+        if (!controller.signal.aborted) {
+          setDepartments(items);
+          setDepartmentError("");
+        }
+      })
+      .catch((err: unknown) => {
+        if (!controller.signal.aborted)
+          setDepartmentError(
+            err instanceof Error ? err.message : "Unable to load departments.",
+          );
+      });
+    return () => controller.abort();
+  }, [field]);
+  const canPrivate = actor.role === "HR" || actor.employeeId === employee.id;
   const canEmployment =
     actor.role === "HR" ||
     (actor.role === "MANAGER" && actor.employeeId !== employee.id);
@@ -251,9 +299,27 @@ export function ChangeForm({
               fieldErrors.field ? `${formId}-field-error` : undefined
             }
             value={field}
-            onChange={(e) => setField(e.target.value)}
+            onChange={(e) => {
+              setField(e.target.value);
+              setValue("");
+              setFieldErrors({});
+            }}
           >
             <option value="phone">Contact number</option>
+            {canPrivate && (
+              <>
+                <option value="address">Home address</option>
+                <option value="emergencyContactName">
+                  Emergency contact name
+                </option>
+                <option value="emergencyContactRelationship">
+                  Emergency contact relationship
+                </option>
+                <option value="emergencyContactPhone">
+                  Emergency contact phone
+                </option>
+              </>
+            )}
             {canEmployment && (
               <>
                 <option value="title">Job title / promotion</option>
@@ -269,24 +335,52 @@ export function ChangeForm({
           )}
         </label>
         <div className="current-value">
-          Current value <strong>{employee[field as keyof Employee]}</strong>
+          Current value{" "}
+          <strong>{employee[field as keyof Employee] || "Not provided"}</strong>
         </div>
         <label>
           New value <span>*</span>
-          <input
-            required
-            maxLength={120}
-            id={`${formId}-newValue`}
-            aria-invalid={!!fieldErrors.newValue}
-            aria-describedby={
-              fieldErrors.newValue ? `${formId}-newValue-error` : undefined
-            }
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder={
-              field === "phone" ? "+44 7700 900123" : "Enter the proposed value"
-            }
-          />
+          {field === "department" ? (
+            <select
+              required
+              id={`${formId}-newValue`}
+              aria-invalid={!!fieldErrors.newValue}
+              aria-describedby={
+                fieldErrors.newValue ? `${formId}-newValue-error` : undefined
+              }
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+            >
+              <option value="">Choose a configured department</option>
+              {departments.map((d) => (
+                <option key={d.code} value={d.name}>
+                  {d.name} · {d.costCentre} · from {formatDate(d.effectiveFrom)}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              required
+              maxLength={120}
+              id={`${formId}-newValue`}
+              aria-invalid={!!fieldErrors.newValue}
+              aria-describedby={
+                fieldErrors.newValue ? `${formId}-newValue-error` : undefined
+              }
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder={
+                field === "phone" || field === "emergencyContactPhone"
+                  ? "+44 7700 900123"
+                  : "Enter the proposed value"
+              }
+            />
+          )}
+          {field === "department" && departmentError && (
+            <span role="alert" className="error">
+              {departmentError} Close and reopen this form to retry.
+            </span>
+          )}
           {fieldErrors.newValue && (
             <span id={`${formId}-newValue-error`} className="error">
               {fieldErrors.newValue}

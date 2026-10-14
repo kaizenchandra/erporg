@@ -18,14 +18,31 @@ public record ChangeRequest(
     Instant recordedAt,
     String decidedBy,
     String comment) {
+  public static final Set<String> PRIVATE_FIELDS =
+      Set.of(
+          "address",
+          "emergencyContactName",
+          "emergencyContactRelationship",
+          "emergencyContactPhone");
+  public static final Set<String> FIELDS =
+      Set.of(
+          "phone",
+          "title",
+          "department",
+          "location",
+          "address",
+          "emergencyContactName",
+          "emergencyContactRelationship",
+          "emergencyContactPhone");
+
   public static void validate(
       String field, String value, String reason, LocalDate date, LocalDate today) {
     var errors = new java.util.LinkedHashMap<String, String>();
-    if (field == null || !Set.of("phone", "title", "department", "location").contains(field))
-      errors.put("field", "Choose a supported field.");
+    if (field == null || !FIELDS.contains(field)) errors.put("field", "Choose a supported field.");
     if (value == null || value.isBlank() || value.length() > 120)
       errors.put("newValue", "New value must contain 1–120 characters.");
-    else if ("phone".equals(field) && !value.matches("[+0-9 ()-]{7,30}"))
+    else if (("phone".equals(field) || "emergencyContactPhone".equals(field))
+        && !value.matches("[+0-9 ()-]{7,30}"))
       errors.put("newValue", "Enter a valid phone number (7–30 characters).");
     if (reason == null || reason.isBlank() || reason.length() > 500)
       errors.put("reason", "A reason of 1–500 characters is required.");
@@ -50,6 +67,7 @@ public record ChangeRequest(
   public void ensureDecidable(Actor actor, Employee employee, String decision) {
     if (decision == null || !Set.of("APPROVED", "REJECTED").contains(decision))
       throw new IllegalArgumentException("Choose approve or reject.");
+    if (!actor.canReadField(employee, field)) throw new Denied();
     if (actor.subject().equals(requestedBy)
         || actor.employeeId().equals(employeeId)
         || !(actor.hr()

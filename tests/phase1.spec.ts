@@ -14,8 +14,11 @@ test("directory, search, filters, profile and accessible desktop shell", async (
     page.getByRole("heading", { name: "People", exact: true }),
   ).toBeVisible();
   await expect(page.locator("tbody tr")).toHaveCount(8);
+  const total = (
+    await (await page.request.get("/api/v1/people-summary")).json()
+  ).total;
   await page.getByRole("button", { name: "Next page", exact: true }).click();
-  await expect(page.locator("tbody tr")).toHaveCount(4);
+  await expect(page.locator("tbody tr")).toHaveCount(Math.min(8, total - 8));
   await page
     .getByRole("button", { name: "Previous page", exact: true })
     .click();

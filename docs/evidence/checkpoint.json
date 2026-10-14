@@ -4,7 +4,7 @@
   "sourceRequirements": 45,
   "acceptanceCriteria": 356,
   "java": {
-    "tests": 17,
+    "tests": 31,
     "failures": 0,
     "database": "PostgreSQL 18.6",
     "architectureNegativeFixture": "passed",
@@ -14,7 +14,7 @@
     "inboxBeyond500": "passed: 507 pending requests, last page and scoped totals"
   },
   "browser": {
-    "localTestsPassed": 8,
+    "localTestsPassed": 15,
     "oidcTestSkippedInLocalSuite": 1,
     "oidcMfaProviderLogoutSeparateTestPassed": 1,
     "latestApiSecurityRerunPassed": 2,
@@ -48,9 +48,16 @@
   "restore": {
     "localSyntheticLogicalRestore": "passed",
     "evidence": "docs/evidence/restore-check.json",
-    "wholeDrillSeconds": 4.919,
+    "wholeDrillSeconds": 8.572,
     "productionRpoRto": "not measured",
-    "applicationOnRestoredDatabase": "not exercised"
+    "applicationOnRestoredDatabase": "passed: API readiness, Flyway, authentication, authorised reads, denial and logout",
+    "applicationEvidence": "docs/evidence/restore-application-check.json",
+    "browserOnRestoredDatabase": "not exercised",
+    "sessionDataRestored": false,
+    "departmentTablesAndApi": "passed after tenant-scoped comparator correction",
+    "latestApplicationSmokeSeconds": 10.576,
+    "targetDatabase": "atlas_restore_c94140e68d104864",
+    "hiringTablesAndPendingEvent": "verified at recorded snapshot"
   },
   "containerBuild": "not executed",
   "remoteCI": "not executed",
@@ -71,5 +78,46 @@
     "tests": 6,
     "failures": 0,
     "traceabilityRegenerationPreservesEvidence": true
+  },
+  "sessions": {
+    "storage": "PostgreSQL / Spring Session JDBC 4.0.5",
+    "clusterDrill": "passed",
+    "oidcMfaLogoutRetest": "passed",
+    "backchannelRevocation": "not implemented"
+  },
+  "contracts": {
+    "liveResponseSchemas": "passed",
+    "negativeValidationFixtures": "passed",
+    "requestValidationExhaustive": false,
+    "frontendTypesGenerated": false
+  },
+  "privateContactIncrement": {
+    "phase": 2,
+    "fields": [
+      "address",
+      "emergencyContactName",
+      "emergencyContactRelationship",
+      "emergencyContactPhone"
+    ],
+    "managerRedaction": "verified",
+    "hrIndependentApproval": "verified",
+    "fullHr01Complete": false
+  },
+  "departmentIncrement": {
+    "phase": 2,
+    "creationAndValidatedTransfer": "passed",
+    "sourceHr02Complete": false,
+    "financeCosting": "not implemented",
+    "initialCostCentres": "DEMO"
+  },
+  "hiringIncrement": {
+    "phase": 2,
+    "submitIndependentApproveReject": "verified",
+    "employeeIdentifierAndAtomicCreation": "verified",
+    "concurrentSingleWinner": "verified",
+    "payrollAndIdentityConsumers": "not implemented",
+    "employeeInitialStatus": "Onboarding",
+    "startActivation": "not implemented",
+    "fullHr05Complete": false
   }
 }

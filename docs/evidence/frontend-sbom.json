@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:e896c7ac-0230-4180-ba05-5922551be057",
+  "serialNumber": "urn:uuid:9222dde6-2da5-4cc9-b04a-06ae549153e6",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-14T02:02:57.983Z",
+    "timestamp": "2026-10-14T06:59:50.943Z",
     "lifecycles": [
       {
         "phase": "build"
@@ -1093,6 +1093,100 @@
         {
           "alg": "SHA-512",
           "content": "178da0f3d41de68016b69d24d279d2ae3ce200acdaef0f12553e264ad735f0b64c6916f82751d00072c26a512d0c2c6b4ee92cc7b354f6ab2678bc2939f3ea5b"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "ajv@6.15.0",
+      "type": "library",
+      "name": "ajv",
+      "version": "6.15.0",
+      "scope": "required",
+      "author": "Evgeny Poberezkin",
+      "description": "Another JSON Schema Validator",
+      "purl": "pkg:npm/ajv@6.15.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/ajv/-/ajv-6.15.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/ajv-validator/ajv.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/ajv-validator/ajv"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/ajv-validator/ajv/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "7e0171ec77e8abad32b4ad9cec386717c8c8bf362038cc5fba08cb3923078cb20f81e9ea6bb4bba1a6a001352af7d995e8862f376b51982d309d3617ea23db33"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "json-schema-traverse@0.4.1",
+      "type": "library",
+      "name": "json-schema-traverse",
+      "version": "0.4.1",
+      "scope": "required",
+      "author": "Evgeny Poberezkin",
+      "description": "Traverse JSON Schema passing each schema object to callback",
+      "purl": "pkg:npm/json-schema-traverse@0.4.1",
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/json-schema-traverse/-/json-schema-traverse-0.4.1.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/epoberezkin/json-schema-traverse.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/epoberezkin/json-schema-traverse#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/epoberezkin/json-schema-traverse/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "c5b6c21f9742614e53f0b704861ba1ec727cf075ee5b7aac237634cce64529f6441dca5688753f271ce4eb6f41aec69bfe63221d0b62f7030ffbce3944f7b756"
         }
       ],
       "licenses": [
@@ -3257,14 +3351,14 @@
       ]
     },
     {
-      "bom-ref": "ajv@6.15.0",
+      "bom-ref": "ajv@8.20.0",
       "type": "library",
       "name": "ajv",
-      "version": "6.15.0",
+      "version": "8.20.0",
       "scope": "required",
       "author": "Evgeny Poberezkin",
       "description": "Another JSON Schema Validator",
-      "purl": "pkg:npm/ajv@6.15.0",
+      "purl": "pkg:npm/ajv@8.20.0",
       "properties": [
         {
           "name": "cdx:npm:package:development",
@@ -3274,25 +3368,64 @@
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://registry.npmjs.org/ajv/-/ajv-6.15.0.tgz"
-        },
-        {
-          "type": "vcs",
-          "url": "https://github.com/ajv-validator/ajv.git"
+          "url": "https://registry.npmjs.org/ajv/-/ajv-8.20.0.tgz"
         },
         {
           "type": "website",
-          "url": "https://github.com/ajv-validator/ajv"
-        },
-        {
-          "type": "issue-tracker",
-          "url": "https://github.com/ajv-validator/ajv/issues"
+          "url": "https://ajv.js.org"
         }
       ],
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "7e0171ec77e8abad32b4ad9cec386717c8c8bf362038cc5fba08cb3923078cb20f81e9ea6bb4bba1a6a001352af7d995e8862f376b51982d309d3617ea23db33"
+          "content": "4e16e58be3a53a3fa230f60505505f2773a60809da4b2367e0cd6fcfd4fa1a46b926df5b6bf1c8479ea3a32eb9b58ea4c7f142179557341f35f58eff194ac118"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "ajv-formats@3.0.1",
+      "type": "library",
+      "name": "ajv-formats",
+      "version": "3.0.1",
+      "scope": "required",
+      "author": "Evgeny Poberezkin",
+      "description": "Format validation for Ajv v7+",
+      "purl": "pkg:npm/ajv-formats@3.0.1",
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/ajv-formats/-/ajv-formats-3.0.1.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/ajv-validator/ajv-formats.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/ajv-validator/ajv-formats#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/ajv-validator/ajv-formats/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "f2252a979d04511fae51c7514371c3a9ae84572a3776870bf20e5627714d7169aeeb621b90652e7bfa44c8b056f1518a2ae7133e0a9e92ce1f214d43038ca8c1"
         }
       ],
       "licenses": [
@@ -6707,6 +6840,53 @@
       ]
     },
     {
+      "bom-ref": "fast-uri@3.1.8",
+      "type": "library",
+      "name": "fast-uri",
+      "version": "3.1.8",
+      "scope": "required",
+      "author": "Vincent Le Goff <vince.legoff@gmail.com> (https://github.com/zekth)",
+      "description": "Dependency-free RFC 3986 URI toolbox",
+      "purl": "pkg:npm/fast-uri@3.1.8",
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/fast-uri/-/fast-uri-3.1.8.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fastify/fast-uri.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/fastify/fast-uri"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fastify/fast-uri/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "19932d6544cd4693952040a85f02cd652e7150613e99535b4c1f21ffb4708764c559c05088fcd3832662d39045f543192a42c9bfc5c14494e553bce0f3e65f32"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ]
+    },
+    {
       "bom-ref": "fastq@1.20.3",
       "type": "library",
       "name": "fastq",
@@ -9655,14 +9835,14 @@
       ]
     },
     {
-      "bom-ref": "json-schema-traverse@0.4.1",
+      "bom-ref": "json-schema-traverse@1.0.0",
       "type": "library",
       "name": "json-schema-traverse",
-      "version": "0.4.1",
+      "version": "1.0.0",
       "scope": "required",
       "author": "Evgeny Poberezkin",
       "description": "Traverse JSON Schema passing each schema object to callback",
-      "purl": "pkg:npm/json-schema-traverse@0.4.1",
+      "purl": "pkg:npm/json-schema-traverse@1.0.0",
       "properties": [
         {
           "name": "cdx:npm:package:development",
@@ -9672,7 +9852,7 @@
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://registry.npmjs.org/json-schema-traverse/-/json-schema-traverse-0.4.1.tgz"
+          "url": "https://registry.npmjs.org/json-schema-traverse/-/json-schema-traverse-1.0.0.tgz"
         },
         {
           "type": "vcs",
@@ -9690,7 +9870,7 @@
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "c5b6c21f9742614e53f0b704861ba1ec727cf075ee5b7aac237634cce64529f6441dca5688753f271ce4eb6f41aec69bfe63221d0b62f7030ffbce3944f7b756"
+          "content": "34cf3f3fd9f75e35e12199f594b86415a0024ce5114178d6855e0103f4673aff31be0aadaa9017f483b89914314b1d51968e2dab37aa6f4b0e96bb9a3b2dddba"
         }
       ],
       "licenses": [
@@ -11912,6 +12092,41 @@
         {
           "alg": "SHA-512",
           "content": "758aa035265b0f091a27671e45df688c21a306afa63a6f4b9ad5e7027106c8784dff947b8835b64d1c3787ea3f8c2171bacdcfd8b7d62088b0a3002300d9bb20"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "require-from-string@2.0.2",
+      "type": "library",
+      "name": "require-from-string",
+      "version": "2.0.2",
+      "scope": "required",
+      "author": "Vsevolod Strukchinsky",
+      "description": "Require module from string",
+      "purl": "pkg:npm/require-from-string@2.0.2",
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/require-from-string/-/require-from-string-2.0.2.tgz"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5dfd2759ee91b1ece214cbbe029f5b8a251b9a996ae92f7fa7eef0ed85cffc904786b5030d48706bebc0372b9bbaa7d9593bde53ffc36151ac0c6ed128bfef13"
         }
       ],
       "licenses": [
@@ -14649,6 +14864,8 @@
         "@types/node@20.19.43",
         "@types/react@19.3.0",
         "@types/react-dom@19.3.0",
+        "ajv@8.20.0",
+        "ajv-formats@3.0.1",
         "eslint@9.39.5",
         "eslint-config-next@16.4.0",
         "prettier@3.8.1",
@@ -14838,6 +15055,19 @@
         "minimatch@3.1.5",
         "strip-json-comments@3.1.1"
       ]
+    },
+    {
+      "ref": "ajv@6.15.0",
+      "dependsOn": [
+        "fast-deep-equal@3.1.3",
+        "fast-json-stable-stringify@2.1.0",
+        "json-schema-traverse@0.4.1",
+        "uri-js@4.4.1"
+      ]
+    },
+    {
+      "ref": "json-schema-traverse@0.4.1",
+      "dependsOn": []
     },
     {
       "ref": "@eslint/js@9.39.5",
@@ -15155,12 +15385,18 @@
       ]
     },
     {
-      "ref": "ajv@6.15.0",
+      "ref": "ajv@8.20.0",
       "dependsOn": [
         "fast-deep-equal@3.1.3",
-        "fast-json-stable-stringify@2.1.0",
-        "json-schema-traverse@0.4.1",
-        "uri-js@4.4.1"
+        "fast-uri@3.1.8",
+        "json-schema-traverse@1.0.0",
+        "require-from-string@2.0.2"
+      ]
+    },
+    {
+      "ref": "ajv-formats@3.0.1",
+      "dependsOn": [
+        "ajv@8.20.0"
       ]
     },
     {
@@ -15844,6 +16080,10 @@
       "dependsOn": []
     },
     {
+      "ref": "fast-uri@3.1.8",
+      "dependsOn": []
+    },
+    {
       "ref": "fastq@1.20.3",
       "dependsOn": [
         "reusify@1.1.0"
@@ -16253,7 +16493,7 @@
       "dependsOn": []
     },
     {
-      "ref": "json-schema-traverse@0.4.1",
+      "ref": "json-schema-traverse@1.0.0",
       "dependsOn": []
     },
     {
@@ -16589,6 +16829,10 @@
         "gopd@1.2.0",
         "set-function-name@2.0.2"
       ]
+    },
+    {
+      "ref": "require-from-string@2.0.2",
+      "dependsOn": []
     },
     {
       "ref": "resolve@2.0.0-next.7",

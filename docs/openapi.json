@@ -667,6 +667,414 @@
           }
         ]
       }
+    },
+    "/api/v1/organisation/departments": {
+      "get": {
+        "summary": "List tenant department references, including planned departments (limit 1000)",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Department"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        }
+      },
+      "post": {
+        "summary": "HR creates an effective-dated department reference",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Department"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDepartment"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/organisation/history": {
+      "get": {
+        "summary": "HR-only department configuration history (latest 100)",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DepartmentAudit"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        }
+      }
+    },
+    "/api/v1/hiring/requests": {
+      "get": {
+        "summary": "HR-only hiring requests with status/page filters",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HirePage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "SUBMITTED",
+                "APPROVED",
+                "REJECTED"
+              ],
+              "default": "SUBMITTED"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 12
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "HR submits a hire for independent review",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HireRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitHire"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/hiring/requests/{id}/decision": {
+      "post": {
+        "summary": "Independent HR approves or rejects a hire; approval atomically creates one employee and pending provisioning event",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HireRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecideChange"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/hiring/requests/{id}/history": {
+      "get": {
+        "summary": "HR-only hiring audit history",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HireAudit"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -747,6 +1155,34 @@
           "version": {
             "type": "integer",
             "minimum": 0
+          },
+          "address": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Private field: null when record access permits reading but field access is denied; empty string when not provided."
+          },
+          "emergencyContactName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Private field: null when record access permits reading but field access is denied; empty string when not provided."
+          },
+          "emergencyContactRelationship": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Private field: null when record access permits reading but field access is denied; empty string when not provided."
+          },
+          "emergencyContactPhone": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Private field: null when record access permits reading but field access is denied; empty string when not provided."
           }
         },
         "required": [
@@ -760,7 +1196,11 @@
           "status",
           "managerId",
           "startDate",
-          "version"
+          "version",
+          "address",
+          "emergencyContactName",
+          "emergencyContactRelationship",
+          "emergencyContactPhone"
         ]
       },
       "SubmitChange": {
@@ -776,7 +1216,11 @@
               "phone",
               "title",
               "department",
-              "location"
+              "location",
+              "address",
+              "emergencyContactName",
+              "emergencyContactRelationship",
+              "emergencyContactPhone"
             ]
           },
           "newValue": {
@@ -1093,6 +1537,331 @@
             "type": "integer",
             "minimum": 1,
             "maximum": 100
+          }
+        }
+      },
+      "Department": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "name",
+          "parentCode",
+          "costCentre",
+          "effectiveFrom"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9-]{2,30}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "parentCode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "costCentre": {
+            "type": "string",
+            "pattern": "^[A-Z0-9-]{2,30}$"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "DepartmentAudit": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "actor",
+          "reason",
+          "recordedAt",
+          "effectiveFrom",
+          "correlationId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "CreateDepartment": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "name",
+          "costCentre",
+          "effectiveFrom",
+          "reason",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9-]{2,30}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "parentCode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "costCentre": {
+            "type": "string",
+            "pattern": "^[A-Z0-9-]{2,30}$"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        }
+      },
+      "HireRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "email",
+          "phone",
+          "title",
+          "department",
+          "location",
+          "managerId",
+          "reason",
+          "status",
+          "requestedBy",
+          "requesterEmployeeId",
+          "startDate",
+          "recordedAt",
+          "employeeId",
+          "decidedBy",
+          "comment"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "managerId": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "requestedBy": {
+            "type": "string"
+          },
+          "requesterEmployeeId": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "employeeId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decidedBy": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "SubmitHire": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "email",
+          "phone",
+          "title",
+          "department",
+          "location",
+          "managerId",
+          "startDate",
+          "reason",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "managerId": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        }
+      },
+      "HirePage": {
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/HireRequest"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        }
+      },
+      "HireAudit": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "newStatus",
+          "actor",
+          "reason",
+          "correlationId",
+          "oldStatus",
+          "recordedAt",
+          "effectiveDate"
+        ],
+        "properties": {
+          "newStatus": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "oldStatus": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
           }
         }
       }

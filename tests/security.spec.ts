@@ -165,7 +165,9 @@ test("directory API bounds pages, rejects invalid sorting and scopes totals", as
   expect(result.status()).toBe(200);
   const body = await result.json();
   expect(body.items).toHaveLength(5);
-  expect(body.total).toBe(12);
+  expect(body.total).toBe(
+    (await (await hr.c.get("/api/v1/people-summary")).json()).total,
+  );
   expect(body.page).toBe(1);
   expect(body.size).toBe(5);
   expect(Array.isArray(body.departments)).toBe(true);

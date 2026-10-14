@@ -9,7 +9,7 @@ from uuid import uuid4
 
 BASE = ["docker", "compose", "exec", "-T", "postgres"]
 SCHEMA = "atlas_acceptance"  # Synthetic browser fixtures only; never select a live schema.
-TABLES = ["flyway_schema_history", "hr_employee", "identity_membership", "hr_request", "hr_version", "hr_audit", "hr_notification"]
+TABLES = ["flyway_schema_history", "hr_employee", "identity_membership", "hr_request", "hr_version", "hr_audit", "hr_notification", "hr_department", "hr_department_audit", "hr_hire_request", "hr_hire_audit", "hr_employee_event"]
 
 
 def command(args, payload=None):
@@ -42,7 +42,7 @@ def run(evidence=Path("docs/evidence/restore-check.json")):
     created = False
     try:
         before = manifest("atlas")
-        dump = command(["pg_dump", "-U", "atlas", "-d", "atlas", "-Fc", "--schema=" + SCHEMA, "--no-owner", "--no-acl"])
+        dump = command(["pg_dump", "-U", "atlas", "-d", "atlas", "-Fc", "--schema=" + SCHEMA, "--exclude-table-data=" + SCHEMA + ".spring_session", "--exclude-table-data=" + SCHEMA + ".spring_session_attributes", "--no-owner", "--no-acl"])
         report["backupBytes"] = len(dump)
         report["backupSha256"] = hashlib.sha256(dump).hexdigest()
         # createdb fails if a target exists. No DROP, --clean or replacement operations.
@@ -54,11 +54,20 @@ def run(evidence=Path("docs/evidence/restore-check.json")):
         after = manifest(target)
         if before != after:
             raise RuntimeError("Restored manifest differs; source may have changed during the drill")
+        report["restoredSessionRows"] = int(sql(target, f"select count(*) from {SCHEMA}.spring_session"))
+        report["restoredSessionAttributeRows"] = int(sql(target, f"select count(*) from {SCHEMA}.spring_session_attributes"))
+        if report["restoredSessionRows"] or report["restoredSessionAttributeRows"]:
+            raise RuntimeError("Restore must not revive persisted sessions")
         report["tableManifest"] = after
         checks = {
             "orphanRequests": "select count(*) from atlas_acceptance.hr_request r left join atlas_acceptance.hr_employee e on e.tenant=r.tenant and e.id=r.employee_id where e.id is null",
             "orphanVersions": "select count(*) from atlas_acceptance.hr_version v left join atlas_acceptance.hr_request r on r.id=v.request_id and r.tenant=v.tenant where r.id is null",
             "orphanAudit": "select count(*) from atlas_acceptance.hr_audit a left join atlas_acceptance.hr_request r on r.id=a.request_id and r.tenant=a.tenant where r.id is null",
+            "orphanDepartments": "select count(*) from atlas_acceptance.hr_department d left join atlas_acceptance.hr_department p on p.tenant=d.tenant and p.code=d.parent_code where d.parent_code is not null and p.code is null",
+            "orphanDepartmentAudit": "select count(*) from atlas_acceptance.hr_department_audit a left join atlas_acceptance.hr_department d on d.tenant=a.tenant and d.code=a.code where d.code is null",
+            "orphanHires": "select count(*) from atlas_acceptance.hr_hire_request h left join atlas_acceptance.hr_employee e on e.tenant=h.tenant and e.id=h.employee_id where h.status='APPROVED' and e.id is null",
+            "orphanHireAudit": "select count(*) from atlas_acceptance.hr_hire_audit a left join atlas_acceptance.hr_hire_request h on h.id=a.request_id and h.tenant=a.tenant where h.id is null",
+            "orphanEmployeeEvents": "select count(*) from atlas_acceptance.hr_employee_event v left join atlas_acceptance.hr_employee e on e.tenant=v.tenant and e.id=v.employee_id where e.id is null",
             "failedMigrations": "select count(*) from atlas_acceptance.flyway_schema_history where not success",
         }
         report["integrityChecks"] = {key: int(sql(target, statement)) for key, statement in checks.items()}
