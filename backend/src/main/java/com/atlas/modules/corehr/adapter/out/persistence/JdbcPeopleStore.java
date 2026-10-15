@@ -21,10 +21,87 @@ public final class JdbcPeopleStore implements PeopleStore {
     this.db = db;
   }
 
-  public PeopleSummary summary(PeopleReadScope a) {
+  public void lockReportingGraph(String tenant) {
+    db.sql("select pg_advisory_xact_lock(hashtextextended(:tenant,87301))")
+        .param("tenant", tenant)
+        .query((rs, row) -> 0)
+        .single();
+  }
+
+  public List<ReportingLink> reportingLinks(String tenant, LocalDate date, int limit) {
     return db.sql(
-            "select count(*) total, count(*) filter(where e.status='Active') active, count(*) filter(where e.status='On leave') on_leave, (select count(*) from hr_request r join hr_employee target on target.tenant=r.tenant and target.id=r.employee_id where r.tenant=:tenant and r.status='SUBMITTED' and (:all or r.requested_by=:subject or (:reports and target.manager_id=:self)) and (r.employee_id=:self or r.field in (:fields))) pending from hr_employee e where e.tenant=:tenant and (:all or e.id=:self or (:reports and e.manager_id=:self))")
+            "select e.id,"
+                + MANAGER_AT
+                + " manager_id,e.start_date from hr_employee e where e.tenant=:tenant order by e.id limit :limit")
+        .param("tenant", tenant)
+        .param("date", date)
+        .param("limit", limit)
+        .query(ReportingLink.class)
+        .list();
+  }
+
+  public List<LocalDate> reportingDates(String tenant, LocalDate from, int limit) {
+    return db.sql(
+            "select distinct effective_date from hr_version where tenant=:tenant and field='managerId' and effective_date>=:date order by effective_date limit :limit")
+        .param("tenant", tenant)
+        .param("date", from)
+        .param("limit", limit)
+        .query(LocalDate.class)
+        .list();
+  }
+
+  public List<String> managerEmployeeIds(String tenant, List<String> roles) {
+    return db.sql(
+            "select distinct employee_id from identity_membership where tenant=:tenant and role in (:roles)")
+        .param("tenant", tenant)
+        .param("roles", roles)
+        .query(String.class)
+        .list();
+  }
+
+  public com.atlas.modules.corehr.application.model.ManagerPage managerCandidates(
+      String tenant,
+      com.atlas.modules.corehr.application.model.ManagerQuery query,
+      List<String> roles,
+      LocalDate date) {
+    String where =
+        " from hr_employee e where e.tenant=:tenant and exists(select 1 from identity_membership m where m.tenant=e.tenant and m.employee_id=e.id and m.role in (:roles)) and strpos(lower("
+            + NAME_AT
+            + " || ' ' || e.id),lower(:search))>0";
+    long total =
+        db.sql("select count(*)" + where)
+            .param("tenant", tenant)
+            .param("date", date)
+            .param("roles", roles)
+            .param("search", query.search())
+            .query(Long.class)
+            .single();
+    var items =
+        db.sql(
+                "select e.id,"
+                    + NAME_AT
+                    + " name,e.start_date"
+                    + where
+                    + " order by name,e.id limit :size offset :offset")
+            .param("tenant", tenant)
+            .param("date", date)
+            .param("roles", roles)
+            .param("search", query.search())
+            .param("size", query.size())
+            .param("offset", (long) query.page() * query.size())
+            .query(com.atlas.modules.corehr.application.model.ManagerCandidate.class)
+            .list();
+    return new com.atlas.modules.corehr.application.model.ManagerPage(
+        items, total, query.page(), query.size());
+  }
+
+  public PeopleSummary summary(PeopleReadScope a, LocalDate date) {
+    return db.sql(
+            "select count(*) total, count(*) filter(where e.status='Active') active, count(*) filter(where e.status='On leave') on_leave, (select count(*) from hr_request r join hr_employee target on target.tenant=r.tenant and target.id=r.employee_id where r.tenant=:tenant and r.status='SUBMITTED' and (:all or r.requested_by=:subject or (:reports and target.manager_id=:self)) and (r.employee_id=:self or r.field in (:fields))) pending from hr_employee e where e.tenant=:tenant and (:all or e.id=:self or (:reports and "
+                + MANAGER_AT
+                + "=:self))")
         .param("tenant", a.tenant())
+        .param("date", date)
         .param("all", a.allEmployees())
         .param("reports", a.directReports())
         .param("fields", a.visibleRequestFields())
@@ -34,20 +111,33 @@ public final class JdbcPeopleStore implements PeopleStore {
         .single();
   }
 
-  public Actor actor(String subject) {
+  public Actor actor(String subject, LocalDate date) {
     return db.sql(
-            "select subject,tenant,employee_id,name,role from identity_membership where subject=:s")
+            "select m.subject,m.tenant,m.employee_id,"
+                + NAME_AT
+                + " name,m.role from identity_membership m join hr_employee e on e.tenant=m.tenant and e.id=m.employee_id where m.subject=:s")
         .param("s", subject)
+        .param("date", date)
         .query(Actor.class)
         .optional()
         .orElseThrow(ChangeRequest.Denied::new);
   }
 
+  private static final String NAME_AT =
+      "coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='name' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.name)";
+
+  private static final String MANAGER_AT =
+      "coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='managerId' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.manager_id)";
+
   private static final String SELECT =
-      "select e.id,e.name,e.email, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='phone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.phone) phone, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='title' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.title) title, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='department' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.department) department, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='location' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.location) location, e.status,e.manager_id,e.start_date,e.version, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='address' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.address) address, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactName' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.emergency_contact_name) emergency_contact_name, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactRelationship' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.emergency_contact_relationship) emergency_contact_relationship, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactPhone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc limit 1),e.emergency_contact_phone) emergency_contact_phone from hr_employee e where e.tenant=:tenant";
+      "select e.id,"
+          + NAME_AT
+          + " name,e.email, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='phone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.phone) phone, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='title' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.title) title, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='department' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.department) department, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='location' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.location) location, e.status,"
+          + MANAGER_AT
+          + " manager_id,e.start_date,e.version, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='address' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.address) address, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactName' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_name) emergency_contact_name, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactRelationship' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_relationship) emergency_contact_relationship, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactPhone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_phone) emergency_contact_phone, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='positionCode' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.position_code) position_code from hr_employee e where e.tenant=:tenant";
 
   public DirectoryPage directory(PeopleReadScope a, DirectoryQuery q, LocalDate date) {
-    String scoped = SELECT + " and (:all or e.id=:self or (:reports and e.manager_id=:self))";
+    String scoped = SELECT + " and (:all or e.id=:self or (:reports and " + MANAGER_AT + "=:self))";
     String filtered =
         "with scoped as ("
             + scoped
@@ -88,7 +178,9 @@ public final class JdbcPeopleStore implements PeopleStore {
   public List<Employee> employees(PeopleReadScope a, LocalDate date) {
     return db.sql(
             SELECT
-                + " and (:hr or e.id=:self or (:manager and e.manager_id=:self)) order by e.name limit 1000")
+                + " and (:hr or e.id=:self or (:manager and "
+                + MANAGER_AT
+                + "=:self)) order by name,e.id limit 1000")
         .param("tenant", a.tenant())
         .param("date", date)
         .param("hr", a.allEmployees())
@@ -118,16 +210,22 @@ public final class JdbcPeopleStore implements PeopleStore {
   }
 
   private static final String REQUEST =
-      "select r.id,r.employee_id,e.name employee_name,r.field,r.old_value,r.new_value,r.effective_date,r.reason,r.status,r.requested_by,r.employee_version,r.recorded_at,r.decided_by,r.comment from hr_request r join hr_employee e on e.tenant=r.tenant and e.id=r.employee_id where r.tenant=:t";
+      "select r.id,r.employee_id,"
+          + NAME_AT
+          + " employee_name,r.field,r.old_value,r.new_value,r.effective_date,r.reason,r.status,r.requested_by,r.employee_version,r.recorded_at,r.decided_by,r.comment from hr_request r join hr_employee e on e.tenant=r.tenant and e.id=r.employee_id where r.tenant=:t";
 
-  public RequestPage requestPage(PeopleReadScope a, RequestQuery q) {
+  public RequestPage requestPage(PeopleReadScope a, RequestQuery q, LocalDate date) {
     String scoped =
         REQUEST
-            + " and (:all or r.requested_by=:subject or (:reports and e.manager_id=:self)) and (r.employee_id=:self or r.field in (:fields)) and (:status='ALL' or r.status=:status)";
+            + " and (:all or r.requested_by=:subject or (:reports and "
+            + MANAGER_AT
+            + "=:self)) and (r.employee_id=:self or r.field in (:fields)) and (:status='ALL' or r.status=:status)";
     var params =
         Map.<String, Object>of(
             "t",
             a.tenant(),
+            "date",
+            date,
             "all",
             a.allEmployees(),
             "subject",
@@ -155,11 +253,14 @@ public final class JdbcPeopleStore implements PeopleStore {
     return new RequestPage(items, total, q.page(), q.size());
   }
 
-  public List<ChangeRequest> requests(PeopleReadScope a) {
+  public List<ChangeRequest> requests(PeopleReadScope a, LocalDate date) {
     return db.sql(
             REQUEST
-                + " and (:hr or r.requested_by=:s or (:manager and e.manager_id=:self)) and (r.employee_id=:self or r.field in (:fields)) order by r.recorded_at desc limit 500")
+                + " and (:hr or r.requested_by=:s or (:manager and "
+                + MANAGER_AT
+                + "=:self)) and (r.employee_id=:self or r.field in (:fields)) order by r.recorded_at desc limit 500")
         .param("t", a.tenant())
+        .param("date", date)
         .param("hr", a.allEmployees())
         .param("s", a.subject())
         .param("manager", a.directReports())
@@ -169,18 +270,20 @@ public final class JdbcPeopleStore implements PeopleStore {
         .list();
   }
 
-  public Optional<ChangeRequest> duplicate(Actor a, String key) {
+  public Optional<ChangeRequest> duplicate(Actor a, String key, LocalDate date) {
     return db.sql(REQUEST + " and r.requested_by=:s and r.idempotency_key=:key")
         .param("t", a.tenant())
+        .param("date", date)
         .param("s", a.subject())
         .param("key", key)
         .query(ChangeRequest.class)
         .optional();
   }
 
-  public ChangeRequest request(Actor a, String id, boolean lock) {
+  public ChangeRequest request(Actor a, String id, boolean lock, LocalDate date) {
     return db.sql(REQUEST + " and r.id=:id" + (lock ? " for update of r" : ""))
         .param("t", a.tenant())
+        .param("date", date)
         .param("id", id)
         .query(ChangeRequest.class)
         .optional()
@@ -206,6 +309,16 @@ public final class JdbcPeopleStore implements PeopleStore {
     audit(a, r, "SUBMITTED", r.reason(), r.recordedAt(), correlation);
   }
 
+  public List<LocalDate> employmentChangeDates(Actor actor, String employeeId, LocalDate from) {
+    return db.sql(
+            "select distinct effective_date from hr_version where tenant=:tenant and employee_id=:employee and field in ('department','positionCode') and effective_date>=:date order by effective_date")
+        .param("tenant", actor.tenant())
+        .param("employee", employeeId)
+        .param("date", from)
+        .query(LocalDate.class)
+        .list();
+  }
+
   public boolean hasLaterChange(Actor a, ChangeRequest r) {
     return db.sql(
             "select exists(select 1 from hr_version where tenant=:t and employee_id=:e and field=:f and effective_date>:date)")
@@ -215,6 +328,46 @@ public final class JdbcPeopleStore implements PeopleStore {
         .param("date", r.effectiveDate())
         .query(Boolean.class)
         .single();
+  }
+
+  public Optional<com.atlas.modules.corehr.application.model.Withdrawal> withdrawalReplay(
+      Actor a, String key) {
+    return db.sql(
+            "select request_id,actor,reason,idempotency_key,recorded_at,correlation_id from hr_request_withdrawal where tenant=:tenant and actor=:actor and idempotency_key=:key")
+        .param("tenant", a.tenant())
+        .param("actor", a.subject())
+        .param("key", key)
+        .query(com.atlas.modules.corehr.application.model.Withdrawal.class)
+        .optional();
+  }
+
+  public void withdraw(
+      Actor a, ChangeRequest r, com.atlas.modules.corehr.application.model.Withdrawal w) {
+    db.sql(
+            "update hr_request set status='WITHDRAWN',decided_by=:actor,comment=:reason where tenant=:tenant and id=:id")
+        .param("actor", a.subject())
+        .param("reason", w.reason())
+        .param("tenant", a.tenant())
+        .param("id", r.id())
+        .update();
+    db.sql(
+            "insert into hr_request_withdrawal(tenant,request_id,actor,reason,idempotency_key,recorded_at,correlation_id) values(:tenant,:id,:actor,:reason,:key,:now,:correlation)")
+        .param("tenant", a.tenant())
+        .param("id", r.id())
+        .param("actor", a.subject())
+        .param("reason", w.reason())
+        .param("key", w.idempotencyKey())
+        .param("now", w.recordedAt().atOffset(ZoneOffset.UTC))
+        .param("correlation", w.correlationId())
+        .update();
+    audit(a, r, "WITHDRAWN", w.reason(), w.recordedAt(), w.correlationId());
+    db.sql(
+            "insert into hr_notification(tenant,subject,message,recorded_at) values(:tenant,:actor,:message,:now)")
+        .param("tenant", a.tenant())
+        .param("actor", a.subject())
+        .param("message", r.employeeName() + " · change request withdrawn")
+        .param("now", w.recordedAt().atOffset(ZoneOffset.UTC))
+        .update();
   }
 
   public void decide(
@@ -243,6 +396,28 @@ public final class JdbcPeopleStore implements PeopleStore {
         .param("t", a.tenant())
         .param("id", r.id())
         .update();
+    if (decision.equals("APPROVED") && r.field().equals("positionCode")) {
+      db.sql(
+              "insert into hr_position_assignment(tenant,employee_id,position_code,effective_date,recorded_at,request_id) values(:tenant,:employee,:position,:date,:now,:request)")
+          .param("tenant", a.tenant())
+          .param("employee", r.employeeId())
+          .param("position", r.newValue().isEmpty() ? null : r.newValue())
+          .param("date", r.effectiveDate())
+          .param("now", now.atOffset(ZoneOffset.UTC))
+          .param("request", r.id())
+          .update();
+    }
+    if (decision.equals("APPROVED") && r.field().equals("managerId")) {
+      db.sql(
+              "insert into hr_reporting_assignment(tenant,employee_id,manager_id,effective_date,recorded_at,request_id) values(:tenant,:employee,:manager,:date,:now,:request)")
+          .param("tenant", a.tenant())
+          .param("employee", r.employeeId())
+          .param("manager", r.newValue())
+          .param("date", r.effectiveDate())
+          .param("now", now.atOffset(ZoneOffset.UTC))
+          .param("request", r.id())
+          .update();
+    }
     audit(a, r, decision, comment, now, correlation);
     db.sql(
             "insert into hr_notification(tenant,subject,message,recorded_at) values(:t,:subject,:message,:now)")

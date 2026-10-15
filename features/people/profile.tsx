@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
 import { Modal, Avatar, Badge, formatDate } from "@/components/ui/primitives";
+import type { OnboardingCompletion } from "./complete-onboarding";
+import { ManagerPicker } from "./manager-picker";
+import { PositionPicker } from "./position-picker";
 import type { Department } from "./department-reference";
 import { changeFieldLabels } from "./field-labels";
 import { Icon } from "@/components/ui/icon";
@@ -17,15 +20,29 @@ export function Profile({
   onClose: () => void;
   onChange: () => void;
 }) {
+  const [employmentHistory, setEmploymentHistory] = useState<
+    OnboardingCompletion[]
+  >([]);
   const [history, setHistory] = useState<AuditEvent[]>([]),
     [error, setError] = useState(""),
     [loading, setLoading] = useState(true);
   useEffect(() => {
     const controller = new AbortController();
-    api<AuditEvent[]>(`/api/v1/employees/${e.id}/history`, {
-      signal: controller.signal,
-    })
-      .then(setHistory)
+    Promise.all([
+      api<AuditEvent[]>(`/api/v1/employees/${e.id}/history`, {
+        signal: controller.signal,
+      }),
+      api<OnboardingCompletion[]>(
+        `/api/v1/hiring/requests/employees/${e.id}/employment-history`,
+        { signal: controller.signal },
+      ),
+    ])
+      .then(([changes, employment]) => {
+        if (!controller.signal.aborted) {
+          setHistory(changes);
+          setEmploymentHistory(employment);
+        }
+      })
       .catch((err) => {
         if (!controller.signal.aborted) setError(err.message);
       })
@@ -81,6 +98,7 @@ export function Profile({
                 : e.emergencyContactPhone || "Not provided",
             ],
             ["Department", e.department],
+            ["Primary position", e.positionCode || "Unassigned"],
             ["Location", e.location],
             ["Employment start", formatDate(e.startDate)],
             ["Reporting manager", e.managerId ?? "No reporting manager"],
@@ -113,7 +131,13 @@ export function Profile({
                   {h.action.toLowerCase()}
                 </strong>
                 <p>
-                  {h.oldValue} → {h.newValue}
+                  {h.oldValue ||
+                    (h.field === "positionCode"
+                      ? "Unassigned"
+                      : "Not provided")}{" "}
+                  →{" "}
+                  {h.newValue ||
+                    (h.field === "positionCode" ? "Unassigned" : "Removed")}
                 </p>
                 <p>{h.reason}</p>
                 <small>
@@ -131,6 +155,31 @@ export function Profile({
               appear here.
             </p>
           </div>
+        )}
+        <div className="section-heading">
+          <h3>Employment history</h3>
+          <span>Effective dates and UTC recording times</span>
+        </div>
+        {employmentHistory.length ? (
+          employmentHistory.map((item) => (
+            <article className="history-event" key={item.hireId}>
+              <span className="timeline-dot" />
+              <div>
+                <strong>
+                  {item.oldStatus} → {item.newStatus}
+                </strong>
+                <p>
+                  {item.reason ?? "Reason restricted to the employee and HR."}
+                </p>
+                <small>
+                  {item.actor} · Effective {formatDate(item.effectiveDate)} ·
+                  Recorded {new Date(item.recordedAt).toISOString()}
+                </small>
+              </div>
+            </article>
+          ))
+        ) : (
+          <p className="muted">No employment-status changes recorded.</p>
         )}
         <p className="permission-note">
           <Icon name="shield" size={14} />
@@ -164,7 +213,16 @@ export function ChangeForm({
   useEffect(() => {
     if (error) summary.current?.focus();
   }, [error]);
+  const [removeValue, setRemoveValue] = useState(false);
+  const removable = [
+    "address",
+    "emergencyContactName",
+    "emergencyContactRelationship",
+    "emergencyContactPhone",
+    "positionCode",
+  ].includes(field);
   const dirty =
+    removeValue ||
     value !== "" ||
     reason !== "" ||
     field !== "phone" ||
@@ -228,7 +286,7 @@ export function ChangeForm({
               body: JSON.stringify({
                 employeeId: employee.id,
                 field,
-                newValue: value,
+                newValue: removeValue ? "" : value || null,
                 effectiveDate: date || null,
                 reason,
                 version: employee.version,
@@ -301,6 +359,7 @@ export function ChangeForm({
             value={field}
             onChange={(e) => {
               setField(e.target.value);
+              setRemoveValue(false);
               setValue("");
               setFieldErrors({});
             }}
@@ -308,6 +367,7 @@ export function ChangeForm({
             <option value="phone">Contact number</option>
             {canPrivate && (
               <>
+                <option value="name">Employee display name</option>
                 <option value="address">Home address</option>
                 <option value="emergencyContactName">
                   Emergency contact name
@@ -325,6 +385,12 @@ export function ChangeForm({
                 <option value="title">Job title / promotion</option>
                 <option value="department">Department / transfer</option>
                 <option value="location">Work location</option>
+                <option value="managerId">
+                  Reporting manager / team change
+                </option>
+                <option value="positionCode">
+                  Primary position / assignment
+                </option>
               </>
             )}
           </select>
@@ -336,57 +402,107 @@ export function ChangeForm({
         </label>
         <div className="current-value">
           Current value{" "}
-          <strong>{employee[field as keyof Employee] || "Not provided"}</strong>
+          <strong>
+            {employee[field as keyof Employee] ||
+              (field === "positionCode" ? "Unassigned" : "Not provided")}
+          </strong>
         </div>
-        <label>
-          New value <span>*</span>
-          {field === "department" ? (
-            <select
-              required
-              id={`${formId}-newValue`}
-              aria-invalid={!!fieldErrors.newValue}
-              aria-describedby={
-                fieldErrors.newValue ? `${formId}-newValue-error` : undefined
-              }
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            >
-              <option value="">Choose a configured department</option>
-              {departments.map((d) => (
-                <option key={d.code} value={d.name}>
-                  {d.name} · {d.costCentre} · from {formatDate(d.effectiveFrom)}
-                </option>
-              ))}
-            </select>
-          ) : (
+        {removable && (
+          <label className="removal-choice">
             <input
-              required
-              maxLength={120}
-              id={`${formId}-newValue`}
-              aria-invalid={!!fieldErrors.newValue}
-              aria-describedby={
-                fieldErrors.newValue ? `${formId}-newValue-error` : undefined
-              }
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder={
-                field === "phone" || field === "emergencyContactPhone"
-                  ? "+44 7700 900123"
-                  : "Enter the proposed value"
-              }
+              type="checkbox"
+              checked={removeValue}
+              onChange={(event) => setRemoveValue(event.target.checked)}
             />
-          )}
-          {field === "department" && departmentError && (
-            <span role="alert" className="error">
-              {departmentError} Close and reopen this form to retry.
-            </span>
-          )}
-          {fieldErrors.newValue && (
-            <span id={`${formId}-newValue-error`} className="error">
-              {fieldErrors.newValue}
-            </span>
-          )}
-        </label>
+            {field === "positionCode"
+              ? "Unassign the current position"
+              : "Remove the current value"}
+          </label>
+        )}
+        {removeValue && (
+          <p className="form-intro">
+            This field will become{" "}
+            {field === "positionCode" ? "Unassigned" : "Not provided"} after
+            approval on the effective date. Its earlier values remain in
+            authorised audit history.
+          </p>
+        )}
+        {field === "name" && (
+          <p className="form-intro">
+            This updates the employee display name after independent HR
+            approval. Employee ID, work email and legal identity remain
+            separate.
+          </p>
+        )}
+        {field === "managerId" ? (
+          <ManagerPicker
+            value={value}
+            onChange={setValue}
+            disabled={false}
+            id={`${formId}-newValue`}
+            error={fieldErrors.newValue}
+          />
+        ) : field === "positionCode" ? (
+          <PositionPicker
+            value={value}
+            onChange={setValue}
+            disabled={removeValue}
+            id={`${formId}-newValue`}
+            error={fieldErrors.newValue}
+          />
+        ) : (
+          <label>
+            New value {!removeValue && <span>*</span>}
+            {field === "department" ? (
+              <select
+                required
+                id={`${formId}-newValue`}
+                aria-invalid={!!fieldErrors.newValue}
+                aria-describedby={
+                  fieldErrors.newValue ? `${formId}-newValue-error` : undefined
+                }
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              >
+                <option value="">Choose a configured department</option>
+                {departments.map((d) => (
+                  <option key={d.code} value={d.name}>
+                    {d.name} · {d.costCentre} · from{" "}
+                    {formatDate(d.effectiveFrom)}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                required={!removeValue}
+                disabled={removeValue}
+                maxLength={120}
+                id={`${formId}-newValue`}
+                aria-invalid={!!fieldErrors.newValue}
+                aria-describedby={
+                  fieldErrors.newValue ? `${formId}-newValue-error` : undefined
+                }
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                placeholder={
+                  field === "phone" || field === "emergencyContactPhone"
+                    ? "+44 7700 900123"
+                    : "Enter the proposed value"
+                }
+              />
+            )}
+            {field === "department" && departmentError && (
+              <span role="alert" className="error">
+                {departmentError} Close and reopen this form to retry.
+              </span>
+            )}
+            {fieldErrors.newValue && (
+              <span id={`${formId}-newValue-error`} className="error">
+                {fieldErrors.newValue}
+              </span>
+            )}
+          </label>
+        )}
         <label>
           Effective date <span>*</span>
           <input

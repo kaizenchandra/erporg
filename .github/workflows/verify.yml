@@ -5,6 +5,8 @@ permissions:
 jobs:
   phase1:
     runs-on: ubuntu-latest
+    env:
+      JAVA_TOOL_OPTIONS: -Datlas.documents.local-root=/tmp/atlas-private-documents
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,7 +22,7 @@ jobs:
       - run: python3 -m unittest discover -s scripts -p 'test_*.py'
       - run: npm run lint && npm run typecheck && npm run format:check
       - run: npm run build
-      - run: docker compose up -d --wait postgres
+      - run: docker compose --profile documents up -d --wait --wait-timeout 180 postgres document-scanner
       - run: mvn -f backend/pom.xml spotless:check test
       - run: npx playwright install --with-deps chromium
       - name: Start synthetic integration environment

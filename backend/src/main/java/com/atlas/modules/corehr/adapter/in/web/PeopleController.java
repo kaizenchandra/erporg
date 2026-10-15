@@ -23,6 +23,17 @@ public class PeopleController {
     this.people = people;
   }
 
+  @GetMapping("/reporting/managers")
+  com.atlas.modules.corehr.application.model.ManagerPage managers(
+      Principal p,
+      @RequestParam(defaultValue = "") String search,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "8") int size) {
+    return people.managerCandidates(
+        session(p),
+        new com.atlas.modules.corehr.application.model.ManagerQuery(search, page, size));
+  }
+
   @GetMapping("/directory")
   DirectoryPage directory(
       Principal p,
@@ -74,6 +85,15 @@ public class PeopleController {
   ChangeRequest submit(
       Principal p, @RequestBody Submit c, @RequestAttribute("correlationId") String correlation) {
     return people.submit(session(p), c, correlation);
+  }
+
+  @PostMapping("/requests/{id}/withdraw")
+  ChangeRequest withdraw(
+      Principal p,
+      @PathVariable String id,
+      @RequestBody Withdraw c,
+      @RequestAttribute("correlationId") String correlation) {
+    return people.withdraw(session(p), id, c, correlation);
   }
 
   @PostMapping("/requests/{id}/decision")

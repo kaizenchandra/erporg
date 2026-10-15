@@ -12,6 +12,9 @@ import com.atlas.modules.corehr.domain.model.*;
 import java.util.*;
 
 public interface PeopleUseCases {
+  com.atlas.modules.corehr.application.model.ManagerPage managerCandidates(
+      Actor actor, com.atlas.modules.corehr.application.model.ManagerQuery query);
+
   DirectoryPage directory(Actor actor, DirectoryQuery query);
 
   PeopleSummary summary(Actor actor);
@@ -27,6 +30,8 @@ public interface PeopleUseCases {
   List<ChangeRequest> requests(Actor actor);
 
   ChangeRequest submit(Actor actor, Submit command, String correlation);
+
+  ChangeRequest withdraw(Actor actor, String id, Withdraw command, String correlation);
 
   ChangeRequest decide(Actor actor, String id, Decide command, String correlation);
 

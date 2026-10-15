@@ -17,6 +17,50 @@ import org.springframework.transaction.support.TransactionTemplate;
 @Configuration
 public class CoreHrConfiguration {
   @Bean
+  com.atlas.modules.corehr.application.port.in.OrganisationBrowseUseCases organisationBrowse(
+      JdbcClient db, PlatformTransactionManager manager) {
+    var template = new TransactionTemplate(manager);
+    template.setReadOnly(true);
+    template.setIsolationLevel(
+        org.springframework.transaction.TransactionDefinition.ISOLATION_REPEATABLE_READ);
+    template.setTimeout(10);
+    UnitOfWork tx =
+        new UnitOfWork() {
+          public <T> T run(java.util.function.Supplier<T> operation) {
+            return template.execute(status -> operation.get());
+          }
+        };
+    return new com.atlas.modules.corehr.application.usecase.OrganisationBrowseService(
+        new JdbcPeopleStore(db),
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcOrganisationChartStore(db),
+        tx,
+        Clock.systemUTC());
+  }
+
+  @Bean
+  com.atlas.modules.corehr.api.WorkforceAccess workforceAccess(PeopleUseCases people) {
+    return new com.atlas.modules.corehr.api.WorkforceAccess() {
+      public Context self(String subject) {
+        return employee(subject, people.actor(subject).employeeId());
+      }
+
+      public Context employee(String subject, String employeeId) {
+        var actor = people.actor(subject);
+        if (!actor.role().equals("HR") && !actor.employeeId().equals(employeeId))
+          throw new com.atlas.shared.domain.AccessDenied();
+        var employee = people.profile(actor, employeeId);
+        return new Context(
+            actor.subject(),
+            actor.tenant(),
+            employee.id(),
+            actor.role(),
+            employee.status(),
+            employee.startDate());
+      }
+    };
+  }
+
+  @Bean
   com.atlas.modules.corehr.application.port.in.HiringUseCases hiring(
       JdbcClient jdbc, PlatformTransactionManager manager, OrganisationUseCases organisation) {
     var template = new TransactionTemplate(manager);

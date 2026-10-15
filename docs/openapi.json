@@ -1,9 +1,9 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Atlas Phase 1 API",
+    "title": "Atlas implemented HCM API",
     "version": "0.1.0",
-    "description": "Only implemented paths. UI sort/filter/pagination is over bounded authorised arrays in this phase. No arbitrary tenant input. Cookie sessions and CSRF. Sensitive responses no-store. Decision replay returns 409; submission replay returns same request."
+    "description": "Implemented Phase 1 and Phase 2 subsets only. Server directory/inbox/position search and pagination; legacy employee/request arrays and department/audit reference limits are documented per endpoint. Server-resolved tenant, cookie sessions, CSRF and no-store sensitive responses. Core HR decision replay returns 409; benefits identical decision replay returns its existing result. Stable creation/submission replay returns its existing result."
   },
   "servers": [
     {
@@ -640,7 +640,8 @@
                 "ALL",
                 "SUBMITTED",
                 "APPROVED",
-                "REJECTED"
+                "REJECTED",
+                "WITHDRAWN"
               ],
               "default": "SUBMITTED"
             }
@@ -1075,6 +1076,2271 @@
           }
         ]
       }
+    },
+    "/api/v1/hiring/requests/{id}/complete-onboarding": {
+      "post": {
+        "summary": "HR confirms manual onboarding completion on or after start; atomically changes employee to Active",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingCompletion"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteOnboarding"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/hiring/requests/employees/{id}/employment-history": {
+      "get": {
+        "summary": "Authorised employee employment status history; team-manager reasons redacted",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OnboardingCompletion"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/organisation/positions": {
+      "get": {
+        "summary": "Search, filter and page tenant position references, including planned positions",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PositionPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string",
+              "maxLength": 120
+            }
+          },
+          {
+            "in": "query",
+            "name": "departmentCode",
+            "schema": {
+              "type": "string",
+              "maxLength": 30
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0,
+              "maximum": 100000
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer",
+              "default": 8,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "direction",
+            "schema": {
+              "type": "string",
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "HR creates an immutable position reference",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Position"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePosition"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/organisation/positions/history": {
+      "get": {
+        "summary": "HR reads latest 100 position creation audits",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PositionAudit"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        }
+      }
+    },
+    "/api/v1/reporting/managers": {
+      "get": {
+        "summary": "HR/managers search minimal tenant manager candidates with configured HR/MANAGER role",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManagerPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string",
+              "maxLength": 120
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0,
+              "maximum": 100000
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer",
+              "default": 8,
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/requests/{id}/withdraw": {
+      "post": {
+        "summary": "Requester withdraws only a pending employee change; repeat key returns existing result",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithdrawChange"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/benefits/plans": {
+      "get": {
+        "summary": "Own-employment benefit eligibility and fixed contribution DEMONSTRATION previews; 1000 reference guard",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BenefitPlanPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string",
+              "maxLength": 120
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0,
+              "maximum": 100000
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer",
+              "default": 8,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "direction",
+            "schema": {
+              "type": "string",
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "eligibility",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "ELIGIBLE"
+              ],
+              "default": "ALL"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "HR creates immutable demonstration benefit plan",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BenefitPlanView"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBenefitPlan"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-CSRF-TOKEN",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/benefits/history": {
+      "get": {
+        "summary": "HR reads latest 100 benefit plan configuration audits",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BenefitPlanAudit"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          }
+        }
+      }
+    },
+    "/api/v1/benefits/selections": {
+      "get": {
+        "summary": "Own selections; HR tenant selections. Private dependant details. Server pagination.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BenefitSelectionPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 8
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Select a demonstration plan for self starting on UTC submission date; independent review required.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BenefitSelection"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitBenefitSelection"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/benefits/selections/{id}/decision": {
+      "post": {
+        "summary": "Independent HR decision; approved snapshot queues one pending payroll handoff. Stable identical decision replay.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BenefitSelection"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecideBenefitSelection"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/documents": {
+      "get": {
+        "summary": "Authorised latest uploaded versions only; filename search/page. Latest may be quarantined/rejected. Historical clean files require explicit version history.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 120
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Own private UTF-8 .txt upload \u226416384 bytes with ClamAV; unavailable scans quarantine. Max 100 documents per employee.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentView"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadDocument"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/documents/{id}/history": {
+      "get": {
+        "summary": "Own/HR document audit latest 100",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentAudit"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/documents/{id}/content": {
+      "get": {
+        "summary": "Authorised attachment only after clean scan and stored hash verification; no-store and nosniff",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Private binary attachment",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/documents/{id}/scan-retries": {
+      "post": {
+        "summary": "HR-only retry of quarantined immutable content, up to three attempts; versioned commit and stable command replay. Original upload retained.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentView"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetryDocumentScan"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/documents/{id}/versions": {
+      "get": {
+        "summary": "Authorised full immutable version chain, latest first, maximum 100; each file has independent scan eligibility.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentView"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Self/HR appends scanned immutable version to current record with exact version/key; original files retained, latest never silently falls back.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentView"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VersionDocument"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/document-templates": {
+      "get": {
+        "summary": "Authenticated effective template projection as of UTC date; future revisions in history; maximum 100.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentTemplate"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        }
+      },
+      "post": {
+        "summary": "HR creates immutable tenant-wide text requirement with effective date, reason/key and creation audit; amendments not available.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTemplate"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDocumentTemplate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/document-templates/{code}/evidence": {
+      "post": {
+        "summary": "Self/HR classifies one current clean document chain; exact version/key, immutable one-template-per-chain and one-chain-per-employee/template. Not content approval.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentEvidence"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_-]{1,31}$",
+              "minLength": 2,
+              "maxLength": 32
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkDocumentEvidence"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/document-templates/completeness": {
+      "get": {
+        "summary": "Self/HR configured completeness evaluated as of UTC date, using latest linked version/scan. Future/optional requirements are distinguished.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentCompleteness"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "description": "Default self. Another employee requires HR and server-resolved tenant/record access."
+          }
+        ]
+      }
+    },
+    "/api/v1/document-templates/evidence": {
+      "get": {
+        "summary": "Self/HR latest 100 immutable classification events, including corrections; use per-template history for its full bounded audit.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentEvidence"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "description": "Default self. Another employee requires HR and server-resolved tenant/record access."
+          }
+        ]
+      }
+    },
+    "/api/v1/document-templates/{code}/revisions": {
+      "get": {
+        "summary": "Authenticated tenant template history, latest revision first, including future configuration and terminal retirement; maximum 100.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentTemplate"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_-]{1,31}$",
+              "minLength": 2,
+              "maxLength": 32
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "HR appends immutable dated revision/terminal retirement; exact latest ordinal/key, today/future nondecreasing dates; no deletion or reactivation.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTemplate"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_-]{1,31}$",
+              "minLength": 2,
+              "maxLength": 32
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviseDocumentTemplate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/document-templates/{code}/reclassifications": {
+      "post": {
+        "summary": "HR corrects existing employee/template classification to unreserved current clean chain; exact classification/file ordinals, reason/key, previous chain/audit retained.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentEvidence"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_-]{1,31}$",
+              "minLength": 2,
+              "maxLength": 32
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReclassifyDocument"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/document-templates/{code}/evidence-history": {
+      "get": {
+        "summary": "Self/HR full immutable classification history for one template, maximum 100; previous chains remain reserved.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentEvidence"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_-]{1,31}$",
+              "minLength": 2,
+              "maxLength": 32
+            }
+          },
+          {
+            "name": "employeeId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "description": "Default self; HR may inspect authorised employee."
+          }
+        ]
+      }
+    },
+    "/api/v1/documents/{id}/retention": {
+      "get": {
+        "summary": "HR-only chain retention/hold review and private immutable audit; explicit company basis, no statutory default or deletion authority.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetentionReview"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "HR appends chain governance with exact ordinal/key/reason; policy may only extend; independent HR employee releases active hold; no deletion/archive operation.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetentionEvent"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetentionCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/organisation/chart": {
+      "get": {
+        "summary": "Scoped current effective organisation roots, direct-report branch or global authorised search; HR tenant, manager self/direct reports, employee self. Counts/context exclude hidden records. Minimal DTO; no private/contact data. Repeatable-read snapshot.",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganisationBranch"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version, final decision or incompatible replay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body exceeds 32KiB"
+          }
+        },
+        "parameters": [
+          {
+            "name": "parentId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "description": "Visible parent ID; mutually exclusive with non-empty search."
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "description": "Literal search across all authorised names, IDs, titles and departments."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -1183,6 +3449,10 @@
               "null"
             ],
             "description": "Private field: null when record access permits reading but field access is denied; empty string when not provided."
+          },
+          "positionCode": {
+            "type": "string",
+            "maxLength": 30
           }
         },
         "required": [
@@ -1200,7 +3470,8 @@
           "address",
           "emergencyContactName",
           "emergencyContactRelationship",
-          "emergencyContactPhone"
+          "emergencyContactPhone",
+          "positionCode"
         ]
       },
       "SubmitChange": {
@@ -1220,13 +3491,17 @@
               "address",
               "emergencyContactName",
               "emergencyContactRelationship",
-              "emergencyContactPhone"
+              "emergencyContactPhone",
+              "positionCode",
+              "managerId",
+              "name"
             ]
           },
           "newValue": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 120
+            "minLength": 0,
+            "maxLength": 120,
+            "description": "Empty string removes an optional address/emergency value or unassigns the primary position. Null/whitespace and blank required fields are invalid. Position/departments must align at proposed and approved future dates; audit retained."
           },
           "effectiveDate": {
             "type": "string",
@@ -1254,6 +3529,31 @@
           "reason",
           "version",
           "idempotencyKey"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "field": {
+                  "enum": [
+                    "address",
+                    "emergencyContactName",
+                    "emergencyContactRelationship",
+                    "emergencyContactPhone",
+                    "positionCode"
+                  ]
+                }
+              }
+            },
+            "then": {},
+            "else": {
+              "properties": {
+                "newValue": {
+                  "minLength": 1
+                }
+              }
+            }
+          }
         ]
       },
       "DecideChange": {
@@ -1864,6 +4164,1733 @@
             "format": "date"
           }
         }
+      },
+      "OnboardingCompletion": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "hireId",
+          "employeeId",
+          "actor",
+          "oldStatus",
+          "newStatus",
+          "correlationId",
+          "reason",
+          "inputVersion",
+          "newVersion",
+          "effectiveDate",
+          "recordedAt"
+        ],
+        "properties": {
+          "hireId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "oldStatus": {
+            "type": "string"
+          },
+          "newStatus": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "inputVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "newVersion": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CompleteOnboarding": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        }
+      },
+      "Position": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9-]{2,30}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "departmentCode": {
+            "type": "string",
+            "pattern": "^[A-Z0-9-]{2,30}$"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "departmentCode",
+          "effectiveFrom"
+        ]
+      },
+      "CreatePosition": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9-]{2,30}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "departmentCode": {
+            "type": "string",
+            "pattern": "^[A-Z0-9-]{2,30}$"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "departmentCode",
+          "effectiveFrom",
+          "reason",
+          "idempotencyKey"
+        ]
+      },
+      "PositionAudit": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "actor",
+          "reason",
+          "recordedAt",
+          "effectiveFrom",
+          "correlationId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "PositionPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Position"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ]
+      },
+      "ManagerCandidate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "startDate"
+        ]
+      },
+      "ManagerPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/ManagerCandidate"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ]
+      },
+      "WithdrawChange": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "reason",
+          "idempotencyKey"
+        ]
+      },
+      "BenefitPlanView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9-]{2,30}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "USD",
+              "GBP",
+              "EUR"
+            ]
+          },
+          "monthlyContribution": {
+            "type": "string",
+            "pattern": "^[0-9]+[.][0-9]{2}$"
+          },
+          "minimumServiceDays": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3650
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "eligible": {
+            "type": "boolean"
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "ruleVersion": {
+            "type": "string",
+            "const": "DEMO-FIXED-MONTHLY-v1"
+          },
+          "mode": {
+            "type": "string",
+            "const": "DEMONSTRATION"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "currency",
+          "monthlyContribution",
+          "minimumServiceDays",
+          "effectiveFrom",
+          "eligible",
+          "explanation",
+          "ruleVersion",
+          "mode"
+        ]
+      },
+      "CreateBenefitPlan": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z0-9-]{2,30}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "USD",
+              "GBP",
+              "EUR"
+            ]
+          },
+          "monthlyContribution": {
+            "type": "string",
+            "pattern": "^[0-9]+([.][0-9]{1,2})?$"
+          },
+          "minimumServiceDays": {
+            "type": "string",
+            "pattern": "^[0-9]{1,4}$"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "currency",
+          "monthlyContribution",
+          "minimumServiceDays",
+          "effectiveFrom",
+          "reason",
+          "idempotencyKey"
+        ]
+      },
+      "BenefitPlanAudit": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "actor",
+          "reason",
+          "recordedAt",
+          "effectiveFrom",
+          "correlationId"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "BenefitPlanPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/BenefitPlanView"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "evaluatedOn": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size",
+          "evaluatedOn"
+        ]
+      },
+      "BenefitDependant": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "relationship": {
+            "type": "string",
+            "enum": [
+              "PARTNER",
+              "CHILD",
+              "OTHER"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "relationship"
+        ],
+        "additionalProperties": false
+      },
+      "SubmitBenefitSelection": {
+        "type": "object",
+        "properties": {
+          "planCode": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 30
+          },
+          "dependants": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "$ref": "#/components/schemas/BenefitDependant"
+            }
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "planCode",
+          "dependants",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "DecideBenefitSelection": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "version",
+          "outcome",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "BenefitSelectionAudit": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "SUBMITTED",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "action",
+          "actor",
+          "reason",
+          "recordedAt",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "BenefitSelection": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "planCode": {
+            "type": "string"
+          },
+          "planName": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "USD",
+              "GBP",
+              "EUR"
+            ]
+          },
+          "monthlyContribution": {
+            "type": "string",
+            "pattern": "^[0-9]+[.][0-9]{2}$"
+          },
+          "ruleVersion": {
+            "type": "string",
+            "const": "DEMO-FIXED-MONTHLY-v1"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "requestedBy": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "decidedBy": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decisionKey": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decisionReason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dependants": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "$ref": "#/components/schemas/BenefitDependant"
+            }
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BenefitSelectionAudit"
+            }
+          },
+          "handoffStatus": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "PENDING_PAYROLL",
+              null
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "planCode",
+          "planName",
+          "currency",
+          "monthlyContribution",
+          "ruleVersion",
+          "effectiveDate",
+          "requestedBy",
+          "reason",
+          "idempotencyKey",
+          "status",
+          "version",
+          "decidedBy",
+          "decisionKey",
+          "decisionReason",
+          "dependants",
+          "history",
+          "handoffStatus"
+        ],
+        "additionalProperties": false
+      },
+      "BenefitSelectionPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BenefitSelection"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ],
+        "additionalProperties": false
+      },
+      "UploadDocument": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 119
+          },
+          "mediaType": {
+            "type": "string",
+            "const": "text/plain"
+          },
+          "contentBase64": {
+            "type": "string",
+            "maxLength": 21848
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "filename",
+          "mediaType",
+          "contentBase64",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "DocumentView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string",
+            "const": "text/plain"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 16384
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "AVAILABLE",
+              "REJECTED",
+              "QUARANTINED"
+            ]
+          },
+          "scanner": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "scanAttempts": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "rootId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "filename",
+          "mediaType",
+          "bytes",
+          "status",
+          "scanner",
+          "reason",
+          "recordedAt",
+          "scanAttempts",
+          "rootId",
+          "version"
+        ],
+        "additionalProperties": false
+      },
+      "DocumentPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentView"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ],
+        "additionalProperties": false
+      },
+      "DocumentAudit": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "UPLOADED",
+              "AVAILABLE",
+              "REJECTED",
+              "QUARANTINED",
+              "DOWNLOAD_AUTHORISED",
+              "RESCAN_AVAILABLE",
+              "RESCAN_REJECTED",
+              "RESCAN_QUARANTINED",
+              "VERSION_UPLOADED"
+            ]
+          },
+          "actor": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "action",
+          "actor",
+          "recordedAt",
+          "reason",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "RetryDocumentScan": {
+        "type": "object",
+        "properties": {
+          "expectedAttempt": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "expectedAttempt",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "VersionDocument": {
+        "type": "object",
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "upload": {
+            "$ref": "#/components/schemas/UploadDocument"
+          }
+        },
+        "required": [
+          "expectedVersion",
+          "upload"
+        ],
+        "additionalProperties": false
+      },
+      "DocumentTemplate": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_-]{1,31}$",
+            "minLength": 2,
+            "maxLength": 32
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "retired": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "body",
+          "required",
+          "effectiveDate",
+          "actor",
+          "reason",
+          "recordedAt",
+          "correlationId",
+          "version",
+          "retired"
+        ],
+        "additionalProperties": false
+      },
+      "CreateDocumentTemplate": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_-]{1,31}$",
+            "minLength": 2,
+            "maxLength": 32
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "body",
+          "required",
+          "effectiveDate",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "DocumentEvidence": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_-]{1,31}$",
+            "minLength": 2,
+            "maxLength": 32
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "rootId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "linkedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "classificationVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "previousRootId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "employeeId",
+          "rootId",
+          "linkedVersion",
+          "actor",
+          "reason",
+          "recordedAt",
+          "correlationId",
+          "classificationVersion",
+          "previousRootId"
+        ],
+        "additionalProperties": false
+      },
+      "LinkDocumentEvidence": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "documentId",
+          "expectedVersion",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "DocumentCompleteness": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "asOf": {
+            "type": "string",
+            "format": "date"
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_-]{1,31}$",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "title": {
+                  "type": "string"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "effectiveDate": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "MISSING",
+                    "PRESENT",
+                    "BLOCKED",
+                    "OPTIONAL",
+                    "NOT_YET_EFFECTIVE",
+                    "RETIRED"
+                  ]
+                },
+                "rootId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "documentId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "version": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 1,
+                  "maximum": 100
+                },
+                "scanStatus": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "enum": [
+                    "AVAILABLE",
+                    "REJECTED",
+                    "QUARANTINED",
+                    null
+                  ]
+                }
+              },
+              "required": [
+                "code",
+                "title",
+                "required",
+                "effectiveDate",
+                "state",
+                "rootId",
+                "documentId",
+                "version",
+                "scanStatus"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "employeeId",
+          "asOf",
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "ReviseDocumentTemplate": {
+        "type": "object",
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "retired": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "expectedVersion",
+          "title",
+          "body",
+          "required",
+          "effectiveDate",
+          "retired",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "ReclassifyDocument": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "documentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "expectedClassificationVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "employeeId",
+          "documentId",
+          "expectedVersion",
+          "expectedClassificationVersion",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "RetentionEvent": {
+        "type": "object",
+        "properties": {
+          "rootId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "SET_POLICY",
+              "PLACE_HOLD",
+              "RELEASE_HOLD"
+            ]
+          },
+          "retainUntil": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "basis": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000
+          },
+          "holdId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "caseReference": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 80
+          },
+          "actor": {
+            "type": "string"
+          },
+          "actorEmployeeId": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "rootId",
+          "version",
+          "action",
+          "retainUntil",
+          "basis",
+          "holdId",
+          "caseReference",
+          "actor",
+          "actorEmployeeId",
+          "reason",
+          "recordedAt",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "RetentionCommand": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "SET_POLICY",
+              "PLACE_HOLD",
+              "RELEASE_HOLD"
+            ]
+          },
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "retainUntil": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "basis": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000
+          },
+          "holdId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "caseReference": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 80
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "action",
+          "expectedVersion",
+          "retainUntil",
+          "basis",
+          "holdId",
+          "caseReference",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "RetentionReview": {
+        "type": "object",
+        "properties": {
+          "rootId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "asOf": {
+            "type": "string",
+            "format": "date"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "NO_POLICY",
+              "RETAIN",
+              "REVIEW_DUE",
+              "ON_HOLD"
+            ]
+          },
+          "retainUntil": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "basis": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1000
+          },
+          "holds": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "caseReference": {
+                  "type": "string"
+                },
+                "placedBy": {
+                  "type": "string"
+                },
+                "placedEmployeeId": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "id",
+                "caseReference",
+                "placedBy",
+                "placedEmployeeId",
+                "active"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "history": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/RetentionEvent"
+            }
+          },
+          "deletionAvailable": {
+            "type": "boolean",
+            "const": false
+          }
+        },
+        "required": [
+          "rootId",
+          "employeeId",
+          "version",
+          "asOf",
+          "state",
+          "retainUntil",
+          "basis",
+          "holds",
+          "history",
+          "deletionAvailable"
+        ],
+        "additionalProperties": false
+      },
+      "OrganisationNode": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "positionCode": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "visibleDirectReports": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "title",
+          "department",
+          "positionCode",
+          "status",
+          "visibleDirectReports"
+        ],
+        "additionalProperties": false
+      },
+      "OrganisationBranch": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OrganisationNode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "manager": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OrganisationNode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "managerOutsideScope": {
+            "type": "boolean"
+          },
+          "items": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/OrganisationNode"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "asOf": {
+            "type": "string",
+            "format": "date"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "ROOTS",
+              "REPORTS",
+              "SEARCH"
+            ]
+          }
+        },
+        "required": [
+          "parent",
+          "manager",
+          "managerOutsideScope",
+          "items",
+          "total",
+          "page",
+          "size",
+          "asOf",
+          "mode"
+        ],
+        "additionalProperties": false
       }
     }
   }

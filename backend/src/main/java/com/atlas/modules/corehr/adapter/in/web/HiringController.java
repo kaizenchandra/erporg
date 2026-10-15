@@ -45,6 +45,20 @@ public final class HiringController {
     return hiring.decide(people.actor(p.getName()), id, command, correlation);
   }
 
+  @PostMapping("/{id}/complete-onboarding")
+  OnboardingCompletion complete(
+      Principal p,
+      @PathVariable String id,
+      @RequestBody CompleteOnboarding command,
+      @RequestAttribute("correlationId") String correlation) {
+    return hiring.completeOnboarding(people.actor(p.getName()), id, command, correlation);
+  }
+
+  @GetMapping("/employees/{id}/employment-history")
+  List<OnboardingCompletion> employmentHistory(Principal p, @PathVariable String id) {
+    return hiring.employmentHistory(people.actor(p.getName()), id);
+  }
+
   @GetMapping("/{id}/history")
   List<HireAudit> history(Principal p, @PathVariable String id) {
     return hiring.history(people.actor(p.getName()), id);

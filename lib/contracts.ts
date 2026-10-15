@@ -20,6 +20,7 @@ export type Employee = {
   status: string;
   managerId: string | null;
   startDate: string;
+  positionCode: string;
   version: number;
 };
 export type ChangeRequest = {

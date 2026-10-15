@@ -1,0 +1,24 @@
+Executed locally against PostgreSQL 18.6 and real ClamAV.
+Command: JAVA_HOME=<JDK21> mvn -f backend/pom.xml -Dmaven.repo.local=<local-cache> spotless:apply test
+
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.80 s -- in com.atlas.WithdrawalWorkflowTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.762 s -- in com.atlas.DisplayNameWorkflowTest
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.013 s -- in com.atlas.PostgresWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.823 s -- in com.atlas.OrganisationWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.360 s -- in com.atlas.ReportingWorkflowTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.215 s -- in com.atlas.DocumentsWorkflowTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.atlas.BenefitsDomainTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.801 s -- in com.atlas.PositionWorkflowTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.187 s -- in com.atlas.HiringWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.527 s -- in com.atlas.OnboardingWorkflowTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.43 s -- in com.atlas.ArchitectureTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.215 s -- in com.atlas.BenefitSelectionWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.174 s -- in com.atlas.PositionAssignmentWorkflowTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.480 s -- in com.atlas.BenefitsWorkflowTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.810 s -- in com.atlas.DocumentRetryWorkflowTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s -- in com.atlas.DomainTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.337 s -- in com.atlas.DocumentVersionWorkflowTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.074 s -- in com.atlas.RequestGuardTest
+[INFO] Tests run: 110, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Total time:  02:00 min

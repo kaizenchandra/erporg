@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { api, ApiError } from "@/lib/api";
 import { Modal, Badge, Empty, formatDate } from "@/components/ui/primitives";
 import type { Actor, Employee } from "@/lib/contracts";
+import { CompleteOnboardingDialog } from "./complete-onboarding";
 import type { Department } from "./department-reference";
 export type HireRequest = {
   id: string;
@@ -49,6 +50,7 @@ export function Hiring({
     data?: HirePage;
     error?: string;
   }>();
+  const [completion, setCompletion] = useState<HireRequest | null>(null);
   const key = `${status}:${page}:${revision}`;
   useEffect(() => {
     const controller = new AbortController();
@@ -82,6 +84,7 @@ export function Hiring({
   const saved = (message: string) => {
     setCreating(false);
     setReview(null);
+    setCompletion(null);
     setNotice(message);
     setPage(0);
     setRevision((n) => n + 1);
@@ -138,34 +141,46 @@ export function Hiring({
                 Start {formatDate(h.startDate)} · Requested by {h.requestedBy}
               </p>
               {h.employeeId && (
-                <p>
-                  Employee {h.employeeId} · Employee created · Payroll setup
-                  pending
-                </p>
+                <>
+                  <p>
+                    Employee {h.employeeId} · Employee created · Payroll setup
+                    pending
+                  </p>
+                </>
               )}
             </div>
             <button className="button secondary" onClick={() => setReview(h)}>
               Review hire
             </button>
             {h.employeeId && (
-              <button
-                className="button secondary"
-                onClick={async () => {
-                  try {
-                    onOpen(
-                      await api<Employee>(`/api/v1/employees/${h.employeeId}`),
-                    );
-                  } catch (err) {
-                    setNotice(
-                      err instanceof Error
-                        ? err.message
-                        : "Unable to open employee.",
-                    );
-                  }
-                }}
-              >
-                Open employee
-              </button>
+              <>
+                <button
+                  className="button secondary"
+                  onClick={() => setCompletion(h)}
+                >
+                  Complete onboarding
+                </button>
+                <button
+                  className="button secondary"
+                  onClick={async () => {
+                    try {
+                      onOpen(
+                        await api<Employee>(
+                          `/api/v1/employees/${h.employeeId}`,
+                        ),
+                      );
+                    } catch (err) {
+                      setNotice(
+                        err instanceof Error
+                          ? err.message
+                          : "Unable to open employee.",
+                      );
+                    }
+                  }}
+                >
+                  Open employee
+                </button>
+              </>
             )}
           </article>
         ))}
@@ -196,6 +211,16 @@ export function Hiring({
           </button>
         </div>
       </footer>
+      {completion?.employeeId && (
+        <CompleteOnboardingDialog
+          hireId={completion.id}
+          employeeId={completion.employeeId}
+          onClose={() => setCompletion(null)}
+          onSaved={() =>
+            saved("Onboarding completed. Employee status is Active.")
+          }
+        />
+      )}
       {creating && (
         <SubmitHireForm
           onClose={() => setCreating(false)}

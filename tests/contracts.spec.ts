@@ -129,6 +129,7 @@ test("contract validator rejects incorrect types, formats and unexpected private
     status: "Active",
     managerId: null,
     startDate: "2026-10-14",
+    positionCode: "",
     version: 0,
   };
   expect(validate(employee)).toBe(true);

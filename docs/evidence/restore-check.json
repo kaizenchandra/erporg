@@ -1,65 +1,163 @@
 {
-  "recordedAt": "2026-10-14T08:06:11.189308+00:00",
+  "recordedAt": "2026-10-15T05:41:02.921839+00:00",
   "sourceSchema": "atlas_acceptance",
-  "targetDatabase": "atlas_restore_c94140e68d104864",
+  "targetDatabase": "atlas_restore_4b38f5f1afe6450b",
   "scope": "local synthetic PostgreSQL logical restore; not production RPO/RTO",
   "status": "PASSED",
-  "backupBytes": 77601,
-  "backupSha256": "1f26fd9e8cbe771416f9c398c32a34b6b9c9579e7f69721094a86b8d8ef653ca",
-  "restoreSeconds": 0.247,
+  "backupBytes": 199300,
+  "backupSha256": "88924631891bd3d4ded4921f9049692ff70d1f7c0584b70fec91186872670b36",
+  "restoreSeconds": 0.532,
   "restoredSessionRows": 0,
   "restoredSessionAttributeRows": 0,
   "tableManifest": {
     "flyway_schema_history": {
-      "rows": 10,
-      "sha256": "43ae141e7c5e2cc66bbee75b396e9f0724d5a45be558852bc37d0e0d850686ec"
+      "rows": 29,
+      "sha256": "b467af144927f254c2a5e6e136efa8d3c705abe49cfe35b6b6b9a801bfe08ed6"
     },
     "hr_employee": {
-      "rows": 20,
-      "sha256": "a041bef092da4dccbd024611d1aefa9fdb38d53634a7ae6e40ac29de4048f8f1"
+      "rows": 25,
+      "sha256": "c2f910ec889ce2e53e458ee6b977e9c9bc98813faa504e21e1288934488c6def"
     },
     "identity_membership": {
       "rows": 8,
       "sha256": "51670ae74d3a6175582e7fae364f67ae78d77ebf85c815606f609a6ef7c3334f"
     },
     "hr_request": {
-      "rows": 201,
-      "sha256": "82b881b7be5e3a1725f59ef9810663a06461c848d31b62bb1ff8b90d1382ff0c"
+      "rows": 78,
+      "sha256": "68fc2a0712ba122580499f73aa61a999fe90f3b25b6bf74df39e999cc774dc9c"
     },
     "hr_version": {
-      "rows": 47,
-      "sha256": "69fb81f706e50f16d87a884bd2bc538c96bb19a9b51812eb959a9ff723df8f5d"
+      "rows": 38,
+      "sha256": "5d85b4f4900deeeaadcbd8d4c690f30b58937b8d966cadd87984ef5c6b2f709f"
     },
     "hr_audit": {
-      "rows": 269,
-      "sha256": "b48dd969f943ceb1373818678c513c0e97c8af84187fd78c404803b019e30f96"
+      "rows": 127,
+      "sha256": "d867ea269eb7c6b71981395482e3100208b070750533f53b5ba86df5be48a9b4"
     },
     "hr_notification": {
-      "rows": 77,
-      "sha256": "56dc24585ea18ab448a0dcb3bca526343c801d5943822867e0d4558695f97ed6"
+      "rows": 63,
+      "sha256": "f81a663f385252f6e26e67b5d550583eb2d4df85c543f782c2619e20801e8a28"
     },
     "hr_department": {
-      "rows": 14,
-      "sha256": "3ab55b1d0d540011600e69b37fd608367b6225f83f50ccd85293f5172080f7bd"
+      "rows": 10,
+      "sha256": "5b18e9bdebcfbc79ade2aa3b95af33e1442cc9761b08ec1bf9d4fe5f9208270b"
     },
     "hr_department_audit": {
-      "rows": 14,
-      "sha256": "2703ac05198da3c0a475786f94b6637c57b6b9e5a77b8fe79a2f8517a65d4dcc"
+      "rows": 10,
+      "sha256": "3276f08a1fc96b301c274d5ffbbd4b50ba6a4d1494d9a9c89fd892b4bfa9e88b"
     },
     "hr_hire_request": {
-      "rows": 7,
-      "sha256": "390145e80628d7fdac87b79f5ba7b654edd23524ad02a803c541601b64871585"
+      "rows": 12,
+      "sha256": "a7f409c0971f1521ce7420f6f1515ca03d8ee74a6dc9a101a068605a7d50587d"
     },
     "hr_hire_audit": {
-      "rows": 14,
-      "sha256": "ba4d0f5e36ce3b0b714af5d6f363d9f33b4961f16f79fdead3f96eefc8445676"
+      "rows": 24,
+      "sha256": "4c000490b179964863ce09a3122e6b195e9754855169a67a6ed75f8ec9daf921"
     },
     "hr_employee_event": {
-      "rows": 7,
-      "sha256": "dadaacd8bb72c716387ae9521d4bf11527569b3cd3e8cec19516dc1842f2b44e"
+      "rows": 18,
+      "sha256": "a8f263dfd2d199e6c4f712197b1521ecf423658436f70f3e77d849cfd4df2af6"
+    },
+    "hr_onboarding_completion": {
+      "rows": 6,
+      "sha256": "993bb4a2771bee90a795930269585b93067247e59c019b58b545633a6f9b36ce"
+    },
+    "hr_position": {
+      "rows": 10,
+      "sha256": "132459dda8102b6e4ec5b20d051deb0a957b104459edbfac1169349165d89c80"
+    },
+    "hr_position_audit": {
+      "rows": 10,
+      "sha256": "e550c9cf0b2f155ca0d71a4e60d28c3326bb7fcd094232405202c0283a5cbac9"
+    },
+    "hr_position_assignment": {
+      "rows": 8,
+      "sha256": "b06c3b08b6f3588a5c2501a4ba83fee83ecec1f3448c8601f6f43080213a8373"
+    },
+    "hr_reporting_assignment": {
+      "rows": 8,
+      "sha256": "bd303be354bb8e31ce100b76d72a6c6068e0436e2be0e4718ad5e592d3d6af98"
+    },
+    "hr_request_withdrawal": {
+      "rows": 5,
+      "sha256": "6e3d968ff71d548ebb3f2471f8d00325012f3e8e9fee15aedd9a632032adc91d"
+    },
+    "benefit_plan": {
+      "rows": 8,
+      "sha256": "a5601fe716e21f52e636a7889645ea56366632eb445a9da635f78dd87216dc31"
+    },
+    "benefit_plan_audit": {
+      "rows": 8,
+      "sha256": "f849bb45ac51c4f5d2bcd1ef4a3f70609e89e02ea64961ee9108a8c299988206"
+    },
+    "benefit_selection": {
+      "rows": 6,
+      "sha256": "098dc5f7308eb4880cc3ab4b0191423447ea358f0c10c8444a31324eb4982823"
+    },
+    "benefit_dependant": {
+      "rows": 6,
+      "sha256": "88321869e66e4345a7cd1e5d157531813d3b7963b4f2411cc46bbeba7a46968b"
+    },
+    "benefit_selection_audit": {
+      "rows": 10,
+      "sha256": "cd22f9f40fe189bf1d8a5f9258651b394d5168ef49de13daf3094ac72eaac777"
+    },
+    "benefit_deduction_handoff": {
+      "rows": 4,
+      "sha256": "f4b863f72d3c5f34da180f3d03ed7fb5e799e014240518be6d201d03e482cd70"
+    },
+    "employee_document": {
+      "rows": 46,
+      "sha256": "2c970cf8388bd30e7055a1b6f832c8c74d75510f7ea0cf0f1a603d4f0d00d235"
+    },
+    "employee_document_audit": {
+      "rows": 102,
+      "sha256": "be87472c5637cbb6dae43e47c942d0a536d9520169b353d9feb0cf48410ddab9"
+    },
+    "employee_document_scan_retry": {
+      "rows": 6,
+      "sha256": "3e36a40104348d533f61bda53c9a74451f9460b047a5cfebb576ce18c8be60a8"
+    },
+    "employee_document_version": {
+      "rows": 10,
+      "sha256": "2aeed5aa2bd48aef764433f77462326c58f778c18bab3fe37ee588b73c00e6be"
+    },
+    "document_template": {
+      "rows": 10,
+      "sha256": "d117aaf36394c2491da0b171db91327a50a8fe553df59c6a8e2abe1b88ed7a0a"
+    },
+    "document_template_evidence": {
+      "rows": 10,
+      "sha256": "6f1c819c15ba6f9d3aa050a2f8e919fa5f9ab9a9c4dd1d7935d1e1316db3a8e6"
+    },
+    "document_template_revision": {
+      "rows": 9,
+      "sha256": "34d7e27f31f0f5643bb91ab43b00c0aea20f215bf087a6a5126628b1a30238cc"
+    },
+    "document_template_reclassification": {
+      "rows": 6,
+      "sha256": "b76d7c597a46393fb3ddff0428886be18a19ad52afd47599f8edfbe5564c5ea7"
+    },
+    "document_retention_event": {
+      "rows": 14,
+      "sha256": "b4e29b58a5f43a446e82facf4ab335ec6908aa10e14aef1c880725adadaf728b"
     }
   },
+  "privateObjects": {
+    "status": "PASSED",
+    "objects": 13,
+    "manifestSha256": "ce449e61bdff2f96e000058e7fc034af3b0d411f6eac17b1338d1eb4c991b0e4",
+    "restoredRoot": "/private/tmp/atlas-document-restore-4b38f5f1afe6450b",
+    "scope": "independent local synthetic private-object copy; not cloud/encrypted backup or production recovery"
+  },
   "integrityChecks": {
+    "invalidRetentionOwnerSequence": 0,
+    "invalidHoldRelease": 0,
+    "shortenedRetention": 0,
+    "invalidTemplateRevisionSequence": 0,
+    "invalidClassificationCorrection": 0,
+    "reusedInitialClassificationRoot": 0,
+    "invalidTemplateEvidence": 0,
     "orphanRequests": 0,
     "orphanVersions": 0,
     "orphanAudit": 0,
@@ -68,11 +166,30 @@
     "orphanHires": 0,
     "orphanHireAudit": 0,
     "orphanEmployeeEvents": 0,
+    "orphanBenefitAudit": 0,
+    "inconsistentBenefitDeductions": 0,
+    "missingBenefitDeductions": 0,
+    "orphanBenefitDependants": 0,
+    "orphanBenefitSelectionAudit": 0,
+    "invalidDocumentVersions": 0,
+    "invalidDocumentVersionSequence": 0,
+    "invalidDocumentRetry": 0,
+    "invalidDocumentRetrySequence": 0,
+    "orphanDocumentAudit": 0,
+    "missingDocumentAudit": 0,
+    "inconsistentWithdrawals": 0,
+    "inconsistentReportingAssignments": 0,
+    "missingReportingAssignments": 0,
+    "inconsistentPositionAssignments": 0,
+    "missingPositionAssignments": 0,
+    "orphanPositions": 0,
+    "orphanPositionAudit": 0,
+    "orphanCompletions": 0,
     "failedMigrations": 0
   },
   "auditTriggerRestored": true,
-  "approvedRequests": 47,
+  "approvedRequests": 38,
   "auditMutationRejected": true,
-  "totalSeconds": 8.572,
+  "totalSeconds": 24.714,
   "targetRetained": true
 }

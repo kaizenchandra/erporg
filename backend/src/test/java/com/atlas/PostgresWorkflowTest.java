@@ -284,6 +284,113 @@ class PostgresWorkflowTest {
   }
 
   @Test
+  void approvedPrivateRemovalRetainsHistoryAndPermissions() {
+    jdbc.update(
+        "update hr_employee set address='Old address', emergency_contact_name='Old contact', emergency_contact_relationship='Sibling', emergency_contact_phone='+1 202 555 9000' where tenant=? and id='E003'",
+        self().tenant());
+    for (String field : ChangeRequest.PRIVATE_FIELDS) {
+      var before = people.profile(self(), "E003");
+      var command =
+          new Submit(
+              "E003",
+              field,
+              "",
+              LocalDate.now(ZoneOffset.UTC),
+              "Remove obsolete value",
+              before.version(),
+              UUID.randomUUID().toString());
+      var request = people.submit(self(), command, "remove-submit");
+      assertFalse(request.oldValue().isBlank());
+      assertEquals("", request.newValue());
+      assertEquals(request.id(), people.submit(self(), command, "remove-replay").id());
+      assertThrows(
+          ChangeRequest.Denied.class,
+          () ->
+              people.decide(
+                  people.actor("marcus"),
+                  request.id(),
+                  new Decide("APPROVED", "Forbidden"),
+                  "denied"));
+      assertThrows(
+          ChangeRequest.Denied.class,
+          () -> people.decide(self(), request.id(), new Decide("APPROVED", "Self"), "denied"));
+      people.decide(
+          hr(), request.id(), new Decide("APPROVED", "Obsolete data verified"), "remove-approved");
+      assertEquals(before.version() + 1, people.profile(self(), "E003").version());
+      assertTrue(
+          people.history(hr(), "E003").stream()
+              .anyMatch(
+                  a ->
+                      a.field().equals(field)
+                          && a.action().equals("APPROVED")
+                          && a.newValue().isEmpty()
+                          && a.oldValue().equals(request.oldValue())));
+      assertTrue(
+          people.history(people.actor("marcus"), "E003").stream()
+              .noneMatch(a -> a.field().equals(field)));
+      assertThrows(
+          IllegalArgumentException.class,
+          () ->
+              people.submit(
+                  self(),
+                  new Submit(
+                      "E003",
+                      field,
+                      "",
+                      LocalDate.now(ZoneOffset.UTC),
+                      "Already empty",
+                      before.version() + 1,
+                      UUID.randomUUID().toString()),
+                  "noop"));
+    }
+    var after = people.profile(self(), "E003");
+    assertEquals("", after.address());
+    assertEquals("", after.emergencyContactName());
+    assertEquals("", after.emergencyContactRelationship());
+    assertEquals("", after.emergencyContactPhone());
+  }
+
+  @Test
+  void futureAndRejectedRemovalPreserveCurrentPrivateValue() {
+    jdbc.update(
+        "update hr_employee set address='Existing address' where tenant=? and id='E003'",
+        self().tenant());
+    var rejected =
+        people.submit(
+            self(),
+            new Submit(
+                "E003",
+                "address",
+                "",
+                LocalDate.now(ZoneOffset.UTC),
+                "Removal request",
+                0,
+                UUID.randomUUID().toString()),
+            "remove-reject");
+    people.decide(hr(), rejected.id(), new Decide("REJECTED", "Keep required contact"), "reject");
+    assertEquals("Existing address", people.profile(self(), "E003").address());
+    assertEquals(0, people.profile(self(), "E003").version());
+    var future =
+        people.submit(
+            self(),
+            new Submit(
+                "E003",
+                "address",
+                "",
+                LocalDate.now(ZoneOffset.UTC).plusDays(10),
+                "Future removal",
+                0,
+                UUID.randomUUID().toString()),
+            "future-remove");
+    people.decide(hr(), future.id(), new Decide("APPROVED", "Reviewed future removal"), "approve");
+    assertEquals("Existing address", people.profile(self(), "E003").address());
+    assertEquals(
+        "",
+        jdbc.queryForObject(
+            "select value from hr_version where request_id=?", String.class, future.id()));
+  }
+
+  @Test
   void privateFutureDateAndInvalidPhoneAreSafe() {
     var request =
         people.submit(

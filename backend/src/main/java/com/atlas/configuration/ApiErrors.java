@@ -1,6 +1,6 @@
 package com.atlas.configuration;
 
-import com.atlas.modules.corehr.domain.model.ChangeRequest;
+import com.atlas.shared.domain.*;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.*;
 import org.springframework.http.ResponseEntity;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice
 public class ApiErrors {
-  @ExceptionHandler(ChangeRequest.Validation.class)
-  ResponseEntity<?> validation(ChangeRequest.Validation e, HttpServletRequest request) {
+  @ExceptionHandler(InputValidation.class)
+  ResponseEntity<?> validation(InputValidation e, HttpServletRequest request) {
     return ResponseEntity.badRequest()
         .body(
             Map.of(
@@ -34,13 +34,13 @@ public class ApiErrors {
         e instanceof IllegalArgumentException ? e.getMessage() : "Invalid request body.");
   }
 
-  @ExceptionHandler(ChangeRequest.Denied.class)
+  @ExceptionHandler(AccessDenied.class)
   ResponseEntity<?> denied(Exception e, HttpServletRequest request) {
     return error(request, 403, e.getMessage());
   }
 
   @ExceptionHandler({
-    ChangeRequest.Conflict.class,
+    CommandConflict.class,
     org.springframework.dao.DataIntegrityViolationException.class,
     org.springframework.dao.CannotAcquireLockException.class
   })
@@ -48,7 +48,7 @@ public class ApiErrors {
     return error(
         request,
         409,
-        e instanceof ChangeRequest.Conflict
+        e instanceof CommandConflict
             ? e.getMessage()
             : "This change conflicts with another operation. Refresh and try again.");
   }

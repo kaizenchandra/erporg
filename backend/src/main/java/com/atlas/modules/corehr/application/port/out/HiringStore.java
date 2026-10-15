@@ -7,6 +7,15 @@ import java.time.Instant;
 import java.util.*;
 
 public interface HiringStore {
+  Optional<OnboardingCompletion> completionReplay(String tenant, String actor, String key);
+
+  Optional<OnboardingCompletion> completion(String tenant, String hireId);
+
+  void completeOnboarding(
+      String tenant, OnboardingCompletion completion, Employee employee, String key);
+
+  List<OnboardingCompletion> employmentHistory(String tenant, String employeeId);
+
   HirePage hires(String tenant, RequestQuery query);
 
   Optional<HireRequest> duplicate(String tenant, String subject, String key);

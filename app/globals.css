@@ -2097,3 +2097,246 @@ tbody tr.selected {
   align-items: center;
   min-height: 28px;
 }
+
+.change-form label.removal-choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.change-form .removal-choice input[type="checkbox"] {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  flex: 0 0 18px;
+}
+.change-form input:disabled {
+  background: #f2f5f7;
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.position-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 20px 0;
+}
+.position-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 180px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.position-filters input,
+.position-filters select {
+  padding: 10px;
+  border: 1px solid #dce4e7;
+  border-radius: 6px;
+  background: white;
+  min-height: 44px;
+}
+.position-pagination {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 16px 0;
+  font-size: 12px;
+}
+
+.position-picker {
+  min-width: 0;
+  border: 1px solid #dce4e7;
+  border-radius: 8px;
+  padding: 16px;
+}
+.position-picker legend {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 6px;
+}
+.position-picker label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.position-picker p {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.position-picker label span {
+  color: #a8644e;
+}
+
+.manager-picker {
+  min-width: 0;
+  border: 1px solid #dce4e7;
+  border-radius: 8px;
+  padding: 16px;
+}
+.manager-picker legend {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 6px;
+}
+.manager-picker label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.manager-picker p {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.manager-picker label span {
+  color: #a8644e;
+}
+
+.badge.withdrawn {
+  background: #edf1f4;
+  color: #526571;
+}
+
+.benefit-card,
+[aria-label="Benefit selections"] .history-event > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.benefit-card > button {
+  max-width: 100%;
+  white-space: normal;
+}
+@media (max-width: 640px) {
+  .department-reference .detail-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.document-filters {
+  grid-template-columns: minmax(0, 360px);
+  margin-top: 16px;
+}
+
+.document-card > details > summary,
+.document-revisions > summary {
+  min-height: 44px;
+  padding: 12px 0;
+  cursor: pointer;
+}
+
+.document-template-panel {
+  margin: 20px 0;
+}
+
+.retention-review {
+  padding: 20px 24px;
+  overflow-wrap: anywhere;
+}
+.document-template-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+}
+.change-form .template-required {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+}
+.change-form .template-required input {
+  width: 24px;
+  height: 24px;
+}
+
+.organisation-chart {
+  margin-top: 28px;
+}
+.organisation-chart > p {
+  line-height: 1.6;
+}
+.organisation-search {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  margin: 20px 0;
+}
+.organisation-search label {
+  display: grid;
+  gap: 8px;
+  flex: 1;
+  font-weight: 600;
+}
+.organisation-search input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+}
+.organisation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.organisation-actions .button {
+  white-space: normal;
+  text-align: left;
+}
+.organisation-person {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.organisation-person h4 {
+  margin: 0;
+}
+.organisation-person p {
+  margin: 6px 0 0;
+}
+.organisation-node {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.organisation-anchor {
+  border-top: 3px solid var(--accent);
+}
+.organisation-parent {
+  max-width: 560px;
+  margin: 16px 0;
+}
+.organisation-branches {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.organisation-branches > li {
+  min-width: 0;
+}
+.organisation-children {
+  border-left: 2px solid var(--line);
+  padding-left: 20px;
+}
+@media (max-width: 640px) {
+  .organisation-branches {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .organisation-search {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .organisation-children {
+    padding-left: 12px;
+  }
+}

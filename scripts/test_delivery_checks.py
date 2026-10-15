@@ -78,5 +78,41 @@ class DeliveryChecks(unittest.TestCase):
                 self.assertEqual(before['criteria'], after['criteria'])
 
 
+class PrivateObjectChecks(unittest.TestCase):
+    def test_private_object_copy_is_independent(self):
+        import hashlib
+        from scripts import document_objects
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / 'source'
+            root.mkdir(mode=0o700)
+            key = 'a'*64 + '/' + hashlib.sha256(b'synthetic').hexdigest()
+            path = root / key
+            path.parent.mkdir(mode=0o700)
+            path.write_bytes(b'synthetic')
+            path.chmod(0o600)
+            rows = json.dumps([{'object_key':key,'sha256':hashlib.sha256(b'synthetic').hexdigest(),'bytes':9}])
+            target = Path(tmp).resolve() / 'copy'
+            with patch.object(document_objects,'SOURCE_ROOT',root):
+                result = document_objects.copy_objects(lambda *args: rows,'fixture',target)
+            self.assertEqual(1,result['objects'])
+            path.write_bytes(b'changed')
+            self.assertEqual(b'synthetic',(target/key).read_bytes())
+            self.assertEqual(0,(target/key).stat().st_mode & 0o077)
+
+    def test_private_object_copy_rejects_corruption(self):
+        from scripts import document_objects
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve() / 'source'
+            root.mkdir(mode=0o700)
+            key = 'a'*64 + '/' + 'b'*64
+            path = root / key
+            path.parent.mkdir(mode=0o700)
+            path.write_bytes(b'synthetic')
+            path.chmod(0o600)
+            rows = json.dumps([{'object_key':key,'sha256':'b'*64,'bytes':9}])
+            with patch.object(document_objects,'SOURCE_ROOT',root):
+                with self.assertRaisesRegex(RuntimeError,'integrity mismatch'):
+                    document_objects.copy_objects(lambda *args: rows,'fixture',Path(tmp).resolve()/'copy')
+
 if __name__ == '__main__':
     unittest.main()

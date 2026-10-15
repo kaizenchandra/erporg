@@ -19,9 +19,13 @@ public record Actor(String subject, String tenant, String employeeId, String nam
   }
 
   public boolean canRead(Employee employee) {
+    return canReadEmployee(employee.id(), employee.managerId());
+  }
+
+  public boolean canReadEmployee(String id, String managerId) {
     return hr()
-        || employeeId.equals(employee.id())
-        || (role.equals("MANAGER") && employeeId.equals(employee.managerId()));
+        || employeeId.equals(id)
+        || (role.equals("MANAGER") && employeeId.equals(managerId));
   }
 
   public boolean canReadField(Employee employee, String field) {
@@ -32,6 +36,8 @@ public record Actor(String subject, String tenant, String employeeId, String nam
   }
 
   public boolean canChange(Employee employee, String field) {
+    if (field.equals("name"))
+      return canRead(employee) && (hr() || employeeId.equals(employee.id()));
     return canReadField(employee, field)
         && ChangeRequest.FIELDS.contains(field)
         && (field.equals("phone")

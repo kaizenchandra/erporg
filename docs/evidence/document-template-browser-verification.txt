@@ -1,0 +1,64 @@
+
+Running 41 tests using 1 worker
+
+(node:51009) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51009) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/benefit-selections.spec.ts:51:5 › employee submits dependant selection; independent HR review queues one payroll handoff (2.8s)
+  ✓   2 tests/benefit-selections.spec.ts:125:5 › selection API contracts, privacy, duplicate recovery and competing decisions (753ms)
+  ✓   3 tests/benefits.spec.ts:24:5 › HR configures a demonstration benefit; employee sees own eligibility and exact contribution (2.4s)
+  ✓   4 tests/benefits.spec.ts:94:5 › benefit API denies configuration/history to employees and isolates tenant catalogue (423ms)
+  ✓   5 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (526ms)
+  ✓   6 tests/contracts.spec.ts:115:5 › contract validator rejects incorrect types, formats and unexpected private fields (6ms)
+  ✓   7 tests/departments.spec.ts:16:5 › HR configures a department; manager transfers an employee; HR approves the real reference (3.9s)
+  ✓   8 tests/display-name.spec.ts:68:5 › employee requests display name, HR approves and effective profile/search/session name persist (3.3s)
+  ✓   9 tests/display-name.spec.ts:163:5 › name API denies manager edits/review and self review; concurrent approvals have one winner (702ms)
+  ✓  10 tests/document-retry.spec.ts:75:5 › HR rescans quarantined stored document after real outage; original history remains (18.4s)
+  ✓  11 tests/document-retry.spec.ts:130:5 › retry API denies ordinary roles and fractional versions; concurrent retries commit one result; malware stays blocked (17.0s)
+  ✓  12 tests/document-templates.spec.ts:57:5 › HR creates required text template; employee classifies document and sees completeness and audit (3.4s)
+  ✓  13 tests/document-templates.spec.ts:168:5 › template API isolates configuration/evidence, handles concurrent links and latest blocked version (913ms)
+  ✓  14 tests/document-versions.spec.ts:47:5 › employee uploads scanned replacement, sees immutable versions and explicitly downloads historical file (2.3s)
+  ✓  15 tests/document-versions.spec.ts:110:5 › version API isolates records, rejects fractional/stale branches and preserves one concurrent winner and malware history (743ms)
+  ✓  16 tests/documents.spec.ts:25:5 › private upload scan download and accessible document error recovery (1.9s)
+  ✓  17 tests/documents.spec.ts:88:5 › real scanning rejects EICAR and APIs isolate document records with replay and concurrent upload (596ms)
+  -  18 tests/oidc.spec.ts:17:5 › OIDC code flow requires MFA for the privileged synthetic account
+  ✓  19 tests/phase1.spec.ts:9:5 › directory, search, filters, profile and accessible desktop shell (3.0s)
+  ✓  20 tests/phase1.spec.ts:61:5 › employee submits contact change; independent HR approves; profile and audit persist (2.3s)
+  ✓  21 tests/phase1.spec.ts:110:5 › responsive employee self-service and keyboard focus (799ms)
+  ✓  22 tests/phase1.spec.ts:132:5 › approval inbox and profile/form accessibility, rejection, preserved input and expired-session clearing (2.8s)
+  ✓  23 tests/phase1.spec.ts:238:5 › approval inbox navigates server pages and resets when filtering (1.2s)
+  ✓  24 tests/position-assignment.spec.ts:45:5 › manager requests a primary position; HR approves; employee sees history; unassignment restores empty scope (5.8s)
+  ✓  25 tests/position-assignment.spec.ts:151:5 › direct assignment API denies self/tenant access and concurrent approvals commit once (553ms)
+  ✓  26 tests/positions.spec.ts:24:5 › HR creates a position with recoverable validation; employee browses scoped catalogue (3.4s)
+  ✓  27 tests/positions.spec.ts:116:5 › position API validates dates and roles, isolates tenants, replays and bounds server pages (448ms)
+  ✓  28 tests/private-contact.spec.ts:21:7 › Home address: employee submits, manager is denied, HR approves, profile and audit persist (3.6s)
+  ✓  29 tests/private-contact.spec.ts:21:7 › Emergency contact name: employee submits, manager is denied, HR approves, profile and audit persist (3.8s)
+  ✓  30 tests/private-contact.spec.ts:120:5 › explicit emergency phone removal requires HR approval and retains history (4.4s)
+  ✓  31 tests/reporting.spec.ts:32:5 › manager requests reporting change, HR approves, old manager loses access and HR restores fixture (3.8s)
+  ✓  32 tests/reporting.spec.ts:144:5 › concurrent reciprocal reporting approvals cannot create a cycle (642ms)
+  ✓  33 tests/security.spec.ts:26:5 › direct API denies unauthenticated, cross-tenant and forged field access; logout revokes session (344ms)
+  ✓  34 tests/security.spec.ts:90:5 › duplicate submit is stable; concurrent reviewers produce one committed approval; future value not early (301ms)
+  ✓  35 tests/security.spec.ts:159:5 › directory API bounds pages, rejects invalid sorting and scopes totals (281ms)
+  ✓  36 tests/withdrawal.spec.ts:24:5 › employee submits then withdraws pending change with preserved validation and audit (1.7s)
+  ✓  37 tests/withdrawal.spec.ts:97:5 › API requires explicit version and safely arbitrates approval versus owner withdrawal (528ms)
+  ✓  38 tests/z-hiring.spec.ts:36:5 › hire submission, independent HR approval and assigned employee profile work through UI (2.6s)
+  ✓  39 tests/z-hiring.spec.ts:114:5 › hire API denies non-HR/self review, replays stable and concurrent approvals create one ID (405ms)
+  ✓  40 tests/z-onboarding.spec.ts:58:5 › HR confirms completion; Active profile and employment history persist through UI (1.6s)
+  ✓  41 tests/z-onboarding.spec.ts:110:5 › completion API rejects early/stale/non-HR; concurrent winner and replay remain stable (519ms)
+
+  1 skipped
+  40 passed (1.8m)
+
+Final targeted verification (additional HR lookup assertion):
+
+Running 2 tests using 1 worker
+
+(node:52593) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:52593) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/document-templates.spec.ts:57:5 › HR creates required text template; employee classifies document and sees completeness and audit (3.3s)
+  ✓  2 tests/document-templates.spec.ts:175:5 › template API isolates configuration/evidence, handles concurrent links and latest blocked version (627ms)
+
+  2 passed (5.4s)

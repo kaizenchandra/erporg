@@ -1,0 +1,150 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24086 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] ------------------------< com.atlas:atlas-api >-------------------------
+[INFO] Building atlas-api 0.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] Loaded 24086 auto-discovered prefixes for remote repository maven-central (prefixes-maven-central.txt)
+[WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+[INFO] Loaded 7 auto-discovered prefixes for remote repository shibboleth-repo (prefixes-shibboleth-repo.txt)
+[INFO] Loaded 24086 auto-discovered prefixes for remote repository maven_central (prefixes-maven_central.txt)
+[INFO] 
+[INFO] --- spotless:3.0.0:apply (default-cli) @ atlas-api ---
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/PositionAssignmentWorkflowTest.java
+[INFO] Spotless.Java is keeping 60 files clean - 1 were changed to be clean, 1 were already clean, 58 were skipped because caching determined they were already clean
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ atlas-api ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] Copying 14 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ atlas-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 49 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ atlas-api ---
+[INFO] skip non existing resourceDirectory /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ atlas-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 11 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ atlas-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.atlas.PostgresWorkflowTest
+23:48:26.870 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.PostgresWorkflowTest]: PostgresWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+23:48:26.908 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.PostgresWorkflowTest
+23:48:26.933 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.PostgresWorkflowTest]: PostgresWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+23:48:26.934 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.PostgresWorkflowTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-14T23:48:27.061+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.PostgresWorkflowTest           : Starting PostgresWorkflowTest using Java 21.0.12.1 with PID 8622 (started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-14T23:48:27.061+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.PostgresWorkflowTest           : The following 1 profile is active: "local"
+2026-10-14T23:48:27.603+05:30  INFO 8622 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-14T23:48:27.678+05:30  INFO 8622 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6a543e09
+2026-10-14T23:48:27.678+05:30  INFO 8622 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-14T23:48:27.691+05:30  INFO 8622 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_test (PostgreSQL 18.6)
+2026-10-14T23:48:27.723+05:30  INFO 8622 --- [atlas-api] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 15 migrations (execution time 00:00.017s)
+2026-10-14T23:48:27.747+05:30  INFO 8622 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_test": 14
+2026-10-14T23:48:27.748+05:30  INFO 8622 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Schema "atlas_test" is up to date. No migration necessary.
+2026-10-14T23:48:28.139+05:30  INFO 8622 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-14T23:48:28.432+05:30  INFO 8622 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-14T23:48:28.454+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.PostgresWorkflowTest           : Started PostgresWorkflowTest in 1.5 seconds (process running for 1.933)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/private/tmp/atlas-m2/net/bytebuddy/byte-buddy-agent/1.17.8/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.395 s -- in com.atlas.PostgresWorkflowTest
+[INFO] Running com.atlas.OrganisationWorkflowTest
+2026-10-14T23:48:29.219+05:30  INFO 8622 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.OrganisationWorkflowTest]: OrganisationWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-14T23:48:29.220+05:30  INFO 8622 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.OrganisationWorkflowTest
+2026-10-14T23:48:29.220+05:30  INFO 8622 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.OrganisationWorkflowTest]: OrganisationWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-14T23:48:29.220+05:30  INFO 8622 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.OrganisationWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.040 s -- in com.atlas.OrganisationWorkflowTest
+[INFO] Running com.atlas.PositionWorkflowTest
+2026-10-14T23:48:29.259+05:30  INFO 8622 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.PositionWorkflowTest]: PositionWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-14T23:48:29.259+05:30  INFO 8622 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.PositionWorkflowTest
+2026-10-14T23:48:29.260+05:30  INFO 8622 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.PositionWorkflowTest]: PositionWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-14T23:48:29.260+05:30  INFO 8622 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.PositionWorkflowTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.050 s -- in com.atlas.PositionWorkflowTest
+[INFO] Running com.atlas.HiringWorkflowTest
+2026-10-14T23:48:29.309+05:30  INFO 8622 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.HiringWorkflowTest]: HiringWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-14T23:48:29.310+05:30  INFO 8622 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.HiringWorkflowTest
+2026-10-14T23:48:29.310+05:30  INFO 8622 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.HiringWorkflowTest]: HiringWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-14T23:48:29.310+05:30  INFO 8622 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.HiringWorkflowTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.046 s -- in com.atlas.HiringWorkflowTest
+[INFO] Running com.atlas.OnboardingWorkflowTest
+2026-10-14T23:48:29.356+05:30  INFO 8622 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.OnboardingWorkflowTest]: OnboardingWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-14T23:48:29.357+05:30  INFO 8622 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.OnboardingWorkflowTest
+2026-10-14T23:48:29.357+05:30  INFO 8622 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.OnboardingWorkflowTest]: OnboardingWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-14T23:48:29.357+05:30  INFO 8622 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.OnboardingWorkflowTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.044 s -- in com.atlas.OnboardingWorkflowTest
+[INFO] Running com.atlas.ArchitectureTest
+2026-10-14T23:48:29.420+05:30  INFO 8622 --- [atlas-api] [           main] com.tngtech.archunit.core.PluginLoader   : Detected Java version 21.0.12.1
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.541 s -- in com.atlas.ArchitectureTest
+[INFO] Running com.atlas.PositionAssignmentWorkflowTest
+2026-10-14T23:48:29.942+05:30  INFO 8622 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.PositionAssignmentWorkflowTest]: PositionAssignmentWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-14T23:48:29.943+05:30  INFO 8622 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.PositionAssignmentWorkflowTest
+2026-10-14T23:48:29.943+05:30  INFO 8622 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.PositionAssignmentWorkflowTest]: PositionAssignmentWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-14T23:48:29.943+05:30  INFO 8622 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.PositionAssignmentWorkflowTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.158 s -- in com.atlas.PositionAssignmentWorkflowTest
+[INFO] Running com.atlas.DomainTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.atlas.DomainTest
+[INFO] Running com.atlas.RequestGuardTest
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=e099c690-6879-4e33-a17e-bde2a0277479 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=f902ae9a-5f23-4441-b5cf-249abe8aea7c status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=85b9749f-30e7-4d39-aaa2-532a41b9ac98 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=1049dc79-8619-4738-9228-c72ccd4983c4 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=56226e21-8c45-4c28-80b9-5dea7f21df40 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=2c4254d5-c079-42ce-a43b-b23d0deaefc5 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=6fa4459d-e90d-4503-90d4-d9d682f7c118 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=54a14ebf-4cc7-4ab6-8cc1-fd924b6d7dcf status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=8999d022-543c-4555-9711-62203b254eac status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=a8ec9c29-f9d1-4535-8507-9a097e1ddb02 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=ce88fab9-5afa-42ed-86cf-32853c527e89 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=20afbcd3-571c-4969-a74d-3f8c834f8401 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=5c335369-1b67-4500-9206-ced108987fc6 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=d9a09819-79ce-4705-b978-90c17b4ba8b4 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=898f074e-bdb3-473c-8ea6-bfebf3c3d0af status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=96839304-2adc-4163-9823-d4a1337efc32 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=2abefd26-9121-4b40-a814-cb6671470748 status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=0a87d924-0d32-41ab-b2b7-8769750ba5ae status=204 duration_ms=0
+2026-10-14T23:48:30.108+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=b83cb1cb-960e-41b2-99f9-6371fd87d71c status=204 duration_ms=0
+2026-10-14T23:48:30.109+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=15e6a5a3-79f8-4314-a309-11e98cbf98d5 status=204 duration_ms=0
+2026-10-14T23:48:30.109+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=6d3bcc00-9e1d-4083-98e4-c8dd4e4bffcd status=204 duration_ms=0
+2026-10-14T23:48:30.109+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=d40be89c-b220-4d1a-9295-b03c6eef2e17 status=204 duration_ms=0
+2026-10-14T23:48:30.109+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=64137ab0-c451-4e54-aaee-f24bda599fe8 status=204 duration_ms=0
+2026-10-14T23:48:30.109+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=630b9032-2fa3-45fa-9dbc-57219e4cf097 status=204 duration_ms=0
+2026-10-14T23:48:30.109+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=8dfae992-3bf2-449c-99f7-32dc24183ddd status=204 duration_ms=0
+2026-10-14T23:48:30.109+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=232cfb9f-3500-4ee2-b04e-5f08313b8b3c status=204 duration_ms=0
+2026-10-14T23:48:30.109+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=53aed7da-7ce8-4c95-bc73-72f19841c581 status=204 duration_ms=0
+2026-10-14T23:48:30.109+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=f0436047-86cb-410f-bf78-d81c90837fa7 status=204 duration_ms=0
+2026-10-14T23:48:30.109+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=b4a52645-e85b-42e9-9e1b-c3fee5bd0b83 status=204 duration_ms=0
+2026-10-14T23:48:30.109+05:30  INFO 8622 --- [atlas-api] [           main] com.atlas.configuration.RequestGuard     : request_completed correlation=35e946a4-9a1a-4afa-b032-50b7396591a8 status=204 duration_ms=0
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in com.atlas.RequestGuardTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 51, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  8.281 s
+[INFO] Finished at: 2026-10-14T23:48:30+05:30
+[INFO] ------------------------------------------------------------------------

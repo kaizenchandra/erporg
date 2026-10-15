@@ -3,7 +3,8 @@ package com.atlas.modules.corehr.application.model;
 public record RequestQuery(String status, int page, int size) {
   public RequestQuery {
     if (status == null
-        || !java.util.Set.of("ALL", "SUBMITTED", "APPROVED", "REJECTED").contains(status)
+        || !java.util.Set.of("ALL", "SUBMITTED", "APPROVED", "REJECTED", "WITHDRAWN")
+            .contains(status)
         || page < 0
         || page > 100000
         || size < 1

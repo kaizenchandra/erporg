@@ -32,7 +32,9 @@ export function Badge({ status }: { status: string }) {
           ? "Approved"
           : status === "REJECTED"
             ? "Rejected"
-            : status}
+            : status === "WITHDRAWN"
+              ? "Withdrawn"
+              : status}
     </span>
   );
 }

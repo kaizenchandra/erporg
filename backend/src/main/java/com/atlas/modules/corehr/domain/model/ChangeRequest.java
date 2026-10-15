@@ -27,9 +27,12 @@ public record ChangeRequest(
   public static final Set<String> FIELDS =
       Set.of(
           "phone",
+          "name",
           "title",
           "department",
           "location",
+          "positionCode",
+          "managerId",
           "address",
           "emergencyContactName",
           "emergencyContactRelationship",
@@ -38,29 +41,58 @@ public record ChangeRequest(
   public static void validate(
       String field, String value, String reason, LocalDate date, LocalDate today) {
     var errors = new java.util.LinkedHashMap<String, String>();
-    if (field == null || !FIELDS.contains(field)) errors.put("field", "Choose a supported field.");
-    if (value == null || value.isBlank() || value.length() > 120)
-      errors.put("newValue", "New value must contain 1–120 characters.");
-    else if (("phone".equals(field) || "emergencyContactPhone".equals(field))
-        && !value.matches("[+0-9 ()-]{7,30}"))
-      errors.put("newValue", "Enter a valid phone number (7–30 characters).");
-    if (reason == null || reason.isBlank() || reason.length() > 500)
-      errors.put("reason", "A reason of 1–500 characters is required.");
-    if (date == null || date.isBefore(today) || date.isAfter(today.plusYears(1)))
-      errors.put("effectiveDate", "Effective date must be today or within the next year.");
+    try {
+      validateShape(field, value, reason, date);
+    } catch (Validation e) {
+      errors.putAll(e.fields());
+    }
+    if (date != null)
+      try {
+        validateDate(date, today);
+      } catch (Validation e) {
+        errors.putAll(e.fields());
+      }
     if (!errors.isEmpty()) throw new Validation(errors);
   }
 
-  public static class Validation extends IllegalArgumentException {
-    private final java.util.Map<String, String> fields;
+  public static void validateShape(String field, String value, String reason, LocalDate date) {
+    var errors = new java.util.LinkedHashMap<String, String>();
+    if (field == null || !FIELDS.contains(field)) errors.put("field", "Choose a supported field.");
+    boolean removal =
+        field != null
+            && (PRIVATE_FIELDS.contains(field) || field.equals("positionCode"))
+            && "".equals(value);
+    if (value == null || (!removal && value.isBlank()) || value.length() > 120)
+      errors.put("newValue", "New value must contain 1–120 characters.");
+    else if (!removal
+        && ("phone".equals(field) || "emergencyContactPhone".equals(field))
+        && !value.matches("[+0-9 ()-]{7,30}"))
+      errors.put("newValue", "Enter a valid phone number (7–30 characters).");
+    if ("name".equals(field)
+        && value != null
+        && value.codePoints().anyMatch(Character::isISOControl))
+      errors.put("newValue", "Display names cannot contain control characters.");
+    if (reason == null || reason.isBlank() || reason.length() > 500)
+      errors.put("reason", "A reason of 1–500 characters is required.");
+    if (date == null) errors.put("effectiveDate", "Effective date is required.");
+    if (!errors.isEmpty()) throw new Validation(errors);
+  }
 
+  public static void validateDate(LocalDate date, LocalDate today) {
+    if (date.isBefore(today) || date.isAfter(today.plusYears(1)))
+      throw new Validation(
+          java.util.Map.of(
+              "effectiveDate", "Effective date must be today or within the next year."));
+  }
+
+  public void ensureWithdrawable(Actor actor) {
+    if (!requestedBy.equals(actor.subject())) throw new Denied();
+    if (!status.equals("SUBMITTED")) throw new Conflict("Only a pending request can be withdrawn.");
+  }
+
+  public static class Validation extends com.atlas.shared.domain.InputValidation {
     public Validation(java.util.Map<String, String> fields) {
-      super("Review the highlighted fields.");
-      this.fields = java.util.Collections.unmodifiableMap(new java.util.LinkedHashMap<>(fields));
-    }
-
-    public java.util.Map<String, String> fields() {
-      return fields;
+      super(fields);
     }
   }
 
@@ -78,15 +110,15 @@ public record ChangeRequest(
       throw new Conflict("The employee changed. Reject this request and submit a fresh change.");
   }
 
-  public static class Conflict extends RuntimeException {
+  public static class Conflict extends com.atlas.shared.domain.CommandConflict {
     public Conflict(String message) {
       super(message);
     }
   }
 
-  public static class Denied extends RuntimeException {
+  public static class Denied extends com.atlas.shared.domain.AccessDenied {
     public Denied() {
-      super("You do not have permission for this action.");
+      super();
     }
   }
 }

@@ -11,8 +11,28 @@ public final class Commands {
       String newValue,
       LocalDate effectiveDate,
       String reason,
-      long version,
-      String idempotencyKey) {}
+      Long version,
+      String idempotencyKey) {
+    public Submit(
+        String employeeId,
+        String field,
+        String newValue,
+        LocalDate effectiveDate,
+        String reason,
+        long version,
+        String idempotencyKey) {
+      this(
+          employeeId,
+          field,
+          newValue,
+          effectiveDate,
+          reason,
+          Long.valueOf(version),
+          idempotencyKey);
+    }
+  }
+
+  public record Withdraw(String reason, String idempotencyKey) {}
 
   public record Decide(String decision, String comment) {}
 }

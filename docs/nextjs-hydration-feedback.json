@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 5,
+  "triggerReason": "unexpected-behavior",
+  "title": "Development page stayed at initial loading state until server restart",
+  "setup": {
+    "mode": "development",
+    "bundler": "unknown",
+    "relevantFeatures": [
+      "Client components",
+      "Development WebSocket"
+    ]
+  },
+  "steps": [
+    "Open a client-component page on an existing App Router development server.",
+    "Reload in fresh browser contexts and inspect static script responses, hydration and browser requests.",
+    "Restart the development server without changing frontend source and reload."
+  ],
+  "observed": [
+    "One UI test remained at the initial loading state and timed out after 120 seconds.",
+    "Fresh loads received static scripts with HTTP 200 but made no session API requests.",
+    "The development WebSocket handshake failed with an invalid HTTP response."
+  ],
+  "expected": "Client components should initialise and issue their requests after static scripts load, or show an actionable error.",
+  "comparison": "Restarting the development server restored client startup; browser workflows also passed with a local production build.",
+  "frequency": "reproduced",
+  "outcome": "worked-around",
+  "nextVersion": "16.4.0",
+  "agent": "Codex"
+}

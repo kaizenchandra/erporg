@@ -6,6 +6,11 @@ import com.atlas.modules.corehr.domain.model.*;
 import java.util.List;
 
 public interface HiringUseCases {
+  OnboardingCompletion completeOnboarding(
+      Actor actor, String hireId, CompleteOnboarding command, String correlation);
+
+  List<OnboardingCompletion> employmentHistory(Actor actor, String employeeId);
+
   HirePage hires(Actor actor, RequestQuery query);
 
   HireRequest submit(Actor actor, SubmitHire command, String correlation);

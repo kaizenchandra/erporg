@@ -8,6 +8,7 @@ import {
   formatDate,
 } from "@/components/ui/primitives";
 import { changeFieldLabels } from "./field-labels";
+import { WithdrawRequest } from "./withdraw-request";
 import { Icon } from "@/components/ui/icon";
 import { api } from "@/lib/api";
 import type { Actor, ChangeRequest, PeopleSummary } from "@/lib/contracts";
@@ -20,7 +21,7 @@ export function Approvals({
   revision: PeopleSummary;
   pending: number;
   actor: Actor;
-  onSaved: () => void;
+  onSaved: (message?: string) => void;
 }) {
   const [filter, setFilter] = useState("SUBMITTED"),
     [active, setActive] = useState<ChangeRequest | null>(null),
@@ -28,6 +29,7 @@ export function Approvals({
     [comment, setComment] = useState(""),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
+  const [withdrawing, setWithdrawing] = useState<ChangeRequest | null>(null);
   const [page, setPage] = useState(0);
   const [retry, setRetry] = useState(0);
   const [result, setResult] = useState<{
@@ -89,6 +91,15 @@ export function Approvals({
         >
           All requests
         </button>
+        <button
+          className={filter === "WITHDRAWN" ? "active" : ""}
+          onClick={() => {
+            setFilter("WITHDRAWN");
+            setPage(0);
+          }}
+        >
+          Withdrawn
+        </button>
       </div>
       <section className="inbox-list" aria-busy={loading}>
         {loading && <p role="status">Loading requests…</p>}
@@ -109,9 +120,17 @@ export function Approvals({
                 </div>
                 <h3>{changeFieldLabels[r.field] ?? r.field} change</h3>
                 <p>
-                  {r.oldValue}
+                  {r.oldValue ||
+                    (r.field === "positionCode"
+                      ? "Unassigned"
+                      : "Not provided")}
                   <Icon name="arrow" size={14} />
-                  <b>{r.newValue}</b>
+                  <b>
+                    {r.newValue ||
+                      (r.field === "positionCode"
+                        ? "Unassign position"
+                        : "Remove value")}
+                  </b>
                 </p>
                 <small>
                   Effective {formatDate(r.effectiveDate)} · Requested by{" "}
@@ -133,6 +152,14 @@ export function Approvals({
                 View request
                 <Icon name="chevron" size={15} />
               </button>
+              {r.status === "SUBMITTED" && r.requestedBy === actor.subject && (
+                <button
+                  className="button secondary"
+                  onClick={() => setWithdrawing(r)}
+                >
+                  Withdraw request
+                </button>
+              )}
             </article>
           ))
         ) : !loading && !current?.error ? (
@@ -162,6 +189,19 @@ export function Approvals({
           </div>
         </footer>
       </section>
+      {withdrawing && (
+        <WithdrawRequest
+          request={withdrawing}
+          onClose={() => setWithdrawing(null)}
+          onSaved={() => {
+            setWithdrawing(null);
+            setFilter("WITHDRAWN");
+            setPage(0);
+            setRetry((n) => n + 1);
+            onSaved("Request withdrawn. No employee change was applied.");
+          }}
+        />
+      )}
       {active && (
         <Modal
           title="Review employee change"
@@ -204,12 +244,22 @@ export function Approvals({
             <div className="change-comparison">
               <div>
                 <span>Current</span>
-                <strong>{active.oldValue}</strong>
+                <strong>
+                  {active.oldValue ||
+                    (active.field === "positionCode"
+                      ? "Unassigned"
+                      : "Not provided")}
+                </strong>
               </div>
               <Icon name="arrow" />
               <div>
                 <span>Proposed</span>
-                <strong>{active.newValue}</strong>
+                <strong>
+                  {active.newValue ||
+                    (active.field === "positionCode"
+                      ? "Unassign position"
+                      : "Remove value")}
+                </strong>
               </div>
             </div>
             <dl className="review-details">
@@ -227,6 +277,8 @@ export function Approvals({
               </div>
             </dl>
             {active.status === "SUBMITTED" &&
+            (!["name", "managerId"].includes(active.field) ||
+              actor.role === "HR") &&
             active.requestedBy !== actor.subject &&
             active.employeeId !== actor.employeeId &&
             actor.role !== "EMPLOYEE" ? (
@@ -262,7 +314,7 @@ export function Approvals({
                   <Icon name="shield" />
                   <p>
                     {decision === "APPROVED"
-                      ? "This updates one employee on the effective date and records your approval in the audit history."
+                      ? "This updates one employee on the effective date and records your approval in the audit history. Reporting-manager changes also change team access."
                       : "The employee record will stay unchanged. The requester will be notified."}
                   </p>
                 </div>

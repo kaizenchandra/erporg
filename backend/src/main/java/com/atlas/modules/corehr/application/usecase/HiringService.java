@@ -28,6 +28,82 @@ public final class HiringService implements HiringUseCases {
     this.clock = clock;
   }
 
+  public OnboardingCompletion completeOnboarding(
+      Actor actor, String id, CompleteOnboarding c, String correlation) {
+    requireHr(actor);
+    if (c.reason() == null || c.reason().isBlank() || c.reason().length() > 500)
+      throw new ChangeRequest.Validation(
+          Map.of("reason", "An onboarding completion reason of 1–500 characters is required."));
+    if (c.version() == null
+        || c.version() < 0
+        || c.idempotencyKey() == null
+        || !c.idempotencyKey().matches("[a-zA-Z0-9-]{8,80}"))
+      throw new IllegalArgumentException(
+          "A current employee version and valid idempotency key are required.");
+    return tx.run(
+        () -> {
+          var hire = store.hire(actor.tenant(), id, true);
+          var replay = store.completionReplay(actor.tenant(), actor.subject(), c.idempotencyKey());
+          if (replay.isPresent()) {
+            var previous = replay.get();
+            if (!previous.hireId().equals(id)
+                || previous.inputVersion() != c.version()
+                || !previous.reason().equals(c.reason().trim()))
+              throw new ChangeRequest.Conflict(
+                  "Idempotency key was used for a different completion.");
+            return previous;
+          }
+          if (!hire.status().equals("APPROVED") || hire.employeeId() == null)
+            throw new ChangeRequest.Conflict("Approve the hire before completing onboarding.");
+          if (store.completion(actor.tenant(), id).isPresent())
+            throw new ChangeRequest.Conflict(
+                "Onboarding was already completed. Refresh the employee profile.");
+          var employee = people.employee(actor, hire.employeeId(), LocalDate.now(clock), true);
+          if (employee.version() != c.version())
+            throw new ChangeRequest.Conflict(
+                "The employee changed. Refresh the profile before completing onboarding.");
+          var active = employee.completeOnboarding(LocalDate.now(clock));
+          var completion =
+              new OnboardingCompletion(
+                  id,
+                  employee.id(),
+                  actor.subject(),
+                  c.reason().trim(),
+                  c.version(),
+                  active.version(),
+                  employee.status(),
+                  active.status(),
+                  LocalDate.now(clock),
+                  clock.instant(),
+                  correlation);
+          store.completeOnboarding(actor.tenant(), completion, active, c.idempotencyKey());
+          return completion;
+        });
+  }
+
+  public List<OnboardingCompletion> employmentHistory(Actor actor, String employeeId) {
+    var employee = people.employee(actor, employeeId, LocalDate.now(clock), false);
+    if (!actor.canRead(employee)) throw new ChangeRequest.Denied();
+    return store.employmentHistory(actor.tenant(), employeeId).stream()
+        .map(
+            c ->
+                actor.canReadField(employee, "address")
+                    ? c
+                    : new OnboardingCompletion(
+                        c.hireId(),
+                        c.employeeId(),
+                        c.actor(),
+                        null,
+                        c.inputVersion(),
+                        c.newVersion(),
+                        c.oldStatus(),
+                        c.newStatus(),
+                        c.effectiveDate(),
+                        c.recordedAt(),
+                        c.correlationId()))
+        .toList();
+  }
+
   private void requireHr(Actor actor) {
     if (!actor.hr()) throw new ChangeRequest.Denied();
   }
@@ -117,6 +193,7 @@ public final class HiringService implements HiringUseCases {
           Map.of("comment", "A decision comment of 1–500 characters is required."));
     return tx.run(
         () -> {
+          people.lockReportingGraph(actor.tenant());
           var request = store.hire(actor.tenant(), id, true);
           request.ensureDecision(actor, c.decision());
           Employee employee = null;

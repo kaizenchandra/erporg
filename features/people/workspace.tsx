@@ -13,6 +13,8 @@ import { nav, type View } from "./navigation";
 import { Sidebar } from "./sidebar";
 import { Login } from "./login";
 import { PeopleStats } from "./people-stats";
+import { DocumentsWorkspace } from "@/features/documents/workspace";
+import { BenefitsCatalogue } from "@/features/benefits/catalogue";
 import { Hiring } from "./hiring";
 import { Organisation } from "./organisation";
 export function Workspace() {
@@ -281,6 +283,18 @@ export function Workspace() {
                         Hiring
                       </button>
                     )}
+                    <button
+                      className={tab === "benefits" ? "active" : ""}
+                      onClick={() => setTab("benefits")}
+                    >
+                      Benefits
+                    </button>
+                    <button
+                      className={tab === "documents" ? "active" : ""}
+                      onClick={() => setTab("documents")}
+                    >
+                      Documents
+                    </button>
                     <span className="tabs-note">
                       <span className="connection-dot" />
                       All changes saved securely
@@ -293,6 +307,10 @@ export function Workspace() {
                       search={search}
                       setSearch={setSearch}
                     />
+                  ) : tab === "documents" ? (
+                    <DocumentsWorkspace actor={actor} />
+                  ) : tab === "benefits" ? (
+                    <BenefitsCatalogue actor={actor} />
                   ) : tab === "hiring" && actor.role === "HR" ? (
                     <Hiring
                       actor={actor}
@@ -300,12 +318,7 @@ export function Workspace() {
                       onOpen={setProfile}
                     />
                   ) : (
-                    <Organisation
-                      actor={actor}
-                      employees={employees}
-                      total={summary.total}
-                      onOpen={setProfile}
-                    />
+                    <Organisation actor={actor} onOpen={setProfile} />
                   )}
                   <div className="bottom-note">
                     <span>
@@ -321,9 +334,10 @@ export function Workspace() {
                   revision={summary}
                   pending={pending}
                   actor={actor}
-                  onSaved={() => {
+                  onSaved={(message) => {
                     setNotice(
-                      "Decision recorded. The requester has been notified.",
+                      message ??
+                        "Decision recorded. The requester has been notified.",
                     );
                     refresh();
                   }}

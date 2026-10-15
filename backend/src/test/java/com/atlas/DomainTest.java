@@ -24,6 +24,7 @@ class DomainTest {
           "Active",
           "E2",
           day,
+          "",
           2);
   final Actor self = new Actor("employee", "t", "E3", "Employee", "EMPLOYEE");
   final Actor manager = new Actor("manager", "t", "E2", "Manager", "MANAGER");
@@ -99,6 +100,97 @@ class DomainTest {
         java.util.Set.of("newValue", "reason", "effectiveDate"), invalid.fields().keySet());
     assertFalse(invalid.fields().toString().contains("private-invalid-value"));
     assertThrows(UnsupportedOperationException.class, () -> invalid.fields().put("extra", "bad"));
+  }
+
+  @Test
+  void removalOnlyAllowsExplicitEmptyOptionalPrivateFields() {
+    for (String field : ChangeRequest.PRIVATE_FIELDS) {
+      assertDoesNotThrow(
+          () -> ChangeRequest.validate(field, "", "Remove obsolete value", day, day));
+      assertThrows(
+          ChangeRequest.Validation.class,
+          () -> ChangeRequest.validate(field, null, "Reason", day, day));
+      assertThrows(
+          ChangeRequest.Validation.class,
+          () -> ChangeRequest.validate(field, "   ", "Reason", day, day));
+    }
+    for (String field : java.util.Set.of("phone", "title", "department", "location"))
+      assertThrows(
+          ChangeRequest.Validation.class,
+          () -> ChangeRequest.validate(field, "", "Reason", day, day));
+  }
+
+  @Test
+  void positionRejectsInvalidFieldsWithoutEchoingInput() {
+    var invalid =
+        assertThrows(
+            ChangeRequest.Validation.class, () -> new Position("lowercase", " ", null, null));
+    assertEquals(
+        java.util.Set.of("code", "title", "departmentCode", "effectiveFrom"),
+        invalid.fields().keySet());
+    assertFalse(invalid.fields().toString().contains("lowercase"));
+    assertEquals("Analyst", new Position("ROLE-1", " Analyst ", "DEPT", day).title());
+  }
+
+  @Test
+  void positionAssignmentChecksDepartmentAndEmploymentDates() {
+    var department = new Department("DEPT", "Engineering", null, "CC-TEST", day);
+    var position = new Position("ROLE", "Engineer", "DEPT", day);
+    assertDoesNotThrow(() -> position.ensureAssignment(department, "Engineering", day));
+    assertThrows(
+        ChangeRequest.Validation.class,
+        () -> position.ensureAssignment(department, "Finance", day));
+    assertThrows(
+        ChangeRequest.Validation.class,
+        () -> position.ensureAssignment(department, "Engineering", day.minusDays(1)));
+    assertThrows(
+        ChangeRequest.Validation.class,
+        () -> employee.ensurePositionEffectiveDate(day.minusDays(1)));
+    assertDoesNotThrow(
+        () -> ChangeRequest.validate("positionCode", "", "Unassign position", day, day));
+    assertFalse(self.canChange(employee, "positionCode"));
+    assertTrue(manager.canChange(employee, "positionCode"));
+  }
+
+  @Test
+  void reportingHierarchyRejectsCyclesAndDateBoundaries() {
+    var links =
+        java.util.List.of(
+            new ReportingLink("A", null, day),
+            new ReportingLink("B", "A", day),
+            new ReportingLink("C", "B", day));
+    assertDoesNotThrow(
+        () ->
+            com.atlas.modules.corehr.domain.service.ReportingHierarchy.validate(
+                links, "C", "A", day));
+    assertThrows(
+        ChangeRequest.Validation.class,
+        () ->
+            com.atlas.modules.corehr.domain.service.ReportingHierarchy.validate(
+                links, "A", "C", day));
+    assertThrows(
+        ChangeRequest.Validation.class,
+        () ->
+            com.atlas.modules.corehr.domain.service.ReportingHierarchy.validate(
+                links, "B", "B", day));
+    assertThrows(
+        ChangeRequest.Validation.class,
+        () ->
+            com.atlas.modules.corehr.domain.service.ReportingHierarchy.validate(
+                links, "C", "A", day.minusDays(1)));
+  }
+
+  @Test
+  void displayNamesAreUnicodeAndEmployeeOwnedButNotBlankOrControlText() {
+    assertDoesNotThrow(() -> ChangeRequest.validate("name", "Zoë 李", "Display name", day, day));
+    assertThrows(
+        ChangeRequest.Validation.class,
+        () -> ChangeRequest.validate("name", " ", "Reason", day, day));
+    assertThrows(
+        ChangeRequest.Validation.class,
+        () -> ChangeRequest.validate("name", "New\nName", "Reason", day, day));
+    assertTrue(self.canChange(employee, "name"));
+    assertFalse(manager.canChange(employee, "name"));
   }
 
   @Test

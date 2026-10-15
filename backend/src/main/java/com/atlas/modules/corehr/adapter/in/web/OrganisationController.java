@@ -18,6 +18,32 @@ public final class OrganisationController {
     this.people = people;
   }
 
+  @GetMapping("/positions")
+  PositionPage positions(
+      Principal principal,
+      @RequestParam(defaultValue = "") String search,
+      @RequestParam(defaultValue = "") String departmentCode,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "8") int size,
+      @RequestParam(defaultValue = "asc") String direction) {
+    return organisation.positions(
+        people.actor(principal.getName()),
+        new PositionQuery(search, departmentCode, page, size, direction));
+  }
+
+  @PostMapping("/positions")
+  com.atlas.modules.corehr.domain.model.Position createPosition(
+      Principal principal,
+      @RequestBody CreatePosition command,
+      @RequestAttribute("correlationId") String correlation) {
+    return organisation.createPosition(people.actor(principal.getName()), command, correlation);
+  }
+
+  @GetMapping("/positions/history")
+  List<PositionAudit> positionHistory(Principal principal) {
+    return organisation.positionHistory(people.actor(principal.getName()));
+  }
+
   @GetMapping("/departments")
   List<Department> departments(Principal principal) {
     return organisation.departments(people.actor(principal.getName()));

@@ -17,7 +17,42 @@ public record Employee(
     String status,
     String managerId,
     LocalDate startDate,
+    String positionCode,
     long version) {
+  public void ensurePositionEffectiveDate(LocalDate date) {
+    if (date.isBefore(startDate))
+      throw new ChangeRequest.Validation(
+          java.util.Map.of(
+              "effectiveDate", "A position assignment cannot precede employment start."));
+  }
+
+  public Employee completeOnboarding(LocalDate today) {
+    if (!status.equals("Onboarding"))
+      throw new ChangeRequest.Conflict("Only an onboarding employee can complete this transition.");
+    if (today.isBefore(startDate))
+      throw new ChangeRequest.Conflict(
+          "The employment start date has not been reached. Complete onboarding on or after "
+              + startDate
+              + ".");
+    return new Employee(
+        id,
+        name,
+        email,
+        phone,
+        address,
+        emergencyContactName,
+        emergencyContactRelationship,
+        emergencyContactPhone,
+        title,
+        department,
+        location,
+        "Active",
+        managerId,
+        startDate,
+        positionCode,
+        version + 1);
+  }
+
   public static Employee forHire(String id, HireDetails details) {
     return new Employee(
         id,
@@ -34,6 +69,7 @@ public record Employee(
         "Onboarding",
         details.managerId(),
         details.startDate(),
+        "",
         0);
   }
 }

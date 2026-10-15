@@ -16,6 +16,72 @@ public final class JdbcHiringStore implements HiringStore {
     this.db = db;
   }
 
+  private static final String COMPLETION =
+      "select hire_id,employee_id,actor,reason,input_version,new_version,old_status,new_status,effective_date,recorded_at,correlation_id from hr_onboarding_completion where tenant=:tenant";
+
+  public Optional<OnboardingCompletion> completionReplay(String tenant, String actor, String key) {
+    return db.sql(COMPLETION + " and actor=:actor and idempotency_key=:key")
+        .param("tenant", tenant)
+        .param("actor", actor)
+        .param("key", key)
+        .query(OnboardingCompletion.class)
+        .optional();
+  }
+
+  public Optional<OnboardingCompletion> completion(String tenant, String hireId) {
+    return db.sql(COMPLETION + " and hire_id=:id")
+        .param("tenant", tenant)
+        .param("id", hireId)
+        .query(OnboardingCompletion.class)
+        .optional();
+  }
+
+  public List<OnboardingCompletion> employmentHistory(String tenant, String employeeId) {
+    return db.sql(COMPLETION + " and employee_id=:id order by recorded_at desc limit 100")
+        .param("tenant", tenant)
+        .param("id", employeeId)
+        .query(OnboardingCompletion.class)
+        .list();
+  }
+
+  public void completeOnboarding(String tenant, OnboardingCompletion c, Employee e, String key) {
+    int changed =
+        db.sql(
+                "update hr_employee set status=:status,version=:version where tenant=:tenant and id=:id and version=:old")
+            .param("status", e.status())
+            .param("version", e.version())
+            .param("tenant", tenant)
+            .param("id", e.id())
+            .param("old", c.inputVersion())
+            .update();
+    if (changed != 1)
+      throw new ChangeRequest.Conflict("Employee version changed during completion.");
+    db.sql(
+            "insert into hr_onboarding_completion(tenant,hire_id,employee_id,actor,reason,input_version,new_version,old_status,new_status,effective_date,recorded_at,correlation_id,idempotency_key) values(:tenant,:hire,:employee,:actor,:reason,:input,:version,:old,:new,:date,:now,:correlation,:key)")
+        .param("tenant", tenant)
+        .param("hire", c.hireId())
+        .param("employee", e.id())
+        .param("actor", c.actor())
+        .param("reason", c.reason())
+        .param("input", c.inputVersion())
+        .param("version", c.newVersion())
+        .param("old", c.oldStatus())
+        .param("new", c.newStatus())
+        .param("date", c.effectiveDate())
+        .param("now", c.recordedAt().atOffset(ZoneOffset.UTC))
+        .param("correlation", c.correlationId())
+        .param("key", key)
+        .update();
+    db.sql(
+            "insert into hr_employee_event(tenant,event_type,employee_id,effective_date,recorded_at,correlation_id,delivery_status) values(:tenant,'ONBOARDING_COMPLETED',:employee,:date,:now,:correlation,'PENDING')")
+        .param("tenant", tenant)
+        .param("employee", e.id())
+        .param("date", c.effectiveDate())
+        .param("now", c.recordedAt().atOffset(ZoneOffset.UTC))
+        .param("correlation", c.correlationId())
+        .update();
+  }
+
   public HirePage hires(String tenant, RequestQuery q) {
     var params = Map.<String, Object>of("tenant", tenant, "status", q.status());
     String scoped = SELECT + " and (:status='ALL' or status=:status)";

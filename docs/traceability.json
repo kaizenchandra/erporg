@@ -23,16 +23,21 @@
     "frontend": "partial: Phase 1 scope implemented",
     "backend": "partial: Phase 1 scope implemented",
     "verification": "verified subset; remaining criteria open",
-    "reason": "Phase 1 directory/profile plus effective-dated employment/contact changes; Phase 2 home address and single emergency contact implemented with field permissions. Full personal identity, identifier allocation, structured addresses, multiple contacts and employment record maintenance remain open.",
+    "reason": "Directory/profile, approved contact/employment fields, hiring identifiers, positions/reporting and display-name maintenance implemented. Full legal identity, structured/multiple contacts and complete lifecycle maintenance remain open.",
     "criteria": [
       {
         "id": "HR-01-F01",
         "sourceBehaviour": "View and maintain personal information",
         "acceptance": "Given an authorised HR, employee and valid scoped records, view and maintain personal information through the people workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "partial",
-        "verification": "subset verified; full behaviour open",
+        "implementation": "partial: approved employee display-name maintenance",
+        "verification": "subset tests in checkpoint",
         "phase": 2,
-        "limitation": "Phase 1 directory/profile and effective-dated phone/title/department/location changes implemented. Full personal, emergency contact and employment record maintenance remains Phase 2; employee creation/identifier allocation is not yet implemented."
+        "limitation": "Display name only; legal identity, government identifiers, structured/multiple contacts and external identity-provider profile synchronisation remain open. Stable employee ID and email are preserved; historical names remain in authorised audit.",
+        "evidence": [
+          "DisplayNameWorkflowTest",
+          "DomainTest.displayNamesAreUnicodeAndEmployeeOwnedButNotBlankOrControlText",
+          "tests/display-name.spec.ts"
+        ]
       },
       {
         "id": "HR-01-F02",
@@ -41,15 +46,20 @@
         "implementation": "partial",
         "verification": "verified private-contact subset; full source behaviour open",
         "phase": 2,
-        "limitation": "One emergency contact; 120-character free-text address; no structured country address, multiple contacts or blank-value removal",
+        "limitation": "One emergency contact; 120-character free-text address; no structured country address or multiple contacts. Approved optional-field removal now implemented.",
         "evidence": [
           "PostgresWorkflowTest.privateContactChangesRequireHrReviewAndNeverLeakToManager",
           "PostgresWorkflowTest.privateFutureDateAndInvalidPhoneAreSafe",
           "tests/private-contact.spec.ts",
-          "tests/contracts.spec.ts"
+          "tests/contracts.spec.ts",
+          "DomainTest.removalOnlyAllowsExplicitEmptyOptionalPrivateFields",
+          "PostgresWorkflowTest.approvedPrivateRemovalRetainsHistoryAndPermissions",
+          "PostgresWorkflowTest.futureAndRejectedRemovalPreserveCurrentPrivateValue",
+          "tests/private-contact.spec.ts"
         ],
         "verifiedBehaviours": [
-          "Home address or single emergency contact fields are edited through approved changes; current as-of data shown; manager payloads redacted; HR audit retained."
+          "Home address or single emergency contact fields are edited through approved changes; current as-of data shown; manager payloads redacted; HR audit retained.",
+          "Explicit optional-field removal is independently approved, effective-dated and audited; future/rejected removal preserves current value."
         ]
       },
       {
@@ -63,11 +73,16 @@
           "PostgresWorkflowTest.privateContactChangesRequireHrReviewAndNeverLeakToManager",
           "PostgresWorkflowTest.privateFutureDateAndInvalidPhoneAreSafe",
           "tests/private-contact.spec.ts",
-          "tests/contracts.spec.ts"
+          "tests/contracts.spec.ts",
+          "DomainTest.removalOnlyAllowsExplicitEmptyOptionalPrivateFields",
+          "PostgresWorkflowTest.approvedPrivateRemovalRetainsHistoryAndPermissions",
+          "PostgresWorkflowTest.futureAndRejectedRemovalPreserveCurrentPrivateValue",
+          "tests/private-contact.spec.ts"
         ],
-        "limitation": "One emergency contact; 120-character free-text address; no structured country address, multiple contacts or blank-value removal",
+        "limitation": "One emergency contact; 120-character free-text address; no structured country address or multiple contacts. Approved optional-field removal now implemented.",
         "verifiedBehaviours": [
-          "Home address or single emergency contact fields are edited through approved changes; current as-of data shown; manager payloads redacted; HR audit retained."
+          "Home address or single emergency contact fields are edited through approved changes; current as-of data shown; manager payloads redacted; HR audit retained.",
+          "Explicit optional-field removal is independently approved, effective-dated and audited; future/rejected removal preserves current value."
         ]
       },
       {
@@ -77,7 +92,7 @@
         "implementation": "partial",
         "verification": "subset verified; full behaviour open",
         "phase": 2,
-        "limitation": "Phase 1 directory/profile and effective-dated phone/title/department/location changes implemented. Full personal, emergency contact and employment record maintenance remains Phase 2; employee creation/identifier allocation is not yet implemented."
+        "limitation": "Directory/profile, approved contact/employment field changes, hire identifier allocation and manual onboarding status implemented. Full personal identity and employment lifecycle maintenance remain open."
       },
       {
         "id": "HR-01-B01",
@@ -99,7 +114,7 @@
         "implementation": "partial",
         "verification": "subset verified; full behaviour open",
         "phase": 2,
-        "limitation": "Phase 1 directory/profile and effective-dated phone/title/department/location changes implemented. Full personal, emergency contact and employment record maintenance remains Phase 2; employee creation/identifier allocation is not yet implemented."
+        "limitation": "Directory/profile, approved contact/employment field changes, hire identifier allocation and manual onboarding status implemented. Full personal identity and employment lifecycle maintenance remain open."
       },
       {
         "id": "HR-01-B03",
@@ -190,6 +205,64 @@
       ],
       "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
       "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+    },
+    "onboardingEvidence": {
+      "phase": 2,
+      "implementation": "Manual HR confirmation: Employee domain transition, HiringUseCases, atomic JDBC status/completion/pending event, V10/V11, confirmation UI and scoped profile employment history",
+      "tests": [
+        "OnboardingWorkflowTest",
+        "tests/z-onboarding.spec.ts"
+      ],
+      "verification": "35 Java tests and 17 local browser/API/contract tests passed; OIDC skipped in this local run; logical restore and restored API passed",
+      "limits": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100."
+    },
+    "privateRemovalEvidence": {
+      "phase": 2,
+      "workflow": "Explicit optional private-field removal submitted by employee/HR and reviewed by independent HR; approved effective version clears current value, retains authorised audit",
+      "tests": [
+        "DomainTest.removalOnlyAllowsExplicitEmptyOptionalPrivateFields",
+        "PostgresWorkflowTest.approvedPrivateRemovalRetainsHistoryAndPermissions",
+        "PostgresWorkflowTest.futureAndRejectedRemovalPreserveCurrentPrivateValue",
+        "tests/private-contact.spec.ts"
+      ],
+      "verification": "38 Java tests, 18 browser/API/contract tests and six delivery checks passed; OIDC-only test skipped locally",
+      "limits": "One address/emergency-contact field per command; structured address and multiple contacts remain open. No deletion of retained audit or financial history; not SH-10 completion."
+    },
+    "positionAssignmentEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR requests primary position assignment or unassignment; independent reviewer decides through inbox; current profile and effective-dated history persist",
+      "implementation": "Employee.positionCode, domain alignment invariants, PeopleService future-boundary checks and requester employee review denial, JDBC effective versions plus FK-backed immutable assignment, V13/V14, server-search picker and profile/inbox UI",
+      "tests": [
+        "PositionAssignmentWorkflowTest",
+        "DomainTest.positionAssignmentChecksDepartmentAndEmploymentDates",
+        "tests/position-assignment.spec.ts"
+      ],
+      "verification": "51 Java tests, 22 browser/API/contract tests, six delivery checks and final synthetic 16-table restore/restored API passed; OIDC skipped locally.",
+      "limits": "One primary position, multiple incumbents permitted as provisional policy. No capacity, combined transfer/assignment, automatic title/pay/manager changes or reporting reorganisation. Same-person review resolves current server membership; immutable requester identity binding needs governance before identity reassignment is supported."
+    },
+    "reportingEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR proposes a reporting manager; independent HR approves/rejects; access scopes follow effective reporting line",
+      "implementation": "ReportingLink/ReportingHierarchy domain; bounded future-date validation and manager role policy; transaction graph lock shared with hire approvals; effective manager reads across profile/directory/summary/inbox/legacy lists; V15 immutable FK-backed assignment; paginated minimal manager picker and HR decision UI",
+      "tests": [
+        "ReportingWorkflowTest",
+        "DomainTest.reportingHierarchyRejectsCyclesAndDateBoundaries",
+        "tests/reporting.spec.ts"
+      ],
+      "verification": "58 Java tests; 24 full browser/API/contract tests (OIDC skipped); final two reporting tests rerun after label refinement; six delivery checks; 17-table synthetic restore/restored API passed.",
+      "limits": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
+    },
+    "displayNameEvidence": {
+      "phase": 2,
+      "workflow": "Employee/HR submits a display-name change; independent HR approves/rejects; effective directory/profile/request/candidate/session labels update",
+      "implementation": "name ChangeRequest field, employee-owned edit and HR-only review policy, as-of name projection across read adapters, V16 constraints, existing form/inbox/history UI",
+      "tests": [
+        "DisplayNameWorkflowTest",
+        "DomainTest.displayNamesAreUnicodeAndEmployeeOwnedButNotBlankOrControlText",
+        "tests/display-name.spec.ts"
+      ],
+      "verification": "62 Java tests, 26 full browser/API/contract tests (OIDC skipped), six delivery checks, frontend checks/build and synthetic restore/restored API passed.",
+      "limits": "Display name only; legal identity, government identifiers, structured/multiple contacts and external identity-provider profile synchronisation remain open. Stable employee ID and email are preserved; historical names remain in authorised audit."
     }
   },
   {
@@ -198,9 +271,9 @@
     "roles": "HR, manager",
     "workflow": "Organisation structure",
     "phase": 2,
-    "screen": "/ (People / Organisation view / department create dialog)",
-    "api": "/api/v1/organisation/departments, /api/v1/organisation/history",
-    "useCase": "OrganisationUseCases / OrganisationService",
+    "screen": "/ (People / Organisation view / department reference / position catalogue)",
+    "api": "/api/v1/organisation/departments, /api/v1/organisation/history, /api/v1/organisation/positions, /api/v1/organisation/positions/history, /api/v1/requests (positionCode), /api/v1/requests/{id}/decision, /api/v1/employees/{id}/history, /api/v1/reporting/managers, /api/v1/requests (managerId)",
+    "useCase": "OrganisationUseCases / OrganisationService and PeopleUseCases / PeopleService",
     "domainModel": "Department, Position, ReportingLine",
     "acceptanceTests": [
       "HR-02-F01",
@@ -213,10 +286,10 @@
       "HR-02-D01",
       "HR-02-D02"
     ],
-    "frontend": "partial: department creation/reference browse and existing scoped employee preview",
-    "backend": "partial: tenant departments/parent references/effective start and transfer validation",
+    "frontend": "partial: departments, employee reporting preview and position catalogue/create",
+    "backend": "partial: department/position references, validation, tenant scopes and atomic audit",
     "verification": "verified department subset; chart/position/hierarchy editing open",
-    "reason": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration.",
+    "reason": "Effective-dated primary positions and reporting changes implemented with approval and cycle validation. Full charts, reference editing, root/matrix/delegated reporting and bulk hierarchy reorganisation remain open.",
     "criteria": [
       {
         "id": "HR-02-F01",
@@ -243,17 +316,29 @@
         "id": "HR-02-F03",
         "sourceBehaviour": "Browse positions",
         "acceptance": "Given an authorised HR, manager and valid scoped records, browse positions through the organisation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "implemented position catalogue subset",
+        "verification": "passed scoped catalogue/create evidence; assignment and full HR-02 open",
+        "phase": 2,
+        "limitation": "No employee position assignments, hierarchy/reporting edits or position changes. Creation is effective-dated, references immutable. Choices use up to 1000 department references; latest 100 audit entries. HR-02 remains partial.",
+        "evidence": [
+          "PositionWorkflowTest",
+          "DomainTest.positionRejectsInvalidFieldsWithoutEchoingInput",
+          "tests/positions.spec.ts"
+        ]
       },
       {
         "id": "HR-02-F04",
         "sourceBehaviour": "Browse reporting relationships",
         "acceptance": "Given an authorised HR, manager and valid scoped records, browse reporting relationships through the organisation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: single-manager effective reporting and cycle rules",
+        "verification": "subset tests recorded in checkpoint",
+        "phase": 2,
+        "evidence": [
+          "ReportingWorkflowTest",
+          "DomainTest.reportingHierarchyRejectsCyclesAndDateBoundaries",
+          "tests/reporting.spec.ts"
+        ],
+        "limitation": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
       },
       {
         "id": "HR-02-B01",
@@ -272,17 +357,29 @@
         "id": "HR-02-B02",
         "sourceBehaviour": "Maintain position assignments",
         "acceptance": "Given an authorised HR, manager and valid scoped records, maintain position assignments through the organisation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: primary assignment and unassignment",
+        "verification": "approved effective/date/access/version/timeline subset verified",
+        "phase": 2,
+        "limitation": "One primary position, multiple incumbents permitted as provisional policy. No capacity, combined transfer/assignment, automatic title/pay/manager changes or reporting reorganisation. Same-person review resolves current server membership; immutable requester identity binding needs governance before identity reassignment is supported.",
+        "evidence": [
+          "PositionAssignmentWorkflowTest",
+          "DomainTest.positionAssignmentChecksDepartmentAndEmploymentDates",
+          "tests/position-assignment.spec.ts"
+        ]
       },
       {
         "id": "HR-02-B03",
         "sourceBehaviour": "Validate reporting rules and cycles",
         "acceptance": "Given an authorised HR, manager and valid scoped records, validate reporting rules and cycles through the organisation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: single-manager effective reporting and cycle rules",
+        "verification": "subset tests recorded in checkpoint",
+        "phase": 2,
+        "evidence": [
+          "ReportingWorkflowTest",
+          "DomainTest.reportingHierarchyRejectsCyclesAndDateBoundaries",
+          "tests/reporting.spec.ts"
+        ],
+        "limitation": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
       },
       {
         "id": "HR-02-D01",
@@ -313,6 +410,42 @@
       ],
       "verification": "23 Java and 13 browser/API/contract tests passed; OIDC skipped locally; new tables included in restore verification",
       "limits": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration."
+    },
+    "positionEvidence": {
+      "phase": 2,
+      "workflow": "HR creates an immutable department-owned position; tenant members search/filter/sort/page current and planned position references; HR inspects configuration audit",
+      "implementation": "Position domain; OrganisationUseCases/Service; PositionQuery/Page; JDBC port; V12 migration; position catalogue/create UI; three implemented API operations",
+      "tests": [
+        "PositionWorkflowTest",
+        "DomainTest.positionRejectsInvalidFieldsWithoutEchoingInput",
+        "tests/positions.spec.ts"
+      ],
+      "verification": "44 Java tests, 20 browser/API/contract tests and six delivery checks passed; OIDC skipped in local suite. Synthetic 15-table restore and restored position APIs passed.",
+      "limits": "No employee position assignments, hierarchy/reporting edits or position changes. Creation is effective-dated, references immutable. Choices use up to 1000 department references; latest 100 audit entries. HR-02 remains partial."
+    },
+    "positionAssignmentEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR requests primary position assignment or unassignment; independent reviewer decides through inbox; current profile and effective-dated history persist",
+      "implementation": "Employee.positionCode, domain alignment invariants, PeopleService future-boundary checks and requester employee review denial, JDBC effective versions plus FK-backed immutable assignment, V13/V14, server-search picker and profile/inbox UI",
+      "tests": [
+        "PositionAssignmentWorkflowTest",
+        "DomainTest.positionAssignmentChecksDepartmentAndEmploymentDates",
+        "tests/position-assignment.spec.ts"
+      ],
+      "verification": "51 Java tests, 22 browser/API/contract tests, six delivery checks and final synthetic 16-table restore/restored API passed; OIDC skipped locally.",
+      "limits": "One primary position, multiple incumbents permitted as provisional policy. No capacity, combined transfer/assignment, automatic title/pay/manager changes or reporting reorganisation. Same-person review resolves current server membership; immutable requester identity binding needs governance before identity reassignment is supported."
+    },
+    "reportingEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR proposes a reporting manager; independent HR approves/rejects; access scopes follow effective reporting line",
+      "implementation": "ReportingLink/ReportingHierarchy domain; bounded future-date validation and manager role policy; transaction graph lock shared with hire approvals; effective manager reads across profile/directory/summary/inbox/legacy lists; V15 immutable FK-backed assignment; paginated minimal manager picker and HR decision UI",
+      "tests": [
+        "ReportingWorkflowTest",
+        "DomainTest.reportingHierarchyRejectsCyclesAndDateBoundaries",
+        "tests/reporting.spec.ts"
+      ],
+      "verification": "58 Java tests; 24 full browser/API/contract tests (OIDC skipped); final two reporting tests rerun after label refinement; six delivery checks; 17-table synthetic restore/restored API passed.",
+      "limits": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
     }
   },
   {
@@ -322,7 +455,7 @@
     "workflow": "Employee self-service",
     "phase": 1,
     "screen": "/ (People / profile / change dialog)",
-    "api": "/api/v1/employees, /api/v1/requests, /api/v1/requests/{id}/decision, /api/v1/employees/{id}/history",
+    "api": "/api/v1/employees, /api/v1/requests, /api/v1/requests/{id}/decision, /api/v1/employees/{id}/history, /api/v1/requests/{id}/withdraw",
     "useCase": "PeopleUseCases / PeopleService",
     "domainModel": "ChangeRequest",
     "acceptanceTests": [
@@ -331,7 +464,11 @@
       "HR-03-B01",
       "HR-03-B02",
       "HR-03-D01",
-      "HR-03-D02"
+      "HR-03-D02",
+      "HR-03-D03",
+      "HR-03-D04",
+      "HR-03-D05",
+      "HR-03-D06"
     ],
     "frontend": "partial: Phase 1 scope implemented",
     "backend": "partial: Phase 1 scope implemented",
@@ -411,6 +548,62 @@
           "backend/src/test/java/com/atlas/PostgresWorkflowTest.java: futureDateDoesNotApplyEarly",
           "tests/security.spec.ts: duplicate/concurrent/future date"
         ]
+      },
+      {
+        "id": "HR-03-D03",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Requester withdraws only their pending change with reason; UI confirms scope, preserves errors and shows Withdrawn; employee values/version remain unchanged.",
+        "implementation": "implemented scoped workflow",
+        "frontend": "implemented",
+        "backend": "implemented",
+        "verification": "executed evidence in withdrawalEvidence/checkpoint",
+        "evidence": [
+          "WithdrawalWorkflowTest",
+          "tests/withdrawal.spec.ts"
+        ]
+      },
+      {
+        "id": "HR-03-D04",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Concurrent review and withdrawal commit exactly one terminal outcome; immutable withdrawal/audit are replay-safe and retained in recovery.",
+        "implementation": "implemented scoped workflow",
+        "frontend": "supporting UI implemented; backend safety criterion",
+        "backend": "implemented",
+        "verification": "executed evidence in withdrawalEvidence/checkpoint",
+        "evidence": [
+          "WithdrawalWorkflowTest",
+          "tests/withdrawal.spec.ts"
+        ]
+      },
+      {
+        "id": "HR-03-D05",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Missing/null employee version is rejected as invalid command before any mutation; frontend sends explicit current version.",
+        "implementation": "implemented scoped workflow",
+        "frontend": "supporting UI implemented; backend safety criterion",
+        "backend": "implemented",
+        "verification": "executed evidence in withdrawalEvidence/checkpoint",
+        "evidence": [
+          "WithdrawalWorkflowTest",
+          "tests/withdrawal.spec.ts"
+        ]
+      },
+      {
+        "id": "HR-03-D06",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Identical command replay after effective date returns the original request without duplicate changes; new backdated commands and conflicting replay input are rejected.",
+        "implementation": "implemented scoped workflow",
+        "frontend": "supporting UI implemented; backend safety criterion",
+        "backend": "implemented",
+        "verification": "executed evidence in withdrawalEvidence/checkpoint",
+        "evidence": [
+          "WithdrawalWorkflowTest",
+          "tests/withdrawal.spec.ts"
+        ]
       }
     ],
     "phases": [
@@ -448,6 +641,48 @@
       ],
       "verification": "19 Java and 12 browser/API/contract tests passed; OIDC skipped in local run",
       "limits": "One emergency contact; 120-character free-text address; no structured country address, multiple contacts or blank-value removal"
+    },
+    "privateRemovalEvidence": {
+      "phase": 2,
+      "workflow": "Explicit optional private-field removal submitted by employee/HR and reviewed by independent HR; approved effective version clears current value, retains authorised audit",
+      "tests": [
+        "DomainTest.removalOnlyAllowsExplicitEmptyOptionalPrivateFields",
+        "PostgresWorkflowTest.approvedPrivateRemovalRetainsHistoryAndPermissions",
+        "PostgresWorkflowTest.futureAndRejectedRemovalPreserveCurrentPrivateValue",
+        "tests/private-contact.spec.ts"
+      ],
+      "verification": "38 Java tests, 18 browser/API/contract tests and six delivery checks passed; OIDC-only test skipped locally",
+      "limits": "One address/emergency-contact field per command; structured address and multiple contacts remain open. No deletion of retained audit or financial history; not SH-10 completion."
+    },
+    "displayNameEvidence": {
+      "phase": 2,
+      "workflow": "Employee/HR submits a display-name change; independent HR approves/rejects; effective directory/profile/request/candidate/session labels update",
+      "implementation": "name ChangeRequest field, employee-owned edit and HR-only review policy, as-of name projection across read adapters, V16 constraints, existing form/inbox/history UI",
+      "tests": [
+        "DisplayNameWorkflowTest",
+        "DomainTest.displayNamesAreUnicodeAndEmployeeOwnedButNotBlankOrControlText",
+        "tests/display-name.spec.ts"
+      ],
+      "verification": "62 Java tests, 26 full browser/API/contract tests (OIDC skipped), six delivery checks, frontend checks/build and synthetic restore/restored API passed.",
+      "limits": "Display name only; legal identity, government identifiers, structured/multiple contacts and external identity-provider profile synchronisation remain open. Stable employee ID and email are preserved; historical names remain in authorised audit."
+    },
+    "withdrawalEvidence": {
+      "phase": 2,
+      "workflow": "Requester confirms withdrawal of a pending employee change; inbox/history shows terminal Withdrawn status without employee mutation",
+      "implementation": "ChangeRequest withdrawal transition, nullable required Submit version, shape-versus-new-command date validation, request ownership/field visibility and replay policy, row locks, V17 immutable withdrawal ledger, controller and real withdrawal modal/inbox filter",
+      "tests": [
+        "WithdrawalWorkflowTest",
+        "tests/withdrawal.spec.ts",
+        "scripts/test_delivery_checks.py"
+      ],
+      "verification": "66 Java tests, 28 browser/API/contract tests (OIDC skipped), six delivery checks, frontend checks/build and synthetic 18-table restore/restored API passed.",
+      "derivedCriteria": [
+        "HR-03-D03",
+        "HR-03-D04",
+        "HR-03-D05",
+        "HR-03-D06"
+      ],
+      "limits": "Pending requester-owned changes only. Does not reverse approved changes or add delegated/admin withdrawal. Private requests remain protected after role downgrade. Source IDs remain partial."
     }
   },
   {
@@ -577,6 +812,30 @@
       ],
       "verification": "23 Java and 13 browser/API/contract tests passed; OIDC skipped locally; new tables included in restore verification",
       "limits": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration."
+    },
+    "positionAssignmentEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR requests primary position assignment or unassignment; independent reviewer decides through inbox; current profile and effective-dated history persist",
+      "implementation": "Employee.positionCode, domain alignment invariants, PeopleService future-boundary checks and requester employee review denial, JDBC effective versions plus FK-backed immutable assignment, V13/V14, server-search picker and profile/inbox UI",
+      "tests": [
+        "PositionAssignmentWorkflowTest",
+        "DomainTest.positionAssignmentChecksDepartmentAndEmploymentDates",
+        "tests/position-assignment.spec.ts"
+      ],
+      "verification": "51 Java tests, 22 browser/API/contract tests, six delivery checks and final synthetic 16-table restore/restored API passed; OIDC skipped locally.",
+      "limits": "One primary position, multiple incumbents permitted as provisional policy. No capacity, combined transfer/assignment, automatic title/pay/manager changes or reporting reorganisation. Same-person review resolves current server membership; immutable requester identity binding needs governance before identity reassignment is supported."
+    },
+    "reportingEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR proposes a reporting manager; independent HR approves/rejects; access scopes follow effective reporting line",
+      "implementation": "ReportingLink/ReportingHierarchy domain; bounded future-date validation and manager role policy; transaction graph lock shared with hire approvals; effective manager reads across profile/directory/summary/inbox/legacy lists; V15 immutable FK-backed assignment; paginated minimal manager picker and HR decision UI",
+      "tests": [
+        "ReportingWorkflowTest",
+        "DomainTest.reportingHierarchyRejectsCyclesAndDateBoundaries",
+        "tests/reporting.spec.ts"
+      ],
+      "verification": "58 Java tests; 24 full browser/API/contract tests (OIDC skipped); final two reporting tests rerun after label refinement; six delivery checks; 17-table synthetic restore/restored API passed.",
+      "limits": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
     }
   },
   {
@@ -586,7 +845,7 @@
     "workflow": "Employment lifecycle",
     "phase": 2,
     "screen": "/ (People / Hiring / submit and review dialogs)",
-    "api": "/api/v1/hiring/requests, /api/v1/hiring/requests/{id}/decision, /api/v1/hiring/requests/{id}/history",
+    "api": "/api/v1/hiring/requests, /api/v1/hiring/requests/{id}/decision, /api/v1/hiring/requests/{id}/history, /api/v1/hiring/requests/{id}/complete-onboarding, /api/v1/hiring/requests/employees/{id}/employment-history",
     "useCase": "HiringUseCases / HiringService; other lifecycle use cases planned",
     "domainModel": "Employment, LifecycleRequest",
     "acceptanceTests": [
@@ -602,10 +861,10 @@
       "HR-05-D01",
       "HR-05-D02"
     ],
-    "frontend": "partial: submit/review/approve/reject hire and open assigned employee",
-    "backend": "partial: approved hire atomically creates employee/audit/pending handoff",
+    "frontend": "partial: hiring and manual onboarding confirmation with employment history",
+    "backend": "partial: approved hire and atomic Onboarding to Active confirmation",
     "verification": "verified hiring subset; remaining lifecycle/dependent consumers open",
-    "reason": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only.",
+    "reason": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100.",
     "criteria": [
       {
         "id": "HR-05-F01",
@@ -658,14 +917,13 @@
         "sourceBehaviour": "Maintain employment status",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, maintain employment status through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
         "implementation": "partial",
-        "verification": "verified approved hire-to-onboarding subset",
+        "verification": "manual onboarding subset verified",
         "phase": 2,
         "evidence": [
-          "HiringWorkflowTest",
-          "RequestGuardTest",
-          "tests/z-hiring.spec.ts"
+          "OnboardingWorkflowTest",
+          "tests/z-onboarding.spec.ts"
         ],
-        "limitation": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+        "limitation": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100."
       },
       {
         "id": "HR-05-B02",
@@ -695,17 +953,27 @@
         "id": "HR-05-D01",
         "derived": true,
         "acceptance": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial",
+        "verification": "manual onboarding subset verified",
+        "phase": 2,
+        "limitation": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100.",
+        "evidence": [
+          "OnboardingWorkflowTest",
+          "tests/z-onboarding.spec.ts"
+        ]
       },
       {
         "id": "HR-05-D02",
         "derived": true,
         "acceptance": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial",
+        "verification": "manual onboarding subset verified",
+        "phase": 2,
+        "limitation": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100.",
+        "evidence": [
+          "OnboardingWorkflowTest",
+          "tests/z-onboarding.spec.ts"
+        ]
       }
     ],
     "phases": [
@@ -721,6 +989,16 @@
       ],
       "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
       "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+    },
+    "onboardingEvidence": {
+      "phase": 2,
+      "implementation": "Manual HR confirmation: Employee domain transition, HiringUseCases, atomic JDBC status/completion/pending event, V10/V11, confirmation UI and scoped profile employment history",
+      "tests": [
+        "OnboardingWorkflowTest",
+        "tests/z-onboarding.spec.ts"
+      ],
+      "verification": "35 Java tests and 17 local browser/API/contract tests passed; OIDC skipped in this local run; logical restore and restored API passed",
+      "limits": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100."
     }
   },
   {
@@ -729,10 +1007,10 @@
     "roles": "employee, HR, payroll",
     "workflow": "Benefits",
     "phase": 2,
-    "screen": "/benefits",
-    "api": "/api/v1/benefits",
-    "useCase": "BenefitsUseCases (planned)",
-    "domainModel": "Plan, Dependant, Enrolment",
+    "screen": "/ (People / Benefits catalogue / selections / HR review)",
+    "api": "/api/v1/benefits/plans, /history, /selections, /selections/{id}/decision",
+    "useCase": "BenefitsUseCases / BenefitsService; SelectionsUseCases / SelectionsService; Core HR WorkforceAccess published contract",
+    "domainModel": "BenefitPlan, Eligibility, Dependant, SelectionPolicy; selection and pending deduction snapshots",
     "acceptanceTests": [
       "HR-06-F01",
       "HR-06-F02",
@@ -741,81 +1019,180 @@
       "HR-06-B02",
       "HR-06-B03",
       "HR-06-D01",
-      "HR-06-D02"
+      "HR-06-D02",
+      "HR-06-D03",
+      "HR-06-D04"
     ],
-    "frontend": "not implemented",
-    "backend": "not implemented",
-    "verification": "not run",
-    "reason": "Scheduled Phase 2; all listed behaviours remain in scope.",
+    "frontend": "partial: demo plans, own dependant selections/status/history and independent HR review",
+    "backend": "partial: immutable plan/selection snapshots, eligibility/contributions, approval audit and pending payroll handoff",
+    "verification": "demo catalogue/selection subset verified; production policies and actual payroll handoff not verified",
+    "reason": "DEMONSTRATION fixed monthly rules; up to five dependants without surcharge/proration. UTC submission start only. Country/entity/company policies, amendments/cancellation, provider enrolment and real payroll consumption remain open.",
     "criteria": [
       {
         "id": "HR-06-F01",
         "sourceBehaviour": "View eligible plans",
         "acceptance": "Given an authorised employee, HR, payroll and valid scoped records, view eligible plans through the benefits workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: demonstration catalogue/eligibility/employee contribution preview",
+        "verification": "scoped tests passed; validated production rules and remaining behaviours open",
+        "phase": 2,
+        "limitation": "DEMONSTRATION fixed monthly rules; up to five dependants without surcharge/proration. UTC submission start only. Country/entity/company policies, amendments/cancellation, provider enrolment and real payroll consumption remain open.",
+        "evidence": [
+          "BenefitsDomainTest",
+          "BenefitsWorkflowTest",
+          "ArchitectureTest.crossModuleInternalsAreForbidden",
+          "tests/benefits.spec.ts"
+        ]
       },
       {
         "id": "HR-06-F02",
         "sourceBehaviour": "Enrol dependants",
         "acceptance": "Given an authorised employee, HR, payroll and valid scoped records, enrol dependants through the benefits workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: persisted demonstration selections with private dependants, independent HR decision and snapshotted amount",
+        "verification": "scoped PostgreSQL/browser/contract/security tests passed; broader policies remain open",
+        "phase": 2,
+        "limitation": "DEMONSTRATION fixed monthly rules; up to five dependants without surcharge/proration. UTC submission start only. Country/entity/company policies, amendments/cancellation, provider enrolment and real payroll consumption remain open.",
+        "evidence": [
+          "BenefitSelectionWorkflowTest",
+          "tests/benefit-selections.spec.ts",
+          "ArchitectureTest.crossModuleInternalsAreForbidden"
+        ]
       },
       {
         "id": "HR-06-F03",
         "sourceBehaviour": "Submit selections",
         "acceptance": "Given an authorised employee, HR, payroll and valid scoped records, submit selections through the benefits workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: persisted demonstration selections with private dependants, independent HR decision and snapshotted amount",
+        "verification": "scoped PostgreSQL/browser/contract/security tests passed; broader policies remain open",
+        "phase": 2,
+        "limitation": "DEMONSTRATION fixed monthly rules; up to five dependants without surcharge/proration. UTC submission start only. Country/entity/company policies, amendments/cancellation, provider enrolment and real payroll consumption remain open.",
+        "evidence": [
+          "BenefitSelectionWorkflowTest",
+          "tests/benefit-selections.spec.ts",
+          "ArchitectureTest.crossModuleInternalsAreForbidden"
+        ]
       },
       {
         "id": "HR-06-B01",
         "sourceBehaviour": "Evaluate eligibility",
         "acceptance": "Given an authorised employee, HR, payroll and valid scoped records, evaluate eligibility through the benefits workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: persisted demonstration selections with private dependants, independent HR decision and snapshotted amount",
+        "verification": "scoped PostgreSQL/browser/contract/security tests passed; broader policies remain open",
+        "phase": 2,
+        "limitation": "DEMONSTRATION fixed monthly rules; up to five dependants without surcharge/proration. UTC submission start only. Country/entity/company policies, amendments/cancellation, provider enrolment and real payroll consumption remain open.",
+        "evidence": [
+          "BenefitSelectionWorkflowTest",
+          "tests/benefit-selections.spec.ts",
+          "ArchitectureTest.crossModuleInternalsAreForbidden"
+        ]
       },
       {
         "id": "HR-06-B02",
         "sourceBehaviour": "Calculate contributions",
         "acceptance": "Given an authorised employee, HR, payroll and valid scoped records, calculate contributions through the benefits workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: persisted demonstration selections with private dependants, independent HR decision and snapshotted amount",
+        "verification": "scoped PostgreSQL/browser/contract/security tests passed; broader policies remain open",
+        "phase": 2,
+        "limitation": "DEMONSTRATION fixed monthly rules; up to five dependants without surcharge/proration. UTC submission start only. Country/entity/company policies, amendments/cancellation, provider enrolment and real payroll consumption remain open.",
+        "evidence": [
+          "BenefitSelectionWorkflowTest",
+          "tests/benefit-selections.spec.ts",
+          "ArchitectureTest.crossModuleInternalsAreForbidden"
+        ]
       },
       {
         "id": "HR-06-B03",
         "sourceBehaviour": "Pass deductions to payroll",
         "acceptance": "Given an authorised employee, HR, payroll and valid scoped records, pass deductions to payroll through the benefits workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: unique pending deduction snapshot only; no payroll consumer",
+        "verification": "queue persistence and reconciliation tested; end-to-end payroll integration NOT VERIFIED",
+        "phase": 2,
+        "limitation": "DEMONSTRATION fixed monthly rules; up to five dependants without surcharge/proration. UTC submission start only. Country/entity/company policies, amendments/cancellation, provider enrolment and real payroll consumption remain open.",
+        "evidence": [
+          "BenefitSelectionWorkflowTest",
+          "tests/benefit-selections.spec.ts",
+          "ArchitectureTest.crossModuleInternalsAreForbidden"
+        ]
       },
       {
         "id": "HR-06-D01",
         "derived": true,
         "acceptance": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: persisted demonstration selections with private dependants, independent HR decision and snapshotted amount",
+        "verification": "scoped PostgreSQL/browser/contract/security tests passed; broader policies remain open",
+        "phase": 2,
+        "limitation": "DEMONSTRATION fixed monthly rules; up to five dependants without surcharge/proration. UTC submission start only. Country/entity/company policies, amendments/cancellation, provider enrolment and real payroll consumption remain open.",
+        "evidence": [
+          "BenefitSelectionWorkflowTest",
+          "tests/benefit-selections.spec.ts",
+          "ArchitectureTest.crossModuleInternalsAreForbidden"
+        ]
       },
       {
         "id": "HR-06-D02",
         "derived": true,
         "acceptance": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: persisted demonstration selections with private dependants, independent HR decision and snapshotted amount",
+        "verification": "scoped PostgreSQL/browser/contract/security tests passed; broader policies remain open",
+        "phase": 2,
+        "limitation": "DEMONSTRATION fixed monthly rules; up to five dependants without surcharge/proration. UTC submission start only. Country/entity/company policies, amendments/cancellation, provider enrolment and real payroll consumption remain open.",
+        "evidence": [
+          "BenefitSelectionWorkflowTest",
+          "tests/benefit-selections.spec.ts",
+          "ArchitectureTest.crossModuleInternalsAreForbidden"
+        ]
+      },
+      {
+        "id": "HR-06-D03",
+        "derived": true,
+        "acceptance": "Self submits zero to five distinct named dependants (Partner/Child/Other); start is UTC submission date; immutable contribution/currency/rule snapshot. Independent HR only, alias self-review denied; eligibility rechecked; stale/concurrent decisions have one winner; stable/conflicting replay tested. Private fields excluded from other employees/managers/tenants; UI preserves input and announces errors.",
+        "implementation": "implemented demonstration subset",
+        "verification": "PostgreSQL and browser/API checks passed",
+        "phase": 2,
+        "evidence": [
+          "BenefitSelectionWorkflowTest",
+          "tests/benefit-selections.spec.ts",
+          "ArchitectureTest.crossModuleInternalsAreForbidden"
+        ]
+      },
+      {
+        "id": "HR-06-D04",
+        "derived": true,
+        "acceptance": "Approved selection creates exactly one pending deduction handoff with employee, monthly decimal amount, currency, effective date and rule snapshot, reconciled with immutable decision audit; rejection creates none. Do not call this a payroll transfer until a real consumer and payroll reconciliation pass in Phase 4.",
+        "implementation": "implemented pending queue; payroll consumer deferred Phase 4",
+        "verification": "database/restore snapshot and concurrency verified; payroll consumption not verified",
+        "phase": 4,
+        "evidence": [
+          "BenefitSelectionWorkflowTest",
+          "tests/benefit-selections.spec.ts",
+          "ArchitectureTest.crossModuleInternalsAreForbidden"
+        ]
       }
     ],
     "phases": [
       2
-    ]
+    ],
+    "benefitsCatalogueEvidence": {
+      "phase": 2,
+      "workflow": "HR configures immutable demo benefit plan; employee views own employment eligibility and fixed monthly contribution preview",
+      "implementation": "Benefits modular capability with domain/app/ports/JDBC/web/config; published Core HR WorkforceAccess, shared domain error contract; V18/V19 plans/audit/rule snapshots; searchable/eligible-filtered/sorted/paged UI and validation recovery",
+      "tests": [
+        "BenefitsDomainTest",
+        "BenefitsWorkflowTest",
+        "ArchitectureTest.crossModuleInternalsAreForbidden",
+        "tests/benefits.spec.ts"
+      ],
+      "verification": "76 Java tests, 30 full browser/API/contract tests (OIDC skipped), final two benefits tests rerun after rule snapshot; recovery evidence in checkpoint",
+      "limits": "DEMONSTRATION rules only; USD/GBP/EUR, fixed monthly employee contribution, Active/On leave and configured service/start eligibility. Own snapshot only, 1000-plan guard/latest 100 audit. Dependants, selections/approvals, payroll deductions and validated company/country/entity rules remain open."
+    },
+    "benefitsSelectionEvidence": {
+      "phase": 2,
+      "tests": [
+        "BenefitSelectionWorkflowTest",
+        "tests/benefit-selections.spec.ts",
+        "ArchitectureTest.crossModuleInternalsAreForbidden"
+      ],
+      "scope": "demo enrolment/approval/audit/pending payroll queue; no real provider or payroll consumer"
+    }
   },
   {
     "id": "TS-01",
@@ -1181,10 +1558,10 @@
     "roles": "employee, HR",
     "workflow": "Documents",
     "phase": 2,
-    "screen": "/documents",
-    "api": "/api/v1/documents",
-    "useCase": "DocumentsUseCases (planned)",
-    "domainModel": "Document, Version, RetentionPolicy",
+    "screen": "/ (People / Documents / templates / completeness / link / versions / audit / download)",
+    "api": "/api/v1/documents, /{id}/history, /{id}/content, /{id}/scan-retries, /{id}/versions; /api/v1/document-templates, /completeness, /evidence, /{code}/evidence; /{code}/revisions, /{code}/reclassifications, /{code}/evidence-history; /api/v1/documents/{id}/retention",
+    "useCase": "DocumentsUseCases / DocumentsService; DocumentIdentity, PrivateObjects and MalwareScanner ports; published Core HR self contract",
+    "domainModel": "DocumentPolicy, DocumentVersionPolicy; immutable DocumentView/StoredDocument, version/scan/audit ledgers; DocumentTemplatePolicy, immutable template and evidence; RetentionPolicy planned",
     "acceptanceTests": [
       "DS-01-F01",
       "DS-01-F02",
@@ -1195,97 +1572,457 @@
       "DS-01-B04",
       "DS-01-B05",
       "DS-01-D01",
-      "DS-01-D02"
+      "DS-01-D02",
+      "DS-01-D03",
+      "DS-01-D04",
+      "DS-01-D05",
+      "DS-01-D06",
+      "DS-01-D07",
+      "DS-01-D08",
+      "DS-01-D09",
+      "DS-01-D10",
+      "DS-01-D11",
+      "DS-01-D12",
+      "DS-01-D13",
+      "DS-01-D14"
     ],
-    "frontend": "not implemented",
-    "backend": "not implemented",
-    "verification": "not run",
-    "reason": "Scheduled Phase 2; all listed behaviours remain in scope.",
+    "frontend": "partial: private document lifecycle/configuration/classification/completeness and HR-only chain retention/hold review",
+    "backend": "partial: immutable document/configuration/correction/governance journals, effective projections and scoped date/version/replay/independent-release rules",
+    "verification": "local text-document vertical workflow verified; full DS-01 incomplete",
+    "reason": "Local employee text-document retention/hold governance only. Explicit company basis/date, independent HR release and immutable root journal; no deletion/archive/purge, authoritative category/country rules, production storage/encryption/signature freshness or full DS-01 completion.",
     "criteria": [
       {
         "id": "DS-01-F01",
         "sourceBehaviour": "Upload authorised documents",
         "acceptance": "Given an authorised employee, HR and valid scoped records, upload authorised documents through the documents workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "implemented local text-document subset",
+        "verification": "PostgreSQL/real ClamAV plus full 38-test browser/API suite and restored API passed; OIDC-only skipped locally",
+        "phase": 2,
+        "evidence": [
+          "DocumentsWorkflowTest",
+          "ArchitectureTest.documentsForbiddenInternalDependencyFails",
+          "tests/documents.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py",
+          "DocumentVersionWorkflowTest",
+          "tests/document-versions.spec.ts"
+        ],
+        "limitation": "Local UTF-8 text/private-storage subset. Immutable templates and latest-chain completeness implemented for explicit tenant-wide configuration. Template amendments/targeting, unlink/reclassification/content approval, retention/legal holds and production object storage/encryption/signature freshness remain planned Phase 2/7."
       },
       {
         "id": "DS-01-F02",
         "sourceBehaviour": "Search authorised documents",
         "acceptance": "Given an authorised employee, HR and valid scoped records, search authorised documents through the documents workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "implemented local text-document subset",
+        "verification": "PostgreSQL/real ClamAV plus full 38-test browser/API suite and restored API passed; OIDC-only skipped locally",
+        "phase": 2,
+        "evidence": [
+          "DocumentsWorkflowTest",
+          "ArchitectureTest.documentsForbiddenInternalDependencyFails",
+          "tests/documents.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py",
+          "DocumentVersionWorkflowTest",
+          "tests/document-versions.spec.ts"
+        ],
+        "limitation": "Local UTF-8 text/private-storage subset. Immutable templates and latest-chain completeness implemented for explicit tenant-wide configuration. Template amendments/targeting, unlink/reclassification/content approval, retention/legal holds and production object storage/encryption/signature freshness remain planned Phase 2/7."
       },
       {
         "id": "DS-01-F03",
         "sourceBehaviour": "Download authorised documents",
         "acceptance": "Given an authorised employee, HR and valid scoped records, download authorised documents through the documents workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "implemented local text-document subset",
+        "verification": "PostgreSQL/real ClamAV plus full 38-test browser/API suite and restored API passed; OIDC-only skipped locally",
+        "phase": 2,
+        "evidence": [
+          "DocumentsWorkflowTest",
+          "ArchitectureTest.documentsForbiddenInternalDependencyFails",
+          "tests/documents.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py",
+          "DocumentRetryWorkflowTest",
+          "tests/document-retry.spec.ts",
+          "DocumentVersionWorkflowTest",
+          "tests/document-versions.spec.ts"
+        ],
+        "limitation": "Local UTF-8 text/private-storage subset. Immutable templates and latest-chain completeness implemented for explicit tenant-wide configuration. Template amendments/targeting, unlink/reclassification/content approval, retention/legal holds and production object storage/encryption/signature freshness remain planned Phase 2/7."
       },
       {
         "id": "DS-01-B01",
         "sourceBehaviour": "Manage versions",
         "acceptance": "Given an authorised employee, HR and valid scoped records, manage versions through the documents workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "implemented local text-document subset",
+        "verification": "PostgreSQL/real ClamAV plus full 38-test browser/API suite and restored API passed; OIDC-only skipped locally",
+        "phase": 2,
+        "limitation": "Local UTF-8 text/private-storage subset. Immutable templates and latest-chain completeness implemented for explicit tenant-wide configuration. Template amendments/targeting, unlink/reclassification/content approval, retention/legal holds and production object storage/encryption/signature freshness remain planned Phase 2/7.",
+        "evidence": [
+          "DocumentVersionWorkflowTest",
+          "tests/document-versions.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ]
       },
       {
         "id": "DS-01-B02",
         "sourceBehaviour": "Manage templates",
         "acceptance": "Given an authorised employee, HR and valid scoped records, manage templates through the documents workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "implemented effective text-template configuration/retirement and latest classified-chain completeness subset",
+        "verification": "131 Java, full 42 browser/API passed; OIDC-only skipped locally; 32-table/11-object restore and isolated API passed",
+        "phase": 2,
+        "limitation": "Local text/private-storage subset. Template revisions/terminal retirement and HR correction implemented; targeting, retirement withdrawal/reactivation, independent approval, unlink, content approval, retention/legal holds and production storage/encryption/signature freshness remain open.",
+        "evidence": [
+          "DocumentTemplateWorkflowTest",
+          "tests/document-templates.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py",
+          "DocumentMaintenanceWorkflowTest",
+          "tests/document-maintenance.spec.ts"
+        ]
       },
       {
         "id": "DS-01-B03",
         "sourceBehaviour": "Enforce access",
         "acceptance": "Given an authorised employee, HR and valid scoped records, enforce access through the documents workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "implemented local text-document subset",
+        "verification": "scoped PostgreSQL/real ClamAV/browser/contract/accessibility/restore checks passed",
+        "phase": 2,
+        "evidence": [
+          "DocumentsWorkflowTest",
+          "ArchitectureTest.documentsForbiddenInternalDependencyFails",
+          "tests/documents.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py",
+          "DocumentRetryWorkflowTest",
+          "tests/document-retry.spec.ts"
+        ],
+        "limitation": "Local UTF-8 text/private-storage subset. Immutable templates and latest-chain completeness implemented for explicit tenant-wide configuration. Template amendments/targeting, unlink/reclassification/content approval, retention/legal holds and production object storage/encryption/signature freshness remain planned Phase 2/7."
       },
       {
         "id": "DS-01-B04",
         "sourceBehaviour": "Apply retention",
         "acceptance": "Given an authorised employee, HR and valid scoped records, apply retention through the documents workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: explicit retain-until directives, non-shortening and hold preservation journal/review; no deletion/archive execution",
+        "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed",
+        "phase": 2,
+        "limitation": "Local employee text-document retention/hold governance only. Explicit company basis/date, independent HR release and immutable root journal; no deletion/archive/purge, authoritative category/country rules, production storage/encryption/signature freshness or full DS-01 completion.",
+        "evidence": [
+          "DocumentRetentionWorkflowTest",
+          "tests/document-retention.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ]
       },
       {
         "id": "DS-01-B05",
         "sourceBehaviour": "Check completeness",
         "acceptance": "Given an authorised employee, HR and valid scoped records, check completeness through the documents workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "implemented effective text-template configuration/retirement and latest classified-chain completeness subset",
+        "verification": "131 Java, full 42 browser/API passed; OIDC-only skipped locally; 32-table/11-object restore and isolated API passed",
+        "phase": 2,
+        "limitation": "Local text/private-storage subset. Template revisions/terminal retirement and HR correction implemented; targeting, retirement withdrawal/reactivation, independent approval, unlink, content approval, retention/legal holds and production storage/encryption/signature freshness remain open.",
+        "evidence": [
+          "DocumentTemplateWorkflowTest",
+          "tests/document-templates.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py",
+          "DocumentMaintenanceWorkflowTest",
+          "tests/document-maintenance.spec.ts"
+        ]
       },
       {
         "id": "DS-01-D01",
         "derived": true,
         "acceptance": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "implemented local text-document subset",
+        "verification": "PostgreSQL/real ClamAV plus full 38-test browser/API suite and restored API passed; OIDC-only skipped locally",
+        "phase": 2,
+        "evidence": [
+          "DocumentsWorkflowTest",
+          "ArchitectureTest.documentsForbiddenInternalDependencyFails",
+          "tests/documents.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py",
+          "DocumentRetryWorkflowTest",
+          "tests/document-retry.spec.ts",
+          "DocumentVersionWorkflowTest",
+          "tests/document-versions.spec.ts"
+        ],
+        "limitation": "Local UTF-8 text/private-storage subset. Immutable templates and latest-chain completeness implemented for explicit tenant-wide configuration. Template amendments/targeting, unlink/reclassification/content approval, retention/legal holds and production object storage/encryption/signature freshness remain planned Phase 2/7."
       },
       {
         "id": "DS-01-D02",
         "derived": true,
         "acceptance": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "implemented local text-document subset",
+        "verification": "PostgreSQL/real ClamAV plus full 38-test browser/API suite and restored API passed; OIDC-only skipped locally",
+        "phase": 2,
+        "evidence": [
+          "DocumentsWorkflowTest",
+          "ArchitectureTest.documentsForbiddenInternalDependencyFails",
+          "tests/documents.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py",
+          "DocumentRetryWorkflowTest",
+          "tests/document-retry.spec.ts",
+          "DocumentVersionWorkflowTest",
+          "tests/document-versions.spec.ts"
+        ],
+        "limitation": "Local UTF-8 text/private-storage subset. Immutable templates and latest-chain completeness implemented for explicit tenant-wide configuration. Template amendments/targeting, unlink/reclassification/content approval, retention/legal holds and production object storage/encryption/signature freshness remain planned Phase 2/7."
+      },
+      {
+        "id": "DS-01-D03",
+        "derived": true,
+        "acceptance": "Own upload is strict UTF-8 .txt/text/plain, 1\u201316384 bytes, safe filename, required reason/key and \u2264100 metadata records per employee. Scanner clean result permits attachment retrieval; unavailable/error result quarantines; malware result rejects. Record/tenant permissions precede object access; no keys/content in responses/logs. Stable/concurrent upload replay produces one metadata/audit outcome; changed input conflicts; stored corruption and symlink/traversal denied.",
+        "implementation": "implemented local subset",
+        "verification": "real ClamAV, PostgreSQL and browser tests passed",
+        "phase": 2,
+        "evidence": [
+          "DocumentsWorkflowTest",
+          "ArchitectureTest.documentsForbiddenInternalDependencyFails",
+          "tests/documents.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py",
+          "DocumentRetryWorkflowTest",
+          "tests/document-retry.spec.ts"
+        ],
+        "limitation": "Local UTF-8 text/private-storage subset. Immutable templates and latest-chain completeness implemented for explicit tenant-wide configuration. Template amendments/targeting, unlink/reclassification/content approval, retention/legal holds and production object storage/encryption/signature freshness remain planned Phase 2/7."
+      },
+      {
+        "id": "DS-01-D04",
+        "derived": true,
+        "acceptance": "Recover document metadata/audit and independently copied private content with matching hashes and restrictive permissions. Restored API uses separate root and verifies clean download plus access denial; retain original audits and exactly one new retrieval-authorisation audit. Do not infer production cloud/encrypted backup or recovery targets from this local drill.",
+        "implementation": "implemented local text-document subset",
+        "verification": "PostgreSQL/real ClamAV plus full 38-test browser/API suite and restored API passed; OIDC-only skipped locally",
+        "phase": 7,
+        "evidence": [
+          "DocumentsWorkflowTest",
+          "ArchitectureTest.documentsForbiddenInternalDependencyFails",
+          "tests/documents.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py",
+          "DocumentRetryWorkflowTest",
+          "tests/document-retry.spec.ts",
+          "DocumentVersionWorkflowTest",
+          "tests/document-versions.spec.ts"
+        ],
+        "limitation": "Local UTF-8 text/private-storage subset. Immutable templates and latest-chain completeness implemented for explicit tenant-wide configuration. Template amendments/targeting, unlink/reclassification/content approval, retention/legal holds and production object storage/encryption/signature freshness remain planned Phase 2/7."
+      },
+      {
+        "id": "DS-01-D05",
+        "derived": true,
+        "acceptance": "HR retries only quarantined immutable content with reason/key/exact expected attempt. Up to three retries; clean/malware terminal. Verify bytes/hash/type before scanner and current identity before commit. Preserve original metadata/audit, append result/actor/time/reason/correlation/hash. Stable old-attempt replay is unchanged; conflicting/stale/concurrent requests cannot overwrite results.",
+        "implementation": "implemented local subset",
+        "verification": "PostgreSQL and real ClamAV tests passed; browser outage recovery verified",
+        "phase": 2,
+        "evidence": [
+          "DocumentRetryWorkflowTest",
+          "tests/document-retry.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ]
+      },
+      {
+        "id": "DS-01-D06",
+        "derived": true,
+        "acceptance": "Latest committed scan determines catalogue and authorised download; history includes original quarantine and retries. Interrupted pre-commit command can repeat safely; completed command replays without new result. UI confirms one-file scope, preserves reason/errors, cancels on context unmount, refreshes current availability. Restored retry ledger/history and recovered private bytes agree.",
+        "implementation": "implemented synchronous/manual local retry; no background or production-provider readiness claim",
+        "verification": "API/browser/restore checks; full DS-01 gaps retained",
+        "phase": 2,
+        "evidence": [
+          "DocumentRetryWorkflowTest",
+          "tests/document-retry.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ]
+      },
+      {
+        "id": "DS-01-D07",
+        "derived": true,
+        "acceptance": "Self/HR appends a newly scanned immutable version to the current document with exact expected version, reason and global idempotency key. Preserve original bytes/metadata/audit and ordered root/parent history. Reject stale/historical branches, changed replays, cross-employee/tenant links and non-integral versions; concurrent uploads commit one winner. Bound stored files and chain length to 100.",
+        "implementation": "implemented local text-document subset",
+        "verification": "PostgreSQL/real ClamAV plus full 38-test browser/API suite and restored API passed; OIDC-only skipped locally",
+        "phase": 2,
+        "evidence": [
+          "DocumentVersionWorkflowTest",
+          "tests/document-versions.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ]
+      },
+      {
+        "id": "DS-01-D08",
+        "derived": true,
+        "acceptance": "Catalogue/search/count expose latest uploaded version only, including quarantined/rejected latest without silent fallback. Authorised history shows each version and explicit clean historical download; blocked versions remain unavailable. Verify preserved validation, focus, mobile target size, accessibility, API contracts and restored ordered chain/latest projection.",
+        "implementation": "implemented local text-document subset",
+        "verification": "PostgreSQL/real ClamAV plus full 38-test browser/API suite and restored API passed; OIDC-only skipped locally",
+        "phase": 2,
+        "evidence": [
+          "DocumentVersionWorkflowTest",
+          "tests/document-versions.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ]
+      },
+      {
+        "id": "DS-01-D09",
+        "derived": true,
+        "acceptance": "HR creates immutable tenant-wide template code/title/plain text/required flag/effective date with reason/key and actor/UTC recording/correlation audit. Validate bounded input, role and tenant; unique code and replay/concurrent commands produce one configuration. Reject over 100 configured templates instead of silently truncating checks. No statutory requirement, amendment or targeted policy inferred.",
+        "implementation": "implemented local configured subset",
+        "verification": "119 Java, 40 browser/API passed; OIDC-only skipped locally; 30-table/9-object restore and isolated API passed",
+        "phase": 2,
+        "evidence": [
+          "DocumentTemplateWorkflowTest",
+          "tests/document-templates.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Local UTF-8 text/private-storage subset. Immutable templates and latest-chain completeness implemented for explicit tenant-wide configuration. Template amendments/targeting, unlink/reclassification/content approval, retention/legal holds and production object storage/encryption/signature freshness remain planned Phase 2/7."
+      },
+      {
+        "id": "DS-01-D10",
+        "derived": true,
+        "acceptance": "Self/HR links one current clean document chain to one template with exact version/key/reason and immutable classification history. Reject stale/historical/blocked versions, cross-record/tenant access, conflicting replay and duplicate chain/employee-template links. Completeness uses injected UTC date and latest linked version/scan: MISSING/PRESENT/BLOCKED/OPTIONAL/NOT_YET_EFFECTIVE. Verify UI error preservation/focus/mobile accessibility, live API contracts, concurrent single outcome and restored configuration/history/completeness; classification is not content approval.",
+        "implementation": "implemented local configured subset",
+        "verification": "119 Java, 40 browser/API passed; OIDC-only skipped locally; 30-table/9-object restore and isolated API passed",
+        "phase": 2,
+        "evidence": [
+          "DocumentTemplateWorkflowTest",
+          "tests/document-templates.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Local UTF-8 text/private-storage subset. Immutable templates and latest-chain completeness implemented for explicit tenant-wide configuration. Template amendments/targeting, unlink/reclassification/content approval, retention/legal holds and production object storage/encryption/signature freshness remain planned Phase 2/7."
+      },
+      {
+        "id": "DS-01-D11",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "HR appends immutable template revision or terminal retirement with exact latest ordinal, explicit flags, bounded text, today/future nondecreasing effective date, reason/key and actor/UTC recording/correlation. Preserve original/future snapshots; current configuration and completeness use injected UTC date and same-day ordinal order. Reject ordinary roles/other tenants, stale/non-integral/missing version, duplicate changed command, out-of-sequence SQL and post-retirement mutation; concurrent revisions yield one winner. Stable replay remains original across date boundaries. Maximum 100 revisions.",
+        "implementation": "implemented local text-document subset",
+        "verification": "131 Java, full 42 browser/API passed; OIDC-only skipped locally; 32-table/11-object restore and isolated API passed",
+        "evidence": [
+          "DocumentMaintenanceWorkflowTest",
+          "tests/document-maintenance.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Local text/private-storage subset. Template revisions/terminal retirement and HR correction implemented; targeting, retirement withdrawal/reactivation, independent approval, unlink, content approval, retention/legal holds and production storage/encryption/signature freshness remain open."
+      },
+      {
+        "id": "DS-01-D12",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "HR corrects existing employee/template classification to a new previously unclassified clean latest chain, with exact classification/file ordinals and reason/key. Preserve original and each prior root/audit; historical roots remain reserved. Reject ordinary roles/tenant/employee mismatch, stale/non-integral/missing ordinals, blocked/historical/reused roots and sequence/owner SQL violations. Concurrent corrections commit one winner; replay keeps recorded snapshot. Current completeness follows replacement; expose per-template full bounded history and latest-100 global events. Verify contextual UI scope, preserved errors/focus, accessibility/mobile, live API contracts and restored histories/projections. No unlink, content approval or financial/legal deletion inferred.",
+        "implementation": "implemented local text-document subset",
+        "verification": "131 Java, full 42 browser/API passed; OIDC-only skipped locally; 32-table/11-object restore and isolated API passed",
+        "evidence": [
+          "DocumentMaintenanceWorkflowTest",
+          "tests/document-maintenance.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Local text/private-storage subset. Template revisions/terminal retirement and HR correction implemented; targeting, retirement withdrawal/reactivation, independent approval, unlink, content approval, retention/legal holds and production storage/encryption/signature freshness remain open."
+      },
+      {
+        "id": "DS-01-D13",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "HR sets explicit per-chain company policy basis and retain-until date, never an inferred statutory duration. Dates start today/future and cannot shorten; injected UTC date yields NO_POLICY/RETAIN/REVIEW_DUE with inclusive retain-until. All file versions share immutable root governance. Exact 0-based expected journal ordinal/key, reason/actor/employee/UTC recording/correlation; stable/cross-root/conflicting replay, stale/missing/fractional version, role/tenant and SQL owner/root/sequence/shape/mutation rejection. Maximum 100 events. Review due never authorises deletion; no archive/purge/delete port.",
+        "implementation": "implemented local document-governance subset",
+        "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed",
+        "evidence": [
+          "DocumentRetentionWorkflowTest",
+          "tests/document-retention.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Local employee text-document retention/hold governance only. Explicit company basis/date, independent HR release and immutable root journal; no deletion/archive/purge, authoritative category/country rules, production storage/encryption/signature freshness or full DS-01 completion."
+      },
+      {
+        "id": "DS-01-D14",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "HR places independent case holds and a different subject AND employee identity releases each active hold; deny self, aliases and identity rebinding. Multiple active holds override date review; release one retains others and policy. Preserve placement/release snapshots, reject duplicate active case, missing/released hold and concurrent lost commands. Legal details/audit HR-only and absent from employee-visible history. Verify contextual UI, preserved errors/focus, mobile/accessibility, API contracts, SQL independence and restored journal/state/permissions. Existing bytes/audits remain; deletionAvailable always false.",
+        "implementation": "implemented local document-governance subset",
+        "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed",
+        "evidence": [
+          "DocumentRetentionWorkflowTest",
+          "tests/document-retention.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Local employee text-document retention/hold governance only. Explicit company basis/date, independent HR release and immutable root journal; no deletion/archive/purge, authoritative category/country rules, production storage/encryption/signature freshness or full DS-01 completion."
       }
     ],
     "phases": [
-      2
-    ]
+      2,
+      7
+    ],
+    "documentsIncrementEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentsWorkflowTest",
+        "ArchitectureTest.documentsForbiddenInternalDependencyFails",
+        "tests/documents.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "local synthetic text upload, real scan, private search/download/audit and independent storage recovery; DS-01 incomplete"
+    },
+    "documentRetryEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentRetryWorkflowTest",
+        "tests/document-retry.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "HR-only manual synchronous retry with immutable history/current projection; DS-01 incomplete"
+    },
+    "documentVersionEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentVersionWorkflowTest",
+        "tests/document-versions.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "Immutable sequential versions with independent scan results; latest means latest upload, not legal validity; DS-01 incomplete",
+      "verification": "110 Java, 38 browser/API passed, 1 OIDC skipped; 28-table/8-object local restore and isolated API passed"
+    },
+    "documentTemplateEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentTemplateWorkflowTest",
+        "tests/document-templates.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "Immutable tenant-wide templates and current-clean-chain classification/completeness; DS-01 incomplete",
+      "verification": "119 Java, 40 browser/API passed; OIDC-only skipped locally; 30-table/9-object restore and isolated API passed"
+    },
+    "documentMaintenanceEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentMaintenanceWorkflowTest",
+        "tests/document-maintenance.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "Effective immutable template revision/terminal retirement and HR classification correction; DS-01 remains partial",
+      "verification": "131 Java, full 42 browser/API passed; OIDC-only skipped locally; 32-table/11-object restore and isolated API passed"
+    },
+    "documentRetentionEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentRetentionWorkflowTest",
+        "tests/document-retention.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "Local employee text-document retention/hold governance only. Explicit company basis/date, independent HR release and immutable root journal; no deletion/archive/purge, authoritative category/country rules, production storage/encryption/signature freshness or full DS-01 completion.",
+      "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed"
+    }
   },
   {
     "id": "DS-02",
@@ -2314,7 +3051,17 @@
     ],
     "phases": [
       5
-    ]
+    ],
+    "onboardingEvidence": {
+      "phase": 2,
+      "implementation": "Manual HR confirmation: Employee domain transition, HiringUseCases, atomic JDBC status/completion/pending event, V10/V11, confirmation UI and scoped profile employment history",
+      "tests": [
+        "OnboardingWorkflowTest",
+        "tests/z-onboarding.spec.ts"
+      ],
+      "verification": "35 Java tests and 17 local browser/API/contract tests passed; OIDC skipped in this local run; logical restore and restored API passed",
+      "limits": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100."
+    }
   },
   {
     "id": "TM-03",
@@ -3612,6 +4359,148 @@
       ],
       "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
       "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+    },
+    "onboardingEvidence": {
+      "phase": 2,
+      "implementation": "Manual HR confirmation: Employee domain transition, HiringUseCases, atomic JDBC status/completion/pending event, V10/V11, confirmation UI and scoped profile employment history",
+      "tests": [
+        "OnboardingWorkflowTest",
+        "tests/z-onboarding.spec.ts"
+      ],
+      "verification": "35 Java tests and 17 local browser/API/contract tests passed; OIDC skipped in this local run; logical restore and restored API passed",
+      "limits": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100."
+    },
+    "privateRemovalEvidence": {
+      "phase": 2,
+      "workflow": "Explicit optional private-field removal submitted by employee/HR and reviewed by independent HR; approved effective version clears current value, retains authorised audit",
+      "tests": [
+        "DomainTest.removalOnlyAllowsExplicitEmptyOptionalPrivateFields",
+        "PostgresWorkflowTest.approvedPrivateRemovalRetainsHistoryAndPermissions",
+        "PostgresWorkflowTest.futureAndRejectedRemovalPreserveCurrentPrivateValue",
+        "tests/private-contact.spec.ts"
+      ],
+      "verification": "38 Java tests, 18 browser/API/contract tests and six delivery checks passed; OIDC-only test skipped locally",
+      "limits": "One address/emergency-contact field per command; structured address and multiple contacts remain open. No deletion of retained audit or financial history; not SH-10 completion."
+    },
+    "positionEvidence": {
+      "phase": 2,
+      "workflow": "HR creates an immutable department-owned position; tenant members search/filter/sort/page current and planned position references; HR inspects configuration audit",
+      "implementation": "Position domain; OrganisationUseCases/Service; PositionQuery/Page; JDBC port; V12 migration; position catalogue/create UI; three implemented API operations",
+      "tests": [
+        "PositionWorkflowTest",
+        "DomainTest.positionRejectsInvalidFieldsWithoutEchoingInput",
+        "tests/positions.spec.ts"
+      ],
+      "verification": "44 Java tests, 20 browser/API/contract tests and six delivery checks passed; OIDC skipped in local suite. Synthetic 15-table restore and restored position APIs passed.",
+      "limits": "No employee position assignments, hierarchy/reporting edits or position changes. Creation is effective-dated, references immutable. Choices use up to 1000 department references; latest 100 audit entries. HR-02 remains partial."
+    },
+    "positionAssignmentEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR requests primary position assignment or unassignment; independent reviewer decides through inbox; current profile and effective-dated history persist",
+      "implementation": "Employee.positionCode, domain alignment invariants, PeopleService future-boundary checks and requester employee review denial, JDBC effective versions plus FK-backed immutable assignment, V13/V14, server-search picker and profile/inbox UI",
+      "tests": [
+        "PositionAssignmentWorkflowTest",
+        "DomainTest.positionAssignmentChecksDepartmentAndEmploymentDates",
+        "tests/position-assignment.spec.ts"
+      ],
+      "verification": "51 Java tests, 22 browser/API/contract tests, six delivery checks and final synthetic 16-table restore/restored API passed; OIDC skipped locally.",
+      "limits": "One primary position, multiple incumbents permitted as provisional policy. No capacity, combined transfer/assignment, automatic title/pay/manager changes or reporting reorganisation. Same-person review resolves current server membership; immutable requester identity binding needs governance before identity reassignment is supported."
+    },
+    "reportingEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR proposes a reporting manager; independent HR approves/rejects; access scopes follow effective reporting line",
+      "implementation": "ReportingLink/ReportingHierarchy domain; bounded future-date validation and manager role policy; transaction graph lock shared with hire approvals; effective manager reads across profile/directory/summary/inbox/legacy lists; V15 immutable FK-backed assignment; paginated minimal manager picker and HR decision UI",
+      "tests": [
+        "ReportingWorkflowTest",
+        "DomainTest.reportingHierarchyRejectsCyclesAndDateBoundaries",
+        "tests/reporting.spec.ts"
+      ],
+      "verification": "58 Java tests; 24 full browser/API/contract tests (OIDC skipped); final two reporting tests rerun after label refinement; six delivery checks; 17-table synthetic restore/restored API passed.",
+      "limits": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
+    },
+    "displayNameEvidence": {
+      "phase": 2,
+      "workflow": "Employee/HR submits a display-name change; independent HR approves/rejects; effective directory/profile/request/candidate/session labels update",
+      "implementation": "name ChangeRequest field, employee-owned edit and HR-only review policy, as-of name projection across read adapters, V16 constraints, existing form/inbox/history UI",
+      "tests": [
+        "DisplayNameWorkflowTest",
+        "DomainTest.displayNamesAreUnicodeAndEmployeeOwnedButNotBlankOrControlText",
+        "tests/display-name.spec.ts"
+      ],
+      "verification": "62 Java tests, 26 full browser/API/contract tests (OIDC skipped), six delivery checks, frontend checks/build and synthetic restore/restored API passed.",
+      "limits": "Display name only; legal identity, government identifiers, structured/multiple contacts and external identity-provider profile synchronisation remain open. Stable employee ID and email are preserved; historical names remain in authorised audit."
+    },
+    "withdrawalEvidence": {
+      "phase": 2,
+      "workflow": "Requester confirms withdrawal of a pending employee change; inbox/history shows terminal Withdrawn status without employee mutation",
+      "implementation": "ChangeRequest withdrawal transition, nullable required Submit version, shape-versus-new-command date validation, request ownership/field visibility and replay policy, row locks, V17 immutable withdrawal ledger, controller and real withdrawal modal/inbox filter",
+      "tests": [
+        "WithdrawalWorkflowTest",
+        "tests/withdrawal.spec.ts",
+        "scripts/test_delivery_checks.py"
+      ],
+      "verification": "66 Java tests, 28 browser/API/contract tests (OIDC skipped), six delivery checks, frontend checks/build and synthetic 18-table restore/restored API passed.",
+      "derivedCriteria": [
+        "HR-03-D03",
+        "HR-03-D04",
+        "HR-03-D05",
+        "HR-03-D06"
+      ],
+      "limits": "Pending requester-owned changes only. Does not reverse approved changes or add delegated/admin withdrawal. Private requests remain protected after role downgrade. Source IDs remain partial."
+    },
+    "benefitsCatalogueEvidence": {
+      "phase": 2,
+      "workflow": "HR configures immutable demo benefit plan; employee views own employment eligibility and fixed monthly contribution preview",
+      "implementation": "Benefits modular capability with domain/app/ports/JDBC/web/config; published Core HR WorkforceAccess, shared domain error contract; V18/V19 plans/audit/rule snapshots; searchable/eligible-filtered/sorted/paged UI and validation recovery",
+      "tests": [
+        "BenefitsDomainTest",
+        "BenefitsWorkflowTest",
+        "ArchitectureTest.crossModuleInternalsAreForbidden",
+        "tests/benefits.spec.ts"
+      ],
+      "verification": "76 Java tests, 30 full browser/API/contract tests (OIDC skipped), final two benefits tests rerun after rule snapshot; recovery evidence in checkpoint",
+      "limits": "DEMONSTRATION rules only; USD/GBP/EUR, fixed monthly employee contribution, Active/On leave and configured service/start eligibility. Own snapshot only, 1000-plan guard/latest 100 audit. Dependants, selections/approvals, payroll deductions and validated company/country/entity rules remain open."
+    },
+    "benefitsSelectionEvidence": {
+      "phase": 2,
+      "tests": [
+        "BenefitSelectionWorkflowTest",
+        "tests/benefit-selections.spec.ts",
+        "ArchitectureTest.crossModuleInternalsAreForbidden"
+      ],
+      "scope": "Benefits record/field scope, independent review and immutable selection decisions only; existing full-ID gaps retained"
+    },
+    "documentsIncrementEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentsWorkflowTest",
+        "ArchitectureTest.documentsForbiddenInternalDependencyFails",
+        "tests/documents.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "document identity/record scopes and immutable upload/scan/download-authorisation audit; existing full-ID gaps retained"
+    },
+    "documentRetryEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentRetryWorkflowTest",
+        "tests/document-retry.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "HR retry permission/current identity recheck and immutable retry audit only; existing full-ID gaps retained"
+    },
+    "documentRetentionEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentRetentionWorkflowTest",
+        "tests/document-retention.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "HR-only private root governance, explicit policy basis/date and actor/identity/reason/time/correlation audit; other shared behaviours unchanged",
+      "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed"
     }
   },
   {
@@ -3802,6 +4691,81 @@
       ],
       "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
       "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+    },
+    "privateRemovalEvidence": {
+      "phase": 2,
+      "workflow": "Explicit optional private-field removal submitted by employee/HR and reviewed by independent HR; approved effective version clears current value, retains authorised audit",
+      "tests": [
+        "DomainTest.removalOnlyAllowsExplicitEmptyOptionalPrivateFields",
+        "PostgresWorkflowTest.approvedPrivateRemovalRetainsHistoryAndPermissions",
+        "PostgresWorkflowTest.futureAndRejectedRemovalPreserveCurrentPrivateValue",
+        "tests/private-contact.spec.ts"
+      ],
+      "verification": "38 Java tests, 18 browser/API/contract tests and six delivery checks passed; OIDC-only test skipped locally",
+      "limits": "One address/emergency-contact field per command; structured address and multiple contacts remain open. No deletion of retained audit or financial history; not SH-10 completion."
+    },
+    "positionAssignmentEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR requests primary position assignment or unassignment; independent reviewer decides through inbox; current profile and effective-dated history persist",
+      "implementation": "Employee.positionCode, domain alignment invariants, PeopleService future-boundary checks and requester employee review denial, JDBC effective versions plus FK-backed immutable assignment, V13/V14, server-search picker and profile/inbox UI",
+      "tests": [
+        "PositionAssignmentWorkflowTest",
+        "DomainTest.positionAssignmentChecksDepartmentAndEmploymentDates",
+        "tests/position-assignment.spec.ts"
+      ],
+      "verification": "51 Java tests, 22 browser/API/contract tests, six delivery checks and final synthetic 16-table restore/restored API passed; OIDC skipped locally.",
+      "limits": "One primary position, multiple incumbents permitted as provisional policy. No capacity, combined transfer/assignment, automatic title/pay/manager changes or reporting reorganisation. Same-person review resolves current server membership; immutable requester identity binding needs governance before identity reassignment is supported."
+    },
+    "reportingEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR proposes a reporting manager; independent HR approves/rejects; access scopes follow effective reporting line",
+      "implementation": "ReportingLink/ReportingHierarchy domain; bounded future-date validation and manager role policy; transaction graph lock shared with hire approvals; effective manager reads across profile/directory/summary/inbox/legacy lists; V15 immutable FK-backed assignment; paginated minimal manager picker and HR decision UI",
+      "tests": [
+        "ReportingWorkflowTest",
+        "DomainTest.reportingHierarchyRejectsCyclesAndDateBoundaries",
+        "tests/reporting.spec.ts"
+      ],
+      "verification": "58 Java tests; 24 full browser/API/contract tests (OIDC skipped); final two reporting tests rerun after label refinement; six delivery checks; 17-table synthetic restore/restored API passed.",
+      "limits": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
+    },
+    "displayNameEvidence": {
+      "phase": 2,
+      "workflow": "Employee/HR submits a display-name change; independent HR approves/rejects; effective directory/profile/request/candidate/session labels update",
+      "implementation": "name ChangeRequest field, employee-owned edit and HR-only review policy, as-of name projection across read adapters, V16 constraints, existing form/inbox/history UI",
+      "tests": [
+        "DisplayNameWorkflowTest",
+        "DomainTest.displayNamesAreUnicodeAndEmployeeOwnedButNotBlankOrControlText",
+        "tests/display-name.spec.ts"
+      ],
+      "verification": "62 Java tests, 26 full browser/API/contract tests (OIDC skipped), six delivery checks, frontend checks/build and synthetic restore/restored API passed.",
+      "limits": "Display name only; legal identity, government identifiers, structured/multiple contacts and external identity-provider profile synchronisation remain open. Stable employee ID and email are preserved; historical names remain in authorised audit."
+    },
+    "withdrawalEvidence": {
+      "phase": 2,
+      "workflow": "Requester confirms withdrawal of a pending employee change; inbox/history shows terminal Withdrawn status without employee mutation",
+      "implementation": "ChangeRequest withdrawal transition, nullable required Submit version, shape-versus-new-command date validation, request ownership/field visibility and replay policy, row locks, V17 immutable withdrawal ledger, controller and real withdrawal modal/inbox filter",
+      "tests": [
+        "WithdrawalWorkflowTest",
+        "tests/withdrawal.spec.ts",
+        "scripts/test_delivery_checks.py"
+      ],
+      "verification": "66 Java tests, 28 browser/API/contract tests (OIDC skipped), six delivery checks, frontend checks/build and synthetic 18-table restore/restored API passed.",
+      "derivedCriteria": [
+        "HR-03-D03",
+        "HR-03-D04",
+        "HR-03-D05",
+        "HR-03-D06"
+      ],
+      "limits": "Pending requester-owned changes only. Does not reverse approved changes or add delegated/admin withdrawal. Private requests remain protected after role downgrade. Source IDs remain partial."
+    },
+    "benefitsSelectionEvidence": {
+      "phase": 2,
+      "tests": [
+        "BenefitSelectionWorkflowTest",
+        "tests/benefit-selections.spec.ts",
+        "ArchitectureTest.crossModuleInternalsAreForbidden"
+      ],
+      "scope": "Benefits record/field scope, independent review and immutable selection decisions only; existing full-ID gaps retained"
     }
   },
   {
@@ -3918,6 +4882,72 @@
       ],
       "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
       "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+    },
+    "privateRemovalEvidence": {
+      "phase": 2,
+      "workflow": "Explicit optional private-field removal submitted by employee/HR and reviewed by independent HR; approved effective version clears current value, retains authorised audit",
+      "tests": [
+        "DomainTest.removalOnlyAllowsExplicitEmptyOptionalPrivateFields",
+        "PostgresWorkflowTest.approvedPrivateRemovalRetainsHistoryAndPermissions",
+        "PostgresWorkflowTest.futureAndRejectedRemovalPreserveCurrentPrivateValue",
+        "tests/private-contact.spec.ts"
+      ],
+      "verification": "38 Java tests, 18 browser/API/contract tests and six delivery checks passed; OIDC-only test skipped locally",
+      "limits": "One address/emergency-contact field per command; structured address and multiple contacts remain open. No deletion of retained audit or financial history; not SH-10 completion."
+    },
+    "positionAssignmentEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR requests primary position assignment or unassignment; independent reviewer decides through inbox; current profile and effective-dated history persist",
+      "implementation": "Employee.positionCode, domain alignment invariants, PeopleService future-boundary checks and requester employee review denial, JDBC effective versions plus FK-backed immutable assignment, V13/V14, server-search picker and profile/inbox UI",
+      "tests": [
+        "PositionAssignmentWorkflowTest",
+        "DomainTest.positionAssignmentChecksDepartmentAndEmploymentDates",
+        "tests/position-assignment.spec.ts"
+      ],
+      "verification": "51 Java tests, 22 browser/API/contract tests, six delivery checks and final synthetic 16-table restore/restored API passed; OIDC skipped locally.",
+      "limits": "One primary position, multiple incumbents permitted as provisional policy. No capacity, combined transfer/assignment, automatic title/pay/manager changes or reporting reorganisation. Same-person review resolves current server membership; immutable requester identity binding needs governance before identity reassignment is supported."
+    },
+    "reportingEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR proposes a reporting manager; independent HR approves/rejects; access scopes follow effective reporting line",
+      "implementation": "ReportingLink/ReportingHierarchy domain; bounded future-date validation and manager role policy; transaction graph lock shared with hire approvals; effective manager reads across profile/directory/summary/inbox/legacy lists; V15 immutable FK-backed assignment; paginated minimal manager picker and HR decision UI",
+      "tests": [
+        "ReportingWorkflowTest",
+        "DomainTest.reportingHierarchyRejectsCyclesAndDateBoundaries",
+        "tests/reporting.spec.ts"
+      ],
+      "verification": "58 Java tests; 24 full browser/API/contract tests (OIDC skipped); final two reporting tests rerun after label refinement; six delivery checks; 17-table synthetic restore/restored API passed.",
+      "limits": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
+    },
+    "displayNameEvidence": {
+      "phase": 2,
+      "workflow": "Employee/HR submits a display-name change; independent HR approves/rejects; effective directory/profile/request/candidate/session labels update",
+      "implementation": "name ChangeRequest field, employee-owned edit and HR-only review policy, as-of name projection across read adapters, V16 constraints, existing form/inbox/history UI",
+      "tests": [
+        "DisplayNameWorkflowTest",
+        "DomainTest.displayNamesAreUnicodeAndEmployeeOwnedButNotBlankOrControlText",
+        "tests/display-name.spec.ts"
+      ],
+      "verification": "62 Java tests, 26 full browser/API/contract tests (OIDC skipped), six delivery checks, frontend checks/build and synthetic restore/restored API passed.",
+      "limits": "Display name only; legal identity, government identifiers, structured/multiple contacts and external identity-provider profile synchronisation remain open. Stable employee ID and email are preserved; historical names remain in authorised audit."
+    },
+    "withdrawalEvidence": {
+      "phase": 2,
+      "workflow": "Requester confirms withdrawal of a pending employee change; inbox/history shows terminal Withdrawn status without employee mutation",
+      "implementation": "ChangeRequest withdrawal transition, nullable required Submit version, shape-versus-new-command date validation, request ownership/field visibility and replay policy, row locks, V17 immutable withdrawal ledger, controller and real withdrawal modal/inbox filter",
+      "tests": [
+        "WithdrawalWorkflowTest",
+        "tests/withdrawal.spec.ts",
+        "scripts/test_delivery_checks.py"
+      ],
+      "verification": "66 Java tests, 28 browser/API/contract tests (OIDC skipped), six delivery checks, frontend checks/build and synthetic 18-table restore/restored API passed.",
+      "derivedCriteria": [
+        "HR-03-D03",
+        "HR-03-D04",
+        "HR-03-D05",
+        "HR-03-D06"
+      ],
+      "limits": "Pending requester-owned changes only. Does not reverse approved changes or add delegated/admin withdrawal. Private requests remain protected after role downgrade. Source IDs remain partial."
     }
   },
   {
@@ -4203,6 +5233,148 @@
       ],
       "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
       "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+    },
+    "onboardingEvidence": {
+      "phase": 2,
+      "implementation": "Manual HR confirmation: Employee domain transition, HiringUseCases, atomic JDBC status/completion/pending event, V10/V11, confirmation UI and scoped profile employment history",
+      "tests": [
+        "OnboardingWorkflowTest",
+        "tests/z-onboarding.spec.ts"
+      ],
+      "verification": "35 Java tests and 17 local browser/API/contract tests passed; OIDC skipped in this local run; logical restore and restored API passed",
+      "limits": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100."
+    },
+    "privateRemovalEvidence": {
+      "phase": 2,
+      "workflow": "Explicit optional private-field removal submitted by employee/HR and reviewed by independent HR; approved effective version clears current value, retains authorised audit",
+      "tests": [
+        "DomainTest.removalOnlyAllowsExplicitEmptyOptionalPrivateFields",
+        "PostgresWorkflowTest.approvedPrivateRemovalRetainsHistoryAndPermissions",
+        "PostgresWorkflowTest.futureAndRejectedRemovalPreserveCurrentPrivateValue",
+        "tests/private-contact.spec.ts"
+      ],
+      "verification": "38 Java tests, 18 browser/API/contract tests and six delivery checks passed; OIDC-only test skipped locally",
+      "limits": "One address/emergency-contact field per command; structured address and multiple contacts remain open. No deletion of retained audit or financial history; not SH-10 completion."
+    },
+    "positionEvidence": {
+      "phase": 2,
+      "workflow": "HR creates an immutable department-owned position; tenant members search/filter/sort/page current and planned position references; HR inspects configuration audit",
+      "implementation": "Position domain; OrganisationUseCases/Service; PositionQuery/Page; JDBC port; V12 migration; position catalogue/create UI; three implemented API operations",
+      "tests": [
+        "PositionWorkflowTest",
+        "DomainTest.positionRejectsInvalidFieldsWithoutEchoingInput",
+        "tests/positions.spec.ts"
+      ],
+      "verification": "44 Java tests, 20 browser/API/contract tests and six delivery checks passed; OIDC skipped in local suite. Synthetic 15-table restore and restored position APIs passed.",
+      "limits": "No employee position assignments, hierarchy/reporting edits or position changes. Creation is effective-dated, references immutable. Choices use up to 1000 department references; latest 100 audit entries. HR-02 remains partial."
+    },
+    "positionAssignmentEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR requests primary position assignment or unassignment; independent reviewer decides through inbox; current profile and effective-dated history persist",
+      "implementation": "Employee.positionCode, domain alignment invariants, PeopleService future-boundary checks and requester employee review denial, JDBC effective versions plus FK-backed immutable assignment, V13/V14, server-search picker and profile/inbox UI",
+      "tests": [
+        "PositionAssignmentWorkflowTest",
+        "DomainTest.positionAssignmentChecksDepartmentAndEmploymentDates",
+        "tests/position-assignment.spec.ts"
+      ],
+      "verification": "51 Java tests, 22 browser/API/contract tests, six delivery checks and final synthetic 16-table restore/restored API passed; OIDC skipped locally.",
+      "limits": "One primary position, multiple incumbents permitted as provisional policy. No capacity, combined transfer/assignment, automatic title/pay/manager changes or reporting reorganisation. Same-person review resolves current server membership; immutable requester identity binding needs governance before identity reassignment is supported."
+    },
+    "reportingEvidence": {
+      "phase": 2,
+      "workflow": "Manager/HR proposes a reporting manager; independent HR approves/rejects; access scopes follow effective reporting line",
+      "implementation": "ReportingLink/ReportingHierarchy domain; bounded future-date validation and manager role policy; transaction graph lock shared with hire approvals; effective manager reads across profile/directory/summary/inbox/legacy lists; V15 immutable FK-backed assignment; paginated minimal manager picker and HR decision UI",
+      "tests": [
+        "ReportingWorkflowTest",
+        "DomainTest.reportingHierarchyRejectsCyclesAndDateBoundaries",
+        "tests/reporting.spec.ts"
+      ],
+      "verification": "58 Java tests; 24 full browser/API/contract tests (OIDC skipped); final two reporting tests rerun after label refinement; six delivery checks; 17-table synthetic restore/restored API passed.",
+      "limits": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
+    },
+    "displayNameEvidence": {
+      "phase": 2,
+      "workflow": "Employee/HR submits a display-name change; independent HR approves/rejects; effective directory/profile/request/candidate/session labels update",
+      "implementation": "name ChangeRequest field, employee-owned edit and HR-only review policy, as-of name projection across read adapters, V16 constraints, existing form/inbox/history UI",
+      "tests": [
+        "DisplayNameWorkflowTest",
+        "DomainTest.displayNamesAreUnicodeAndEmployeeOwnedButNotBlankOrControlText",
+        "tests/display-name.spec.ts"
+      ],
+      "verification": "62 Java tests, 26 full browser/API/contract tests (OIDC skipped), six delivery checks, frontend checks/build and synthetic restore/restored API passed.",
+      "limits": "Display name only; legal identity, government identifiers, structured/multiple contacts and external identity-provider profile synchronisation remain open. Stable employee ID and email are preserved; historical names remain in authorised audit."
+    },
+    "withdrawalEvidence": {
+      "phase": 2,
+      "workflow": "Requester confirms withdrawal of a pending employee change; inbox/history shows terminal Withdrawn status without employee mutation",
+      "implementation": "ChangeRequest withdrawal transition, nullable required Submit version, shape-versus-new-command date validation, request ownership/field visibility and replay policy, row locks, V17 immutable withdrawal ledger, controller and real withdrawal modal/inbox filter",
+      "tests": [
+        "WithdrawalWorkflowTest",
+        "tests/withdrawal.spec.ts",
+        "scripts/test_delivery_checks.py"
+      ],
+      "verification": "66 Java tests, 28 browser/API/contract tests (OIDC skipped), six delivery checks, frontend checks/build and synthetic 18-table restore/restored API passed.",
+      "derivedCriteria": [
+        "HR-03-D03",
+        "HR-03-D04",
+        "HR-03-D05",
+        "HR-03-D06"
+      ],
+      "limits": "Pending requester-owned changes only. Does not reverse approved changes or add delegated/admin withdrawal. Private requests remain protected after role downgrade. Source IDs remain partial."
+    },
+    "benefitsCatalogueEvidence": {
+      "phase": 2,
+      "workflow": "HR configures immutable demo benefit plan; employee views own employment eligibility and fixed monthly contribution preview",
+      "implementation": "Benefits modular capability with domain/app/ports/JDBC/web/config; published Core HR WorkforceAccess, shared domain error contract; V18/V19 plans/audit/rule snapshots; searchable/eligible-filtered/sorted/paged UI and validation recovery",
+      "tests": [
+        "BenefitsDomainTest",
+        "BenefitsWorkflowTest",
+        "ArchitectureTest.crossModuleInternalsAreForbidden",
+        "tests/benefits.spec.ts"
+      ],
+      "verification": "76 Java tests, 30 full browser/API/contract tests (OIDC skipped), final two benefits tests rerun after rule snapshot; recovery evidence in checkpoint",
+      "limits": "DEMONSTRATION rules only; USD/GBP/EUR, fixed monthly employee contribution, Active/On leave and configured service/start eligibility. Own snapshot only, 1000-plan guard/latest 100 audit. Dependants, selections/approvals, payroll deductions and validated company/country/entity rules remain open."
+    },
+    "benefitsSelectionEvidence": {
+      "phase": 2,
+      "tests": [
+        "BenefitSelectionWorkflowTest",
+        "tests/benefit-selections.spec.ts",
+        "ArchitectureTest.crossModuleInternalsAreForbidden"
+      ],
+      "scope": "Benefits record/field scope, independent review and immutable selection decisions only; existing full-ID gaps retained"
+    },
+    "documentsIncrementEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentsWorkflowTest",
+        "ArchitectureTest.documentsForbiddenInternalDependencyFails",
+        "tests/documents.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "document identity/record scopes and immutable upload/scan/download-authorisation audit; existing full-ID gaps retained"
+    },
+    "documentRetryEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentRetryWorkflowTest",
+        "tests/document-retry.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "HR retry permission/current identity recheck and immutable retry audit only; existing full-ID gaps retained"
+    },
+    "documentRetentionEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentRetentionWorkflowTest",
+        "tests/document-retention.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "HR-only private root governance, explicit policy basis/date and actor/identity/reason/time/correlation audit; other shared behaviours unchanged",
+      "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed"
     }
   },
   {
@@ -4211,9 +5383,9 @@
     "roles": "configuration admin",
     "workflow": "Configuration",
     "phase": 2,
-    "screen": "/settings",
-    "api": "/api/v1/settings",
-    "useCase": "ConfigurationUseCases (planned)",
+    "screen": "/ (Organisation / Benefits / Documents templates); general /settings planned",
+    "api": "/api/v1/organisation/*; /api/v1/benefits/plans; /api/v1/document-templates; general /api/v1/settings planned",
+    "useCase": "OrganisationUseCases, BenefitsUseCases, DocumentTemplatesUseCases (implemented subsets); general ConfigurationUseCases planned",
     "domainModel": "Calendar, Rule, Template, Reference",
     "acceptanceTests": [
       "SH-06-F01",
@@ -4225,10 +5397,10 @@
       "SH-06-D01",
       "SH-06-D02"
     ],
-    "frontend": "partial: department reference creation and browse",
-    "backend": "partial: validated effective department creation; other configuration planned",
-    "verification": "verified department subset; remaining configuration open",
-    "reason": "Department reference workflow implemented; calendars, templates, other rules and reference edits remain Phase 2 scope.",
+    "frontend": "partial: department/position/benefit references and dated template creation/revision/retirement",
+    "backend": "partial: validated effective references and append-only template revisions; general calendars/rules/targeting planned",
+    "verification": "reference and document-template subsets verified; remaining configuration open",
+    "reason": "Creation/effective-date and template revision/retirement subsets implemented. Calendars, general rules, targeted templates, independent approval and other configuration remain Phase 2 scope.",
     "criteria": [
       {
         "id": "SH-06-F01",
@@ -4250,9 +5422,25 @@
         "id": "SH-06-F03",
         "sourceBehaviour": "Maintain templates",
         "acceptance": "Given an authorised configuration admin and valid scoped records, maintain templates through the settings workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: validated immutable dated reference and text-template revisions/retirement",
+        "verification": "131 Java, full 42 browser/API passed; OIDC-only skipped locally; 32-table/11-object restore and isolated API passed",
+        "phase": 2,
+        "documentTemplateSubset": {
+          "implementation": "immutable tenant text templates with effective-date completeness",
+          "verification": "119 Java, 40 browser/API passed; OIDC-only skipped locally; 30-table/9-object restore and isolated API passed",
+          "evidence": [
+            "DocumentTemplateWorkflowTest",
+            "tests/document-templates.spec.ts",
+            "scripts/restore_check.py",
+            "scripts/restore_application_check.py"
+          ]
+        },
+        "evidence": [
+          "DocumentMaintenanceWorkflowTest",
+          "tests/document-maintenance.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ]
       },
       {
         "id": "SH-06-F04",
@@ -4271,17 +5459,49 @@
         "id": "SH-06-B01",
         "sourceBehaviour": "Validate configuration",
         "acceptance": "Given an authorised configuration admin and valid scoped records, validate configuration through the settings workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: validated immutable dated reference and text-template revisions/retirement",
+        "verification": "131 Java, full 42 browser/API passed; OIDC-only skipped locally; 32-table/11-object restore and isolated API passed",
+        "phase": 2,
+        "documentTemplateSubset": {
+          "implementation": "immutable tenant text templates with effective-date completeness",
+          "verification": "119 Java, 40 browser/API passed; OIDC-only skipped locally; 30-table/9-object restore and isolated API passed",
+          "evidence": [
+            "DocumentTemplateWorkflowTest",
+            "tests/document-templates.spec.ts",
+            "scripts/restore_check.py",
+            "scripts/restore_application_check.py"
+          ]
+        },
+        "evidence": [
+          "DocumentMaintenanceWorkflowTest",
+          "tests/document-maintenance.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ]
       },
       {
         "id": "SH-06-B02",
         "sourceBehaviour": "Control effective dates",
         "acceptance": "Given an authorised configuration admin and valid scoped records, control effective dates through the settings workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: validated immutable dated reference and text-template revisions/retirement",
+        "verification": "131 Java, full 42 browser/API passed; OIDC-only skipped locally; 32-table/11-object restore and isolated API passed",
+        "phase": 2,
+        "documentTemplateSubset": {
+          "implementation": "immutable tenant text templates with effective-date completeness",
+          "verification": "119 Java, 40 browser/API passed; OIDC-only skipped locally; 30-table/9-object restore and isolated API passed",
+          "evidence": [
+            "DocumentTemplateWorkflowTest",
+            "tests/document-templates.spec.ts",
+            "scripts/restore_check.py",
+            "scripts/restore_application_check.py"
+          ]
+        },
+        "evidence": [
+          "DocumentMaintenanceWorkflowTest",
+          "tests/document-maintenance.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ]
       },
       {
         "id": "SH-06-D01",
@@ -4312,6 +5532,64 @@
       ],
       "verification": "23 Java and 13 browser/API/contract tests passed; OIDC skipped locally; new tables included in restore verification",
       "limits": "Immutable codes/names and creation only; up to 1000 references; latest 100 audit entries; parent creation supports hierarchy but no reorganisation, positions or effective-dated reference edits. DEMO initial cost centres require finance-owner configuration."
+    },
+    "positionEvidence": {
+      "phase": 2,
+      "workflow": "HR creates an immutable department-owned position; tenant members search/filter/sort/page current and planned position references; HR inspects configuration audit",
+      "implementation": "Position domain; OrganisationUseCases/Service; PositionQuery/Page; JDBC port; V12 migration; position catalogue/create UI; three implemented API operations",
+      "tests": [
+        "PositionWorkflowTest",
+        "DomainTest.positionRejectsInvalidFieldsWithoutEchoingInput",
+        "tests/positions.spec.ts"
+      ],
+      "verification": "44 Java tests, 20 browser/API/contract tests and six delivery checks passed; OIDC skipped in local suite. Synthetic 15-table restore and restored position APIs passed.",
+      "limits": "No employee position assignments, hierarchy/reporting edits or position changes. Creation is effective-dated, references immutable. Choices use up to 1000 department references; latest 100 audit entries. HR-02 remains partial."
+    },
+    "benefitsCatalogueEvidence": {
+      "phase": 2,
+      "workflow": "HR configures immutable demo benefit plan; employee views own employment eligibility and fixed monthly contribution preview",
+      "implementation": "Benefits modular capability with domain/app/ports/JDBC/web/config; published Core HR WorkforceAccess, shared domain error contract; V18/V19 plans/audit/rule snapshots; searchable/eligible-filtered/sorted/paged UI and validation recovery",
+      "tests": [
+        "BenefitsDomainTest",
+        "BenefitsWorkflowTest",
+        "ArchitectureTest.crossModuleInternalsAreForbidden",
+        "tests/benefits.spec.ts"
+      ],
+      "verification": "76 Java tests, 30 full browser/API/contract tests (OIDC skipped), final two benefits tests rerun after rule snapshot; recovery evidence in checkpoint",
+      "limits": "DEMONSTRATION rules only; USD/GBP/EUR, fixed monthly employee contribution, Active/On leave and configured service/start eligibility. Own snapshot only, 1000-plan guard/latest 100 audit. Dependants, selections/approvals, payroll deductions and validated company/country/entity rules remain open."
+    },
+    "documentTemplateEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentTemplateWorkflowTest",
+        "tests/document-templates.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "Document template config validates fixed code/text/date/required and retains immutable creation audit; no amendment/calendar/general-rules claim",
+      "verification": "119 Java, 40 browser/API passed; OIDC-only skipped locally; 30-table/9-object restore and isolated API passed"
+    },
+    "documentMaintenanceEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentMaintenanceWorkflowTest",
+        "tests/document-maintenance.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "Append-only effective configuration/retirement; current and future history separate",
+      "verification": "131 Java, full 42 browser/API passed; OIDC-only skipped locally; 32-table/11-object restore and isolated API passed"
+    },
+    "documentRetentionEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentRetentionWorkflowTest",
+        "tests/document-retention.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "HR-only private root governance, explicit policy basis/date and actor/identity/reason/time/correlation audit; other shared behaviours unchanged",
+      "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed"
     }
   },
   {
@@ -4505,6 +5783,16 @@
       ],
       "verification": "31 Java tests; 15 local browser/API/contract tests; final two hiring tests rerun against final backend; OIDC skipped in local suite",
       "limits": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+    },
+    "onboardingEvidence": {
+      "phase": 2,
+      "implementation": "Manual HR confirmation: Employee domain transition, HiringUseCases, atomic JDBC status/completion/pending event, V10/V11, confirmation UI and scoped profile employment history",
+      "tests": [
+        "OnboardingWorkflowTest",
+        "tests/z-onboarding.spec.ts"
+      ],
+      "verification": "35 Java tests and 17 local browser/API/contract tests passed; OIDC skipped in this local run; logical restore and restored API passed",
+      "limits": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100."
     }
   },
   {
@@ -4625,9 +5913,9 @@
     "roles": "employee, privacy officer",
     "workflow": "Privacy administration",
     "phase": 7,
-    "screen": "/privacy",
-    "api": "/api/v1/privacy",
-    "useCase": "PrivacyadministrationUseCases (planned)",
+    "screen": "/ (Documents / Retention and legal holds); privacy requests /privacy planned",
+    "api": "/api/v1/documents/{id}/retention; general /api/v1/privacy planned",
+    "useCase": "DocumentRetentionUseCases (local document subset); PrivacyAdministrationUseCases planned",
     "domainModel": "PrivacyRequest, Retention, LegalHold",
     "acceptanceTests": [
       "SH-10-F01",
@@ -4641,10 +5929,10 @@
       "SH-10-D01",
       "SH-10-D02"
     ],
-    "frontend": "not implemented",
-    "backend": "not implemented",
-    "verification": "not run",
-    "reason": "Scheduled Phase 7; all listed behaviours remain in scope.",
+    "frontend": "partial: HR-only chain policy/hold review/place/independent release; privacy requests planned",
+    "backend": "partial: explicit directive/hold journal and preservation review; no deletion/archive engine or general privacy workflows",
+    "verification": "local document-governance subset verified; general privacy administration incomplete",
+    "reason": "Early document-governance dependency delivered in Phase 2. General access/deletion requests, retention categories, legal-policy validation, anonymisation/deletion/archive enforcement remain Phase 7; no source-ID completion.",
     "criteria": [
       {
         "id": "SH-10-F01",
@@ -4682,17 +5970,31 @@
         "id": "SH-10-B01",
         "sourceBehaviour": "Apply retention",
         "acceptance": "Given an authorised employee, privacy officer and valid scoped records, apply retention through the privacy workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 7
+        "implementation": "partial: document-only explicit retain-until/independent legal-hold governance; no deletion execution",
+        "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed",
+        "phase": 2,
+        "evidence": [
+          "DocumentRetentionWorkflowTest",
+          "tests/document-retention.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Local employee text-document retention/hold governance only. Explicit company basis/date, independent HR release and immutable root journal; no deletion/archive/purge, authoritative category/country rules, production storage/encryption/signature freshness or full DS-01 completion."
       },
       {
         "id": "SH-10-B02",
         "sourceBehaviour": "Apply legal hold",
         "acceptance": "Given an authorised employee, privacy officer and valid scoped records, apply legal hold through the privacy workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 7
+        "implementation": "partial: document-only explicit retain-until/independent legal-hold governance; no deletion execution",
+        "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed",
+        "phase": 2,
+        "evidence": [
+          "DocumentRetentionWorkflowTest",
+          "tests/document-retention.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Local employee text-document retention/hold governance only. Explicit company basis/date, independent HR release and immutable root journal; no deletion/archive/purge, authoritative category/country rules, production storage/encryption/signature freshness or full DS-01 completion."
       },
       {
         "id": "SH-10-B03",
@@ -4730,6 +6032,17 @@
     "phases": [
       2,
       7
-    ]
+    ],
+    "documentRetentionEvidence": {
+      "phase": 2,
+      "tests": [
+        "DocumentRetentionWorkflowTest",
+        "tests/document-retention.spec.ts",
+        "scripts/restore_check.py",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "Local employee text-document retention/hold governance only. Explicit company basis/date, independent HR release and immutable root journal; no deletion/archive/purge, authoritative category/country rules, production storage/encryption/signature freshness or full DS-01 completion.",
+      "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed"
+    }
   }
 ]
