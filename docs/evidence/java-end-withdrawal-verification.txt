@@ -1,0 +1,7 @@
+Increment X — 2026-10-17
+Command: JAVA_HOME=<JDK21> mvn -f backend/pom.xml -Dmaven.repo.local=/private/tmp/atlas-m2 spotless:apply test
+Actual PostgreSQL / ClamAV; existing architecture negative fixtures included.
+{'tests': 195, 'failures': 0, 'errors': 0, 'skipped': 0}
+EndWithdrawalWorkflowTest: seven rollback-isolated tests for pending/rejected/approved effects, immutable history/handoffs, independent HR/alias/target/tenant guards, exact cutoff and one-nanosecond-before approval, snapshot/replay validation and resumed coordination.
+EndWithdrawalAccessHttpTest: fresh random-port HTTP + actual PostgreSQL/JDBC sessions, continued existing/alias/new sign-in after approved withdrawal, pending-cutoff denial and no late reactivation. Test-only clock; no runtime time-travel endpoint.
+Initial boundary test exposed PostgreSQL timestamp rounding across midnight. Audit instants now truncate down to microseconds; final complete suite passed.

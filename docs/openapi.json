@@ -3341,6 +3341,1276 @@
           }
         ]
       }
+    },
+    "/api/v1/resignations": {
+      "get": {
+        "summary": "Self/HR scoped resignation pages; HR tenant-wide, managers own only",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResignationPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "SUBMITTED",
+                "APPROVED",
+                "REJECTED"
+              ],
+              "default": "SUBMITTED"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 12
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Submit own resignation; stable identical replay, one outstanding case",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resignation"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitResignation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/resignations/{id}/decision": {
+      "post": {
+        "summary": "Independent HR decision; approval queues pending exit coordination only, identical decision replay supported",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resignation"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewResignation"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/resignations/{id}/history": {
+      "get": {
+        "summary": "Self/HR private immutable resignation history",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "maxItems": 2,
+                  "items": {
+                    "$ref": "#/components/schemas/ResignationAudit"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/exit-tasks": {
+      "get": {
+        "summary": "Own assigned tasks only, independent of HR/team role; server-calculated overdue state",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExitTaskPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "OPEN",
+                "COMPLETED",
+                "CANCELLED"
+              ],
+              "default": "ALL"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 12
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/resignations/{id}/tasks": {
+      "get": {
+        "summary": "HR-only case tasks; does not imply exit execution",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExitTaskCase"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Independent HR coordinates approved case; bounded ordinal and stable replay",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExitTaskItem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExitTask"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/exit-tasks/{id}/complete": {
+      "post": {
+        "summary": "Assigned employee records manual completion, stable replay and exact version; no automatic system actions",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExitTaskItem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteExitTask"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/exit-tasks/{id}/history": {
+      "get": {
+        "summary": "HR or assigned employee only; immutable operational task audit, no resignation reasons",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "maxItems": 2,
+                  "items": {
+                    "$ref": "#/components/schemas/ExitTaskAudit"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/exit-tasks/{id}/management": {
+      "post": {
+        "summary": "Independent HR reassigns or cancels open task with exact aggregate version; immutable event receipt supports stable replay",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExitTaskManagement"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManageExitTask"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/exit-tasks/{id}/management-history": {
+      "get": {
+        "summary": "HR-only immutable management journal; ordinary assignees cannot read private management reasons",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "maxItems": 100,
+                  "items": {
+                    "$ref": "#/components/schemas/ExitTaskManagement"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/resignations/{id}/employment-end": {
+      "get": {
+        "summary": "HR-only employment-end context, current employee version and open case/assigned tasks",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmploymentEndContext"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Independent HR confirms inclusive last-working-date employment end and local access cutoff, with pending final-pay/external identity handoffs",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmploymentEnd"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmEmploymentEnd"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/resignations/{id}/employment-end/withdrawals": {
+      "post": {
+        "summary": "Request pre-effective employment-end withdrawal",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndWithdrawal"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmEmploymentEnd"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/resignations/{id}/employment-end/withdrawals/{withdrawalId}/review": {
+      "post": {
+        "summary": "Review employment-end withdrawal",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndWithdrawal"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EndWithdrawalReview"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "withdrawalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/resignations/{id}/employment-end/rescheduling": {
+      "get": {
+        "summary": "Read private replacement-date context and history",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndRescheduleContext"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Request one replacement employment-end date",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndReschedule"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitEndReschedule"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/resignations/{id}/employment-end/rescheduling/{rescheduleId}/review": {
+      "post": {
+        "summary": "Independently review a replacement date",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndReschedule"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewEndReschedule"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rescheduleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/employees/{employee}/rehire": {
+      "get": {
+        "summary": "Read HR-only employment episodes and rehire history",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RehireContext"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Request first rehire into onboarding without restoring legacy access",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rehire"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitRehire"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/employees/{employee}/rehire/{id}/review": {
+      "post": {
+        "summary": "Independently review rehire into a new employment episode",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rehire"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRehire"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/employees/{employee}/rehire/activation": {
+      "get": {
+        "summary": "Read private onboarding/access review and mapped identity candidates",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RehireActivationContext"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Attest onboarding and request one fresh Employee-only local grant",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RehireActivation"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitRehireActivation"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/employees/{employee}/rehire/activation/{id}/review": {
+      "post": {
+        "summary": "Independently approve completion and one Employee-only local grant",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RehireActivation"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRehireActivation"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -5889,6 +7159,1714 @@
           "size",
           "asOf",
           "mode"
+        ],
+        "additionalProperties": false
+      },
+      "Resignation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "lastWorkingDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "SUBMITTED",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "requestedBy": {
+            "type": "string"
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "decidedBy": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewerEmployeeId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decidedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "lastWorkingDate",
+          "reason",
+          "status",
+          "requestedBy",
+          "employeeVersion",
+          "recordedAt",
+          "version",
+          "decidedBy",
+          "reviewerEmployeeId",
+          "comment",
+          "decidedAt"
+        ],
+        "additionalProperties": false
+      },
+      "ResignationPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Resignation"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
+        ],
+        "additionalProperties": false
+      },
+      "ResignationAudit": {
+        "type": "object",
+        "properties": {
+          "oldStatus": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "newStatus": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "oldStatus",
+          "newStatus",
+          "actor",
+          "reason",
+          "effectiveDate",
+          "recordedAt",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "SubmitResignation": {
+        "type": "object",
+        "properties": {
+          "lastWorkingDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "lastWorkingDate",
+          "reason",
+          "employeeVersion",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "ReviewResignation": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "decision",
+          "comment",
+          "version",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "ExitTask": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "assigneeId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "instructions": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "ordinal": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "COMPLETED",
+              "CANCELLED"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 101
+          },
+          "completedBy": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "completionComment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "completedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "requestId",
+          "employeeId",
+          "assigneeId",
+          "title",
+          "instructions",
+          "reason",
+          "createdBy",
+          "ordinal",
+          "dueDate",
+          "recordedAt",
+          "status",
+          "version",
+          "completedBy",
+          "completionComment",
+          "completedAt"
+        ],
+        "additionalProperties": false
+      },
+      "ExitTaskItem": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "$ref": "#/components/schemas/ExitTask"
+          },
+          "overdue": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "task",
+          "overdue"
+        ],
+        "additionalProperties": false
+      },
+      "ExitTaskPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/ExitTaskItem"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "asOf": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size",
+          "asOf"
+        ],
+        "additionalProperties": false
+      },
+      "ExitTaskCase": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/ExitTaskItem"
+            }
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 50
+          },
+          "asOf": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "items",
+          "version",
+          "asOf"
+        ],
+        "additionalProperties": false
+      },
+      "ExitTaskAudit": {
+        "type": "object",
+        "properties": {
+          "oldStatus": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "newStatus": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "oldStatus",
+          "newStatus",
+          "actor",
+          "reason",
+          "effectiveDate",
+          "recordedAt",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "CreateExitTask": {
+        "type": "object",
+        "properties": {
+          "assigneeId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "instructions": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "assigneeId",
+          "title",
+          "instructions",
+          "dueDate",
+          "reason",
+          "version",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "CompleteExitTask": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "comment",
+          "version",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "ManageExitTask": {
+        "type": "object",
+        "required": [
+          "action",
+          "reason",
+          "version",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "REASSIGN",
+              "CANCEL"
+            ]
+          },
+          "assigneeId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 40
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        }
+      },
+      "ExitTaskManagement": {
+        "type": "object",
+        "required": [
+          "taskId",
+          "oldAssigneeId",
+          "newAssigneeId",
+          "actor",
+          "actorEmployeeId",
+          "reason",
+          "correlationId",
+          "ordinal",
+          "action",
+          "oldStatus",
+          "newStatus",
+          "inputVersion",
+          "recordedAt"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "taskId": {
+            "type": "string"
+          },
+          "oldAssigneeId": {
+            "type": "string"
+          },
+          "newAssigneeId": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "actorEmployeeId": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "ordinal": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "REASSIGN",
+              "CANCEL"
+            ]
+          },
+          "oldStatus": {
+            "type": "string",
+            "enum": [
+              "OPEN"
+            ]
+          },
+          "newStatus": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "CANCELLED"
+            ]
+          },
+          "inputVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 99
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "EmploymentEnd": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "actorEmployeeId": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "oldStatus": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "lastWorkingDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "inactiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "inputVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "newVersion": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "newStatus": {
+            "type": "string",
+            "enum": [
+              "Ended"
+            ]
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "requestId",
+          "employeeId",
+          "actor",
+          "actorEmployeeId",
+          "reason",
+          "oldStatus",
+          "correlationId",
+          "lastWorkingDate",
+          "inactiveDate",
+          "inputVersion",
+          "newVersion",
+          "newStatus",
+          "recordedAt"
+        ],
+        "additionalProperties": false
+      },
+      "EmploymentEndContext": {
+        "type": "object",
+        "properties": {
+          "record": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EmploymentEnd"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "NOT_SCHEDULED",
+              "SCHEDULED",
+              "EFFECTIVE",
+              "WITHDRAWN"
+            ]
+          },
+          "inactiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "openTasks": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "withdrawals": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/EndWithdrawal"
+            }
+          },
+          "currentRecord": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EmploymentEnd"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "replaced": {
+            "type": "boolean"
+          },
+          "replacementReviewOpen": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "record",
+          "phase",
+          "inactiveDate",
+          "employeeVersion",
+          "openTasks",
+          "withdrawals",
+          "currentRecord",
+          "replaced",
+          "replacementReviewOpen"
+        ],
+        "additionalProperties": false
+      },
+      "ConfirmEmploymentEnd": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "EndWithdrawal": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "requestId",
+          "employeeId",
+          "actor",
+          "actorEmployeeId",
+          "reason",
+          "recordedAt",
+          "correlationId",
+          "inputVersion",
+          "status",
+          "reviewer",
+          "reviewerEmployeeId",
+          "comment",
+          "reviewedAt",
+          "reviewCorrelationId",
+          "reviewVersion"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "actorEmployeeId": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "inputVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "SUBMITTED",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "reviewer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewerEmployeeId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewedAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewCorrelationId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewVersion": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      },
+      "EndWithdrawalReview": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "REJECTED"
+            ]
+          }
+        },
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey",
+          "decision"
+        ],
+        "additionalProperties": false
+      },
+      "EndReschedule": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "requestId",
+          "employeeId",
+          "lastWorkingDate",
+          "oldStatus",
+          "actor",
+          "actorEmployeeId",
+          "reason",
+          "recordedAt",
+          "correlationId",
+          "priorInactiveDate",
+          "inputVersion",
+          "status",
+          "reviewer",
+          "reviewerEmployeeId",
+          "comment",
+          "reviewedAt",
+          "reviewCorrelationId",
+          "reviewVersion"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "lastWorkingDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "oldStatus": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "actorEmployeeId": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "priorInactiveDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "inputVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "SUBMITTED",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "reviewer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewerEmployeeId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewedAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewCorrelationId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewVersion": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      },
+      "EndRescheduleContext": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "currentSchedule",
+          "employeeVersion",
+          "withdrawalPending",
+          "history"
+        ],
+        "properties": {
+          "currentSchedule": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EmploymentEnd"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "withdrawalPending": {
+            "type": "boolean"
+          },
+          "history": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/EndReschedule"
+            }
+          }
+        }
+      },
+      "SubmitEndReschedule": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          },
+          "lastWorkingDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey",
+          "lastWorkingDate"
+        ],
+        "additionalProperties": false
+      },
+      "ReviewEndReschedule": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "REJECTED"
+            ]
+          }
+        },
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey",
+          "decision"
+        ],
+        "additionalProperties": false
+      },
+      "Rehire": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "employeeId",
+          "startDate",
+          "title",
+          "department",
+          "location",
+          "managerId",
+          "priorInactiveDate",
+          "actor",
+          "actorEmployeeId",
+          "reason",
+          "recordedAt",
+          "correlationId",
+          "inputVersion",
+          "status",
+          "reviewer",
+          "reviewerEmployeeId",
+          "comment",
+          "reviewedAt",
+          "reviewCorrelationId",
+          "reviewVersion"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "title": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "managerId": {
+            "type": "string"
+          },
+          "priorInactiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "actorEmployeeId": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "inputVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "SUBMITTED",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "reviewer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewerEmployeeId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewedAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewCorrelationId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewVersion": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      },
+      "EmploymentEpisode": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "number",
+          "startDate",
+          "inactiveDate",
+          "state",
+          "source",
+          "requestId",
+          "recordedAt"
+        ],
+        "properties": {
+          "number": {
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ]
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "inactiveDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "SCHEDULED",
+              "ENDED",
+              "CURRENT",
+              "ONBOARDING",
+              "ACTIVE"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "ORIGINAL",
+              "REHIRE"
+            ]
+          },
+          "requestId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "recordedAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "RehireContext": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "employeeId",
+          "employeeVersion",
+          "employmentStatus",
+          "priorInactiveDate",
+          "legacyAccessBlocked",
+          "episodes",
+          "history"
+        ],
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "employmentStatus": {
+            "type": "string"
+          },
+          "priorInactiveDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "legacyAccessBlocked": {
+            "type": "boolean",
+            "description": "True when an approved rehire imposes an additional legacy-identity hold. False does not imply sign-in eligibility; ended employment is independently denied."
+          },
+          "episodes": {
+            "type": "array",
+            "maxItems": 2,
+            "items": {
+              "$ref": "#/components/schemas/EmploymentEpisode"
+            }
+          },
+          "history": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/Rehire"
+            }
+          }
+        }
+      },
+      "SubmitRehire": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "title": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "managerId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey",
+          "startDate",
+          "title",
+          "department",
+          "location",
+          "managerId"
+        ],
+        "additionalProperties": false
+      },
+      "ReviewRehire": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "REJECTED"
+            ]
+          }
+        },
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey",
+          "decision"
+        ],
+        "additionalProperties": false
+      },
+      "RehireActivation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "rehireId",
+          "employeeId",
+          "subject",
+          "reason",
+          "actor",
+          "actorEmployeeId",
+          "recordedAt",
+          "correlationId",
+          "inputVersion",
+          "status",
+          "reviewer",
+          "reviewerEmployeeId",
+          "comment",
+          "reviewedAt",
+          "reviewCorrelationId",
+          "reviewVersion"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "rehireId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "actorEmployeeId": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "inputVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "SUBMITTED",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "reviewer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewerEmployeeId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewedAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewCorrelationId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewVersion": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      },
+      "RehireCompletion": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "activationId",
+          "rehireId",
+          "employeeId",
+          "subject",
+          "actor",
+          "reason",
+          "recordedAt",
+          "correlationId",
+          "role",
+          "effectiveDate",
+          "inputVersion",
+          "newVersion"
+        ],
+        "properties": {
+          "activationId": {
+            "type": "string"
+          },
+          "rehireId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "const": "EMPLOYEE"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "inputVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "newVersion": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "RehireActivationContext": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rehireId",
+          "employeeId",
+          "startDate",
+          "employmentStatus",
+          "employeeVersion",
+          "identities",
+          "completion",
+          "history"
+        ],
+        "properties": {
+          "rehireId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "employmentStatus": {
+            "type": "string"
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "identities": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string"
+            }
+          },
+          "completion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RehireCompletion"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "history": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/RehireActivation"
+            }
+          }
+        }
+      },
+      "SubmitRehireActivation": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          }
+        },
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey",
+          "subject"
+        ],
+        "additionalProperties": false
+      },
+      "ReviewRehireActivation": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "REJECTED"
+            ]
+          }
+        },
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey",
+          "decision"
         ],
         "additionalProperties": false
       }

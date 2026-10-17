@@ -122,6 +122,12 @@ public final class HiringService implements HiringUseCases {
   private void validateReferences(Actor actor, HireDetails details) {
     organisation.requireDepartment(actor, details.department(), details.startDate());
     var manager = people.employee(actor, details.managerId(), details.startDate(), false);
+    if (people.employmentEndDate(actor.tenant(), manager.id()).isPresent())
+      throw new ChangeRequest.Validation(
+          Map.of("managerId", "Choose a manager without a scheduled employment end."));
+    if (manager.status().equals("Ended"))
+      throw new ChangeRequest.Validation(
+          Map.of("managerId", "Choose a manager active on the hire start date."));
     if (manager.startDate().isAfter(details.startDate()))
       throw new ChangeRequest.Validation(
           Map.of("managerId", "The reporting manager must have started by the hire date."));

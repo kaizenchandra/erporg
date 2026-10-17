@@ -271,9 +271,9 @@
     "roles": "HR, manager",
     "workflow": "Organisation structure",
     "phase": 2,
-    "screen": "/ (People / Organisation view / department reference / position catalogue)",
-    "api": "/api/v1/organisation/departments, /api/v1/organisation/history, /api/v1/organisation/positions, /api/v1/organisation/positions/history, /api/v1/requests (positionCode), /api/v1/requests/{id}/decision, /api/v1/employees/{id}/history, /api/v1/reporting/managers, /api/v1/requests (managerId)",
-    "useCase": "OrganisationUseCases / OrganisationService and PeopleUseCases / PeopleService",
+    "screen": "/ (People / Organisation view / scoped chart / department references / position catalogue)",
+    "api": "/api/v1/organisation/departments, /api/v1/organisation/history, /api/v1/organisation/positions, /api/v1/organisation/positions/history, /api/v1/requests (positionCode), /api/v1/requests/{id}/decision, /api/v1/employees/{id}/history, /api/v1/reporting/managers, /api/v1/requests (managerId), /api/v1/organisation/chart",
+    "useCase": "OrganisationUseCases / OrganisationService and PeopleUseCases / PeopleService; OrganisationBrowseUseCases/Service",
     "domainModel": "Department, Position, ReportingLine",
     "acceptanceTests": [
       "HR-02-F01",
@@ -284,20 +284,28 @@
       "HR-02-B02",
       "HR-02-B03",
       "HR-02-D01",
-      "HR-02-D02"
+      "HR-02-D02",
+      "HR-02-D03",
+      "HR-02-D04"
     ],
-    "frontend": "partial: departments, employee reporting preview and position catalogue/create",
-    "backend": "partial: department/position references, validation, tenant scopes and atomic audit",
-    "verification": "verified department subset; chart/position/hierarchy editing open",
-    "reason": "Effective-dated primary positions and reporting changes implemented with approval and cycle validation. Full charts, reference editing, root/matrix/delegated reporting and bulk hierarchy reorganisation remain open.",
+    "frontend": "partial: backend-scoped chart roots/branches/search/profile plus configuration/assignment workflows",
+    "backend": "partial: effective scoped hierarchy read snapshots and existing configuration/approval/assignment rules",
+    "verification": "scoped chart/configuration/assignment subsets verified; full HR-02 remains partial",
+    "reason": "Scoped current single-manager branch browsing only. Matrix/delegated lines, root removal, bulk/combined reorganisation, capacity rules and other tracked hierarchy maintenance remain open; no workload performance or complete HR-02 claim.",
     "criteria": [
       {
         "id": "HR-02-F01",
         "sourceBehaviour": "Browse organisation charts",
         "acceptance": "Given an authorised HR, manager and valid scoped records, browse organisation charts through the organisation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "implemented scoped single-manager branch/chart subset",
+        "verification": "151 Java, full 48 browser/API passed; OIDC-only skipped locally; targeted 4 passed (7.6s); fresh 33-table/13-object restore and isolated API passed",
+        "phase": 2,
+        "evidence": [
+          "OrganisationChartWorkflowTest",
+          "tests/organisation-chart.spec.ts",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Scoped current single-manager branch browsing only. Matrix/delegated lines, root removal, bulk/combined reorganisation, capacity rules and other tracked hierarchy maintenance remain open; no workload performance or complete HR-02 claim."
       },
       {
         "id": "HR-02-F02",
@@ -330,15 +338,18 @@
         "id": "HR-02-F04",
         "sourceBehaviour": "Browse reporting relationships",
         "acceptance": "Given an authorised HR, manager and valid scoped records, browse reporting relationships through the organisation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "partial: single-manager effective reporting and cycle rules",
-        "verification": "subset tests recorded in checkpoint",
+        "implementation": "implemented scoped single-manager branch/chart subset",
+        "verification": "151 Java, full 48 browser/API passed; OIDC-only skipped locally; targeted 4 passed (7.6s); fresh 33-table/13-object restore and isolated API passed",
         "phase": 2,
         "evidence": [
           "ReportingWorkflowTest",
           "DomainTest.reportingHierarchyRejectsCyclesAndDateBoundaries",
-          "tests/reporting.spec.ts"
+          "tests/reporting.spec.ts",
+          "OrganisationChartWorkflowTest",
+          "tests/organisation-chart.spec.ts",
+          "scripts/restore_application_check.py"
         ],
-        "limitation": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
+        "limitation": "Scoped current single-manager branch browsing only. Matrix/delegated lines, root removal, bulk/combined reorganisation, capacity rules and other tracked hierarchy maintenance remain open; no workload performance or complete HR-02 claim."
       },
       {
         "id": "HR-02-B01",
@@ -396,6 +407,34 @@
         "implementation": "not implemented",
         "verification": "not run",
         "phase": 2
+      },
+      {
+        "id": "HR-02-D03",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Browse roots/current direct-report branches and global authorised name/ID/title/department search beyond directory filters/page and beyond 1000 employees. Validate parent/search exclusivity and bounded pagination, stable lower-case-name/ID order. HR tenant hierarchy, manager self/direct reports, employee self; deny altered parent/tenant/role and omit hidden manager identities/descendant counts. Node DTO contains only ID/name/title/department/position/status and visible report count.",
+        "implementation": "implemented scoped branch-read subset",
+        "verification": "151 Java, full 48 browser/API passed; OIDC-only skipped locally; targeted 4 passed (7.6s); fresh 33-table/13-object restore and isolated API passed",
+        "evidence": [
+          "OrganisationChartWorkflowTest",
+          "tests/organisation-chart.spec.ts",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Scoped current single-manager branch browsing only. Matrix/delegated lines, root removal, bulk/combined reorganisation, capacity rules and other tracked hierarchy maintenance remain open; no workload performance or complete HR-02 claim."
+      },
+      {
+        "id": "HR-02-D04",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Resolve actor and effective name/title/department/position/reporting/context/counts using one current UTC date and read-only repeatable snapshot. Approved future changes appear only on effective date. UI supports branch/root/recent-back/search/page context and separately reauthorised profile opening; cancel delayed real responses on navigation/identity change and preserve chart after profile close. Verify keyboard/mobile/axe, empty/denied recovery, live contracts and restored minimal scoped chart reads; no new writes or graph export.",
+        "implementation": "implemented scoped branch-read subset",
+        "verification": "151 Java, full 48 browser/API passed; OIDC-only skipped locally; targeted 4 passed (7.6s); fresh 33-table/13-object restore and isolated API passed",
+        "evidence": [
+          "OrganisationChartWorkflowTest",
+          "tests/organisation-chart.spec.ts",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Scoped current single-manager branch browsing only. Matrix/delegated lines, root removal, bulk/combined reorganisation, capacity rules and other tracked hierarchy maintenance remain open; no workload performance or complete HR-02 claim."
       }
     ],
     "phases": [
@@ -446,6 +485,16 @@
       ],
       "verification": "58 Java tests; 24 full browser/API/contract tests (OIDC skipped); final two reporting tests rerun after label refinement; six delivery checks; 17-table synthetic restore/restored API passed.",
       "limits": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
+    },
+    "organisationChartEvidence": {
+      "phase": 2,
+      "tests": [
+        "OrganisationChartWorkflowTest",
+        "tests/organisation-chart.spec.ts",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "Scoped current single-manager branch browsing only. Matrix/delegated lines, root removal, bulk/combined reorganisation, capacity rules and other tracked hierarchy maintenance remain open; no workload performance or complete HR-02 claim.",
+      "verification": "151 Java, full 48 browser/API passed; OIDC-only skipped locally; targeted 4 passed (7.6s); fresh 33-table/13-object restore and isolated API passed"
     }
   },
   {
@@ -836,6 +885,16 @@
       ],
       "verification": "58 Java tests; 24 full browser/API/contract tests (OIDC skipped); final two reporting tests rerun after label refinement; six delivery checks; 17-table synthetic restore/restored API passed.",
       "limits": "Provisional manager eligibility requires configured HR/MANAGER role. One reporting manager, no root removal, matrix/delegated lines or bulk reorganisation. Graph guard: 10000 employees/256 future boundaries; no performance claim. Requesters retain their own non-private submitted requests after team reassignment."
+    },
+    "organisationChartEvidence": {
+      "phase": 2,
+      "tests": [
+        "OrganisationChartWorkflowTest",
+        "tests/organisation-chart.spec.ts",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "Minimal effective organisational nodes with existing record/tenant scopes, UTC date display and profile reauthorisation; other source behaviours unchanged",
+      "verification": "151 Java, full 48 browser/API passed; OIDC-only skipped locally; targeted 4 passed (7.6s); fresh 33-table/13-object restore and isolated API passed"
     }
   },
   {
@@ -844,10 +903,10 @@
     "roles": "HR, IT, payroll",
     "workflow": "Employment lifecycle",
     "phase": 2,
-    "screen": "/ (People / Hiring / submit and review dialogs)",
-    "api": "/api/v1/hiring/requests, /api/v1/hiring/requests/{id}/decision, /api/v1/hiring/requests/{id}/history, /api/v1/hiring/requests/{id}/complete-onboarding, /api/v1/hiring/requests/employees/{id}/employment-history",
-    "useCase": "HiringUseCases / HiringService; other lifecycle use cases planned",
-    "domainModel": "Employment, LifecycleRequest",
+    "screen": "/ (People / Hiring, profile employment history and Resignations), My exit tasks",
+    "api": "/api/v1/hiring/requests, /api/v1/hiring/requests/{id}/decision, /api/v1/hiring/requests/{id}/history, /api/v1/hiring/requests/{id}/complete-onboarding, /api/v1/hiring/requests/employees/{id}/employment-history, /api/v1/resignations, /api/v1/resignations/{id}/decision, /api/v1/resignations/{id}/history, /api/v1/resignations/{id}/tasks, /api/v1/exit-tasks, /api/v1/exit-tasks/{id}/complete, /api/v1/exit-tasks/{id}/history, /api/v1/exit-tasks/{id}/management, /api/v1/exit-tasks/{id}/management-history, /api/v1/resignations/{id}/employment-end, /api/v1/resignations/{id}/employment-end/withdrawals, /api/v1/resignations/{id}/employment-end/withdrawals/{withdrawalId}/review, /api/v1/resignations/{id}/employment-end/rescheduling, /api/v1/resignations/{id}/employment-end/rescheduling/{rescheduleId}/review, /api/v1/employees/{employee}/rehire, /api/v1/employees/{employee}/rehire/{id}/review, /api/v1/employees/{employee}/rehire/activation, /api/v1/employees/{employee}/rehire/activation/{id}/review",
+    "useCase": "HiringUseCases / HiringService; ResignationUseCases / ResignationService; remaining lifecycle use cases planned; ExitTaskUseCases / ExitTaskService; EmploymentEndUseCases / EmploymentEndService, EndRescheduleUseCases / EndRescheduleService, RehireUseCases / RehireService, RehireActivationUseCases / RehireActivationService",
+    "domainModel": "Employee, HireRequest, Resignation, immutable audit, pending exit handoff, ExitTask, ExitTask management journal/current assignment, EmploymentEnd, effective status and pending final-pay/external-identity handoffs, EndWithdrawal, EndReschedule, Rehire, RehireDetails, EmploymentEpisode, RehireActivation, RehireCompletion, fresh access grant",
     "acceptanceTests": [
       "HR-05-F01",
       "HR-05-F02",
@@ -859,12 +918,28 @@
       "HR-05-B03",
       "HR-05-B04",
       "HR-05-D01",
-      "HR-05-D02"
+      "HR-05-D02",
+      "HR-05-D03",
+      "HR-05-D04",
+      "HR-05-D05",
+      "HR-05-D06",
+      "HR-05-D07",
+      "HR-05-D08",
+      "HR-05-D09",
+      "HR-05-D10",
+      "HR-05-D11",
+      "HR-05-D12",
+      "HR-05-D13",
+      "HR-05-D14",
+      "HR-05-D15",
+      "HR-05-D16",
+      "HR-05-D17",
+      "HR-05-D18"
     ],
-    "frontend": "partial: hiring and manual onboarding confirmation with employment history",
-    "backend": "partial: approved hire and atomic Onboarding to Active confirmation",
-    "verification": "verified hiring subset; remaining lifecycle/dependent consumers open",
-    "reason": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100.",
+    "frontend": "partial: hire/onboarding, resignation/tasks/end, withdrawal/replacement and reviewed rehire planning with episode history",
+    "backend": "partial: effective lifecycle plus immutable rehire onboarding episode and legacy identity hold; provisioning/completion/consumers pending",
+    "verification": "verified hiring/onboarding/resignation/tasks and voluntary employment-end/local denial subsets; remaining lifecycle and downstream consumers open",
+    "reason": "Approved voluntary-resignation employment end and local denial work with retained history. Involuntary termination, schedule correction/withdrawal, rehire, final pay and external IdP delivery remain open. Pre-effective end withdrawal added in X; amendment/rescheduling, resignation withdrawal, rehire and broader termination remain open. Y adds one independently reviewed replacement date on a current/withdrawn schedule; rehire, involuntary termination and further replacement control remain open. Z adds first rehire into a new Onboarding episode with legacy identities blocked; completion/provisioning/repeated cycles remain open. Reviewed first-rehire completion and one fresh Employee-only identity now implemented. Repeated cycles, grant revocation/replacement, external provider and payroll/benefit consumers remain open.",
     "criteria": [
       {
         "id": "HR-05-F01",
@@ -878,15 +953,25 @@
           "RequestGuardTest",
           "tests/z-hiring.spec.ts"
         ],
-        "limitation": "New employees remain Onboarding. Start-date activation, identity accounts, payroll consumer, rehire/resignation/termination and combined cross-module approval inbox remain open. Second HR reviewer is synthetic local only."
+        "limitation": "Hiring and manual Onboarding-to-Active transition implemented. Resignation acceptance leaves employment status unchanged. Automatic activation, rehire, termination and dependent consumers remain open."
       },
       {
         "id": "HR-05-F02",
         "sourceBehaviour": "Process rehire",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, process rehire through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: first rehire, reviewed onboarding completion and fresh Employee-only local access",
+        "verification": "verified bounded Z planning/episode subset: actual PostgreSQL/HTTP date/access tests, live browser/contracts/axe, separate OIDC compatibility and restored episode/history/pending state; completion/provisioning remain open",
+        "phase": 2,
+        "evidence": [
+          "RehireWorkflowTest",
+          "RehireAccessHttpTest",
+          "tests/zzzzzzz-rehire.spec.ts",
+          "docs/evidence/java-rehire-verification.txt",
+          "docs/evidence/rehire-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "One rehire episode only; manual completion attestation; external identity, payroll/benefits, legal prior-service policies and repeated cycles remain open."
       },
       {
         "id": "HR-05-F03",
@@ -900,66 +985,114 @@
         "id": "HR-05-F04",
         "sourceBehaviour": "Process resignation",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, process resignation through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: resignation to assigned exit tasks and effective local employment end",
+        "verification": "verified bounded W subset: actual PostgreSQL and HTTP cutoff/session test, browser scheduling/contracts/axe, separate OIDC compatibility and restored context; see checkpoint",
+        "phase": 2,
+        "evidence": [
+          "ResignationWorkflowTest",
+          "tests/resignations.spec.ts",
+          "docs/evidence/resignation-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json",
+          "EmploymentEndWorkflowTest",
+          "EmploymentAccessHttpTest",
+          "tests/zzzz-employment-end.spec.ts"
+        ],
+        "limitation": "Voluntary resignation end only; provisional inclusive day/UTC convention. No amendment/withdrawal, rehire, involuntary termination, statutory final-pay calculation, external IdP disable/session revocation, unused-session sweep or live delivery. Production policy/rollout remain unverified."
       },
       {
         "id": "HR-05-F05",
         "sourceBehaviour": "Process termination",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, process termination through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: approved voluntary employment end only; no involuntary termination",
+        "verification": "verified bounded W subset: actual PostgreSQL and HTTP cutoff/session test, browser scheduling/contracts/axe, separate OIDC compatibility and restored context; see checkpoint",
+        "phase": 2,
+        "limitation": "Voluntary resignation end only; provisional inclusive day/UTC convention. No amendment/withdrawal, rehire, involuntary termination, statutory final-pay calculation, external IdP disable/session revocation, unused-session sweep or live delivery. Production policy/rollout remain unverified.",
+        "evidence": [
+          "EmploymentEndWorkflowTest",
+          "EmploymentAccessHttpTest",
+          "tests/zzzz-employment-end.spec.ts"
+        ]
       },
       {
         "id": "HR-05-B01",
         "sourceBehaviour": "Maintain employment status",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, maintain employment status through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "partial",
-        "verification": "manual onboarding subset verified",
+        "implementation": "partial: hiring/onboarding and effective Ended status with retained history",
+        "verification": "verified bounded W subset: actual PostgreSQL and HTTP cutoff/session test, browser scheduling/contracts/axe, separate OIDC compatibility and restored context; see checkpoint",
         "phase": 2,
         "evidence": [
           "OnboardingWorkflowTest",
-          "tests/z-onboarding.spec.ts"
+          "tests/z-onboarding.spec.ts",
+          "EmploymentEndWorkflowTest",
+          "EmploymentAccessHttpTest",
+          "tests/zzzz-employment-end.spec.ts"
         ],
-        "limitation": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100."
+        "limitation": "Voluntary resignation end only; provisional inclusive day/UTC convention. No amendment/withdrawal, rehire, involuntary termination, statutory final-pay calculation, external IdP disable/session revocation, unused-session sweep or live delivery. Production policy/rollout remain unverified."
       },
       {
         "id": "HR-05-B02",
         "sourceBehaviour": "Trigger dependent HR tasks",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, trigger dependent hr tasks through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: real manual exit tasks; terminal-task guard before employment end",
+        "verification": "verified bounded W subset: actual PostgreSQL and HTTP cutoff/session test, browser scheduling/contracts/axe, separate OIDC compatibility and restored context; see checkpoint",
+        "phase": 2,
+        "evidence": [
+          "ExitTaskWorkflowTest",
+          "tests/zz-exit-tasks.spec.ts",
+          "docs/evidence/java-exit-task-verification.txt",
+          "docs/evidence/exit-task-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json",
+          "ExitTaskManagementWorkflowTest",
+          "tests/zzz-task-management.spec.ts",
+          "EmploymentEndWorkflowTest",
+          "EmploymentAccessHttpTest",
+          "tests/zzzz-employment-end.spec.ts"
+        ],
+        "limitation": "Voluntary resignation end only; provisional inclusive day/UTC convention. No amendment/withdrawal, rehire, involuntary termination, statutory final-pay calculation, external IdP disable/session revocation, unused-session sweep or live delivery. Production policy/rollout remain unverified."
       },
       {
         "id": "HR-05-B03",
         "sourceBehaviour": "Trigger payroll workflows",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, trigger payroll workflows through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: unique pending FINAL_PAY handoff only; no payroll consumer",
+        "verification": "verified bounded W subset: actual PostgreSQL and HTTP cutoff/session test, browser scheduling/contracts/axe, separate OIDC compatibility and restored context; see checkpoint",
+        "phase": 2,
+        "limitation": "Voluntary resignation end only; provisional inclusive day/UTC convention. No amendment/withdrawal, rehire, involuntary termination, statutory final-pay calculation, external IdP disable/session revocation, unused-session sweep or live delivery. Production policy/rollout remain unverified.",
+        "evidence": [
+          "EmploymentEndWorkflowTest",
+          "EmploymentAccessHttpTest",
+          "tests/zzzz-employment-end.spec.ts"
+        ]
       },
       {
         "id": "HR-05-B04",
         "sourceBehaviour": "Trigger access workflows",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, trigger access workflows through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "not implemented",
-        "verification": "not run",
-        "phase": 2
+        "implementation": "partial: local sign-in and every authenticated request enforce cutoff, pending external-identity handoff only",
+        "verification": "verified bounded W subset: actual PostgreSQL and HTTP cutoff/session test, browser scheduling/contracts/axe, separate OIDC compatibility and restored context; see checkpoint",
+        "phase": 2,
+        "limitation": "Voluntary resignation end only; provisional inclusive day/UTC convention. No amendment/withdrawal, rehire, involuntary termination, statutory final-pay calculation, external IdP disable/session revocation, unused-session sweep or live delivery. Production policy/rollout remain unverified.",
+        "evidence": [
+          "EmploymentEndWorkflowTest",
+          "EmploymentAccessHttpTest",
+          "tests/zzzz-employment-end.spec.ts"
+        ]
       },
       {
         "id": "HR-05-D01",
         "derived": true,
         "acceptance": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
         "implementation": "partial",
-        "verification": "manual onboarding subset verified",
+        "verification": "onboarding and resignation subsets verified; see checkpoint",
         "phase": 2,
-        "limitation": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100.",
+        "limitation": "Resignation acceptance queues exit coordination only. Full rehire/termination, exit tasks, final pay, dated access revocation, withdrawal/amendment and combined lifecycle changes remain open.",
         "evidence": [
           "OnboardingWorkflowTest",
-          "tests/z-onboarding.spec.ts"
+          "tests/z-onboarding.spec.ts",
+          "ResignationWorkflowTest",
+          "tests/resignations.spec.ts"
         ]
       },
       {
@@ -967,13 +1100,287 @@
         "derived": true,
         "acceptance": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
         "implementation": "partial",
-        "verification": "manual onboarding subset verified",
+        "verification": "onboarding and resignation subsets verified; see checkpoint",
         "phase": 2,
-        "limitation": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100.",
+        "limitation": "Resignation acceptance queues exit coordination only. Full rehire/termination, exit tasks, final pay, dated access revocation, withdrawal/amendment and combined lifecycle changes remain open.",
         "evidence": [
           "OnboardingWorkflowTest",
-          "tests/z-onboarding.spec.ts"
+          "tests/z-onboarding.spec.ts",
+          "ResignationWorkflowTest",
+          "tests/resignations.spec.ts"
         ]
+      },
+      {
+        "id": "HR-05-D03",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Self resignation accepts a bounded proposed date/reason and exact employee version; own/HR private pages/history only. Independent HR subject and employee review. Direct API role/tenant/header alteration and same-employee alias cannot bypass scope.",
+        "implementation": "implemented bounded resignation subset",
+        "verification": "verified bounded subset: PostgreSQL, live API/OpenAPI, browser, axe and fresh restored API; see increment T evidence",
+        "evidence": [
+          "ResignationWorkflowTest",
+          "tests/resignations.spec.ts",
+          "docs/evidence/resignation-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "Self submission and independent HR review only. Approval records pending exit coordination; no termination, final pay, exit tasks or access removal. No withdrawal/amendment, on-behalf request or statutory notice calculation. Active/on-leave only; one outstanding case per employee."
+      },
+      {
+        "id": "HR-05-D04",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Stable/conflicting command replay and concurrent request-version decisions yield one terminal outcome. Stale employee/date blocks approval but permits rejection and resubmission. Immutable snapshot/audit and deferred SQL reconciliation enforce one pending exit handoff and requester notification; employment/access remain unchanged.",
+        "implementation": "implemented bounded resignation subset",
+        "verification": "verified bounded subset: PostgreSQL, live API/OpenAPI, browser, axe and fresh restored API; see increment T evidence",
+        "evidence": [
+          "ResignationWorkflowTest",
+          "tests/resignations.spec.ts",
+          "docs/evidence/resignation-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "Self submission and independent HR review only. Approval records pending exit coordination; no termination, final pay, exit tasks or access removal. No withdrawal/amendment, on-behalf request or statutory notice calculation. Active/on-leave only; one outstanding case per employee."
+      },
+      {
+        "id": "HR-05-D05",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Independent HR coordinator creates a bounded sequential task on an approved resignation with existing tenant assignee identity, due date, instructions/reason, exact list version and stable key. Assignee-only paginated task reads/completion do not grant resignation reason, decision or whole-case access.",
+        "implementation": "implemented bounded manual task subset",
+        "verification": "verified bounded subset: actual PostgreSQL, live OpenAPI/API, browser/mobile/axe and fresh restored API; see increment U checkpoint",
+        "evidence": [
+          "ExitTaskWorkflowTest",
+          "tests/zz-exit-tasks.spec.ts",
+          "docs/evidence/java-exit-task-verification.txt",
+          "docs/evidence/exit-task-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "Manual tasks only; no reopening/instruction editing or automated dependencies. Employment termination, final pay, identity revocation and other lifecycle behaviours remain open. Reassignment/cancellation use retained management history and current assignment; cap 100 events/task."
+      },
+      {
+        "id": "HR-05-D06",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Exact task versions, stable/conflicting replay and competing assignments/completions commit one winner. Injected UTC overdue permits late completion. SQL rejects snapshot/owner/sequence/audit corruption; immutable task audit and private notifications reconcile. Completion is manual attestation and does not mutate employment, exit handoff, payroll or access.",
+        "implementation": "implemented bounded manual task subset",
+        "verification": "verified bounded subset: actual PostgreSQL, live OpenAPI/API, browser/mobile/axe and fresh restored API; see increment U checkpoint",
+        "evidence": [
+          "ExitTaskWorkflowTest",
+          "tests/zz-exit-tasks.spec.ts",
+          "docs/evidence/java-exit-task-verification.txt",
+          "docs/evidence/exit-task-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "Manual tasks only; no reopening/instruction editing or automated dependencies. Employment termination, final pay, identity revocation and other lifecycle behaviours remain open. Reassignment/cancellation use retained management history and current assignment; cap 100 events/task."
+      },
+      {
+        "id": "HR-05-D07",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Independent HR reassigns an OPEN task to a different configured tenant employee or cancels it with reason, exact aggregate version and stable key. Current assignment controls scoped lists/history/completion; former ordinary assignees lose future API reads. HR-only management journal preserves original task/audit and private reasons.",
+        "implementation": "implemented bounded management subset",
+        "verification": "verified bounded subset: PostgreSQL, live API/OpenAPI, browser/mobile/axe and restored current-projection/journal/privacy checks",
+        "evidence": [
+          "ExitTaskManagementWorkflowTest",
+          "tests/zzz-task-management.spec.ts",
+          "docs/evidence/java-task-management-verification.txt",
+          "docs/evidence/task-management-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "Manual tasks only; no reopening/instruction editing or automated dependencies. Employment termination, final pay, identity revocation and other lifecycle behaviours remain open."
+      },
+      {
+        "id": "HR-05-D08",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Management events are sequential/immutable and capped at 100; stable replay survives later completion without duplicate notification. Reassignment or cancellation racing completion yields one authorised winner. SQL rejects obsolete-assignee/cancelled completion and journal gaps/mutation. Restored current projection/journal/privacy reconcile; older assignment-unaware application rollback remains unsafe.",
+        "implementation": "implemented bounded management subset",
+        "verification": "verified bounded subset: PostgreSQL, live API/OpenAPI, browser/mobile/axe and restored current-projection/journal/privacy checks",
+        "evidence": [
+          "ExitTaskManagementWorkflowTest",
+          "tests/zzz-task-management.spec.ts",
+          "docs/evidence/java-task-management-verification.txt",
+          "docs/evidence/task-management-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "Manual tasks only; no reopening/instruction editing or automated dependencies. Employment termination, final pay, identity revocation and other lifecycle behaviours remain open."
+      },
+      {
+        "id": "HR-05-D09",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Independent HR confirms an approved voluntary resignation with current employee version, reason and stable key. Terminal own/assigned exit work and current/planned report ownership gate scheduling. Inclusive last day and next-day UTC inactive date are recorded immutably; replay/concurrency yield one schedule and two pending downstream targets, without statutory money or live external action.",
+        "implementation": "implemented voluntary employment-end/local access subset",
+        "verification": "verified bounded W subset: actual PostgreSQL and HTTP cutoff/session test, browser scheduling/contracts/axe, separate OIDC compatibility and restored context; see checkpoint",
+        "evidence": [
+          "EmploymentEndWorkflowTest",
+          "EmploymentAccessHttpTest",
+          "tests/zzzz-employment-end.spec.ts",
+          "docs/evidence/java-employment-end-verification.txt",
+          "docs/evidence/employment-end-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "Voluntary end only; provisional inclusive-day/UTC convention. X adds original-schedule withdrawal and Y adds one replacement date. Still no repeated replacement/withdrawal of replacement, rehire, involuntary termination, statutory final pay, external IdP disable/session revocation, unused-session sweep or live delivery. Production policy/rollout remain unverified."
+      },
+      {
+        "id": "HR-05-D10",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "At the injected inactive boundary, profile/directory/summary/chart project Ended and every mapped identity loses local sign-in/authenticated request access, including aliases and already persisted sessions. HR retains authorised history. New task/manager/post-end-effective changes fail; SQL history/handoffs and restored context reconcile. No job is required for local denial; external revocation/unused-session sweep remain open.",
+        "implementation": "implemented voluntary employment-end/local access subset",
+        "verification": "verified bounded W subset: actual PostgreSQL and HTTP cutoff/session test, browser scheduling/contracts/axe, separate OIDC compatibility and restored context; see checkpoint",
+        "evidence": [
+          "EmploymentEndWorkflowTest",
+          "EmploymentAccessHttpTest",
+          "tests/zzzz-employment-end.spec.ts",
+          "docs/evidence/java-employment-end-verification.txt",
+          "docs/evidence/employment-end-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "Voluntary end only; provisional inclusive-day/UTC convention. X adds original-schedule withdrawal and Y adds one replacement date. Still no repeated replacement/withdrawal of replacement, rehire, involuntary termination, statutory final pay, external IdP disable/session revocation, unused-session sweep or live delivery. Production policy/rollout remain unverified."
+      },
+      {
+        "id": "HR-05-D11",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "HR submits a pre-effective end withdrawal with exact employee version, reason and stable key; a different subject AND employee independently approves/rejects. Departing employee, aliases, role/tenant escalation, invalid versions, conflicting keys and competing decisions fail safely. Preserve original schedule and immutable bounded request/decision history; UI validation, unsaved input, errors, impact and private review context work against real APIs.",
+        "implementation": "implemented bounded pre-effective withdrawal subset",
+        "verification": "verified bounded X subset: actual PostgreSQL/HTTP cutoff tests, live browser/API/contracts/axe, independent OIDC compatibility and restored history/current views",
+        "evidence": [
+          "EndWithdrawalWorkflowTest",
+          "EndWithdrawalAccessHttpTest",
+          "tests/zzzzz-end-withdrawal.spec.ts",
+          "docs/evidence/java-end-withdrawal-verification.txt",
+          "docs/evidence/end-withdrawal-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "X implements withdrawal of the original schedule; Y adds one replacement. Withdrawal/further correction of the replacement, resignation withdrawal, post-cutoff reactivation, statutory final pay, rehire and external cancellation remain open."
+      },
+      {
+        "id": "HR-05-D12",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Pending/rejected withdrawals preserve the original cutoff. Approval strictly before cutoff requires unchanged employee snapshot, increments version, suppresses current schedule/handoffs and resumes task coordination. At/on cutoff approval cannot reactivate employment. Verify actual PostgreSQL and real HTTP persisted sessions/new login/aliases, immutable history, current projections, API privacy and restored state; no external cancellation claim.",
+        "implementation": "implemented bounded pre-effective withdrawal subset",
+        "verification": "verified bounded X subset: actual PostgreSQL/HTTP cutoff tests, live browser/API/contracts/axe, independent OIDC compatibility and restored history/current views",
+        "evidence": [
+          "EndWithdrawalWorkflowTest",
+          "EndWithdrawalAccessHttpTest",
+          "tests/zzzzz-end-withdrawal.spec.ts",
+          "docs/evidence/java-end-withdrawal-verification.txt",
+          "docs/evidence/end-withdrawal-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "X implements withdrawal of the original schedule; Y adds one replacement. Withdrawal/further correction of the replacement, resignation withdrawal, post-cutoff reactivation, statutory final pay, rehire and external cancellation remain open."
+      },
+      {
+        "id": "HR-05-D13",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "HR requests one replacement last working date on a current or withdrawn end, using exact employee version, reason and stable key. A different HR subject AND employee reviews; departing employee/aliases, non-HR/other tenant, invalid dates/versions, conflicting keys and concurrent decisions fail safely. At most twenty attempts, one pending review and one approved replacement; pending withdrawals/replacements mutually exclude each other. UI shows current/original dates, private immutable history, impact, inline errors, preserved values and unsaved/busy/focus handling.",
+        "implementation": "implemented bounded single replacement-date subset",
+        "verification": "verified bounded Y subset: actual PostgreSQL and HTTP session/date tests, live browser/API/contracts/mobile/axe, independent OIDC compatibility and restored history/current state",
+        "evidence": [
+          "EndRescheduleWorkflowTest",
+          "EndRescheduleAccessHttpTest",
+          "tests/zzzzzz-end-rescheduling.spec.ts",
+          "docs/evidence/java-end-rescheduling-verification.txt",
+          "docs/evidence/end-rescheduling-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "One approved replacement only; no further correction/withdrawal of replacement, employee resignation amendment, rehire/involuntary termination, statutory final pay or external consumers. Whole source remains partial."
+      },
+      {
+        "id": "HR-05-D14",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Pending/rejected replacement requests retain existing access. Before the current cutoff, approval revalidates unchanged snapshot, today/future proposed date, open case/assigned tasks and bounded future report handovers, then increments employee version. Current status/access/manager/task guards use the replacement date and two reconciled pending replacement handoffs; old history/handoffs remain suppressed. A withdrawn schedule may be rescheduled after its suppressed date; an effective current end cannot be moved to reactivate employment. Verify actual PostgreSQL, real HTTP sessions/aliases/new login at original and replacement cutoffs, live contracts/browser/mobile and restored current/history state.",
+        "implementation": "implemented bounded single replacement-date subset",
+        "verification": "verified bounded Y subset: actual PostgreSQL and HTTP session/date tests, live browser/API/contracts/mobile/axe, independent OIDC compatibility and restored history/current state",
+        "evidence": [
+          "EndRescheduleWorkflowTest",
+          "EndRescheduleAccessHttpTest",
+          "tests/zzzzzz-end-rescheduling.spec.ts",
+          "docs/evidence/java-end-rescheduling-verification.txt",
+          "docs/evidence/end-rescheduling-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "One approved replacement only; no further correction/withdrawal of replacement, employee resignation amendment, rehire/involuntary termination, statutory final pay or external consumers. Whole source remains partial."
+      },
+      {
+        "id": "HR-05-D15",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "After a current effective end, HR requests a first rehire with a today\u2013one-year start, configured new job/department/location/manager, reason, exact employee version and stable key. A different HR subject AND employee reviews; neither is the returning employee. One pending/approved request and twenty attempts. Reject unsafe dates/versions, stale snapshots, roles/tenants/aliases, pending lifecycle/employee/open exit work and conflicting approved future jobs. Resolve expired/stale requests by rejection without restoring access. Preserve private errors/input, unsaved/busy/focus/impact and independent decision history through real UI/APIs.",
+        "implementation": "implemented first rehire planning/onboarding-episode subset",
+        "verification": "verified bounded Z planning/episode subset: actual PostgreSQL/HTTP date/access tests, live browser/contracts/axe, separate OIDC compatibility and restored episode/history/pending state; completion/provisioning remain open",
+        "evidence": [
+          "RehireWorkflowTest",
+          "RehireAccessHttpTest",
+          "tests/zzzzzzz-rehire.spec.ts",
+          "docs/evidence/java-rehire-verification.txt",
+          "docs/evidence/rehire-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "One rehire only; no new onboarding completion, fresh access provisioning/IdP action, repeated cycle/new-episode termination, statutory service rules or payroll/benefit consumers. Whole HR-05 remains partial."
+      },
+      {
+        "id": "HR-05-D16",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Approval retains the employee identifier, original start/job/contact/effective history, appends immutable episode 2 and three reconciled PENDING handoffs. Before the approved start the profile remains Ended; from that date it shows Onboarding with the new start/job/manager and no prior position assignment. The old manager loses scoped access. Every retained identity/alias, including unused sessions and privileged mappings, remains locally denied; no fresh identity role/provider/access is implicitly restored. Verify actual PostgreSQL, real HTTP boundary/session denial, contracts/browser/mobile and restored original/new episode/history. Completion/provisioning and repeated cycles stay open.",
+        "implementation": "implemented first rehire planning/onboarding-episode subset",
+        "verification": "verified bounded Z planning/episode subset: actual PostgreSQL/HTTP date/access tests, live browser/contracts/axe, separate OIDC compatibility and restored episode/history/pending state; completion/provisioning remain open",
+        "evidence": [
+          "RehireWorkflowTest",
+          "RehireAccessHttpTest",
+          "tests/zzzzzzz-rehire.spec.ts",
+          "docs/evidence/java-rehire-verification.txt",
+          "docs/evidence/rehire-browser-verification.txt",
+          "docs/evidence/restore-check.json",
+          "docs/evidence/restore-application-check.json"
+        ],
+        "limitation": "One rehire only; no new onboarding completion, fresh access provisioning/IdP action, repeated cycle/new-episode termination, statutory service rules or payroll/benefit consumers. Whole HR-05 remains partial."
+      },
+      {
+        "id": "HR-05-D17",
+        "derived": true,
+        "acceptance": "An independently reviewed completion of a started rehire activates the episode and grants exactly one existing nominated identity Employee-only local access. Reject self/alias/target review, stale or fractional versions, future start, reassigned identity, invalid references, conflicting replay and competing decisions; retain private immutable request, decision, completion and current handoff history.",
+        "implementation": "implemented: bounded local rehire completion/access subset",
+        "verification": "passed: 228 full Java tests and three targeted browser/API tests; full regression and restore results in verification log",
+        "phase": 2,
+        "evidence": [
+          "RehireActivationWorkflowTest",
+          "RehireActivationAccessHttpTest",
+          "tests/zzzzzzzz-rehire-activation.spec.ts"
+        ],
+        "limitation": "Manual HR attestation; no external provider enablement, payroll/benefit consumers, grant replacement/revocation or repeated employment cycles."
+      },
+      {
+        "id": "HR-05-D18",
+        "derived": true,
+        "acceptance": "Bind successful authentication to a server-only workforce epoch. Deny untouched pre-end and unstamped sessions after a fresh grant, ignore forged role/epoch headers, require fresh sign-in, retain raw legacy roles without restoring them, and deny unselected aliases and cross-record/tenant access.",
+        "implementation": "implemented: bounded local rehire completion/access subset",
+        "verification": "passed: 228 full Java tests and three targeted browser/API tests; full regression and restore results in verification log",
+        "phase": 2,
+        "evidence": [
+          "RehireActivationWorkflowTest",
+          "RehireActivationAccessHttpTest",
+          "tests/zzzzzzzz-rehire-activation.spec.ts"
+        ],
+        "limitation": "Manual HR attestation; no external provider enablement, payroll/benefit consumers, grant replacement/revocation or repeated employment cycles."
       }
     ],
     "phases": [
@@ -999,6 +1406,88 @@
       ],
       "verification": "35 Java tests and 17 local browser/API/contract tests passed; OIDC skipped in this local run; logical restore and restored API passed",
       "limits": "Manual confirmation on/after start date, effective on confirmation date in UTC. No scheduler, joining-task dependencies, identity/payroll consumer, rehire, resignation or termination. Initial completion only; employment history capped at 100."
+    },
+    "resignationEvidence": {
+      "phase": 2,
+      "workflow": "self submission \u2192 independent HR review \u2192 private immutable history and pending exit coordination",
+      "limits": "Self submission and independent HR review only. Approval records pending exit coordination; no termination, final pay, exit tasks or access removal. No withdrawal/amendment, on-behalf request or statutory notice calculation. Active/on-leave only; one outstanding case per employee.",
+      "tests": [
+        "ResignationWorkflowTest",
+        "tests/resignations.spec.ts"
+      ],
+      "database": "V29 request/snapshot, audit and handoff; V30 additive audit-only reconciliation guard",
+      "verification": "160 Java tests and full 50 browser/API tests passed; one OIDC-only skip in local suite. Fresh 36-table/13-object logical restore and isolated API passed."
+    },
+    "exitTaskEvidence": {
+      "phase": 2,
+      "workflow": "approved resignation \u2192 independent HR assignment \u2192 own-task workspace \u2192 assigned employee attestation and audit",
+      "limits": "Manual assignment/attestation only; 50 tasks/case, assignee identity required, no reassignment/cancellation/reopen/proxy completion, automated task dependencies, termination/payroll/account execution.",
+      "evidence": [
+        "ExitTaskWorkflowTest",
+        "tests/zz-exit-tasks.spec.ts",
+        "docs/evidence/java-exit-task-verification.txt",
+        "docs/evidence/exit-task-browser-verification.txt",
+        "docs/evidence/restore-check.json",
+        "docs/evidence/restore-application-check.json"
+      ],
+      "verification": "168 Java; 52 full browser/API/contract tests passed and one OIDC-only local skip. Fresh 38-table/13-object logical restore and isolated restored API passed."
+    },
+    "taskManagementEvidence": {
+      "phase": 2,
+      "workflow": "independent HR reassign/cancel \u2192 authoritative current task scope \u2192 retained private management history",
+      "limits": "Manual tasks only; no reopening/instruction editing or automated dependencies. Employment termination, final pay, identity revocation and other lifecycle behaviours remain open.",
+      "evidence": [
+        "ExitTaskManagementWorkflowTest",
+        "tests/zzz-task-management.spec.ts",
+        "docs/evidence/java-task-management-verification.txt",
+        "docs/evidence/task-management-browser-verification.txt",
+        "docs/evidence/restore-check.json",
+        "docs/evidence/restore-application-check.json"
+      ],
+      "verification": "176 Java; 54 full browser/API/schema tests passed and one OIDC-only skip locally. Fresh 39-table/current-view/13-object restore and isolated restored API passed."
+    },
+    "employmentEndEvidence": {
+      "phase": 2,
+      "workflow": "approved resignation \u2192 resolved exit work/report handover \u2192 independent HR end schedule \u2192 date-based Ended/local denial",
+      "evidence": [
+        "EmploymentEndWorkflowTest",
+        "EmploymentAccessHttpTest",
+        "tests/zzzz-employment-end.spec.ts",
+        "docs/evidence/java-employment-end-verification.txt",
+        "docs/evidence/employment-end-browser-verification.txt",
+        "docs/evidence/restore-check.json",
+        "docs/evidence/restore-application-check.json"
+      ],
+      "limits": "Voluntary resignation end only; provisional inclusive day/UTC convention. No amendment/withdrawal, rehire, involuntary termination, statutory final-pay calculation, external IdP disable/session revocation, unused-session sweep or live delivery. Production policy/rollout remain unverified.",
+      "verification": "187 Java; full 56 browser/API tests passed with one OIDC-only local skip; separate real OIDC/MFA/logout test passed. Fresh 41-table/task-view/13-object restore and isolated API passed."
+    },
+    "endWithdrawalEvidence": {
+      "phase": 2,
+      "workflow": "private HR withdrawal request \u2192 independent review \u2192 pre-effective current schedule/handoff suppression with retained audit",
+      "verification": "195 Java, full 58 browser/API/schema plus separate real OIDC/MFA/logout passed; fresh 43-table/four-view/13-object logical restore and isolated API passed. See checkpoint/verification.",
+      "limits": "No delegation or combined shared inbox for withdrawals; in-app notifications only. Full source requirement remains partial."
+    },
+    "endRescheduleEvidence": {
+      "phase": 2,
+      "workflow": "HR replacement request \u2192 different HR review \u2192 current replacement cutoff and pending handoffs; original history retained",
+      "verification": "207 backend, full 60 browser/API/schema plus separate real OIDC/MFA/logout passed. Fresh 46-table/five-view/13-object logical restore and isolated API passed; see checkpoint/verification.",
+      "limits": "One approved replacement; no shared approval inbox/delegation, statutory final pay, further replacement withdrawal or external delivery; full source remains partial."
+    },
+    "rehireEvidence": {
+      "phase": 2,
+      "workflow": "independent HR rehire review \u2192 new dated onboarding episode \u2192 persisted pending handoffs with legacy identities denied",
+      "verification": "219 backend tests and eleven final focused rehire tests passed; 62 full browser/API/schema plus separate real OIDC/MFA/logout passed. Fresh 50-table/six-view/13-object restore and isolated restored API passed; see checkpoint/verification.",
+      "limits": "Original/new history retained; no access restoration, onboarding completion, statutory service rules or consumers. Full source remains partial."
+    },
+    "rehireActivationEvidence": {
+      "phase": 2,
+      "scope": "Independent first-rehire completion, one least-privilege fresh identity and server-only session epoch. Does not complete the source ID.",
+      "tests": [
+        "RehireActivationWorkflowTest",
+        "RehireActivationAccessHttpTest",
+        "tests/zzzzzzzz-rehire-activation.spec.ts"
+      ],
+      "verification": "See docs/verification.md increment AA for executed results and limits."
     }
   },
   {
@@ -4501,6 +4990,81 @@
       ],
       "scope": "HR-only private root governance, explicit policy basis/date and actor/identity/reason/time/correlation audit; other shared behaviours unchanged",
       "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed"
+    },
+    "organisationChartEvidence": {
+      "phase": 2,
+      "tests": [
+        "OrganisationChartWorkflowTest",
+        "tests/organisation-chart.spec.ts",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "Minimal effective organisational nodes with existing record/tenant scopes, UTC date display and profile reauthorisation; other source behaviours unchanged",
+      "verification": "151 Java, full 48 browser/API passed; OIDC-only skipped locally; targeted 4 passed (7.6s); fresh 33-table/13-object restore and isolated API passed"
+    },
+    "resignationEvidence": {
+      "phase": 2,
+      "evidence": [
+        "ResignationWorkflowTest",
+        "tests/resignations.spec.ts"
+      ],
+      "implementation": "server-resolved self/HR private scopes and independent identity",
+      "sourceComplete": false
+    },
+    "exitTaskEvidence": {
+      "phase": 2,
+      "implementation": "server-resolved tenant/current assignee, HR case scope, independent coordination and no private resignation access",
+      "evidence": [
+        "ExitTaskWorkflowTest",
+        "tests/zz-exit-tasks.spec.ts"
+      ],
+      "sourceComplete": false
+    },
+    "taskManagementEvidence": {
+      "phase": 2,
+      "evidence": [
+        "ExitTaskManagementWorkflowTest",
+        "tests/zzz-task-management.spec.ts"
+      ],
+      "sourceComplete": false,
+      "implementation": "current-assignee scope and old-assignee denial; independent HR control and HR-only private journal"
+    },
+    "employmentEndEvidence": {
+      "phase": 2,
+      "sourceComplete": false,
+      "evidence": [
+        "EmploymentEndWorkflowTest",
+        "EmploymentAccessHttpTest",
+        "tests/zzzz-employment-end.spec.ts"
+      ],
+      "implementation": "published active-workforce contract on sign-in and each authenticated request; aliases/persisted sessions cutoff and HR historical read; no remote provider revocation"
+    },
+    "endWithdrawalEvidence": {
+      "phase": 2,
+      "workflow": "private HR withdrawal request \u2192 independent review \u2192 pre-effective current schedule/handoff suppression with retained audit",
+      "verification": "195 Java, full 58 browser/API/schema plus separate real OIDC/MFA/logout passed; fresh 43-table/four-view/13-object logical restore and isolated API passed. See checkpoint/verification.",
+      "limits": "No delegation or combined shared inbox for withdrawals; in-app notifications only. Full source requirement remains partial."
+    },
+    "endRescheduleEvidence": {
+      "phase": 2,
+      "workflow": "HR replacement request \u2192 different HR review \u2192 current replacement cutoff and pending handoffs; original history retained",
+      "verification": "207 backend, full 60 browser/API/schema plus separate real OIDC/MFA/logout passed. Fresh 46-table/five-view/13-object logical restore and isolated API passed; see checkpoint/verification.",
+      "limits": "One approved replacement; no shared approval inbox/delegation, statutory final pay, further replacement withdrawal or external delivery; full source remains partial."
+    },
+    "rehireEvidence": {
+      "phase": 2,
+      "workflow": "independent HR rehire review \u2192 new dated onboarding episode \u2192 persisted pending handoffs with legacy identities denied",
+      "verification": "219 backend tests and eleven final focused rehire tests passed; 62 full browser/API/schema plus separate real OIDC/MFA/logout passed. Fresh 50-table/six-view/13-object restore and isolated restored API passed; see checkpoint/verification.",
+      "limits": "Original/new history retained; no access restoration, onboarding completion, statutory service rules or consumers. Full source remains partial."
+    },
+    "rehireActivationEvidence": {
+      "phase": 2,
+      "scope": "Independent first-rehire completion, one least-privilege fresh identity and server-only session epoch. Does not complete the source ID.",
+      "tests": [
+        "RehireActivationWorkflowTest",
+        "RehireActivationAccessHttpTest",
+        "tests/zzzzzzzz-rehire-activation.spec.ts"
+      ],
+      "verification": "See docs/verification.md increment AA for executed results and limits."
     }
   },
   {
@@ -4766,6 +5330,43 @@
         "ArchitectureTest.crossModuleInternalsAreForbidden"
       ],
       "scope": "Benefits record/field scope, independent review and immutable selection decisions only; existing full-ID gaps retained"
+    },
+    "resignationEvidence": {
+      "phase": 2,
+      "evidence": [
+        "ResignationWorkflowTest",
+        "tests/resignations.spec.ts"
+      ],
+      "implementation": "private pending case review/comments/rejection; separate workspace, no delegation or unified inbox",
+      "sourceComplete": false
+    },
+    "endWithdrawalEvidence": {
+      "phase": 2,
+      "workflow": "private HR withdrawal request \u2192 independent review \u2192 pre-effective current schedule/handoff suppression with retained audit",
+      "verification": "195 Java, full 58 browser/API/schema plus separate real OIDC/MFA/logout passed; fresh 43-table/four-view/13-object logical restore and isolated API passed. See checkpoint/verification.",
+      "limits": "No delegation or combined shared inbox for withdrawals; in-app notifications only. Full source requirement remains partial."
+    },
+    "endRescheduleEvidence": {
+      "phase": 2,
+      "workflow": "HR replacement request \u2192 different HR review \u2192 current replacement cutoff and pending handoffs; original history retained",
+      "verification": "207 backend, full 60 browser/API/schema plus separate real OIDC/MFA/logout passed. Fresh 46-table/five-view/13-object logical restore and isolated API passed; see checkpoint/verification.",
+      "limits": "One approved replacement; no shared approval inbox/delegation, statutory final pay, further replacement withdrawal or external delivery; full source remains partial."
+    },
+    "rehireEvidence": {
+      "phase": 2,
+      "workflow": "independent HR rehire review \u2192 new dated onboarding episode \u2192 persisted pending handoffs with legacy identities denied",
+      "verification": "219 backend tests and eleven final focused rehire tests passed; 62 full browser/API/schema plus separate real OIDC/MFA/logout passed. Fresh 50-table/six-view/13-object restore and isolated restored API passed; see checkpoint/verification.",
+      "limits": "Original/new history retained; no access restoration, onboarding completion, statutory service rules or consumers. Full source remains partial."
+    },
+    "rehireActivationEvidence": {
+      "phase": 2,
+      "scope": "Independent first-rehire completion, one least-privilege fresh identity and server-only session epoch. Does not complete the source ID.",
+      "tests": [
+        "RehireActivationWorkflowTest",
+        "RehireActivationAccessHttpTest",
+        "tests/zzzzzzzz-rehire-activation.spec.ts"
+      ],
+      "verification": "See docs/verification.md increment AA for executed results and limits."
     }
   },
   {
@@ -4948,6 +5549,71 @@
         "HR-03-D06"
       ],
       "limits": "Pending requester-owned changes only. Does not reverse approved changes or add delegated/admin withdrawal. Private requests remain protected after role downgrade. Source IDs remain partial."
+    },
+    "resignationEvidence": {
+      "phase": 2,
+      "evidence": [
+        "ResignationWorkflowTest",
+        "tests/resignations.spec.ts"
+      ],
+      "implementation": "atomic requester in-app outcome notification; no external delivery/reminder SLA",
+      "sourceComplete": false
+    },
+    "exitTaskEvidence": {
+      "phase": 2,
+      "implementation": "atomic private in-app assignment/completion notifications; no external delivery/reminder SLA",
+      "evidence": [
+        "ExitTaskWorkflowTest",
+        "tests/zz-exit-tasks.spec.ts"
+      ],
+      "sourceComplete": false
+    },
+    "taskManagementEvidence": {
+      "phase": 2,
+      "evidence": [
+        "ExitTaskManagementWorkflowTest",
+        "tests/zzz-task-management.spec.ts"
+      ],
+      "sourceComplete": false,
+      "implementation": "atomic private old/new-assignee assignment notifications, no delivery/reminder SLA"
+    },
+    "employmentEndEvidence": {
+      "phase": 2,
+      "sourceComplete": false,
+      "evidence": [
+        "EmploymentEndWorkflowTest",
+        "EmploymentAccessHttpTest",
+        "tests/zzzz-employment-end.spec.ts"
+      ],
+      "implementation": "atomic private employee end-scheduled notification; no remote delivery SLA"
+    },
+    "endWithdrawalEvidence": {
+      "phase": 2,
+      "workflow": "private HR withdrawal request \u2192 independent review \u2192 pre-effective current schedule/handoff suppression with retained audit",
+      "verification": "195 Java, full 58 browser/API/schema plus separate real OIDC/MFA/logout passed; fresh 43-table/four-view/13-object logical restore and isolated API passed. See checkpoint/verification.",
+      "limits": "No delegation or combined shared inbox for withdrawals; in-app notifications only. Full source requirement remains partial."
+    },
+    "endRescheduleEvidence": {
+      "phase": 2,
+      "workflow": "HR replacement request \u2192 different HR review \u2192 current replacement cutoff and pending handoffs; original history retained",
+      "verification": "207 backend, full 60 browser/API/schema plus separate real OIDC/MFA/logout passed. Fresh 46-table/five-view/13-object logical restore and isolated API passed; see checkpoint/verification.",
+      "limits": "One approved replacement; no shared approval inbox/delegation, statutory final pay, further replacement withdrawal or external delivery; full source remains partial."
+    },
+    "rehireEvidence": {
+      "phase": 2,
+      "workflow": "independent HR rehire review \u2192 new dated onboarding episode \u2192 persisted pending handoffs with legacy identities denied",
+      "verification": "219 backend tests and eleven final focused rehire tests passed; 62 full browser/API/schema plus separate real OIDC/MFA/logout passed. Fresh 50-table/six-view/13-object restore and isolated restored API passed; see checkpoint/verification.",
+      "limits": "Original/new history retained; no access restoration, onboarding completion, statutory service rules or consumers. Full source remains partial."
+    },
+    "rehireActivationEvidence": {
+      "phase": 2,
+      "scope": "Independent first-rehire completion, one least-privilege fresh identity and server-only session epoch. Does not complete the source ID.",
+      "tests": [
+        "RehireActivationWorkflowTest",
+        "RehireActivationAccessHttpTest",
+        "tests/zzzzzzzz-rehire-activation.spec.ts"
+      ],
+      "verification": "See docs/verification.md increment AA for executed results and limits."
     }
   },
   {
@@ -5375,6 +6041,71 @@
       ],
       "scope": "HR-only private root governance, explicit policy basis/date and actor/identity/reason/time/correlation audit; other shared behaviours unchanged",
       "verification": "145 Java, full 44 browser/API passed; OIDC-only skipped locally; final targeted 2 passed (5.8s); 33-table/13-object restore and isolated API passed"
+    },
+    "resignationEvidence": {
+      "phase": 2,
+      "evidence": [
+        "ResignationWorkflowTest",
+        "tests/resignations.spec.ts"
+      ],
+      "implementation": "immutable before/after status, actor, reason/comment, UTC recorded time, proposed business date and correlation",
+      "sourceComplete": false
+    },
+    "exitTaskEvidence": {
+      "phase": 2,
+      "implementation": "immutable task snapshot and before/after status, actor, reason/comment, due business date, UTC recorded time and correlation",
+      "evidence": [
+        "ExitTaskWorkflowTest",
+        "tests/zz-exit-tasks.spec.ts"
+      ],
+      "sourceComplete": false
+    },
+    "taskManagementEvidence": {
+      "phase": 2,
+      "evidence": [
+        "ExitTaskManagementWorkflowTest",
+        "tests/zzz-task-management.spec.ts"
+      ],
+      "sourceComplete": false,
+      "implementation": "append-only old/new assignee/status, actor/employee/reason/input version/UTC instant/correlation; original task and audit retained"
+    },
+    "employmentEndEvidence": {
+      "phase": 2,
+      "sourceComplete": false,
+      "evidence": [
+        "EmploymentEndWorkflowTest",
+        "EmploymentAccessHttpTest",
+        "tests/zzzz-employment-end.spec.ts"
+      ],
+      "implementation": "immutable old/new status, inclusive/inactive dates, version, actor/employee/reason/UTC recorded time/correlation; financial/identity pending targets retained"
+    },
+    "endWithdrawalEvidence": {
+      "phase": 2,
+      "workflow": "private HR withdrawal request \u2192 independent review \u2192 pre-effective current schedule/handoff suppression with retained audit",
+      "verification": "195 Java, full 58 browser/API/schema plus separate real OIDC/MFA/logout passed; fresh 43-table/four-view/13-object logical restore and isolated API passed. See checkpoint/verification.",
+      "limits": "No delegation or combined shared inbox for withdrawals; in-app notifications only. Full source requirement remains partial."
+    },
+    "endRescheduleEvidence": {
+      "phase": 2,
+      "workflow": "HR replacement request \u2192 different HR review \u2192 current replacement cutoff and pending handoffs; original history retained",
+      "verification": "207 backend, full 60 browser/API/schema plus separate real OIDC/MFA/logout passed. Fresh 46-table/five-view/13-object logical restore and isolated API passed; see checkpoint/verification.",
+      "limits": "One approved replacement; no shared approval inbox/delegation, statutory final pay, further replacement withdrawal or external delivery; full source remains partial."
+    },
+    "rehireEvidence": {
+      "phase": 2,
+      "workflow": "independent HR rehire review \u2192 new dated onboarding episode \u2192 persisted pending handoffs with legacy identities denied",
+      "verification": "219 backend tests and eleven final focused rehire tests passed; 62 full browser/API/schema plus separate real OIDC/MFA/logout passed. Fresh 50-table/six-view/13-object restore and isolated restored API passed; see checkpoint/verification.",
+      "limits": "Original/new history retained; no access restoration, onboarding completion, statutory service rules or consumers. Full source remains partial."
+    },
+    "rehireActivationEvidence": {
+      "phase": 2,
+      "scope": "Independent first-rehire completion, one least-privilege fresh identity and server-only session epoch. Does not complete the source ID.",
+      "tests": [
+        "RehireActivationWorkflowTest",
+        "RehireActivationAccessHttpTest",
+        "tests/zzzzzzzz-rehire-activation.spec.ts"
+      ],
+      "verification": "See docs/verification.md increment AA for executed results and limits."
     }
   },
   {
@@ -5905,7 +6636,33 @@
     ],
     "phases": [
       2
-    ]
+    ],
+    "organisationChartEvidence": {
+      "phase": 2,
+      "tests": [
+        "OrganisationChartWorkflowTest",
+        "tests/organisation-chart.spec.ts",
+        "scripts/restore_application_check.py"
+      ],
+      "scope": "Minimal effective organisational nodes with existing record/tenant scopes, UTC date display and profile reauthorisation; other source behaviours unchanged",
+      "verification": "151 Java, full 48 browser/API passed; OIDC-only skipped locally; targeted 4 passed (7.6s); fresh 33-table/13-object restore and isolated API passed"
+    },
+    "rehireEvidence": {
+      "phase": 2,
+      "workflow": "independent HR rehire review \u2192 new dated onboarding episode \u2192 persisted pending handoffs with legacy identities denied",
+      "verification": "219 backend tests and eleven final focused rehire tests passed; 62 full browser/API/schema plus separate real OIDC/MFA/logout passed. Fresh 50-table/six-view/13-object restore and isolated restored API passed; see checkpoint/verification.",
+      "limits": "Original/new history retained; no access restoration, onboarding completion, statutory service rules or consumers. Full source remains partial."
+    },
+    "rehireActivationEvidence": {
+      "phase": 2,
+      "scope": "Independent first-rehire completion, one least-privilege fresh identity and server-only session epoch. Does not complete the source ID.",
+      "tests": [
+        "RehireActivationWorkflowTest",
+        "RehireActivationAccessHttpTest",
+        "tests/zzzzzzzz-rehire-activation.spec.ts"
+      ],
+      "verification": "See docs/verification.md increment AA for executed results and limits."
+    }
   },
   {
     "id": "SH-10",

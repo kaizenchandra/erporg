@@ -25,6 +25,8 @@ public interface PeopleUseCases {
 
   Actor actor(String subject);
 
+  String sessionEpoch(String subject);
+
   List<Employee> employees(Actor actor);
 
   List<ChangeRequest> requests(Actor actor);

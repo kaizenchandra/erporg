@@ -12,9 +12,9 @@ export function Organisation({
 }) {
   return (
     <section className="org-view">
+      <OrganisationChart actor={actor} onOpen={onOpen} />
       <DepartmentReference actor={actor} />
       <PositionCatalogue actor={actor} />
-      <OrganisationChart actor={actor} onOpen={onOpen} />
     </section>
   );
 }

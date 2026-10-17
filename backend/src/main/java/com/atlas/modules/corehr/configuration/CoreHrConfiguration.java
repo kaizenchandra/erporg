@@ -16,6 +16,204 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
 public class CoreHrConfiguration {
+  private final Clock clock;
+
+  public CoreHrConfiguration(Clock clock) {
+    this.clock = clock;
+  }
+
+  @Bean
+  com.atlas.modules.corehr.application.port.in.RehireActivationUseCases rehireActivation(
+      JdbcClient db, PlatformTransactionManager manager, OrganisationUseCases organisation) {
+    var template = new TransactionTemplate(manager);
+    template.setTimeout(10);
+
+    UnitOfWork tx =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return template.execute(status -> work.get());
+          }
+        };
+    var readTemplate = new TransactionTemplate(manager);
+    readTemplate.setTimeout(10);
+    readTemplate.setReadOnly(true);
+    readTemplate.setIsolationLevel(
+        org.springframework.transaction.TransactionDefinition.ISOLATION_REPEATABLE_READ);
+    UnitOfWork reads =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return readTemplate.execute(status -> work.get());
+          }
+        };
+    return new com.atlas.modules.corehr.application.usecase.RehireActivationService(
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcRehireActivationStore(db),
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcRehireStore(db),
+        new JdbcPeopleStore(db),
+        organisation,
+        tx,
+        reads,
+        clock);
+  }
+
+  @Bean
+  com.atlas.modules.corehr.application.port.in.RehireUseCases rehire(
+      JdbcClient db, PlatformTransactionManager manager, OrganisationUseCases organisation) {
+    var template = new TransactionTemplate(manager);
+    template.setTimeout(10);
+
+    UnitOfWork tx =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return template.execute(status -> work.get());
+          }
+        };
+    var readTemplate = new TransactionTemplate(manager);
+    readTemplate.setTimeout(10);
+    readTemplate.setReadOnly(true);
+    readTemplate.setIsolationLevel(
+        org.springframework.transaction.TransactionDefinition.ISOLATION_REPEATABLE_READ);
+    UnitOfWork reads =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return readTemplate.execute(status -> work.get());
+          }
+        };
+    return new com.atlas.modules.corehr.application.usecase.RehireService(
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcRehireStore(db),
+        new JdbcPeopleStore(db),
+        organisation,
+        tx,
+        reads,
+        clock);
+  }
+
+  @Bean
+  com.atlas.modules.corehr.application.port.in.EndRescheduleUseCases endRescheduling(
+      JdbcClient db, PlatformTransactionManager manager) {
+    var template = new TransactionTemplate(manager);
+    template.setTimeout(10);
+
+    UnitOfWork tx =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return template.execute(status -> work.get());
+          }
+        };
+    var readTemplate = new TransactionTemplate(manager);
+    readTemplate.setTimeout(10);
+    readTemplate.setReadOnly(true);
+    readTemplate.setIsolationLevel(
+        org.springframework.transaction.TransactionDefinition.ISOLATION_REPEATABLE_READ);
+    UnitOfWork reads =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return readTemplate.execute(status -> work.get());
+          }
+        };
+    return new com.atlas.modules.corehr.application.usecase.EndRescheduleService(
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcEndRescheduleStore(db),
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcEmploymentEndStore(db),
+        new JdbcPeopleStore(db),
+        tx,
+        reads,
+        clock);
+  }
+
+  @Bean
+  com.atlas.modules.corehr.application.port.in.EmploymentEndUseCases employmentEnds(
+      JdbcClient db, PlatformTransactionManager manager) {
+    var template = new TransactionTemplate(manager);
+    template.setTimeout(10);
+
+    UnitOfWork tx =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return template.execute(status -> work.get());
+          }
+        };
+    var readTemplate = new TransactionTemplate(manager);
+    readTemplate.setTimeout(10);
+    readTemplate.setReadOnly(true);
+    readTemplate.setIsolationLevel(
+        org.springframework.transaction.TransactionDefinition.ISOLATION_REPEATABLE_READ);
+    UnitOfWork reads =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return readTemplate.execute(status -> work.get());
+          }
+        };
+    return new com.atlas.modules.corehr.application.usecase.EmploymentEndService(
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcEmploymentEndStore(db),
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcResignationStore(db),
+        new JdbcPeopleStore(db),
+        tx,
+        reads,
+        clock);
+  }
+
+  @Bean
+  com.atlas.modules.corehr.application.port.in.ExitTaskUseCases exitTasks(
+      JdbcClient db, PlatformTransactionManager manager) {
+    var template = new TransactionTemplate(manager);
+    template.setTimeout(10);
+
+    UnitOfWork tx =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return template.execute(status -> work.get());
+          }
+        };
+    var readTemplate = new TransactionTemplate(manager);
+    readTemplate.setTimeout(10);
+    readTemplate.setReadOnly(true);
+    readTemplate.setIsolationLevel(
+        org.springframework.transaction.TransactionDefinition.ISOLATION_REPEATABLE_READ);
+    UnitOfWork reads =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return readTemplate.execute(status -> work.get());
+          }
+        };
+    return new com.atlas.modules.corehr.application.usecase.ExitTaskService(
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcExitTaskStore(db),
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcResignationStore(db),
+        new JdbcPeopleStore(db),
+        tx,
+        reads,
+        clock);
+  }
+
+  @Bean
+  com.atlas.modules.corehr.application.port.in.ResignationUseCases resignations(
+      JdbcClient db, PlatformTransactionManager manager) {
+    var template = new TransactionTemplate(manager);
+    template.setTimeout(10);
+
+    UnitOfWork tx =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return template.execute(status -> work.get());
+          }
+        };
+    var readTemplate = new TransactionTemplate(manager);
+    readTemplate.setTimeout(10);
+    readTemplate.setReadOnly(true);
+    readTemplate.setIsolationLevel(
+        org.springframework.transaction.TransactionDefinition.ISOLATION_REPEATABLE_READ);
+    UnitOfWork reads =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return readTemplate.execute(status -> work.get());
+          }
+        };
+    return new com.atlas.modules.corehr.application.usecase.ResignationService(
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcResignationStore(db),
+        new JdbcPeopleStore(db),
+        tx,
+        reads,
+        clock);
+  }
+
   @Bean
   com.atlas.modules.corehr.application.port.in.OrganisationBrowseUseCases organisationBrowse(
       JdbcClient db, PlatformTransactionManager manager) {
@@ -34,12 +232,20 @@ public class CoreHrConfiguration {
         new JdbcPeopleStore(db),
         new com.atlas.modules.corehr.adapter.out.persistence.JdbcOrganisationChartStore(db),
         tx,
-        Clock.systemUTC());
+        clock);
   }
 
   @Bean
   com.atlas.modules.corehr.api.WorkforceAccess workforceAccess(PeopleUseCases people) {
     return new com.atlas.modules.corehr.api.WorkforceAccess() {
+      public String sessionEpoch(String subject) {
+        return people.sessionEpoch(subject);
+      }
+
+      public void requireActive(String subject) {
+        people.actor(subject);
+      }
+
       public Context self(String subject) {
         return employee(subject, people.actor(subject).employeeId());
       }
@@ -76,7 +282,7 @@ public class CoreHrConfiguration {
         new JdbcPeopleStore(jdbc),
         organisation,
         tx,
-        Clock.systemUTC());
+        clock);
   }
 
   @Bean
@@ -89,7 +295,7 @@ public class CoreHrConfiguration {
             return template.execute(status -> operation.get());
           }
         };
-    return new OrganisationService(new JdbcOrganisationStore(jdbc), tx, Clock.systemUTC());
+    return new OrganisationService(new JdbcOrganisationStore(jdbc), tx, clock);
   }
 
   @Bean
@@ -103,6 +309,6 @@ public class CoreHrConfiguration {
             return tx.execute(status -> operation.get());
           }
         };
-    return new PeopleService(new JdbcPeopleStore(jdbc), uow, Clock.systemUTC(), organisation);
+    return new PeopleService(new JdbcPeopleStore(jdbc), uow, clock, organisation);
   }
 }

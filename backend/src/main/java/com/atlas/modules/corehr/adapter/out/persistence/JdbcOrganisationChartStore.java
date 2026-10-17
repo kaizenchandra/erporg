@@ -15,11 +15,7 @@ public final class JdbcOrganisationChartStore implements OrganisationChartStore 
   }
 
   private static String effective(String field, String original) {
-    return "coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='"
-        + field
-        + "' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e."
-        + original
-        + ")";
+    return "hr_employment_value(e.tenant,e.id,'" + field + "',e." + original + ",:date)";
   }
 
   private static final String SCOPE =
@@ -31,7 +27,7 @@ public final class JdbcOrganisationChartStore implements OrganisationChartStore 
           + effective("department", "department")
           + " department,"
           + effective("positionCode", "position_code")
-          + " position_code,e.status,"
+          + " position_code,hr_employment_status(e.tenant,e.id,e.status,:date) status,"
           + effective("managerId", "manager_id")
           + " manager_id from hr_employee e where e.tenant=:tenant), scoped as (select * from projected where :all or id=:self or (:reports and manager_id=:self)) ";
   private static final String COLUMNS =

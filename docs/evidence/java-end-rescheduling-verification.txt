@@ -1,0 +1,8 @@
+Increment Y — 2026-10-17
+Command: JAVA_HOME=<JDK21> mvn -f backend/pom.xml -Dmaven.repo.local=/private/tmp/atlas-m2 spotless:apply test
+Actual PostgreSQL / ClamAV; existing architecture negative fixtures included.
+{'tests': 207, 'failures': 0, 'errors': 0, 'skipped': 0}
+EndRescheduleWorkflowTest: eleven tests for current/withdrawn scheduling, earlier/later cutoff, independent HR/alias/target/tenant checks, exact versions/dates/replay, stale/current-cutoff denial and rejection recovery, mutual review exclusion, open tasks/future report blockers, SQL immutable/independent guards, twenty-attempt cap and same timestamp/correlation handoff identity.
+EndRescheduleAccessHttpTest: real random-port HTTP + PostgreSQL/JDBC sessions with isolated schema and test-only clock. Five existing/alias sessions and new sign-in remain active at the original cutoff, then are denied at the replacement cutoff.
+First HTTP test incorrectly expected unused sessions to be eagerly purged. Test now exercises every session before checking lazy invalidation; no eager purge is claimed. Final complete suite passed.
+V36 regression proves coincident timestamps/correlation IDs do not keep old handoffs pending. No applied migration checksum was rewritten.

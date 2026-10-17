@@ -93,6 +93,7 @@ export function Directory({
               <option>Active</option>
               <option>On leave</option>
               <option>Onboarding</option>
+              <option>Ended</option>
             </select>
           </label>
           <div className="column-control">

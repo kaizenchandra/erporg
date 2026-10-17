@@ -2,6 +2,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Modal, Avatar, Badge, formatDate } from "@/components/ui/primitives";
 import type { OnboardingCompletion } from "./complete-onboarding";
+import { RehirePanel } from "./rehire";
 import { ManagerPicker } from "./manager-picker";
 import { PositionPicker } from "./position-picker";
 import type { Department } from "./department-reference";
@@ -10,16 +11,21 @@ import { Icon } from "@/components/ui/icon";
 import { api, ApiError } from "@/lib/api";
 import type { Actor, AuditEvent, Employee } from "@/lib/contracts";
 export function Profile({
-  employee: e,
+  employee: initialEmployee,
   actor,
   onClose,
   onChange,
+  onRecorded,
 }: {
   employee: Employee;
   actor: Actor;
   onClose: () => void;
   onChange: () => void;
+  onRecorded: (employee: Employee) => Promise<void>;
 }) {
+  const [e, setCurrentEmployee] = useState(initialEmployee);
+  const [rehireDirty, setRehireDirty] = useState(false),
+    [rehireBusy, setRehireBusy] = useState(false);
   const [employmentHistory, setEmploymentHistory] = useState<
     OnboardingCompletion[]
   >([]);
@@ -52,7 +58,17 @@ export function Profile({
     return () => controller.abort();
   }, [e.id]);
   return (
-    <Modal title="Employee profile" onClose={onClose} wide>
+    <Modal
+      title="Employee profile"
+      onClose={() => {
+        if (
+          !rehireBusy &&
+          (!rehireDirty || window.confirm("Discard unsaved rehire values?"))
+        )
+          onClose();
+      }}
+      wide
+    >
       <div className="profile-cover" />
       <div className="profile-summary">
         <Avatar name={e.name} large />
@@ -61,7 +77,11 @@ export function Profile({
           <p>{e.title}</p>
           <Badge status={e.status} />
         </div>
-        <button className="button primary" onClick={onChange}>
+        <button
+          className="button primary"
+          onClick={onChange}
+          disabled={e.status === "Ended" || rehireDirty || rehireBusy}
+        >
           <Icon name="plus" size={17} />
           Request a change
         </button>
@@ -109,6 +129,19 @@ export function Profile({
             </div>
           ))}
         </dl>
+        {actor.role === "HR" && (
+          <RehirePanel
+            employeeId={e.id}
+            actor={actor}
+            onDirty={setRehireDirty}
+            onBusy={setRehireBusy}
+            onSaved={async () => {
+              const updated = await api<Employee>(`/api/v1/employees/${e.id}`);
+              setCurrentEmployee(updated);
+              await onRecorded(updated);
+            }}
+          />
+        )}
         <div className="section-heading">
           <h3>Change history</h3>
           <span>Recorded in UTC</span>

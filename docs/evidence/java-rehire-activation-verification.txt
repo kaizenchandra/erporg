@@ -1,0 +1,8 @@
+Increment AA — 2026-10-17
+Command: JAVA_HOME=<JDK21> mvn -f backend/pom.xml -Dmaven.repo.local=/private/tmp/atlas-m2 spotless:check test
+Actual PostgreSQL / ClamAV; architecture negative fixtures included.
+{'tests': 228, 'failures': 0, 'errors': 0, 'skipped': 0}
+Final full run: BUILD SUCCESS, 34.996 seconds.
+RehireActivationWorkflowTest: eight database tests for independent completion, retained raw privileged memberships versus fresh Employee grant, role/tenant/alias/target access, replay, future start, exact/stale versions, identity/reference revalidation, twenty attempts and append-only/deferred SQL reconciliation.
+RehireActivationAccessHttpTest: real HTTP/JDBC sessions with injected test-only time. An untouched pre-end session remains denied after grant; fresh selected identity signs in as Employee, unselected alias denied, unstamped session and forged epoch/role headers denied, fresh reauthentication and logout verified. No runtime time-control endpoint or provider enablement.
+Targeted command -Dtest=RehireActivationWorkflowTest,RehireActivationAccessHttpTest test also passed all nine tests.

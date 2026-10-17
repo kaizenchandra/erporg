@@ -1,0 +1,8 @@
+Increment Z — 2026-10-17
+Command: JAVA_HOME=<JDK21> mvn -f backend/pom.xml -Dmaven.repo.local=/private/tmp/atlas-m2 spotless:apply test
+Actual PostgreSQL / ClamAV; existing architecture negative fixtures included.
+{'tests': 219, 'failures': 0, 'errors': 0, 'skipped': 0}
+Final focused command: -Dtest=RehireWorkflowTest test; eleven tests passed after adding old-manager scope assertions. No application implementation changed after the passing full suite.
+RehireWorkflowTest: separate original/new dates/jobs, contact preservation, old-manager scope removal, legacy denial, role/tenant/alias separation, dates/versions/replay/stale rejection, configuration, future job/pending change blockers, imported cycle error mapping, twenty-attempt cap and immutable episode/handoff SQL reconciliation.
+RehireAccessHttpTest: real random-port HTTP/JDBC sessions; retained two unused HR/alias sessions across end/new start and new login all denied despite Onboarding status. Retained privileged role rows are not grants. No runtime time-control or live provider action.
+Tests exposed inability to reject an ended requester's pending old change; retained tenant identity mapping now supports separation checks without authenticating that requester. Ended employment cannot approve old changes. Initial manager-role test was corrected to account for all configured OIDC aliases.

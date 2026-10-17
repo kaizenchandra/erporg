@@ -36,6 +36,7 @@ public record Actor(String subject, String tenant, String employeeId, String nam
   }
 
   public boolean canChange(Employee employee, String field) {
+    if (employee.status().equals("Ended")) return false;
     if (field.equals("name"))
       return canRead(employee) && (hr() || employeeId.equals(employee.id()));
     return canReadField(employee, field)

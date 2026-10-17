@@ -12,8 +12,32 @@ import org.springframework.web.bind.annotation.*;
 
 @Configuration
 public class SecurityConfiguration {
+  private final com.atlas.modules.corehr.api.WorkforceAccess workforce;
+
+  public SecurityConfiguration(com.atlas.modules.corehr.api.WorkforceAccess workforce) {
+    this.workforce = workforce;
+  }
+
+  private boolean allow(
+      org.springframework.security.core.Authentication auth,
+      jakarta.servlet.http.HttpServletRequest request,
+      jakarta.servlet.http.HttpServletResponse response)
+      throws java.io.IOException {
+    try {
+      var epoch = workforce.sessionEpoch(auth.getName());
+      request.getSession(true).setAttribute(EmploymentAccessFilter.EPOCH_ATTRIBUTE, epoch);
+      return true;
+    } catch (com.atlas.shared.domain.AccessDenied denied) {
+      EmploymentAccessFilter.reject(request, response);
+      return false;
+    }
+  }
+
   private HttpSecurity base(HttpSecurity http) throws Exception {
-    return http.authorizeHttpRequests(
+    return http.addFilterAfter(
+            new EmploymentAccessFilter(workforce),
+            org.springframework.security.web.authentication.AnonymousAuthenticationFilter.class)
+        .authorizeHttpRequests(
             a ->
                 a.requestMatchers(
                         "/api/csrf",
@@ -44,7 +68,10 @@ public class SecurityConfiguration {
         .formLogin(
             f ->
                 f.loginProcessingUrl("/api/login")
-                    .successHandler((q, s, a) -> s.setStatus(204))
+                    .successHandler(
+                        (q, s, a) -> {
+                          if (allow(a, q, s)) s.setStatus(204);
+                        })
                     .failureHandler((q, s, e) -> s.sendError(401)))
         .build();
   }
@@ -55,7 +82,8 @@ public class SecurityConfiguration {
     var encoder = new BCryptPasswordEncoder();
     String password = System.getenv().getOrDefault("LOCAL_DEMO_PASSWORD", "atlas-demo");
     return new InMemoryUserDetailsManager(
-        java.util.stream.Stream.of("amelia", "olivia", "marcus", "sophia", "outsider")
+        java.util.stream.Stream.of(
+                "amelia", "olivia", "marcus", "sophia", "outsider", "returning", "returning-alias")
             .map(
                 n ->
                     User.withUsername(n)
@@ -79,8 +107,12 @@ public class SecurityConfiguration {
     return base(http)
         .oauth2Login(
             o ->
-                o.defaultSuccessUrl(
-                    System.getenv().getOrDefault("APP_ORIGIN", "http://127.0.0.1:3000"), true))
+                o.successHandler(
+                    (q, s, a) -> {
+                      if (allow(a, q, s))
+                        s.sendRedirect(
+                            System.getenv().getOrDefault("APP_ORIGIN", "http://127.0.0.1:3000"));
+                    }))
         .logout(l -> l.logoutSuccessHandler(logout))
         .build();
   }

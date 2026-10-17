@@ -2,4 +2,4 @@
 atlas:
   security:
     login-per-minute: 120
-    requests-per-minute: 1200
+    requests-per-minute: 2400

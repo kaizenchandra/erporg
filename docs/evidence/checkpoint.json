@@ -1,20 +1,25 @@
 {
-  "date": "2026-10-15",
+  "date": "2026-10-17",
   "productionRelease": "NOT READY",
   "sourceRequirements": 45,
-  "acceptanceCriteria": 374,
+  "acceptanceCriteria": 392,
   "java": {
-    "tests": 145,
+    "tests": 228,
     "failures": 0,
     "database": "PostgreSQL 18.6",
     "architectureNegativeFixture": "passed",
     "persistencePolicyNegativeFixture": "passed",
     "directoryBeyond1000": "passed with rollback-isolated 1005 additional employees",
     "uncappedSummaryAndDirectProfile": "passed: 1017 total fixture, scoped self total, forbidden record and tenant tests",
-    "inboxBeyond500": "passed: 507 pending requests, last page and scoped totals"
+    "inboxBeyond500": "passed: 507 pending requests, last page and scoped totals",
+    "effectiveAccessHttpBoundary": "passed: real HTTP/JDBC sessions, nanosecond-before/exact UTC cutoff, aliases and new sign-in; no job",
+    "endWithdrawalHttpBoundary": "passed: approved pre-effective withdrawal preserves sessions/alias/new login at original cutoff; pending request still denies and cannot reactivate",
+    "endRescheduleHttpBoundary": "passed: five sessions including aliases remain valid at original cutoff and are denied at replacement cutoff; new login follows current date",
+    "rehireAccessBoundary": "passed: two retained unused HR/alias sessions and fresh sign-in remain denied at rehire start despite Onboarding; original/new job/start and old-manager scope verified",
+    "rehireActivationAccessBoundary": "passed: untouched pre-end session denied after grant; fresh Employee login, alias denial, unstamped/forged-header denial and logout"
   },
   "browser": {
-    "localTestsPassed": 44,
+    "localTestsPassed": 65,
     "oidcTestSkippedInLocalSuite": 1,
     "oidcMfaProviderLogoutSeparateTestPassed": 1,
     "latestApiSecurityRerunPassed": 2,
@@ -50,7 +55,23 @@
     "latestDocumentMaintenanceFullSuite": "42 passed, 1 OIDC-only skipped (1.7m), local built frontend",
     "latestDocumentMaintenanceTargeted": "2 passed (5.7s)",
     "latestDocumentRetentionFullSuite": "44 passed, 1 OIDC-only skipped (1.9m), local built frontend",
-    "latestDocumentRetentionTargeted": "2 passed (5.8s), after scoped panel spacing/release-case context changes"
+    "latestDocumentRetentionTargeted": "2 passed (5.8s), after scoped panel spacing/release-case context changes",
+    "latestOrganisationChartFullSuite": "48 passed, 1 OIDC-only skipped (2.1m), local built frontend",
+    "latestOrganisationChartTargeted": "4 passed (7.6s)",
+    "latestResignationFullSuite": "50 passed, 1 OIDC-only skipped (1.8m), final V29/V30 and locally built frontend",
+    "latestExitTasksFullSuite": "52 passed, 1 OIDC-only skipped (1.8m); built local frontend and actual PostgreSQL/ClamAV",
+    "latestTaskManagementFullSuite": "54 passed, 1 OIDC-only skipped (2.2m), built local frontend and actual PostgreSQL/ClamAV",
+    "latestEmploymentEndFullSuite": "56 passed, 1 OIDC-only skipped (2.1m), final built frontend and real PostgreSQL/scanner",
+    "latestEmploymentEndOidcRetest": "1 passed (3.6s), real Keycloak code flow/privileged TOTP/provider logout after changed auth callback",
+    "endWithdrawalTargeted": "2 passed (4.7s)",
+    "endWithdrawalFull": "58 passed, one OIDC-only skipped (2.1m)",
+    "latestOidcSeconds": 3.5,
+    "endRescheduleFull": "60 passed, one OIDC-only skipped (2.2m)",
+    "rehireTargeted": "2 passed (5.9s)",
+    "rehireFull": "62 passed, one OIDC-only skipped (2.2m)",
+    "rehireActivationTargeted": "3 passed (8.1s)",
+    "rehireActivationFull": "65 passed, 1 OIDC-only skipped (2.2m)",
+    "rehireActivationOidc": "1 passed (2.4s), real local Keycloak TOTP and provider logout"
   },
   "frontend": {
     "lint": "passed",
@@ -84,7 +105,17 @@
       "mobile template revision/retirement history",
       "explicit retention directive form",
       "independent hold release form",
-      "mobile private governance review"
+      "mobile private governance review",
+      "scoped organisation branch chart",
+      "mobile manager chart/empty scope",
+      "resignation submission validation and error focus",
+      "mobile private resignation decision/history and page overflow",
+      "exit-task assignment errors and unsaved case-panel exit",
+      "mobile assigned completion/history with corrected status contrast and no page overflow",
+      "HR task-management preserved validation, focus and 44px adjacent history targets",
+      "mobile cancelled own task with private management reasons omitted",
+      "employment-end linked validation and confirmation impact",
+      "mobile scheduled employment end and pending downstream context"
     ],
     "violations": 0,
     "manualScreenReader": "not performed",
@@ -95,17 +126,17 @@
   "restore": {
     "localSyntheticLogicalRestore": "passed",
     "evidence": "docs/evidence/restore-check.json",
-    "wholeDrillSeconds": 24.714,
+    "wholeDrillSeconds": 38.769,
     "productionRpoRto": "not measured",
     "applicationOnRestoredDatabase": "passed: API readiness, Flyway, authentication, authorised reads, denial and logout",
     "applicationEvidence": "docs/evidence/restore-application-check.json",
     "browserOnRestoredDatabase": "not exercised",
     "sessionDataRestored": false,
     "departmentTablesAndApi": "passed after tenant-scoped comparator correction",
-    "latestApplicationSmokeSeconds": 29.189,
-    "targetDatabase": "atlas_restore_4b38f5f1afe6450b",
+    "latestApplicationSmokeSeconds": 33.8,
+    "targetDatabase": "atlas_restore_7ad2b69fd3cf4307",
     "hiringTablesAndPendingEvent": "verified at recorded snapshot",
-    "tableManifestCount": 33,
+    "tableManifestCount": 50,
     "onboardingStatusAndHistory": "passed at recorded snapshot",
     "positionCatalogueAndAudit": "passed at recorded snapshot",
     "positionAssignmentsAndVersions": "passed at recorded snapshot; final ordering revision",
@@ -118,7 +149,7 @@
       "status": "PASSED",
       "objects": 13,
       "manifestSha256": "ce449e61bdff2f96e000058e7fc034af3b0d411f6eac17b1338d1eb4c991b0e4",
-      "restoredRoot": "/private/tmp/atlas-document-restore-4b38f5f1afe6450b",
+      "restoredRoot": "/private/tmp/atlas-document-restore-7ad2b69fd3cf4307",
       "scope": "independent local synthetic private-object copy; not cloud/encrypted backup or production recovery"
     },
     "documentRetrieval": "verified from independent root; exactly one new DOWNLOAD_AUTHORISED audit; other business data and original audit rows unchanged",
@@ -126,7 +157,52 @@
     "documentVersionHistory": "passed ordered immutable chain and latest-only catalogue",
     "documentTemplatesClassificationCompleteness": "passed restored configuration/audit and latest PRESENT/BLOCKED with access denial",
     "documentTemplateMaintenance": "passed effective revision/retirement and correction history",
-    "documentRetentionAndHolds": "passed recovered private governance journal/state/release and access denial"
+    "documentRetentionAndHolds": "passed recovered private governance journal/state/release and access denial",
+    "organisationChart": "passed roots/branch/effective position and minimal fields; employee/tenant scope denial",
+    "scope": "Fresh increment AA synthetic fixtures; earlier lost temporary bytes remain unrecovered",
+    "resignations": "passed scoped counts, immutable private history, pending exit handoff and tenant denial; source/restore manifests and reconciliation matched",
+    "exitTasks": "passed approved-case ownership/sequence/audit reconciliation, HR case view, own assigned completion/history, no private resignation/case grant, logout and unchanged business manifests",
+    "projectionManifest": {
+      "hr_exit_task_current": {
+        "rows": 6,
+        "sha256": "17d49f071566cf9dbb4fa6ea5dd3a0ae9c904396b3d0aaf4c105824d4f1ec998"
+      },
+      "hr_end_withdrawal_current": {
+        "rows": 2,
+        "sha256": "dc42eec00a972ac4261704e608703cfb0c086a7a88a39aef2775bd23a80e34f4"
+      },
+      "hr_employment_end_current": {
+        "rows": 4,
+        "sha256": "1d0bc579203dd022a3e38e0f10966f7c5384f1d427f4b2535e18d8c29fcd71c2"
+      },
+      "hr_employment_end_handoff_current": {
+        "rows": 10,
+        "sha256": "4d15701f06930b09b73ecc51392c2f0d32ee2dd4d018af5e8bedd03ef54e6058"
+      },
+      "hr_end_reschedule_current": {
+        "rows": 2,
+        "sha256": "aeb799372ea7f68f9200e843812b942324d880b2c690c2760d14fc21b2b93f1b"
+      },
+      "hr_rehire_current": {
+        "rows": 3,
+        "sha256": "5459386231f3f323d00b5dda45dbb67c369ebe123aa2d8ce70025994e5ff50a1"
+      },
+      "hr_rehire_activation_current": {
+        "rows": 2,
+        "sha256": "9f474d75a34e6501d80e5902f345020cf890e6df0a9868c915db3abba988398f"
+      },
+      "hr_rehire_handoff_current": {
+        "rows": 6,
+        "sha256": "24d312cd8b50a7b78cbff71e2cbbac295fb3650c71279288059cbf07a9c9003e"
+      }
+    },
+    "taskManagement": "passed current assignment/cancelled projection, immutable HR-only management journal, former-assignee read denial and unchanged projection/business data",
+    "employmentEnd": "passed original schedule/withdrawal retained, current replacement cutoff and private history; current original/replacement handoffs reconciled",
+    "currentProjectionCount": 8,
+    "employmentEndWithdrawal": "passed retained rejected/approved withdrawal history followed by replacement; original suppressed cutoff remains Active until replacement boundary",
+    "employmentEndRescheduling": "passed private rejected/approved replacement history, independent reviewer, current date, two suppressed original and two pending replacement handoffs; five views unchanged",
+    "rehire": "passed private rejected/approved history, original/new scheduled episodes, prior Ended/future Onboarding projection, legacy-access hold and three pending handoffs; six views unchanged",
+    "rehireActivation": "passed: immutable decision/completion/grant reconciliation, private history, Active episode, fresh Employee-only sign-in, retained HR and unselected alias denial, logout; eight current views and other business records unchanged"
   },
   "containerBuild": "not executed",
   "remoteCI": "not executed",
@@ -312,7 +388,7 @@
     "productionStorageAndSignatureFreshness": "not ready; local adapter excluded from prod",
     "versionsTemplatesRetentionCompletenessRetry": "Versions/retries/template maintenance/classification/completeness and explicit retention/hold governance implemented locally; authoritative retention/archive/purge/delete, targeting/independent approval and production controls remain open",
     "sourceDs01Complete": false,
-    "next": "HR-02 scoped organisation-chart browsing beyond current directory-page preview; production retention/archive/deletion stays blocked pending authoritative category/country/entity policy, archive/reference reconciliation and release controls",
+    "next": "HR-05 resignation requests and independent review; payroll/access consumers remain explicit later-phase dependencies",
     "frontendBuildEvidence": "docs/evidence/documents-frontend-build.txt"
   },
   "documentRetryIncrement": {
@@ -414,7 +490,316 @@
       "apiSeconds": 29.189
     },
     "sourceDs01AndSh10Complete": false,
-    "next": "HR-02 scoped organisation-chart browsing beyond current directory-page preview; production retention/archive/deletion stays blocked pending authoritative category/country/entity policy, archive/reference reconciliation and release controls",
+    "next": "HR-05 resignation requests and independent review; payroll/access consumers remain explicit later-phase dependencies",
     "production": "NOT READY; existing dependency/security/performance/storage/scanner/operations/provider gates unresolved"
+  },
+  "organisationChartIncrement": {
+    "phase": 2,
+    "scope": "HR tenant single-manager hierarchy, manager self/direct reports, employee self; no hidden manager identifiers or descendant counts",
+    "implementation": "OrganisationBrowseUseCases/Service, central PeopleReadScope.of, Actor domain record check, minimal chart store/web adapter and repeatable-read read-only transaction composition; no migration",
+    "pagination": "1\u201350 nodes/page, stable lower-name/ID order; root/branch or global literal authorised search independent of directory",
+    "effectiveDate": "One injected current UTC as-of date; future approved name/title/department/position/reporting checked at date boundary",
+    "frontend": "Chart-first view, branches/root/search/recent-back, reauthorised profile open with state preservation and real network cancellation",
+    "verification": "151 Java, full 48 browser/API passed; OIDC-only skipped locally; targeted 4 passed (7.6s); fresh 33-table/13-object restore and isolated API passed",
+    "limits": "One branch at a time; recent-back history 50; no historical-date chart, matrix/delegated graph, bulk/combined reorganisation/root removal or performance achievement",
+    "sourceHr02Complete": false,
+    "restore": {
+      "target": "atlas_restore_ef4a404352a546c7",
+      "tables": 33,
+      "privateObjects": 13,
+      "logicalSeconds": 24.336,
+      "apiSeconds": 26.147,
+      "scope": "new synthetic data only"
+    },
+    "environmentRecovery": "Existing acceptance metadata archived as atlas_acceptance_checkpoint_r_20261016 after temporary object/cache loss; no database volumes/archived rows deleted; prior missing bytes not recovered",
+    "next": "HR-05 resignation requests and independent review; payroll/access consumers remain explicit later-phase dependencies",
+    "production": "NOT READY; existing dependency/security/performance/storage/durability/scanner/operations/provider gates unresolved"
+  },
+  "localDurabilityFinding": {
+    "date": "2026-10-17",
+    "status": "OPEN",
+    "finding": "Temporary original document root and previous recovery copies unavailable again after environment reset; earlier acceptance metadata retained as atlas_acceptance_checkpoint_s_20261017. Earlier bytes not recovered; fresh synthetic restore does not resolve this.",
+    "productionImpact": "Confirms temporary local adapter is not production durable storage/backup; fresh restore evidence does not close this finding"
+  },
+  "resignationIncrement": {
+    "phase": 2,
+    "workflow": "Self resignation submission and independent HR approval/rejection, private history and pending exit coordination",
+    "implementation": "Resignation domain, framework-free use cases and ports, thin web/JDBC adapters, composition transactions, V29/V30, feature-local UI and typed contracts",
+    "identity": "Resolved inside each use case; own case or HR tenant scope, subject-and-employee independence, managers own only",
+    "replayConcurrency": "Exact versions, employee/request lock order and stable/conflicting submission/decision replay; one outstanding submitted/approved case",
+    "audit": "Immutable input snapshot and status audit; deferred audit/handoff reconciliation; atomic requester outcome notification",
+    "businessEffectiveDate": "Proposed last working local date, distinct UTC recorded time; no invented notice period or automatic termination",
+    "verification": "160 Java, full 50 browser/API/contract tests passed; OIDC-only skipped in this local suite. Axe/desktop/mobile visual checks passed for tested states; manual screen-reader review not performed. Fresh 36-table/13-object logical restore and isolated restored API passed.",
+    "sourceHr05Complete": false,
+    "downstream": "One immutable PENDING_EXIT_COORDINATION handoff; no task consumer, final pay, termination or access removal",
+    "limits": "No on-behalf request, withdrawal/amendment, approved-case reversal, unified cross-module inbox, delegated review or statutory policy validation",
+    "next": "Phase 2 HR-05 assigned exit-task coordination for approved resignations; dated employment/access execution and payroll stay explicit subsequent dependencies",
+    "production": "NOT READY",
+    "evidence": [
+      "docs/evidence/java-resignation-verification.txt",
+      "docs/evidence/resignation-browser-verification.txt",
+      "docs/evidence/resignation-frontend-build.txt",
+      "docs/evidence/resignations-desktop.png",
+      "docs/evidence/resignation-review-mobile.png"
+    ],
+    "restore": {
+      "target": "atlas_restore_7f93f47bc9504cc8",
+      "tables": 36,
+      "privateObjects": 13,
+      "logicalSeconds": 24.549,
+      "apiSeconds": 22.591,
+      "status": "PASSED",
+      "scope": "Fresh local synthetic data only; not production RPO/RTO or recovery of earlier missing files"
+    },
+    "environmentRecovery": "OrbStack restarted; prior acceptance/test/targeted/pre-guard synthetic schemas retained; no existing volume/schema data deleted or migration checksum overridden."
+  },
+  "nextImplementationStep": "Phase 2 HR-05 audited fresh-grant revocation/replacement and subsequent employment-end/repeated-cycle modelling; provider/payroll/benefit consumers and remaining phases stay pending.",
+  "exitTaskIncrement": {
+    "phase": 2,
+    "workflow": "Approved resignation \u2192 independent HR assignment \u2192 assigned employee private task workspace \u2192 manual completion and immutable audit",
+    "backend": "ExitTask domain, ExitTaskUseCases/Service, framework-free ports/models, web/JDBC adapters, composition transactions and additive V31",
+    "frontend": "Case assignment with preserved linked errors and unsaved/busy panel guards; own-task filter/pages, completion impact, private audit and mobile cards",
+    "identity": "Current server subject/tenant/employee; HR case scope, independent coordinator and assigned employee-only completion. No resignation access grant. Configured assignee identity required.",
+    "state": "OPEN \u2192 COMPLETED; 50 tasks/case, exact case/task versions, stable/conflicting replay and concurrent single-winner commands",
+    "dates": "Explicit due date today through one year; overdue server-derived using injected UTC date, late completion allowed; actual UTC recorded/completed time retained",
+    "notifications": "Atomic private in-app assignment (all current assignee identities) and coordinator completion records; no external delivery SLA",
+    "verification": "168 Java and full 52 browser/API/contract tests passed; one OIDC-only local skip. Axe and desktop/mobile visual checks passed for tested states. Restore result recorded separately. Fresh 38-table/13-object logical restore and isolated restored API passed.",
+    "sourceHr05Complete": false,
+    "limits": "Manual attestation only. No reassignment/cancellation/reopen/proxy completion or task dependencies. Original exit handoff remains pending; no termination, final pay or access revocation.",
+    "evidence": [
+      "docs/evidence/java-exit-task-verification.txt",
+      "docs/evidence/exit-task-browser-verification.txt",
+      "docs/evidence/exit-task-frontend-build.txt",
+      "docs/evidence/exit-coordination-desktop.png",
+      "docs/evidence/exit-task-mobile.png"
+    ],
+    "environment": "Existing runtime/private objects available; prior T/U targeted metadata retained in atlas_acceptance_checkpoint_u_targeted_20261017 before fresh full regression. Earlier lost objects not recovered.",
+    "next": "Phase 2 HR-05 controlled exit-task reassignment/cancellation with retained history; dated termination, access revocation and validated final-pay consumers stay explicit subsequent dependencies",
+    "production": "NOT READY",
+    "restore": {
+      "target": "atlas_restore_7fe202b09e3f4c1e",
+      "tables": 38,
+      "privateObjects": 13,
+      "logicalSeconds": 25.852,
+      "apiSeconds": 24.04,
+      "status": "PASSED",
+      "scope": "Local synthetic PostgreSQL/private-object recovery only; not production RPO/RTO"
+    }
+  },
+  "taskManagementIncrement": {
+    "phase": 2,
+    "workflow": "Independent HR reassignment/cancellation \u2192 current-assignee scope \u2192 retained private management journal",
+    "backend": "ExitTask domain/application management contract, framework-free ports, web/JDBC adapters and additive V32 current-assignment view/journal",
+    "frontend": "Explicit impact, linked preserved errors, unsaved/busy guards, success focus/status, HR-only history and cancelled own-task mobile cards",
+    "state": "OPEN management only, COMPLETED/CANCELLED terminal; 100 events/task and aggregate version includes completion",
+    "identity": "Current server membership/tenant, independent HR coordinator, configured new assignee, former ordinary-assignee future API access revoked; HR-only reasons",
+    "replayConcurrency": "Original creation replay validates original inputs then returns current task; immutable management event replay survives later completion; base-task lock precedes fresh projected read",
+    "verification": "176 Java and full 54 browser/API/schema tests passed; one OIDC-only skip locally. Targeted two passed (6.4s). Automated axe/desktop/mobile visual checks passed for tested states; no manual screen-reader claim. Fresh 39-table/current-view/13-object restore and isolated restored API passed.",
+    "sourceHr05Complete": false,
+    "rollback": "Older assignment-unaware readers are unsafe after management events; drain before enabling management, compatible rollback/roll-forward required",
+    "limits": "No reopen/instruction edit, employment termination, final pay or identity-system execution; original exit handoff stays pending",
+    "environment": "Existing runtime/private objects available; earlier targeted rows retained in atlas_acceptance_checkpoint_v_targeted_20261017; no prior data deletion or missing-byte recovery",
+    "evidence": [
+      "docs/evidence/java-task-management-verification.txt",
+      "docs/evidence/task-management-browser-verification.txt",
+      "docs/evidence/task-management-frontend-build.txt",
+      "docs/evidence/task-management-hr.png",
+      "docs/evidence/task-cancelled-mobile.png"
+    ],
+    "next": "Phase 2 HR-05 effective-dated employment-end processing and local access revocation, keeping final-pay and external identity-provider consumers explicit pending dependencies",
+    "production": "NOT READY",
+    "restore": {
+      "target": "atlas_restore_d3b387cbf76441d0",
+      "tables": 39,
+      "views": 1,
+      "privateObjects": 13,
+      "logicalSeconds": 27.767,
+      "apiSeconds": 25.871,
+      "status": "PASSED",
+      "scope": "Local synthetic PostgreSQL/current-view/private-object restore; not production RPO/RTO"
+    }
+  },
+  "employmentEndIncrement": {
+    "phase": 2,
+    "workflow": "Approved voluntary resignation \u2192 resolved exit work/report handover \u2192 independent HR confirms immutable end \u2192 date-based Ended/local access denial",
+    "backend": "EmploymentEnd domain/use cases/ports, thin HTTP/JDBC, additive V33, shared injected Core HR clock and published requireActive security contract",
+    "frontend": "Confirmation context/date/impact, preserved linked errors/unsaved/busy state, scheduled read/history, mobile/axe and closed task coordination",
+    "dates": "Inclusive approved last working day; next day at 00:00 UTC is first inactive date. Provisional company convention, not statutory rule. Recorded time separate.",
+    "state": "Original employee/identity/history retained; scheduling increments version; profile/directory/summary/chart project Ended; duplicate/replay/concurrent commands safe",
+    "access": "Every authenticated request and local/OIDC login checks effective membership; all mapped identities denied at cutoff; existing JDBC session invalidated when next used",
+    "prerequisites": "No OPEN own-case or other assigned exit tasks; no active/planned reports at bounded future dates; new task/manager references blocked once end is recorded",
+    "handoffs": "Two immutable unique PENDING targets FINAL_PAY and EXTERNAL_IDENTITY; no money/provider action or consumer",
+    "verification": "187 Java; 56 full browser/API tests and separate real OIDC test passed. One OIDC-only skip in local suite. Targeted two passed (5.6s). Restore evidence recorded separately. Fresh 41-table/current-view/13-object restore and isolated restored API passed.",
+    "boundaryEvidence": "Actual random-port HTTP + PostgreSQL/Spring Session with test-only mutable injected clock; three sessions including alias, exact cutoff and fresh-login denial. Browser tests cover future scheduling only.",
+    "sourceHr05Complete": false,
+    "limits": "Voluntary end only; no schedule correction/withdrawal, involuntary termination, rehire, final-pay rules, external provider disable/session revocation, eager unused-session purge or background delivery",
+    "rollback": "All readers/authentication paths must be end-aware before accepting schedules; older versions are unsafe after schedules",
+    "environment": "Targeted/prior metadata retained in atlas_acceptance_checkpoint_w_targeted_20261017; exact HTTP tests use isolated atlas_end_http_* schemas, OIDC sandbox uses atlas_oidc_end_w_20261017. No prior rows/objects deleted; earlier missing bytes unrecovered.",
+    "evidence": [
+      "docs/evidence/java-employment-end-verification.txt",
+      "docs/evidence/employment-end-browser-verification.txt",
+      "docs/evidence/employment-end-oidc-verification.txt",
+      "docs/evidence/employment-end-frontend-build.txt",
+      "docs/evidence/employment-end-mobile.png"
+    ],
+    "next": "Phase 2 HR-05 audited pre-effective employment-end withdrawal/correction with independent review, before rehire and broader termination workflows; payroll/external identity consumers remain pending",
+    "production": "NOT READY",
+    "restore": {
+      "target": "atlas_restore_bdb8ee1582cc4bb7",
+      "tables": 41,
+      "views": 1,
+      "privateObjects": 13,
+      "logicalSeconds": 28.777,
+      "apiSeconds": 25.992,
+      "status": "PASSED",
+      "scope": "Local synthetic PostgreSQL/task-view/private-object restore only; not production RPO/RTO"
+    }
+  },
+  "endWithdrawalIncrement": {
+    "phase": 2,
+    "workflow": "HR withdrawal request \u2192 different HR subject/employee review \u2192 pre-effective local schedule and handoff suppression with original history retained",
+    "backend": "Framework-free EndWithdrawal, existing EmploymentEndUseCases/ports and composition, immutable V34 submissions/decisions and current views; workforce/employee locking and exact versions",
+    "frontend": "Private request/review/history, explicit impact, reason validation/focus and preserved values, unsaved/busy state, status and resumed task coordination; mobile/axe",
+    "dates": "Only strictly before original first inactive date; pending/rejected leaves cutoff in force; approval cannot reactivate after cutoff. Recorded audit timestamps truncated down to PostgreSQL microseconds.",
+    "state": "At most 20 requests, one pending request and one decision per request. Approval increments employee version. Original schedule, approved resignation and raw pending handoffs retained; current pending handoffs SUPPRESSED.",
+    "security": "Authoritative tenant/current HR, independent subject AND employee, target/self/alias denial. No client tenant/role authority. Reasons private to HR.",
+    "verification": "195 Java tests; 58 full browser/API/schema tests passed, one OIDC-only skipped; separate actual OIDC/MFA/logout one passed (2.7s). Two targeted browser tests passed (4.7s). Lint/types/format/build, traceability, eight delivery-check tests and diff checks passed.",
+    "sourceHr05Complete": false,
+    "limits": "No end-date amendment/rescheduling, resignation withdrawal, post-cutoff reactivation, rehire/involuntary termination, statutory final pay or external cancellation/delivery. Shared inbox/delegation remain open.",
+    "rollback": "Old binaries ignoring approved withdrawals are unsafe; compatible rollout/roll-forward required. No applied migration rewrite.",
+    "environment": "Previous targeted fixtures retained in atlas_acceptance_checkpoint_x_targeted_20261017; fresh full acceptance schema and isolated atlas_withdraw_http_* and atlas_oidc_withdrawal_x_20261017. No old rows/files deleted or missing bytes recovered.",
+    "evidence": [
+      "docs/evidence/java-end-withdrawal-verification.txt",
+      "docs/evidence/end-withdrawal-browser-verification.txt",
+      "docs/evidence/end-withdrawal-frontend-build.txt",
+      "docs/evidence/end-withdrawal-oidc-verification.txt",
+      "docs/evidence/end-withdrawal-mobile.png"
+    ],
+    "restore": {
+      "target": "atlas_restore_96b388daefad4ee0",
+      "tables": 43,
+      "views": 4,
+      "privateObjects": 13,
+      "logicalSeconds": 33.026,
+      "apiSeconds": 29.58,
+      "status": "PASSED",
+      "scope": "Local synthetic only; not production RPO/RTO"
+    },
+    "next": "Phase 2 HR-05 audited pre-effective end-date correction/rescheduling, before rehire and broader termination workflows; no statutory final-pay or external cancellation invented",
+    "production": "NOT READY"
+  },
+  "endRescheduleIncrement": {
+    "phase": 2,
+    "workflow": "Current or withdrawn end \u2192 HR replacement-date request \u2192 independent HR review \u2192 current cutoff and two pending replacement handoffs, original history retained",
+    "backend": "EndReschedule domain/application contracts, use case/store, thin HTTP/JDBC and composition; V35 immutable request/decision/handoff and current views; V36 suppresses original handoffs by approved replacement identity",
+    "frontend": "Current versus original dates, private request/decision history, explicit impact, linked validation/preserved values, combined unsaved/busy state, date Escape guard, heading focus and mobile/axe",
+    "dates": "Today through one year provisional request window; approve only before any current cutoff; unchanged snapshot and task/report handovers rechecked. Withdrawn schedule may be rescheduled after its suppressed original date; no post-effective reactivation.",
+    "state": "Maximum twenty attempts, one pending and one approved replacement per original; pending withdrawal/replacement mutually exclude. Approval increments employee version. Original resignation/schedule/withdrawal retained; old handoffs SUPPRESSED and two replacement targets PENDING.",
+    "verification": "207 backend tests passed; full 60 browser/API/schema tests passed, one OIDC-only skipped (2.2m); separate real OIDC/MFA/logout one passed (2.5s). Lint/types/format/build, traceability, Python compilation, eight delivery-check tests and diff checks passed.",
+    "boundaryEvidence": "Actual random-port HTTP and PostgreSQL/JDBC sessions with isolated test-only clock; five sessions including aliases, original versus replacement boundary and new-login denial. Browser tests cover future scheduling.",
+    "sourceHr05Complete": false,
+    "limits": "One approved replacement only. Further replacement/withdrawal of replacement, employee resignation amendment/consent policy, rehire/involuntary termination, country final-pay rules and external consumers remain open. No combined inbox/delegation.",
+    "rollback": "Old readers using original dates are unsafe; compatible rollout/roll-forward required. V35 replaces derived views atomically; V36 additive fix, no applied checksum rewritten.",
+    "environment": "Targeted fixtures retained in atlas_acceptance_checkpoint_y_targeted_20261017. Fresh full acceptance schema; isolated atlas_reschedule_http_* and atlas_oidc_reschedule_y_20261017. No prior rows/files deleted or missing bytes recovered.",
+    "evidence": [
+      "docs/evidence/java-end-rescheduling-verification.txt",
+      "docs/evidence/end-rescheduling-browser-verification.txt",
+      "docs/evidence/end-rescheduling-frontend-build.txt",
+      "docs/evidence/end-rescheduling-oidc-verification.txt",
+      "docs/evidence/end-rescheduling-mobile.png"
+    ],
+    "restore": {
+      "target": "atlas_restore_26cf225c46814cb9",
+      "tables": 46,
+      "views": 5,
+      "privateObjects": 13,
+      "logicalSeconds": 35.208,
+      "apiSeconds": 30.954,
+      "status": "PASSED",
+      "scope": "Local synthetic only; not production RPO/RTO"
+    },
+    "next": "Phase 2 HR-05 employment-episode model and independently reviewed rehire with preserved prior history and effective local access; payroll/provider handoffs remain pending. Further replacement control stays tracked.",
+    "production": "NOT READY"
+  },
+  "rehireIncrement": {
+    "phase": 2,
+    "workflow": "Effective prior end \u2192 HR rehire request \u2192 independent HR review \u2192 separate scheduled/Onboarding episode with legacy identities denied and three pending handoffs",
+    "backend": "Rehire/RehireDetails and plain episode models; use-case/owned ports; thin HTTP/JDBC and composition-root transactions; additive V37 request/decision/episode/handoff and effective job/start/status projections",
+    "frontend": "HR profile episode/history, labelled job/date/department/manager/reason form, independent review and explicit access impact; preserved errors/unsaved/busy/date-Escape/heading focus; confirmed write versus failed profile-refresh recovery",
+    "dates": "Already-effective current end required; new start today through one year and on/after prior inactive date. Before new start remains Ended; from start Onboarding with new job/manager/start and empty position assignment.",
+    "state": "Original employee ID/start/base job/contact and prior history retained. One first rehire only, twenty attempts, one pending/approved; exact employee version, stable keys, bounded future graph and pending job/lifecycle/exit checks. Approval increments version and atomically creates episode 2 and three PENDING targets.",
+    "security": "Every retained identity/alias remains denied even when profile becomes Onboarding; old HR/manager roles never become grants. Two old unused HR sessions and fresh sign-in denied in real HTTP test. HR may reject old pending changes without authenticating the ended requester; alias separation uses retained tenant mapping.",
+    "verification": "219 full backend tests passed and eleven final rehire tests rerun with old-manager scope assertions; 62 full browser/API/schema passed, one OIDC-only skip (2.2m). Two targeted browser tests passed (5.9s); separate real OIDC/MFA/logout one passed (3.5s). Lint/types/format/build, traceability, Python compilation, eight delivery-check tests and diff checks passed.",
+    "sourceHr05Complete": false,
+    "limits": "No new onboarding completion, fresh local/IdP provisioning, repeated cycle/new-episode termination, statutory prior-service rules, payroll/benefit consumers, combined inbox/delegation or live delivery. Original recording time unavailable for legacy episode and not fabricated.",
+    "rollback": "Old rehire-unaware authentication readers could revive privileged legacy mappings on Onboarding and are unsafe; drain before approval, compatible rollout/roll-forward required. No applied migration rewrite or production rollout.",
+    "environment": "Explicit synthetic historical browser fixture tests/fixtures/former-employee.sql; targeted schema retained as atlas_acceptance_checkpoint_z_targeted_20261017. Isolated atlas_rehire_http_* and atlas_oidc_rehire_z_20261017. No old rows/files deleted or lost bytes recovered.",
+    "evidence": [
+      "docs/evidence/java-rehire-verification.txt",
+      "docs/evidence/rehire-browser-verification.txt",
+      "docs/evidence/rehire-frontend-build.txt",
+      "docs/evidence/rehire-oidc-verification.txt",
+      "docs/evidence/rehire-mobile.png"
+    ],
+    "restore": {
+      "target": "atlas_restore_170cd8288e25480d",
+      "tables": 50,
+      "views": 6,
+      "privateObjects": 13,
+      "logicalSeconds": 39.291,
+      "apiSeconds": 36.634,
+      "status": "PASSED",
+      "scope": "Local synthetic only; not production RPO/RTO"
+    },
+    "next": "Phase 2 HR-05 reviewed rehire onboarding completion and explicit fresh local identity provisioning with employment-episode session binding; provider/payroll/benefit consumers remain pending.",
+    "production": "NOT READY"
+  },
+  "rehireActivationIncrement": {
+    "requirements": [
+      "HR-05",
+      "SH-01",
+      "SH-02",
+      "SH-03",
+      "SH-05",
+      "SH-09"
+    ],
+    "scope": "Started first-rehire manual completion independently reviewed by HR, one nominated existing identity receives fresh local EMPLOYEE-only access",
+    "backend": "Framework-free use case/owned ports, thin HTTP/JDBC, bounded composition-root transactions, additive V38 with four immutable tables and two current views",
+    "frontend": "Profile completion/history/impact, preserved errors/values/unsaved/focus/busy, independently confirmed decision, refreshed Active profile/directory and correct missing-stamp sign-in recovery",
+    "security": "Server-only workforce epoch stamped only at successful local/OIDC authentication; every authenticated request rejects missing/mismatched stamps. Raw legacy HR roles retained but not restored; aliases without new grant denied.",
+    "state": "One completion/grant per employee; twenty requests, one pending/approved, exact version/replay/reference checks; independent subject AND employee; Active from review UTC date. Payroll stays pending.",
+    "verification": "228 full Java passed; 3 targeted and 65 full browser/API passed, one OIDC-only skipped locally; separate real OIDC/MFA/logout one passed. Lint/types/format/build, Python compilation, traceability, eight delivery-check tests and diff checks passed.",
+    "acceptanceWorkload": "local,acceptance: 2400 routine requests and 120 sign-ins/minute; normal defaults 600/30 unchanged, prod rejects acceptance",
+    "sourceHr05Complete": false,
+    "limits": [
+      "Manual HR attestation, not joining-task proof",
+      "No provider account creation/enablement or payroll/benefit consumer",
+      "No grant replacement/revocation, repeated cycles or new-episode end execution",
+      "Existing unstamped sessions intentionally require fresh sign-in",
+      "No production rollout/rollback, restore, load or complete accessibility/security claim"
+    ],
+    "rollback": "Drain all epoch-unaware readers before activation; older authentication artifacts are unsafe rollback targets. No applied migration checksum rewrite.",
+    "environment": "atlas_acceptance current; passing targeted atlas_acceptance_checkpoint_aa_targeted_20261017; earlier attempts archived; atlas_activate_http_* and atlas_oidc_activation_aa_20261017 isolated",
+    "evidence": [
+      "docs/evidence/java-rehire-activation-verification.txt",
+      "docs/evidence/rehire-activation-browser-verification.txt",
+      "docs/evidence/rehire-activation-browser-targeted.txt",
+      "docs/evidence/rehire-activation-frontend-build.txt",
+      "docs/evidence/rehire-activation-oidc-verification.txt",
+      "docs/evidence/rehire-activation-mobile.png"
+    ],
+    "restore": {
+      "target": "atlas_restore_7ad2b69fd3cf4307",
+      "tables": 54,
+      "views": 8,
+      "privateObjects": 13,
+      "logicalSeconds": 38.769,
+      "apiSeconds": 33.8,
+      "readinessSeconds": 16.874,
+      "status": "PASSED",
+      "scope": "Local synthetic only; not production RPO/RTO"
+    },
+    "next": "Phase 2 HR-05 audited fresh-grant revocation/replacement and subsequent employment-end/repeated-cycle modelling; provider/payroll/benefit consumers and remaining phases stay pending.",
+    "production": "NOT READY"
   }
 }

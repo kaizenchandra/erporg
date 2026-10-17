@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:38756) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38756) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/zzzzzzzz-rehire-activation.spec.ts:97:5 › completion/access contracts reject escalation and unsafe inputs; competing independent rejections leave onboarding blocked (834ms)
+  ✓  2 tests/zzzzzzzz-rehire-activation.spec.ts:216:5 › independent completion grants one fresh Employee login, refreshes Active state and keeps other identities blocked (3.6s)
+  ✓  3 tests/zzzzzzzz-rehire-activation.spec.ts:348:5 › an unstamped existing session returns to the correct local sign-in screen and can authenticate freshly (1.3s)
+
+  3 passed (8.1s)

@@ -16,6 +16,8 @@ import { PeopleStats } from "./people-stats";
 import { DocumentsWorkspace } from "@/features/documents/workspace";
 import { BenefitsCatalogue } from "@/features/benefits/catalogue";
 import { Hiring } from "./hiring";
+import { MyExitTasks } from "./exit-tasks";
+import { Resignations } from "./resignations";
 import { Organisation } from "./organisation";
 export function Workspace() {
   const {
@@ -49,7 +51,10 @@ export function Workspace() {
   };
   useEffect(() => {
     const controller = new AbortController();
-    api<{ mode: string }>("/api/auth-mode", { signal: controller.signal })
+    api<{ mode: string }>("/api/auth-mode", {
+      signal: controller.signal,
+      credentials: "omit",
+    })
       .then((r) => setAuthMode(r.mode))
       .catch(() => {});
     return () => controller.abort();
@@ -295,6 +300,18 @@ export function Workspace() {
                     >
                       Documents
                     </button>
+                    <button
+                      className={tab === "resignations" ? "active" : ""}
+                      onClick={() => setTab("resignations")}
+                    >
+                      Resignations
+                    </button>
+                    <button
+                      className={tab === "exit-tasks" ? "active" : ""}
+                      onClick={() => setTab("exit-tasks")}
+                    >
+                      My exit tasks
+                    </button>
                     <span className="tabs-note">
                       <span className="connection-dot" />
                       All changes saved securely
@@ -306,6 +323,17 @@ export function Workspace() {
                       onOpen={setProfile}
                       search={search}
                       setSearch={setSearch}
+                    />
+                  ) : tab === "exit-tasks" ? (
+                    <MyExitTasks
+                      key={actor.subject + actor.tenant + actor.role}
+                      actor={actor}
+                    />
+                  ) : tab === "resignations" ? (
+                    <Resignations
+                      key={actor.subject + actor.tenant + actor.role}
+                      actor={actor}
+                      onRefresh={refresh}
                     />
                   ) : tab === "documents" ? (
                     <DocumentsWorkspace actor={actor} />
@@ -399,6 +427,10 @@ export function Workspace() {
         <Profile
           employee={profile}
           actor={actor}
+          onRecorded={async (updated) => {
+            setProfile(updated);
+            await refresh();
+          }}
           onClose={() => setProfile(null)}
           onChange={() => {
             setChange(profile);

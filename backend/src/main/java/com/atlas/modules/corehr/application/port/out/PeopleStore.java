@@ -13,6 +13,8 @@ import java.time.*;
 import java.util.*;
 
 public interface PeopleStore {
+  Optional<LocalDate> employmentEndDate(String tenant, String employeeId);
+
   void lockReportingGraph(String tenant);
 
   List<ReportingLink> reportingLinks(String tenant, LocalDate date, int limit);
@@ -34,6 +36,10 @@ public interface PeopleStore {
   RequestPage requestPage(PeopleReadScope scope, RequestQuery query, LocalDate asOf);
 
   Actor actor(String subject, LocalDate asOf);
+
+  String sessionEpoch(String subject, LocalDate asOf);
+
+  Optional<String> identityEmployeeId(String tenant, String subject);
 
   List<Employee> employees(PeopleReadScope scope, LocalDate asOf);
 

@@ -106,6 +106,12 @@ public record ChangeRequest(
             || (actor.role().equals("MANAGER") && actor.employeeId().equals(employee.managerId()))))
       throw new Denied();
     if (!status.equals("SUBMITTED")) throw new Conflict("This request has already been decided.");
+    if (employee.status().equals("Ended")) {
+      if (!actor.hr()) throw new Denied();
+      if (decision.equals("APPROVED"))
+        throw new Conflict(
+            "Employment has ended. Reject this old request; do not apply it to another episode.");
+    }
     if (decision.equals("APPROVED") && employee.version() != employeeVersion)
       throw new Conflict("The employee changed. Reject this request and submit a fresh change.");
   }

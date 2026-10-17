@@ -2305,6 +2305,10 @@ tbody tr.selected {
 .organisation-node {
   min-width: 0;
   overflow-wrap: anywhere;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
 }
 .organisation-anchor {
   border-top: 3px solid var(--accent);
@@ -2339,4 +2343,39 @@ tbody tr.selected {
   .organisation-children {
     padding-left: 12px;
   }
+}
+
+/* Keep growing feature navigation within the viewport at narrow widths. */
+.people-tabs {
+  overflow-x: auto;
+}
+.people-tabs > button {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.badge.open {
+  background: #eef3f5;
+  color: #526571;
+}
+.badge.completed {
+  background: #edf7f1;
+  color: #267347;
+}
+
+.badge.cancelled {
+  background: #edf1f4;
+  color: #526571;
+}
+
+[aria-label="Case exit tasks"] .benefit-card summary,
+[aria-label="My exit tasks"] .benefit-card summary {
+  min-height: 44px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.badge.ended {
+  background: #edf1f4;
+  color: #526571;
 }

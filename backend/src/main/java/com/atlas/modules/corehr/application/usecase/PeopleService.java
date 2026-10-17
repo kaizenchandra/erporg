@@ -62,6 +62,10 @@ public final class PeopleService implements PeopleUseCases {
     return store.requestPage(readScope(actor), query, LocalDate.now(clock));
   }
 
+  public String sessionEpoch(String subject) {
+    return store.sessionEpoch(subject, LocalDate.now(clock));
+  }
+
   public Actor actor(String subject) {
     return store.actor(subject, LocalDate.now(clock));
   }
@@ -141,6 +145,8 @@ public final class PeopleService implements PeopleUseCases {
           validateReportingTimeline(
               actor, e.id(), c.field(), c.newValue().trim(), c.effectiveDate());
           var effectiveEmployee = store.employee(actor, e.id(), c.effectiveDate(), false);
+          if (effectiveEmployee.status().equals("Ended"))
+            throw new ChangeRequest.Conflict("Employment has ended by that effective date.");
           String old =
               switch (c.field()) {
                 case "phone" -> e.phone();
@@ -233,9 +239,8 @@ public final class PeopleService implements PeopleUseCases {
           }
           var r = store.request(actor, id, true, LocalDate.now(clock));
           var e = store.employee(actor, r.employeeId(), LocalDate.now(clock), true);
-          if (actor
-              .employeeId()
-              .equals(store.actor(r.requestedBy(), LocalDate.now(clock)).employeeId()))
+          var requesterEmployee = store.identityEmployeeId(actor.tenant(), r.requestedBy());
+          if (requesterEmployee.isEmpty() || actor.employeeId().equals(requesterEmployee.get()))
             throw new ChangeRequest.Denied();
           r.ensureDecidable(actor, e, c.decision());
           if (c.decision().equals("APPROVED") && store.hasLaterChange(actor, r))
@@ -255,9 +260,15 @@ public final class PeopleService implements PeopleUseCases {
   private void validateReportingTimeline(
       Actor actor, String employeeId, String field, String managerId, LocalDate from) {
     if (!field.equals("managerId")) return;
+    if (store.employmentEndDate(actor.tenant(), managerId).isPresent())
+      throw new ChangeRequest.Validation(
+          Map.of("newValue", "Choose a manager without a scheduled employment end."));
     if (!store.managerEmployeeIds(actor.tenant(), MANAGER_ROLES).contains(managerId))
       throw new ChangeRequest.Validation(
           Map.of("newValue", "Choose an employee with an HR or manager role."));
+    if (store.employee(actor, managerId, from, false).status().equals("Ended"))
+      throw new ChangeRequest.Validation(
+          Map.of("newValue", "Choose a manager whose employment is active on the proposed date."));
     var boundaries = store.reportingDates(actor.tenant(), from, 257);
     if (boundaries.size() > 256)
       throw new ChangeRequest.Conflict(
@@ -265,6 +276,9 @@ public final class PeopleService implements PeopleUseCases {
     var dates = new TreeSet<LocalDate>(boundaries);
     dates.add(from);
     for (var date : dates) {
+      if (store.employee(actor, managerId, date, false).status().equals("Ended"))
+        throw new ChangeRequest.Conflict(
+            "The proposed manager has an employment end at a checked reporting boundary.");
       var links = store.reportingLinks(actor.tenant(), date, 10001);
       if (links.size() > 10000)
         throw new ChangeRequest.Conflict(
