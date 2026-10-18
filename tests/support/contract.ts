@@ -25,7 +25,7 @@ export function schemaValidator(
   return validator({ $ref: `#/$defs/${name}` });
 }
 export async function checkResponse(
-  response: APIResponse,
+  response: Pick<APIResponse, "status" | "headers" | "json">,
   path: string,
   method = "get",
 ) {

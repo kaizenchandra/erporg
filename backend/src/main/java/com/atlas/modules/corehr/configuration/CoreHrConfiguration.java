@@ -23,6 +23,69 @@ public class CoreHrConfiguration {
   }
 
   @Bean
+  com.atlas.modules.corehr.application.port.in.IdentityReplacementUseCases identityReplacement(
+      JdbcClient db, PlatformTransactionManager manager) {
+    var template = new TransactionTemplate(manager);
+    template.setTimeout(10);
+
+    UnitOfWork tx =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return template.execute(status -> work.get());
+          }
+        };
+    var readTemplate = new TransactionTemplate(manager);
+    readTemplate.setTimeout(10);
+    readTemplate.setReadOnly(true);
+    readTemplate.setIsolationLevel(
+        org.springframework.transaction.TransactionDefinition.ISOLATION_REPEATABLE_READ);
+    UnitOfWork reads =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return readTemplate.execute(status -> work.get());
+          }
+        };
+    return new com.atlas.modules.corehr.application.usecase.IdentityReplacementService(
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcIdentityReplacementStore(db),
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcRehireAccessStore(db),
+        new JdbcPeopleStore(db),
+        tx,
+        reads,
+        clock);
+  }
+
+  @Bean
+  com.atlas.modules.corehr.application.port.in.RehireAccessUseCases rehireAccess(
+      JdbcClient db, PlatformTransactionManager manager) {
+    var template = new TransactionTemplate(manager);
+    template.setTimeout(10);
+
+    UnitOfWork tx =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return template.execute(status -> work.get());
+          }
+        };
+    var readTemplate = new TransactionTemplate(manager);
+    readTemplate.setTimeout(10);
+    readTemplate.setReadOnly(true);
+    readTemplate.setIsolationLevel(
+        org.springframework.transaction.TransactionDefinition.ISOLATION_REPEATABLE_READ);
+    UnitOfWork reads =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> work) {
+            return readTemplate.execute(status -> work.get());
+          }
+        };
+    return new com.atlas.modules.corehr.application.usecase.RehireAccessService(
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcRehireAccessStore(db),
+        new JdbcPeopleStore(db),
+        tx,
+        reads,
+        clock);
+  }
+
+  @Bean
   com.atlas.modules.corehr.application.port.in.RehireActivationUseCases rehireActivation(
       JdbcClient db, PlatformTransactionManager manager, OrganisationUseCases organisation) {
     var template = new TransactionTemplate(manager);

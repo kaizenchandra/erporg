@@ -132,12 +132,14 @@ public final class ExitTaskService implements ExitTaskUseCases {
                 "Task list changed or reached 50 tasks. Refresh the case.");
           ExitTask.schedule(c.dueDate(), LocalDate.now(clock));
           people.employee(a, c.assigneeId(), LocalDate.now(clock), false);
-          if (people.employmentEndDate(a.tenant(), c.assigneeId()).isPresent())
+          if (people
+              .currentEpisodeEndDate(a.tenant(), c.assigneeId(), LocalDate.now(clock))
+              .isPresent())
             throw new ChangeRequest.Validation(
                 Map.of("assigneeId", "Choose an employee without a scheduled employment end."));
-          if (!store.hasIdentity(a.tenant(), c.assigneeId()))
+          if (!people.hasCurrentWorkspaceIdentity(a.tenant(), c.assigneeId(), LocalDate.now(clock)))
             throw new ChangeRequest.Validation(
-                Map.of("assigneeId", "Choose an employee with a configured workspace identity."));
+                Map.of("assigneeId", "Choose an employee with current workspace access."));
           var task =
               new ExitTask(
                   UUID.randomUUID().toString(),
@@ -258,12 +260,15 @@ public final class ExitTaskService implements ExitTaskUseCases {
           String assigned = t.assigneeId();
           if (c.action().equals("REASSIGN")) {
             people.employee(a, c.assigneeId(), LocalDate.now(clock), false);
-            if (people.employmentEndDate(a.tenant(), c.assigneeId()).isPresent())
+            if (people
+                .currentEpisodeEndDate(a.tenant(), c.assigneeId(), LocalDate.now(clock))
+                .isPresent())
               throw new ChangeRequest.Validation(
                   Map.of("assigneeId", "Choose an employee without a scheduled employment end."));
-            if (!store.hasIdentity(a.tenant(), c.assigneeId()))
+            if (!people.hasCurrentWorkspaceIdentity(
+                a.tenant(), c.assigneeId(), LocalDate.now(clock)))
               throw new ChangeRequest.Validation(
-                  Map.of("assigneeId", "Choose an employee with a configured workspace identity."));
+                  Map.of("assigneeId", "Choose an employee with current workspace access."));
             assigned = c.assigneeId();
           }
           var event =

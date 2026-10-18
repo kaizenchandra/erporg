@@ -3384,7 +3384,8 @@
                 "ALL",
                 "SUBMITTED",
                 "APPROVED",
-                "REJECTED"
+                "REJECTED",
+                "WITHDRAWN"
               ],
               "default": "SUBMITTED"
             }
@@ -3484,6 +3485,9 @@
           },
           "400": {
             "description": "Invalid status or pagination bounds"
+          },
+          "409": {
+            "description": "Stale version or terminal request"
           }
         },
         "requestBody": {
@@ -4611,6 +4615,708 @@
           }
         ]
       }
+    },
+    "/api/v1/employees/{employee}/rehire/access": {
+      "get": {
+        "summary": "Read HR-only current local grant and immutable revocation",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RehireAccessContext"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/employees/{employee}/rehire/access/revoke": {
+      "post": {
+        "summary": "Immediately revoke the named fresh local grant with an audited reason and exact version",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RehireAccessRevocation"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeRehireAccess"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/employees/{employee}/rehire/access/replacement": {
+      "get": {
+        "summary": "Read private replacement history and unused identity candidates",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdentityReplacementContext"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Request replacement of the revoked original local identity",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdentityReplacement"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitIdentityReplacement"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/employees/{employee}/rehire/access/replacement/{id}/review": {
+      "post": {
+        "summary": "Independently approve or reject replacement; original subject remains held",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdentityReplacement"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewIdentityReplacement"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/resignations/{id}/withdrawal": {
+      "get": {
+        "summary": "Private self/HR immutable withdrawal receipt, null while not withdrawn",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResignationWithdrawalContext"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Original requester withdraws own pending resignation; exact request version, stable replay, no exit handoff",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResignationWithdrawal"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          },
+          "409": {
+            "description": "Stale version, conflicting key or already reviewed/withdrawn"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithdrawResignation"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/resignations/{id}/episode": {
+      "get": {
+        "summary": "Self/HR immutable case episode ownership and explicit link provenance; not repeated-cycle enablement",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseEpisode"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated; may have empty body"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "429": {
+            "description": "Rate limited; retry after response header"
+          },
+          "400": {
+            "description": "Invalid status or pagination bounds"
+          },
+          "409": {
+            "description": "Case episode provenance unavailable; contact HR"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/employees/{employeeId}/additional-contacts": {
+      "get": {
+        "summary": "Read private current additional contacts and bounded request history",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "SUBMITTED",
+                "APPROVED",
+                "REJECTED"
+              ],
+              "default": "ALL"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 8
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdditionalContactsContext"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "404": {
+            "description": "Record not found"
+          },
+          "409": {
+            "description": "Version, transition or idempotency conflict"
+          },
+          "429": {
+            "description": "Rate limited"
+          }
+        }
+      }
+    },
+    "/api/v1/employees/{employeeId}/additional-contacts/requests": {
+      "post": {
+        "summary": "Request a complete replacement of additional contacts; primary is unchanged",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdditionalContactRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "404": {
+            "description": "Record not found"
+          },
+          "409": {
+            "description": "Version, transition or idempotency conflict"
+          },
+          "429": {
+            "description": "Rate limited"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitAdditionalContacts"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/employees/{employeeId}/additional-contacts/requests/{id}/decision": {
+      "post": {
+        "summary": "Independently approve or reject a private contact snapshot",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdditionalContactRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "404": {
+            "description": "Record not found"
+          },
+          "409": {
+            "description": "Version, transition or idempotency conflict"
+          },
+          "429": {
+            "description": "Rate limited"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewAdditionalContacts"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/additional-contact-inbox": {
+      "get": {
+        "summary": "Read private additional-contact OWN or independent HR REVIEW queue",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ALL",
+                "SUBMITTED",
+                "APPROVED",
+                "REJECTED"
+              ],
+              "default": "SUBMITTED"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 8
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OWN",
+                "REVIEW"
+              ],
+              "default": "REVIEW"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdditionalContactPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Forbidden or missing CSRF"
+          },
+          "404": {
+            "description": "Record not found"
+          },
+          "409": {
+            "description": "Version, transition or idempotency conflict"
+          },
+          "429": {
+            "description": "Rate limited"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4723,6 +5429,14 @@
           "positionCode": {
             "type": "string",
             "maxLength": 30
+          },
+          "legalName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 120,
+            "description": "Private recorded legal name; empty when unrecorded, null when field access is denied. Not identity verification."
           }
         },
         "required": [
@@ -4741,7 +5455,8 @@
           "emergencyContactName",
           "emergencyContactRelationship",
           "emergencyContactPhone",
-          "positionCode"
+          "positionCode",
+          "legalName"
         ]
       },
       "SubmitChange": {
@@ -4764,7 +5479,8 @@
               "emergencyContactPhone",
               "positionCode",
               "managerId",
-              "name"
+              "name",
+              "legalName"
             ]
           },
           "newValue": {
@@ -4810,7 +5526,8 @@
                     "emergencyContactName",
                     "emergencyContactRelationship",
                     "emergencyContactPhone",
-                    "positionCode"
+                    "positionCode",
+                    "legalName"
                   ]
                 }
               }
@@ -7183,7 +7900,8 @@
             "enum": [
               "SUBMITTED",
               "APPROVED",
-              "REJECTED"
+              "REJECTED",
+              "WITHDRAWN"
             ]
           },
           "requestedBy": {
@@ -8867,6 +9585,851 @@
           "version",
           "idempotencyKey",
           "decision"
+        ],
+        "additionalProperties": false
+      },
+      "RehireAccessRevocation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "activationId",
+          "employeeId",
+          "subject",
+          "actor",
+          "actorEmployeeId",
+          "reason",
+          "correlationId",
+          "inputVersion",
+          "newVersion",
+          "recordedAt"
+        ],
+        "properties": {
+          "activationId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "actorEmployeeId": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "inputVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "newVersion": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RevokeRehireAccess": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "activationId",
+          "reason",
+          "version",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "activationId": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        }
+      },
+      "RehireAccessContext": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "employeeId",
+          "employeeVersion",
+          "employmentStatus",
+          "activationId",
+          "subject",
+          "role",
+          "accessStatus",
+          "revocation",
+          "grantNumber"
+        ],
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "employmentStatus": {
+            "type": "string"
+          },
+          "activationId": {
+            "type": "string",
+            "description": "Current local grant identifier. Original grants use the activation ID; replacements use their approved request ID."
+          },
+          "subject": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "EMPLOYEE"
+            ]
+          },
+          "accessStatus": {
+            "enum": [
+              "GRANTED",
+              "REVOKED"
+            ]
+          },
+          "revocation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RehireAccessRevocation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "grantNumber": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          }
+        }
+      },
+      "IdentityReplacement": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "predecessorId",
+          "employeeId",
+          "subject",
+          "reason",
+          "actor",
+          "actorEmployeeId",
+          "recordedAt",
+          "correlationId",
+          "inputVersion",
+          "status",
+          "reviewer",
+          "reviewerEmployeeId",
+          "comment",
+          "reviewedAt",
+          "reviewCorrelationId",
+          "reviewVersion"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "actorEmployeeId": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "inputVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "SUBMITTED",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "reviewer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewerEmployeeId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewedAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewCorrelationId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewVersion": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "predecessorId": {
+            "type": "string"
+          }
+        }
+      },
+      "LocalAccessGrant": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "activationId",
+          "employeeId",
+          "subject",
+          "role",
+          "grantNumber",
+          "recordedAt"
+        ],
+        "properties": {
+          "activationId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "EMPLOYEE"
+            ]
+          },
+          "grantNumber": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "IdentityReplacementContext": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "employeeId",
+          "employeeVersion",
+          "employmentStatus",
+          "grant",
+          "accessStatus",
+          "candidates",
+          "history",
+          "canRequest",
+          "grants",
+          "revocations"
+        ],
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "employmentStatus": {
+            "type": "string"
+          },
+          "grant": {
+            "$ref": "#/components/schemas/LocalAccessGrant"
+          },
+          "accessStatus": {
+            "enum": [
+              "GRANTED",
+              "REVOKED"
+            ]
+          },
+          "candidates": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "string"
+            }
+          },
+          "history": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/IdentityReplacement"
+            }
+          },
+          "canRequest": {
+            "type": "boolean"
+          },
+          "grants": {
+            "type": "array",
+            "maxItems": 2,
+            "items": {
+              "$ref": "#/components/schemas/LocalAccessGrant"
+            }
+          },
+          "revocations": {
+            "type": "array",
+            "maxItems": 2,
+            "items": {
+              "$ref": "#/components/schemas/RehireAccessRevocation"
+            }
+          }
+        }
+      },
+      "SubmitIdentityReplacement": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          }
+        },
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey",
+          "subject"
+        ],
+        "additionalProperties": false
+      },
+      "ReviewIdentityReplacement": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "REJECTED"
+            ]
+          }
+        },
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey",
+          "decision"
+        ],
+        "additionalProperties": false
+      },
+      "ResignationWithdrawal": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "requestId",
+          "employeeId",
+          "actor",
+          "reason",
+          "inputVersion",
+          "newVersion",
+          "recordedAt",
+          "correlationId"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "inputVersion": {
+            "type": "integer",
+            "const": 0
+          },
+          "newVersion": {
+            "type": "integer",
+            "const": 1
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        }
+      },
+      "ResignationWithdrawalContext": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "receipt"
+        ],
+        "properties": {
+          "receipt": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResignationWithdrawal"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "WithdrawResignation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "reason",
+          "version",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        }
+      },
+      "CaseEpisode": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "requestId",
+          "employeeId",
+          "episodeNumber",
+          "episodeStartDate",
+          "sourceRecordedAt",
+          "linkedAt",
+          "origin",
+          "linkedBy",
+          "correlationId"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "episodeNumber": {
+            "type": "integer",
+            "const": 1
+          },
+          "episodeStartDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "sourceRecordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "linkedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "COMMAND",
+              "COMPAT_COMMAND",
+              "MIGRATED_V42"
+            ]
+          },
+          "linkedBy": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        }
+      },
+      "EmergencyContact": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "relationship": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60
+          },
+          "phone": {
+            "type": "string",
+            "minLength": 7,
+            "maxLength": 30
+          }
+        },
+        "required": [
+          "name",
+          "relationship",
+          "phone"
+        ],
+        "additionalProperties": false
+      },
+      "AdditionalContactRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "oldContacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmergencyContact"
+            },
+            "maxItems": 4
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmergencyContact"
+            },
+            "maxItems": 4
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "SUBMITTED",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "requestedBy": {
+            "type": "string"
+          },
+          "requesterEmployeeId": {
+            "type": "string"
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "decidedBy": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decisionCorrelationId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decidedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "oldContacts",
+          "contacts",
+          "effectiveDate",
+          "reason",
+          "status",
+          "requestedBy",
+          "requesterEmployeeId",
+          "employeeVersion",
+          "recordedAt",
+          "correlationId",
+          "version",
+          "decidedBy",
+          "comment",
+          "decisionCorrelationId",
+          "decidedAt"
+        ],
+        "additionalProperties": false
+      },
+      "AdditionalContactsContext": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmergencyContact"
+            },
+            "maxItems": 4
+          },
+          "effectiveDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "requests": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AdditionalContactRequest"
+                }
+              },
+              "total": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "page": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50
+              }
+            },
+            "required": [
+              "items",
+              "total",
+              "page",
+              "size"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "employeeId",
+          "employeeVersion",
+          "contacts",
+          "effectiveDate",
+          "requests"
+        ],
+        "additionalProperties": false
+      },
+      "SubmitAdditionalContacts": {
+        "type": "object",
+        "properties": {
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmergencyContact"
+            },
+            "maxItems": 4
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "contacts",
+          "effectiveDate",
+          "reason",
+          "employeeVersion",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "ReviewAdditionalContacts": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{8,80}$"
+          }
+        },
+        "required": [
+          "decision",
+          "comment",
+          "version",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "AdditionalContactPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalContactRequest"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size"
         ],
         "additionalProperties": false
       }

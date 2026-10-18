@@ -3,6 +3,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Modal, Avatar, Badge, formatDate } from "@/components/ui/primitives";
 import type { OnboardingCompletion } from "./complete-onboarding";
 import { RehirePanel } from "./rehire";
+import { AdditionalContacts } from "./additional-contacts";
 import { ManagerPicker } from "./manager-picker";
 import { PositionPicker } from "./position-picker";
 import type { Department } from "./department-reference";
@@ -60,6 +61,7 @@ export function Profile({
   return (
     <Modal
       title="Employee profile"
+      closeDisabled={rehireBusy}
       onClose={() => {
         if (
           !rehireBusy &&
@@ -93,6 +95,12 @@ export function Profile({
         </div>
         <dl className="detail-grid">
           {[
+            [
+              "Recorded legal name",
+              e.legalName === null
+                ? "Restricted"
+                : e.legalName || "Not recorded",
+            ],
             ["Work email", e.email],
             ["Contact number", e.phone],
             [
@@ -139,6 +147,17 @@ export function Profile({
               const updated = await api<Employee>(`/api/v1/employees/${e.id}`);
               setCurrentEmployee(updated);
               await onRecorded(updated);
+            }}
+          />
+        )}
+        {(actor.role === "HR" || actor.employeeId === e.id) && (
+          <AdditionalContacts
+            employeeId={e.id}
+            actor={actor}
+            onRecorded={async () => {
+              const next = await api<Employee>(`/api/v1/employees/${e.id}`);
+              setCurrentEmployee(next);
+              await onRecorded(next);
             }}
           />
         )}
@@ -381,6 +400,12 @@ export function ChangeForm({
             )}
           </div>
         )}
+        {field === "legalName" && (
+          <p className="form-help">
+            Recorded legal names are private to the employee and HR. HR approval
+            records the supplied value; it does not verify identity documents.
+          </p>
+        )}
         <label>
           Information to change <span>*</span>
           <select
@@ -401,6 +426,7 @@ export function ChangeForm({
             {canPrivate && (
               <>
                 <option value="name">Employee display name</option>
+                <option value="legalName">Recorded legal name</option>
                 <option value="address">Home address</option>
                 <option value="emergencyContactName">
                   Emergency contact name

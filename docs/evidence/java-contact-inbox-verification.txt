@@ -1,0 +1,8 @@
+Full Maven/PostgreSQL suite, increment AK
+{
+  "tests": 274.0,
+  "failures": 0.0,
+  "errors": 0.0,
+  "skipped": 0.0,
+  "time": 27.993
+}

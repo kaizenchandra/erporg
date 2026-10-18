@@ -21,6 +21,7 @@ export type Employee = {
   managerId: string | null;
   startDate: string;
   positionCode: string;
+  legalName: string | null;
   version: number;
 };
 export type ChangeRequest = {

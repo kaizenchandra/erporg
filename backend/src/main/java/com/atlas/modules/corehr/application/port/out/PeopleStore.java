@@ -15,6 +15,10 @@ import java.util.*;
 public interface PeopleStore {
   Optional<LocalDate> employmentEndDate(String tenant, String employeeId);
 
+  Optional<LocalDate> currentEpisodeEndDate(String tenant, String employeeId, LocalDate asOf);
+
+  boolean hasCurrentWorkspaceIdentity(String tenant, String employeeId, LocalDate asOf);
+
   void lockReportingGraph(String tenant);
 
   List<ReportingLink> reportingLinks(String tenant, LocalDate date, int limit);

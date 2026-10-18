@@ -18,12 +18,16 @@ public record ChangeRequest(
     Instant recordedAt,
     String decidedBy,
     String comment) {
-  public static final Set<String> PRIVATE_FIELDS =
+  public static final Set<String> REMOVABLE_PRIVATE_FIELDS =
       Set.of(
           "address",
           "emergencyContactName",
           "emergencyContactRelationship",
           "emergencyContactPhone");
+  public static final Set<String> PRIVATE_FIELDS =
+      java.util.stream.Stream.concat(
+              REMOVABLE_PRIVATE_FIELDS.stream(), java.util.stream.Stream.of("legalName"))
+          .collect(java.util.stream.Collectors.toUnmodifiableSet());
   public static final Set<String> FIELDS =
       Set.of(
           "phone",
@@ -33,6 +37,7 @@ public record ChangeRequest(
           "location",
           "positionCode",
           "managerId",
+          "legalName",
           "address",
           "emergencyContactName",
           "emergencyContactRelationship",
@@ -60,7 +65,7 @@ public record ChangeRequest(
     if (field == null || !FIELDS.contains(field)) errors.put("field", "Choose a supported field.");
     boolean removal =
         field != null
-            && (PRIVATE_FIELDS.contains(field) || field.equals("positionCode"))
+            && (REMOVABLE_PRIVATE_FIELDS.contains(field) || field.equals("positionCode"))
             && "".equals(value);
     if (value == null || (!removal && value.isBlank()) || value.length() > 120)
       errors.put("newValue", "New value must contain 1–120 characters.");
@@ -68,10 +73,10 @@ public record ChangeRequest(
         && ("phone".equals(field) || "emergencyContactPhone".equals(field))
         && !value.matches("[+0-9 ()-]{7,30}"))
       errors.put("newValue", "Enter a valid phone number (7–30 characters).");
-    if ("name".equals(field)
+    if (("name".equals(field) || "legalName".equals(field))
         && value != null
         && value.codePoints().anyMatch(Character::isISOControl))
-      errors.put("newValue", "Display names cannot contain control characters.");
+      errors.put("newValue", "Names cannot contain control characters.");
     if (reason == null || reason.isBlank() || reason.length() > 500)
       errors.put("reason", "A reason of 1–500 characters is required.");
     if (date == null) errors.put("effectiveDate", "Effective date is required.");

@@ -1,4 +1,5 @@
 "use client";
+import { RehireAccessPanel } from "./rehire-access";
 import { useEffect, useRef, useState } from "react";
 import { api, ApiError } from "@/lib/api";
 import type { Actor } from "@/lib/contracts";
@@ -204,7 +205,7 @@ export function RehireActivationPanel({
                 <strong>
                   Active from {formatDate(data.completion.effectiveDate)}
                 </strong>{" "}
-                · Fresh local Employee access for{" "}
+                · Original local Employee grant for{" "}
                 <strong>{data.completion.subject}</strong>.
               </p>
               <p>
@@ -212,11 +213,18 @@ export function RehireActivationPanel({
                 {new Date(data.completion.recordedAt).toLocaleString()} ·{" "}
                 {data.completion.reason}
               </p>
+              <RehireAccessPanel
+                actor={actor}
+                employeeId={employeeId}
+                onDirty={onDirty}
+                onBusy={onBusy}
+                onSaved={onSaved}
+              />
               <p>
-                Prior sessions are invalid. Other aliases have no new grant. No
-                HR/manager privilege or external provider account was restored.
-                Payroll remains pending. Grant replacement/revocation requires a
-                later controlled workflow.
+                The original grant did not restore HR/manager privilege or any
+                other alias. Explicit replacements and revocations are shown in
+                Current local access. External provider and payroll work remain
+                separate.
               </p>
             </>
           ) : pending ? (

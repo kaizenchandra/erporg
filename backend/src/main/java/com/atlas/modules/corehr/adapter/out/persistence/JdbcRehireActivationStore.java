@@ -20,7 +20,7 @@ public final class JdbcRehireActivationStore implements RehireActivationStore {
   public List<String> identities(String tenant, String employee) {
     var rows =
         db.sql(
-                "select subject from identity_membership m where tenant=:tenant and employee_id=:employee and not exists(select 1 from hr_rehire_access g where g.subject=m.subject and (g.tenant<>m.tenant or g.employee_id<>m.employee_id)) order by subject limit 21")
+                "select subject from identity_membership m where tenant=:tenant and employee_id=:employee and not exists(select 1 from hr_local_access_grant g where g.subject=m.subject and (g.tenant<>m.tenant or g.employee_id<>m.employee_id)) order by subject limit 21")
             .param("tenant", tenant)
             .param("employee", employee)
             .query(String.class)

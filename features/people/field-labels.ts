@@ -1,5 +1,6 @@
 export const changeFieldLabels: Record<string, string> = {
   name: "Employee display name",
+  legalName: "Recorded legal name",
   phone: "Contact number",
   title: "Job title / promotion",
   department: "Department / transfer",

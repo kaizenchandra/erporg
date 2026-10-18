@@ -1,0 +1,1 @@
+PASSED: final built mobile receipt, revoked state, zero scoped axe violations, no page overflow, scoped padding 0px. No business mutation.

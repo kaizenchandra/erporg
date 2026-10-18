@@ -1,0 +1,19 @@
+{
+  "status": "PASSED",
+  "scope": "Local synthetic V41-to-V42 upgrade; not production migration rehearsal",
+  "historicalTablesUnchanged": {
+    "hr_resignation": {
+      "rows": 5,
+      "sha256": "7eae68adc925dc69e09723d538ec1230389f66a729f9a8e8d740155c944281a2"
+    },
+    "hr_resignation_audit": {
+      "rows": 10,
+      "sha256": "054bbe9b9f795441f36acd56d9af3ce41b3dc247fe4661b0c358a82f23d4bb0c"
+    },
+    "hr_resignation_handoff": {
+      "rows": 5,
+      "sha256": "40a3d29cda19b6e11bc836d19c5e33a6f179d4d7957d47bf61915ec6cf6004e1"
+    }
+  },
+  "newWithdrawalReceipts": 0
+}

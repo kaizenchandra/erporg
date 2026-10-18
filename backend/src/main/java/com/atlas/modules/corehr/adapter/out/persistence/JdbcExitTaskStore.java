@@ -20,15 +20,6 @@ public final class JdbcExitTaskStore implements ExitTaskStore {
     this.db = db;
   }
 
-  public boolean hasIdentity(String tenant, String employeeId) {
-    return db.sql(
-            "select exists(select 1 from identity_membership where tenant=:tenant and employee_id=:employee)")
-        .param("tenant", tenant)
-        .param("employee", employeeId)
-        .query(Boolean.class)
-        .single();
-  }
-
   public Rows mine(String tenant, String assignee, Query q) {
     var params =
         Map.<String, Object>of("tenant", tenant, "assignee", assignee, "status", q.status());

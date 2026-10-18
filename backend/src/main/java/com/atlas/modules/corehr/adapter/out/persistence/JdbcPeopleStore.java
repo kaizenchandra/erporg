@@ -30,6 +30,29 @@ public final class JdbcPeopleStore implements PeopleStore {
         .optional();
   }
 
+  public Optional<LocalDate> currentEpisodeEndDate(
+      String tenant, String employeeId, LocalDate asOf) {
+    return db.sql(
+            "select inactive_date from (select hr_current_episode_end_date(:tenant,:employee,:date) inactive_date) current_episode where inactive_date is not null")
+        .param("tenant", tenant)
+        .param("employee", employeeId)
+        .param("date", asOf)
+        .query(LocalDate.class)
+        .optional();
+  }
+
+  public boolean hasCurrentWorkspaceIdentity(String tenant, String employeeId, LocalDate asOf) {
+    return db.sql(
+            "select exists(select 1"
+                + AUTH_ELIGIBLE_FROM
+                + " and m.tenant=:tenant and m.employee_id=:employee)")
+        .param("tenant", tenant)
+        .param("employee", employeeId)
+        .param("date", asOf)
+        .query(Boolean.class)
+        .single();
+  }
+
   public void lockReportingGraph(String tenant) {
     db.sql("select pg_advisory_xact_lock(hashtextextended(:tenant,87301))")
         .param("tenant", tenant)
@@ -129,8 +152,10 @@ public final class JdbcPeopleStore implements PeopleStore {
         .optional();
   }
 
-  private static final String AUTH_FROM =
-      " from identity_membership m join hr_employee e on e.tenant=m.tenant and e.id=m.employee_id left join hr_rehire_access g on g.tenant=m.tenant and g.employee_id=m.employee_id and g.subject=m.subject and g.effective_date<=:date where m.subject=:s and hr_employment_status(e.tenant,e.id,e.status,:date)<>'Ended' and (not exists(select 1 from hr_employment_episode p where p.tenant=e.tenant and p.employee_id=e.id) or g.epoch is not null)";
+  private static final String AUTH_ELIGIBLE_FROM =
+      " from identity_membership m join hr_employee e on e.tenant=m.tenant and e.id=m.employee_id left join hr_episode_access_current g on g.tenant=m.tenant and g.employee_id=m.employee_id and g.subject=m.subject and g.effective_date<=:date and g.rehire_id=(select p.rehire_id from hr_employment_episode p where p.tenant=m.tenant and p.employee_id=m.employee_id and p.start_date<=:date order by p.start_date desc,p.number desc limit 1) and not exists(select 1 from hr_rehire_access_revocation x where x.tenant=g.tenant and x.activation_id=g.id) where not exists(select 1 from hr_local_access_grant bound where bound.subject=m.subject and (bound.tenant<>m.tenant or bound.employee_id<>m.employee_id)) and not exists(select 1 from hr_rehire_access_revocation revoked where revoked.subject=m.subject) and hr_employment_status(e.tenant,e.id,e.status,:date)<>'Ended' and (not exists(select 1 from hr_employment_episode p where p.tenant=e.tenant and p.employee_id=e.id) or g.epoch is not null)";
+
+  private static final String AUTH_FROM = AUTH_ELIGIBLE_FROM + " and m.subject=:s";
 
   public Actor actor(String subject, LocalDate date) {
     return db.sql(
@@ -165,7 +190,7 @@ public final class JdbcPeopleStore implements PeopleStore {
           + NAME_AT
           + " name,e.email, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='phone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.phone) phone, hr_employment_value(e.tenant,e.id,'title',e.title,:date) title, hr_employment_value(e.tenant,e.id,'department',e.department,:date) department, hr_employment_value(e.tenant,e.id,'location',e.location,:date) location, hr_employment_status(e.tenant,e.id,e.status,:date) status,"
           + MANAGER_AT
-          + " manager_id,hr_employment_start(e.tenant,e.id,e.start_date,:date) start_date,e.version, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='address' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.address) address, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactName' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_name) emergency_contact_name, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactRelationship' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_relationship) emergency_contact_relationship, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactPhone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_phone) emergency_contact_phone, hr_employment_value(e.tenant,e.id,'positionCode',e.position_code,:date) position_code from hr_employee e where e.tenant=:tenant";
+          + " manager_id,hr_employment_start(e.tenant,e.id,e.start_date,:date) start_date,e.version, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='address' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.address) address, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactName' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_name) emergency_contact_name, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactRelationship' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_relationship) emergency_contact_relationship, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactPhone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_phone) emergency_contact_phone, hr_employment_value(e.tenant,e.id,'positionCode',e.position_code,:date) position_code, hr_employment_value(e.tenant,e.id,'legalName','',:date) legal_name from hr_employee e where e.tenant=:tenant";
 
   public DirectoryPage directory(PeopleReadScope a, DirectoryQuery q, LocalDate date) {
     String scoped = SELECT + " and (:all or e.id=:self or (:reports and " + MANAGER_AT + "=:self))";

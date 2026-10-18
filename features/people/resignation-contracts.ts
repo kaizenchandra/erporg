@@ -3,7 +3,7 @@ export type Resignation = {
   employeeId: string;
   lastWorkingDate: string;
   reason: string;
-  status: "SUBMITTED" | "APPROVED" | "REJECTED";
+  status: "SUBMITTED" | "APPROVED" | "REJECTED" | "WITHDRAWN";
   requestedBy: string;
   employeeVersion: number;
   recordedAt: string;
@@ -25,6 +25,17 @@ export type ResignationAudit = {
   actor: string;
   reason: string;
   effectiveDate: string;
+  recordedAt: string;
+  correlationId: string;
+};
+
+export type ResignationWithdrawal = {
+  requestId: string;
+  employeeId: string;
+  actor: string;
+  reason: string;
+  inputVersion: number;
+  newVersion: number;
   recordedAt: string;
   correlationId: string;
 };

@@ -1,0 +1,5 @@
+Command: EPISODE_UPGRADE_TEST=1 npx playwright test tests/zzzzzzzzzzz-case-episode.spec.ts --grep "legacy links"
+Executed against actual retained V42-to-V43 upgrade before fresh regression.
+  ✓  1 tests/zzzzzzzzzzz-case-episode.spec.ts:238:7 › legacy links remain visibly distinct from the original submission instant (1.2s)
+  1 passed (2.9s)
+Original source instant retained; later migration capture/system identity shown in real case UI/API. Not production migration rehearsal.

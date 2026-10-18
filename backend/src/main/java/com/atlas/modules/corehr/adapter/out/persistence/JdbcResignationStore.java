@@ -74,7 +74,29 @@ public final class JdbcResignationStore implements ResignationStore {
         .single();
   }
 
-  public void insert(String tenant, Resignation r, String key, String correlation) {
+  public java.util.List<EmploymentEpisodeRef> episodes(String tenant, String employee) {
+    return db.sql(
+            "select 1 number,start_date from hr_employee where tenant=:tenant and id=:employee union all select number,start_date from hr_employment_episode where tenant=:tenant and employee_id=:employee order by number")
+        .param("tenant", tenant)
+        .param("employee", employee)
+        .query(EmploymentEpisodeRef.class)
+        .list();
+  }
+
+  public CaseEpisode episode(String tenant, String id) {
+    return db.sql(
+            "select request_id,employee_id,episode_number,episode_start_date,source_recorded_at,linked_at,origin,linked_by,correlation_id from hr_case_episode where tenant=:tenant and request_id=:id")
+        .param("tenant", tenant)
+        .param("id", id)
+        .query(CaseEpisode.class)
+        .optional()
+        .orElseThrow(
+            () ->
+                new ChangeRequest.Conflict("Case episode provenance is unavailable. Contact HR."));
+  }
+
+  public void insert(
+      String tenant, Resignation r, EmploymentEpisodeRef episode, String key, String correlation) {
     db.sql(
             "insert into hr_resignation(tenant,id,employee_id,last_working_date,reason,status,requested_by,employee_version,recorded_at,version,idempotency_key) values(:tenant,:id,:employee,:date,:reason,'SUBMITTED',:actor,:version,:now,0,:key)")
         .param("tenant", tenant)
@@ -88,6 +110,17 @@ public final class JdbcResignationStore implements ResignationStore {
         .param("key", key)
         .update();
     audit(tenant, r, null, r.requestedBy(), r.reason(), r.recordedAt(), correlation);
+    db.sql(
+            "insert into hr_case_episode(tenant,request_id,employee_id,episode_number,episode_start_date,source_recorded_at,linked_at,origin,linked_by,correlation_id) values(:tenant,:id,:employee,:number,:start,:now,:now,'COMMAND',:actor,:correlation)")
+        .param("tenant", tenant)
+        .param("id", r.id())
+        .param("employee", r.employeeId())
+        .param("number", episode.number())
+        .param("start", episode.startDate())
+        .param("now", r.recordedAt().atOffset(ZoneOffset.UTC))
+        .param("actor", r.requestedBy())
+        .param("correlation", correlation)
+        .update();
   }
 
   public void decide(
@@ -150,6 +183,67 @@ public final class JdbcResignationStore implements ResignationStore {
         .param("date", r.lastWorkingDate())
         .param("now", now.atOffset(ZoneOffset.UTC))
         .param("correlation", correlation)
+        .update();
+  }
+
+  private static final String WITHDRAWAL =
+      "select request_id,employee_id,actor,reason,input_version,new_version,recorded_at,correlation_id from hr_resignation_withdrawal where tenant=:tenant";
+
+  public Optional<ResignationWithdrawal> withdrawal(String tenant, String id) {
+    return db.sql(WITHDRAWAL + " and request_id=:id")
+        .param("tenant", tenant)
+        .param("id", id)
+        .query(ResignationWithdrawal.class)
+        .optional();
+  }
+
+  public Optional<ResignationWithdrawal> withdrawalDuplicate(
+      String tenant, String actor, String key) {
+    return db.sql(WITHDRAWAL + " and actor=:actor and idempotency_key=:key")
+        .param("tenant", tenant)
+        .param("actor", actor)
+        .param("key", key)
+        .query(ResignationWithdrawal.class)
+        .optional();
+  }
+
+  public void withdraw(String tenant, ResignationWithdrawal r, String key) {
+    int changed =
+        db.sql(
+                "update hr_resignation set status='WITHDRAWN',version=:next where tenant=:tenant and id=:id and status='SUBMITTED' and version=:input")
+            .param("tenant", tenant)
+            .param("id", r.requestId())
+            .param("input", r.inputVersion())
+            .param("next", r.newVersion())
+            .update();
+    if (changed != 1) throw new ChangeRequest.Conflict("Resignation changed. Refresh the list.");
+    db.sql(
+            "insert into hr_resignation_withdrawal(tenant,request_id,employee_id,actor,reason,input_version,new_version,recorded_at,correlation_id,idempotency_key) values(:tenant,:id,:employee,:actor,:reason,:input,:next,:now,:correlation,:key)")
+        .param("tenant", tenant)
+        .param("id", r.requestId())
+        .param("employee", r.employeeId())
+        .param("actor", r.actor())
+        .param("reason", r.reason())
+        .param("input", r.inputVersion())
+        .param("next", r.newVersion())
+        .param("now", r.recordedAt().atOffset(ZoneOffset.UTC))
+        .param("correlation", r.correlationId())
+        .param("key", key)
+        .update();
+    db.sql(
+            "insert into hr_resignation_audit(tenant,request_id,old_status,new_status,actor,reason,effective_date,recorded_at,correlation_id) select :tenant,:id,'SUBMITTED','WITHDRAWN',:actor,:reason,last_working_date,:now,:correlation from hr_resignation where tenant=:tenant and id=:id")
+        .param("tenant", tenant)
+        .param("id", r.requestId())
+        .param("actor", r.actor())
+        .param("reason", r.reason())
+        .param("now", r.recordedAt().atOffset(ZoneOffset.UTC))
+        .param("correlation", r.correlationId())
+        .update();
+    db.sql(
+            "insert into hr_notification(tenant,subject,message,recorded_at) select :tenant,m.subject,'A pending resignation was withdrawn. Review its current private status in Resignations.',:now from identity_membership m where m.tenant=:tenant and m.role='HR' and m.employee_id<>:employee")
+        .param("tenant", tenant)
+        .param("employee", r.employeeId())
+        .param("now", r.recordedAt().atOffset(ZoneOffset.UTC))
         .update();
   }
 

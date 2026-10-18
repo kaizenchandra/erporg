@@ -1,0 +1,10 @@
+Executed npm run lint, npm run typecheck, npm run format:check, npm run build; all exited 0 on final source.
+Route (app)
+┌ ○ /
+└ ○ /_not-found
+
+
+○  (Static)  prerendered as static content
+
+
+No public deployment.

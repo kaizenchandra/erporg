@@ -1,10 +1,10 @@
 {
-  "date": "2026-10-17",
+  "date": "2026-10-18",
   "productionRelease": "NOT READY",
   "sourceRequirements": 45,
-  "acceptanceCriteria": 392,
+  "acceptanceCriteria": 406,
   "java": {
-    "tests": 228,
+    "tests": 274,
     "failures": 0,
     "database": "PostgreSQL 18.6",
     "architectureNegativeFixture": "passed",
@@ -16,10 +16,21 @@
     "endWithdrawalHttpBoundary": "passed: approved pre-effective withdrawal preserves sessions/alias/new login at original cutoff; pending request still denies and cannot reactivate",
     "endRescheduleHttpBoundary": "passed: five sessions including aliases remain valid at original cutoff and are denied at replacement cutoff; new login follows current date",
     "rehireAccessBoundary": "passed: two retained unused HR/alias sessions and fresh sign-in remain denied at rehire start despite Onboarding; original/new job/start and old-manager scope verified",
-    "rehireActivationAccessBoundary": "passed: untouched pre-end session denied after grant; fresh Employee login, alias denial, unstamped/forged-header denial and logout"
+    "rehireActivationAccessBoundary": "passed: untouched pre-end session denied after grant; fresh Employee login, alias denial, unstamped/forged-header denial and logout",
+    "rehireRevocationBoundary": "passed: concurrent real HTTP calls yield one 200/one 409 and one event; held session and new selected/alias sign-in denied, Active employment retained",
+    "revokedSubjectReassignment": "passed: revocation follows globally unique subject after move to another HR employee and tenant; actor/epoch/private context denied",
+    "identityReplacementBoundary": "passed: independent subject AND employee review; fresh Employee epoch, unused old cookie denied, old subject permanently held, replacement revocation and concurrent single winner; actual HTTP/PostgreSQL",
+    "pendingResignationWithdrawal": "passed: ownership including same-employee alias, exact request versions, stale employee recovery, stable/conflicting replay, terminal states and SQL atomic immutable reconciliation",
+    "caseEpisodeOwnership": "passed: original-case domain boundary, current/new-hire submission, scope/replay, preserved through withdrawal/first rehire, negative chronology preflight, immutable/forged/incomplete SQL and older-writer deferred compatibility",
+    "episodeLocalStatus": "passed: V45 selects started episode before exact owned end/completion, real rehire/activation workflows and isolated future read fixtures; 254 full suite",
+    "grantEpisodeOwnership": "passed: exact initial/replacement ownership, immutable/forged/missing provenance SQL, wrong-episode actor/epoch negative adapter and complete HTTP access suite",
+    "currentEpisodeTaskAssignees": "passed: create/reassign/complete for active rehire; current identity/epoch scope, future end boundary, revoked denial and original-case closure; coordinated V47 SQL guard",
+    "privateRecordedLegalName": "passed: pure shape/privacy/removal distinction; approved/future/rejected/stale/tenant/manager rules, unchanged public identity, SQL constraint probe and full architecture/workflow regressions",
+    "additionalContacts": "passed: immutable bounded normalized snapshots; scope/independent employee aliases; replay/pending/version/future/rejection/removal; paginated history and SQL negative atomicity tests",
+    "contactApprovalQueue": "passed: independent subject/employee alias and tenant exclusions, OWN scoping, complete status-filtered pagination across 11 requests; existing architecture/domain/workflow suite"
   },
   "browser": {
-    "localTestsPassed": 65,
+    "localTestsPassed": 80,
     "oidcTestSkippedInLocalSuite": 1,
     "oidcMfaProviderLogoutSeparateTestPassed": 1,
     "latestApiSecurityRerunPassed": 2,
@@ -65,13 +76,23 @@
     "latestEmploymentEndOidcRetest": "1 passed (3.6s), real Keycloak code flow/privileged TOTP/provider logout after changed auth callback",
     "endWithdrawalTargeted": "2 passed (4.7s)",
     "endWithdrawalFull": "58 passed, one OIDC-only skipped (2.1m)",
-    "latestOidcSeconds": 3.5,
+    "latestOidcSeconds": 2.3,
     "endRescheduleFull": "60 passed, one OIDC-only skipped (2.2m)",
     "rehireTargeted": "2 passed (5.9s)",
     "rehireFull": "62 passed, one OIDC-only skipped (2.2m)",
     "rehireActivationTargeted": "3 passed (8.1s)",
     "rehireActivationFull": "65 passed, 1 OIDC-only skipped (2.2m)",
-    "rehireActivationOidc": "1 passed (2.4s), real local Keycloak TOTP and provider logout"
+    "rehireActivationOidc": "1 passed (2.4s), real local Keycloak TOTP and provider logout",
+    "rehireRevocationFull": "67 passed, one OIDC-only skipped (2.5m), final V39/V40 API and built spacing-adjusted frontend",
+    "rehireRevocationOidc": "one passed (3.0s), real sandbox TOTP/provider logout after subject-level hold",
+    "rehireRevocationFinalVisual": "passed read-only Chrome/axe/overflow and scoped padding after final spacing-only build",
+    "identityReplacementFinalFullSuite": "69 passed, one OIDC-only skip (2.4m); separate OIDC passed (2.8s)",
+    "pendingResignationWithdrawal": "passed: UI validation/unsaved/private receipt, fresh-request slot, committed-write/lost-response recovery and concurrent owner withdrawal versus independent HR rejection",
+    "caseEpisodeOwnership": "passed actual contract/private UI; original start retained after first rehire, loading/503/retry with real API, cancellation, mobile axe/overflow and separate legacy upgrade capture",
+    "latestAdditionalContactsSuite": "78 passed, 1 OIDC-only skipped (2.9m); final focus-restoration regression included",
+    "latestAdditionalContactsFreshOidcRun": false,
+    "latestContactInboxSuite": "80 passed, one OIDC-only skip (2.8m); queue error/retry, independent mobile approval, live contract/privacy and corrected success-banner contrast",
+    "latestContactInboxFreshOidcRun": false
   },
   "frontend": {
     "lint": "passed",
@@ -115,7 +136,10 @@
       "HR task-management preserved validation, focus and 44px adjacent history targets",
       "mobile cancelled own task with private management reasons omitted",
       "employment-end linked validation and confirmation impact",
-      "mobile scheduled employment end and pending downstream context"
+      "mobile scheduled employment end and pending downstream context",
+      "private additional-contact mobile profile",
+      "nested additional-contact editor with unique dialog titles and post-refresh focus recovery",
+      "mobile emergency-contact approval queue, retained decision history and corrected success notice"
     ],
     "violations": 0,
     "manualScreenReader": "not performed",
@@ -125,18 +149,18 @@
   "performance": "not benchmarked",
   "restore": {
     "localSyntheticLogicalRestore": "passed",
-    "evidence": "docs/evidence/restore-check.json",
-    "wholeDrillSeconds": 38.769,
+    "evidence": "docs/evidence/contact-inbox-restore.json",
+    "wholeDrillSeconds": 50.244,
     "productionRpoRto": "not measured",
     "applicationOnRestoredDatabase": "passed: API readiness, Flyway, authentication, authorised reads, denial and logout",
-    "applicationEvidence": "docs/evidence/restore-application-check.json",
+    "applicationEvidence": "docs/evidence/contact-inbox-restored-api.json",
     "browserOnRestoredDatabase": "not exercised",
     "sessionDataRestored": false,
     "departmentTablesAndApi": "passed after tenant-scoped comparator correction",
-    "latestApplicationSmokeSeconds": 33.8,
-    "targetDatabase": "atlas_restore_7ad2b69fd3cf4307",
+    "latestApplicationSmokeSeconds": 43.295,
+    "targetDatabase": "atlas_restore_fd6d82ad04be4f0a",
     "hiringTablesAndPendingEvent": "verified at recorded snapshot",
-    "tableManifestCount": 50,
+    "tableManifestCount": 64,
     "onboardingStatusAndHistory": "passed at recorded snapshot",
     "positionCatalogueAndAudit": "passed at recorded snapshot",
     "positionAssignmentsAndVersions": "passed at recorded snapshot; final ordering revision",
@@ -149,7 +173,7 @@
       "status": "PASSED",
       "objects": 13,
       "manifestSha256": "ce449e61bdff2f96e000058e7fc034af3b0d411f6eac17b1338d1eb4c991b0e4",
-      "restoredRoot": "/private/tmp/atlas-document-restore-7ad2b69fd3cf4307",
+      "restoredRoot": "/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/.local/restored-documents/fd6d82ad04be4f0a",
       "scope": "independent local synthetic private-object copy; not cloud/encrypted backup or production recovery"
     },
     "documentRetrieval": "verified from independent root; exactly one new DOWNLOAD_AUTHORISED audit; other business data and original audit rows unchanged",
@@ -159,50 +183,70 @@
     "documentTemplateMaintenance": "passed effective revision/retirement and correction history",
     "documentRetentionAndHolds": "passed recovered private governance journal/state/release and access denial",
     "organisationChart": "passed roots/branch/effective position and minimal fields; employee/tenant scope denial",
-    "scope": "Fresh increment AA synthetic fixtures; earlier lost temporary bytes remain unrecovered",
+    "scope": "Fresh final increment AB/V40 synthetic fixtures; missing previous temporary bytes remain unrecovered",
     "resignations": "passed scoped counts, immutable private history, pending exit handoff and tenant denial; source/restore manifests and reconciliation matched",
     "exitTasks": "passed approved-case ownership/sequence/audit reconciliation, HR case view, own assigned completion/history, no private resignation/case grant, logout and unchanged business manifests",
     "projectionManifest": {
       "hr_exit_task_current": {
         "rows": 6,
-        "sha256": "17d49f071566cf9dbb4fa6ea5dd3a0ae9c904396b3d0aaf4c105824d4f1ec998"
+        "sha256": "ebe8b363139851ab274e98b192f6ef7a5eccfd0a87cfc80102bd5d3df5f40a0d"
       },
       "hr_end_withdrawal_current": {
         "rows": 2,
-        "sha256": "dc42eec00a972ac4261704e608703cfb0c086a7a88a39aef2775bd23a80e34f4"
+        "sha256": "914b78c5ac435d311b68e0daeed4c35589c6f13924114f104f068262fa10d189"
       },
       "hr_employment_end_current": {
         "rows": 4,
-        "sha256": "1d0bc579203dd022a3e38e0f10966f7c5384f1d427f4b2535e18d8c29fcd71c2"
+        "sha256": "17d3febab5fa2b8627840d148e03443db64089b70055e0bbb0578b9e4edb1390"
       },
       "hr_employment_end_handoff_current": {
         "rows": 10,
-        "sha256": "4d15701f06930b09b73ecc51392c2f0d32ee2dd4d018af5e8bedd03ef54e6058"
+        "sha256": "d76656ac54c9276bf902e4660e1eba8e7b664f1c9faaf872d2952d69cd4f87e2"
       },
       "hr_end_reschedule_current": {
         "rows": 2,
-        "sha256": "aeb799372ea7f68f9200e843812b942324d880b2c690c2760d14fc21b2b93f1b"
+        "sha256": "599c2968b2208431091244dc5bc19de6416c1d62920d94cfe5b6f77c286b2262"
       },
       "hr_rehire_current": {
         "rows": 3,
-        "sha256": "5459386231f3f323d00b5dda45dbb67c369ebe123aa2d8ce70025994e5ff50a1"
+        "sha256": "3fbfebdc622f79f627fe3b6061aaf4c7f2a19ccd8608dcf540c711bae7258577"
       },
       "hr_rehire_activation_current": {
         "rows": 2,
-        "sha256": "9f474d75a34e6501d80e5902f345020cf890e6df0a9868c915db3abba988398f"
+        "sha256": "3e9641e602393071e0b45b6e00233502b309789292e88a5e8b1a696f6dea9d28"
       },
       "hr_rehire_handoff_current": {
         "rows": 6,
-        "sha256": "24d312cd8b50a7b78cbff71e2cbbac295fb3650c71279288059cbf07a9c9003e"
+        "sha256": "4cba406d59e0b0a8fdaa78812e2889ef439bf30240bbbfb5041a2d9a458d905b"
+      },
+      "hr_local_access_current": {
+        "rows": 1,
+        "sha256": "e574a3ac5b9a3fd6b50b92043cc6fa3b587cea8bfc8ce9c0e812feca6f0ad6b8"
+      },
+      "hr_identity_replacement_current": {
+        "rows": 2,
+        "sha256": "2439b0089fb49d09ed6e3f51bd67d49cd65a1571529ce8ab3a6fc0fe561843ee"
+      },
+      "hr_episode_end_current": {
+        "rows": 4,
+        "sha256": "5cb2f07bcdf87fedfa653ec232bab59a566cec9c8750cdc61057f23d5c4e92b3"
       }
     },
     "taskManagement": "passed current assignment/cancelled projection, immutable HR-only management journal, former-assignee read denial and unchanged projection/business data",
     "employmentEnd": "passed original schedule/withdrawal retained, current replacement cutoff and private history; current original/replacement handoffs reconciled",
-    "currentProjectionCount": 8,
+    "currentProjectionCount": 11,
     "employmentEndWithdrawal": "passed retained rejected/approved withdrawal history followed by replacement; original suppressed cutoff remains Active until replacement boundary",
     "employmentEndRescheduling": "passed private rejected/approved replacement history, independent reviewer, current date, two suppressed original and two pending replacement handoffs; five views unchanged",
     "rehire": "passed private rejected/approved history, original/new scheduled episodes, prior Ended/future Onboarding projection, legacy-access hold and three pending handoffs; six views unchanged",
-    "rehireActivation": "passed: immutable decision/completion/grant reconciliation, private history, Active episode, fresh Employee-only sign-in, retained HR and unselected alias denial, logout; eight current views and other business records unchanged"
+    "rehireActivation": "passed: immutable decision/completion/grant reconciliation, private history, Active episode, fresh Employee-only sign-in, retained HR and unselected alias denial, logout; eight current views and other business records unchanged",
+    "rehireAccessRevocation": "passed: private immutable journal and retained completion/grant, Active employment, LOCAL_ACCESS_REVOKED current projection, selected/alias sign-in denial; eight views and other business/prior audits unchanged",
+    "identityReplacement": "passed private two-grant/two-revocation receipts and independent review history, latest REVOKED hold, both held identities denied; prior audit/business data and ten projections unchanged apart from one authorized document-download audit",
+    "pendingResignationWithdrawal": "passed: three retained withdrawal receipts reconcile to owned terminal requests/audits; restored private receipt/audit retrieval and unrelated employee/tenant denial; no exit handoff or business mutation",
+    "caseEpisodeOwnership": "passed: ten original-case COMMAND links and owned-end projection reconciled, restored HR/self API and unrelated-user denial, actual immutable-link update probe; other business/prior audit/projection data unchanged apart from one authorized document download audit",
+    "projectionManifestCount": 14,
+    "additionalContacts": "passed snapshot/audit reconciliation and real restored API self/HR reads, manager/outsider denial",
+    "snapshotScope": "Completed AK full local regression snapshot, same backend/frontend revision; browser on restored database not exercised.",
+    "contactInbox": "passed: recovered OWN and independent HR REVIEW across five role/persona contexts"
   },
   "containerBuild": "not executed",
   "remoteCI": "not executed",
@@ -233,7 +277,9 @@
     "liveResponseSchemas": "passed",
     "negativeValidationFixtures": "passed",
     "requestValidationExhaustive": false,
-    "frontendTypesGenerated": false
+    "frontendTypesGenerated": false,
+    "additionalContacts": "live context/submit/review responses match exact OpenAPI schemas; negative bounds/scope/replay/concurrency also tested",
+    "contactInbox": "exact live page schema passed; invalid scope/status/bounds and forged scope/tenant parameters tested"
   },
   "privateContactIncrement": {
     "phase": 2,
@@ -553,7 +599,7 @@
     },
     "environmentRecovery": "OrbStack restarted; prior acceptance/test/targeted/pre-guard synthetic schemas retained; no existing volume/schema data deleted or migration checksum overridden."
   },
-  "nextImplementationStep": "Phase 2 HR-05 audited fresh-grant revocation/replacement and subsequent employment-end/repeated-cycle modelling; provider/payroll/benefit consumers and remaining phases stay pending.",
+  "nextImplementationStep": "Continue remaining Phase 2 Core HR structured contact/address, configured legal-entity/identity and lifecycle criteria. Preserve gates for repeated cycles and external provider/payroll consumers. Delegation, multistage approvals and all Phase 3\u20137 requirements remain in scope.",
   "exitTaskIncrement": {
     "phase": 2,
     "workflow": "Approved resignation \u2192 independent HR assignment \u2192 assigned employee private task workspace \u2192 manual completion and immutable audit",
@@ -801,5 +847,634 @@
     },
     "next": "Phase 2 HR-05 audited fresh-grant revocation/replacement and subsequent employment-end/repeated-cycle modelling; provider/payroll/benefit consumers and remaining phases stay pending.",
     "production": "NOT READY"
+  },
+  "rehireRevocationIncrement": {
+    "requirements": [
+      "HR-05",
+      "SH-01",
+      "SH-03",
+      "SH-05"
+    ],
+    "scope": "Immediate non-target HR revocation of the named fresh rehire local Employee grant, with reason/exact employee version/key; no second approval",
+    "backend": "Framework-free use case/ports and domain version/reason/self invariants; thin HTTP/JDBC; workforce then employee lock; ten-second transaction; additive V39/V40 immutable journal and current handoff projection",
+    "frontend": "Historical grant distinguished from current GRANTED/REVOKED; confirmation impact, preserved reason/error focus/unsaved close, single submit, confirmed receipt, uncertainty refresh recovery and final scoped mobile padding",
+    "security": "Central actor/epoch membership excludes revoked grant with no legacy-role fallback. Untouched held session/new selected/alias login denied; one concurrent HTTP winner. No remote provider action. Indexed subject-level denial persists after employee/tenant membership reassignment.",
+    "state": "One terminal revocation per fresh grant; matching replay stable, conflicting keys/versions/grants and non-HR/tenant/target aliases denied. Original grant/epoch/completion and Active employment retained; payroll pending.",
+    "verification": "234 full Java passed (39.347s); 67 final full browser/API passed (2.5m), one OIDC-only skip locally; separate final OIDC/MFA/logout passed (3.0s). Final mobile visual/axe/overflow/padding, lint/types/format/build, Spotless, traceability, Python compile, eight delivery-check tests and diff checks passed.",
+    "sourceHr05Complete": false,
+    "limits": [
+      "No undo, replacement/regrant or general original-employment suspension",
+      "No repeated employment cycle/new-episode end",
+      "No external provider disablement or payroll/benefit consumer",
+      "No production rollout/rollback, load, host recovery or complete security/accessibility claim"
+    ],
+    "rollback": "Drain all revocation-unaware readers before enabling writes; older readers are unsafe rollback targets. No applied migration checksum changed.",
+    "environment": "atlas_acceptance current; interrupted AA, targeted AB and before-hold AB schemas archived; isolated HTTP and atlas_oidc_revoke_ab_final_20261017 schemas retained",
+    "storage": "Maven default backend/.local/private-documents; explicit ATLAS_DOCUMENTS_LOCAL_ROOT shared by Java and recovery overrides; independent copies backend/.local/restored-documents/<target>; ignored/private/canonical, not a production storage solution or recovery of missing prior bytes Explicit environment override exercised by isolated OIDC startup; Git and both Docker build contexts exclude .local. Earlier missing bytes unrecovered.",
+    "evidence": [
+      "docs/evidence/java-rehire-revocation-verification.txt",
+      "docs/evidence/rehire-revocation-browser-verification.txt",
+      "docs/evidence/rehire-revocation-frontend-build.txt",
+      "docs/evidence/rehire-revocation-oidc-verification.txt",
+      "docs/evidence/rehire-revocation-mobile.png",
+      "docs/evidence/rehire-revocation-visual-verification.txt"
+    ],
+    "restore": {
+      "target": "atlas_restore_ea372ae77e0740b3",
+      "tables": 55,
+      "views": 8,
+      "privateObjects": 13,
+      "logicalSeconds": 42.468,
+      "apiSeconds": 36.026,
+      "readinessSeconds": 17.345,
+      "status": "PASSED",
+      "scope": "Local synthetic V40 only; not production RPO/RTO"
+    },
+    "next": "Phase 2 HR-05 independently reviewed replacement with a different existing identity and new epoch, retaining the revoked subject hold; then repeated cycles/new-episode end. Provider/payroll/benefit consumers and remaining phases stay pending.",
+    "production": "NOT READY"
+  },
+  "acceptanceWorkload": "local,acceptance: 240 sign-ins and 2400 routine requests/minute per address; defaults 30/600 unchanged; prod rejects acceptance",
+  "identityReplacementIncrement": {
+    "phase": "2 / increment AC",
+    "requirements": [
+      "HR-05-D21",
+      "HR-05-D22",
+      "SH-01",
+      "SH-02",
+      "SH-03",
+      "SH-05"
+    ],
+    "frontend": "implemented bounded HR request/independent review, error/unsaved/busy/recovery states, current access and private grant/revocation history; confirmed writes, mobile axe/overflow and visual inspection",
+    "backend": "framework-free domain/use cases and ports; thin HTTP/JDBC adapters; V41 immutable requests/decisions and ordinal grant registry, atomic deferred reconciliation, current authorization/epoch and subject holds",
+    "verification": {
+      "java": 241,
+      "javaSeconds": 41.673,
+      "requestGuardAfterTestProfileChange": 3,
+      "browser": 69,
+      "browserSkippedOidc": 1,
+      "browserDuration": "2.4m",
+      "oidc": 1,
+      "oidcSeconds": 2.8,
+      "deliveryUnit": 8,
+      "upgrade": "V40-to-V41 history digests unchanged and originals registered",
+      "restore": {
+        "target": "atlas_restore_a1eec81b28b94062",
+        "tables": 58,
+        "views": 10,
+        "objects": 13,
+        "logicalSeconds": 43.734,
+        "apiSeconds": 37.468,
+        "readinessSeconds": 18.774
+      }
+    },
+    "sourceHr05Complete": false,
+    "phase2Complete": false,
+    "release": "NOT READY",
+    "limits": [
+      "One reviewed replacement for first completed rehire only; no further replacements or repeated employment cycle/new-episode end",
+      "No external IdP provisioning/revocation or payroll/benefit consumer",
+      "No production security, workload, restore, monitoring, rollout or full accessibility claim; previous dependency findings and missing temporary private bytes remain open"
+    ],
+    "rollback": "Drain registry-unaware readers/writers before enabling replacement. Earlier original-grant-only binaries are unsafe rollback targets. Applied V39\u2013V41 checksums unchanged.",
+    "environment": "Normal local frontend 3000/API8080 restored on atlas_acceptance; isolated recovery API8081 stopped. Targeted, attempted, upgraded, intermediate and rate-limited synthetic schemas retained; isolated OIDC schema atlas_oidc_replace_ac_20261017 retained.",
+    "evidence": [
+      "docs/evidence/java-identity-replacement-verification.txt",
+      "docs/evidence/identity-replacement-browser-verification.txt",
+      "docs/evidence/identity-replacement-frontend-build.txt",
+      "docs/evidence/identity-replacement-oidc-verification.txt",
+      "docs/evidence/identity-replacement-visual-verification.txt",
+      "docs/evidence/identity-replacement-upgrade.json",
+      "docs/evidence/restore-check.json",
+      "docs/evidence/restore-application-check.json"
+    ],
+    "next": "Design repeated employment cycles/new-episode employment end before implementation; retain remaining Phase 2\u20137 scope and provider/payroll/benefit dependencies."
+  },
+  "resignationWithdrawalIncrement": {
+    "phase": "2 / increment AD",
+    "requirements": [
+      "HR-05-D23",
+      "HR-05-D24",
+      "SH-01",
+      "SH-02",
+      "SH-03",
+      "SH-05"
+    ],
+    "frontend": "implemented: original requester pending-withdrawal form, private receipt/history, Withdrawn filter, required reason/focus/unsaved/busy controls and authoritative list revalidation on close; actual lost response after server commit recovered without duplicate command",
+    "backend": "implemented: framework-free ResignationWithdrawal transition; use case/ports, current ownership, employee-then-request locks, exact request version/replay; thin HTTP/JDBC; additive V42 terminal state and immutable receipt/audit SQL reconciliation; no employee mutation or exit handoff",
+    "verification": {
+      "javaTests": 246,
+      "javaSeconds": 37.719,
+      "browserTests": 71,
+      "browserDuration": "2.5m",
+      "oidcSkippedInLocalSuite": 1,
+      "separateOidcTests": 1,
+      "oidcSeconds": 3.3,
+      "deliveryUnitTests": 8,
+      "migrationUpgrade": "V41-to-V42 historical resignation/audit/handoff counts and digests unchanged, zero invented receipts",
+      "restore": {
+        "target": "atlas_restore_34f9b5048fa84120",
+        "tables": 59,
+        "views": 10,
+        "privateObjects": 13,
+        "receipts": 3,
+        "logicalSeconds": 48.018,
+        "pgRestoreSeconds": 0.938,
+        "apiSeconds": 38.19,
+        "readinessSeconds": 18.447
+      }
+    },
+    "sourceHr05Complete": false,
+    "phase2Complete": false,
+    "production": "NOT READY",
+    "limits": [
+      "Only original requester may withdraw an unreviewed request; no delegated withdrawal, resignation amendment or undo of approval/end",
+      "Repeated cycles/new-episode resignation/end require immutable episode links and coordinated projection/grant migration; planned sequence in architecture.md, not implemented",
+      "No external provider/payroll/benefit consumers or authoritative country/company policy; production security/accessibility/workload/monitoring/rollout/recovery/storage gates and prior dependency findings remain open"
+    ],
+    "rollback": "Drain withdrawal-unaware readers before enabling writes; compatible application build required. V42 expands state without rewriting snapshots or applied checksums. Database recovery remains separate.",
+    "environment": "Local API8080/frontend3000 restored on atlas_acceptance; recovery8081 stopped. Upgraded, attempted, targeted and passing-before-recovery schemas retained. OIDC isolated atlas_oidc_withdraw_ad_20261017 and restore target retained. No rows/private objects/volumes deleted.",
+    "evidence": [
+      "docs/evidence/java-resignation-withdrawal-verification.txt",
+      "docs/evidence/resignation-withdrawal-browser-verification.txt",
+      "docs/evidence/resignation-withdrawal-frontend-build.txt",
+      "docs/evidence/resignation-withdrawal-oidc-verification.txt",
+      "docs/evidence/resignation-withdrawal-visual-verification.txt",
+      "docs/evidence/resignation-withdrawal-upgrade.json",
+      "docs/evidence/restore-check.json",
+      "docs/evidence/restore-application-check.json"
+    ],
+    "next": "Implement episode-owned lifecycle anchors and coordinated current projections before repeated cycles/new-episode end. Keep remaining source criteria and phases 2\u20137 in scope."
+  },
+  "caseEpisodeIncrement": {
+    "phase": "2 / increment AE",
+    "requirements": [
+      "HR-05-D25",
+      "HR-05-D26",
+      "SH-01",
+      "SH-05",
+      "SH-09"
+    ],
+    "frontend": "implemented bounded private original-episode panel with start/source/capture provenance, migration disclosure, loading/error/retry/cancellation and mobile checks",
+    "backend": "framework-free EmploymentEpisodeRef policy and CaseEpisode value; use-case/ports, explicit atomic COMMAND link, thin HTTP/JDBC; additive V43 preflight/backfill/immutable link/end projection; V44 complete older original-contract writer bridge COMPAT_COMMAND at deferred validation",
+    "verification": {
+      "javaTests": 253,
+      "javaSeconds": 38.832,
+      "browserTests": 73,
+      "browserDuration": "2.5m",
+      "oidcSkippedInLocalSuite": 1,
+      "legacyUpgradeBrowserTests": 1,
+      "legacyUpgradeBrowserSeconds": 2.9,
+      "separateOidcTests": 1,
+      "oidcSeconds": 2.3,
+      "deliveryUnitTests": 8,
+      "upgrade": "V42-to-V43 six history table digests unchanged and explicit legacy capture; V43-to-V44 seven table digests unchanged; negative preflight and older writer SQL contract passed",
+      "restore": {
+        "target": "atlas_restore_b5ba129d7591436a",
+        "tables": 60,
+        "views": 11,
+        "privateObjects": 13,
+        "caseLinks": 10,
+        "logicalSeconds": 44.878,
+        "pgRestoreSeconds": 0.707,
+        "apiSeconds": 37.726,
+        "readinessSeconds": 18.347,
+        "immutableLinkUpdateRejected": true
+      }
+    },
+    "sourceHr05Complete": false,
+    "phase2Complete": false,
+    "production": "NOT READY",
+    "limits": [
+      "Original-episode case ownership only; no new-episode resignation/end or repeated rehire",
+      "V43/V44 require writers quiesced across intermediate V43; actual old-binary deployment, staged production expand/contract and rollback remain unverified",
+      "No live payroll/benefit/provider consumer or authoritative country/company policy; existing dependency/security/accessibility/workload/monitoring/recovery/storage gates remain open"
+    ],
+    "rollback": "Preserve all applied checksums/history. Complete older original-writer SQL contract supported by V44, not a claim that all older binaries are safe; use security/episode-aware compatible readers and verify rollout separately from DB recovery.",
+    "environment": "Local API8080/frontend127.0.0.1:3000 restored on atlas_acceptance. Upgraded V43 and intermediate compatibility V44 schemas retained; isolated OIDC atlas_oidc_episode_ae_20261017 and restore target retained. Recovery API8081 stopped. Separate IPv6 frontend was not stopped. No historical rows/private objects/volumes deleted.",
+    "evidence": [
+      "docs/evidence/java-case-episode-verification.txt",
+      "docs/evidence/case-episode-browser-verification.txt",
+      "docs/evidence/case-episode-legacy-browser-verification.txt",
+      "docs/evidence/case-episode-frontend-build.txt",
+      "docs/evidence/case-episode-oidc-verification.txt",
+      "docs/evidence/case-episode-visual-verification.txt",
+      "docs/evidence/case-episode-upgrade.json",
+      "docs/evidence/restore-check.json",
+      "docs/evidence/restore-application-check.json"
+    ],
+    "next": "Introduce episode-local current end/status/access projections and coordinated lifecycle guards before enabling new-episode resignation/end, then repeated rehire. Keep remaining Phase 2\u20137 source behaviours tracked."
+  },
+  "episodeStatusIncrement": {
+    "phase": "2 / increment AF",
+    "requirements": [
+      "HR-05-D27",
+      "SH-01",
+      "SH-09"
+    ],
+    "frontend": "no implementation change; existing real profile/case status UI regression passed against upgraded backend",
+    "backend": "V45 Core HR-owned synchronous episode state view; shared status/start functions select started episode before own end/completion. Existing API/auth readers consume function; command and grant gates unchanged.",
+    "verification": {
+      "javaTests": 254,
+      "javaFailures": 0,
+      "javaErrors": 0,
+      "javaSkipped": 0,
+      "javaSeconds": 26.81,
+      "browserTests": 1,
+      "browserSeconds": 2.6,
+      "browserScope": "existing retained-data case UI/profile API/mobile axe/retry/cancellation; full browser/OIDC evidence remains AE",
+      "unchangedHistoricalTables": 59,
+      "legacyStatusBoundaryDifferences": 0,
+      "spotless": "passed",
+      "deliveryUnitTests": 8,
+      "restore": {
+        "target": "atlas_restore_68dff8eee484438b",
+        "tables": 60,
+        "views": 12,
+        "privateObjects": 13,
+        "logicalSeconds": 47.117,
+        "pgRestoreSeconds": 0.736,
+        "runtimeFunctions": {
+          "status": "PASSED",
+          "scope": "all retained employees at start/end/completion and current-date boundaries -1/0/+1; restored SQL functions, not a restored API exercise",
+          "sha256": "b0b901bea80a875dd039c4b6f8574b5feea63390664af1465991bad97a6809d5",
+          "comparedRows": 525
+        },
+        "apiExercise": "not rerun; previous AE exercise remains separately recorded"
+      }
+    },
+    "sourceHr05Complete": false,
+    "phase2Complete": false,
+    "production": "NOT READY",
+    "limits": [
+      "No second-episode end, third episode or repeated-cycle command support; forward projection fixture is not workflow implementation",
+      "Episode-owned grants, coordinated command/task/handoff constraints, conservative employee-wide end/manager lookups remain future work",
+      "No fresh full browser/OIDC suite, load targets, production recovery or release-security claim"
+    ],
+    "environment": "Retained PostgreSQL volume/schemas restarted. Pinned scanner amd64-only manifest verified; compose explicitly selects amd64 with emulation on ARM. API 8080 and existing frontend 127.0.0.1:3000 running. No schema/history/private objects deleted.",
+    "evidence": [
+      "docs/evidence/java-episode-status-verification.txt",
+      "docs/evidence/episode-status-browser-verification.txt",
+      "docs/evidence/episode-status-upgrade.json",
+      "docs/evidence/episode-status-restore.json"
+    ],
+    "next": "Add episode ownership to access grants and coordinate lifecycle write guards/current end/task/handoff contracts before enabling new-episode resignation/end. Continue remaining Phase 2 source workflows, then phases 3\u20137."
+  },
+  "grantEpisodeIncrement": {
+    "phase": "2 / increment AG",
+    "requirements": [
+      "HR-05-D28",
+      "SH-01",
+      "SH-05"
+    ],
+    "frontend": "no implementation change; existing real case/profile API/mobile axe regression passed under V46 authentication",
+    "backend": "V46 immutable episode/start/rehire/grant-sequence ownership, deterministic source backfill and guarded automatic registration for existing complete grant writers; episode-bound current grant view and actor/session epoch reads",
+    "verification": {
+      "javaTests": 257,
+      "javaFailures": 0,
+      "javaErrors": 0,
+      "javaSkipped": 0,
+      "javaSeconds": 30.905,
+      "browserTests": 1,
+      "browserSeconds": 3.1,
+      "browserScope": "existing retained-data case/profile API/mobile axe/retry/cancellation; full browser/OIDC runs remain earlier evidence",
+      "deliveryUnitTests": 8,
+      "spotless": "passed",
+      "upgrade": {
+        "unchangedHistoricalTables": 59,
+        "ownedGrants": 2,
+        "missingGrantOwners": 0,
+        "scope": "retained synthetic V45-to-V46; V46 applied before interruption, verified against persisted AF pre-upgrade digests"
+      },
+      "restore": {
+        "target": "atlas_restore_953ed4865cae4016",
+        "tables": 61,
+        "views": 14,
+        "privateObjects": 13,
+        "logicalSeconds": 48.274,
+        "pgRestoreSeconds": 0.81,
+        "immutableOwnerUpdateRejected": true,
+        "apiExercise": "not rerun; prior AE exercise recorded separately"
+      }
+    },
+    "sourceHr05Complete": false,
+    "phase2Complete": false,
+    "production": "NOT READY",
+    "limits": [
+      "Episode 2 / sequence 1 and 2 only; no new-episode resignation/end or repeated rehire",
+      "Employee-wide outstanding/end/attempt limits and task/handoff contracts still require coordinated migration",
+      "No actual old-binary/staged production rollout, fresh full browser/OIDC suite, workload percentile, authoritative payroll policy or production recovery claim"
+    ],
+    "environment": "Interruption cleared temporary logs/cache/processes; source, retained DB volumes and private document root persisted. Restarted task-owned API/frontend and synthetic PostgreSQL/scanner; no histories, schemas or private objects removed.",
+    "evidence": [
+      "docs/evidence/java-grant-episode-verification.txt",
+      "docs/evidence/grant-episode-browser-verification.txt",
+      "docs/evidence/grant-episode-upgrade.json",
+      "docs/evidence/grant-episode-restore.json"
+    ],
+    "next": "Coordinate episode-scoped resignation/outstanding and employment-end/task/handoff contracts before enabling second-episode resignation/end; then repeated rehire. Continue remaining Phase 2\u20137 source behaviours."
+  },
+  "rehireAssigneeIncrement": {
+    "phase": "2 / increment AH",
+    "requirements": [
+      "HR-05-D29",
+      "SH-01",
+      "SH-02",
+      "SH-05"
+    ],
+    "frontend": "existing real HR case assignment/management and Employee mobile task completion; no frontend implementation changed",
+    "backend": "PeopleStore currentEpisodeEndDate and shared actor/epoch identity eligibility; create/reassign orchestration, removed raw membership port; V47 date helper and coordinated task lifecycle guard. Departing-case closure unchanged.",
+    "verification": {
+      "javaTests": 259,
+      "javaFailures": 0,
+      "javaErrors": 0,
+      "javaSkipped": 0,
+      "javaSeconds": 27.893,
+      "fullBrowserTests": 74,
+      "browserDuration": "2.6m",
+      "oidcOnlySkipped": 1,
+      "targetedBrowserTests": 4,
+      "targetedBrowserSeconds": 10.5,
+      "freshOidcRun": false,
+      "freshFrontendBuild": false,
+      "frontendChecks": [
+        "lint",
+        "strict TypeScript",
+        "Prettier"
+      ],
+      "backendFormatting": "Spotless passed",
+      "deliveryUnitTests": 8,
+      "unchangedHistoricalBusinessTables": 60,
+      "upgrade": "retained synthetic V46-to-V47 table digests preserved; additive helper/guard only",
+      "restore": {
+        "target": "atlas_restore_f744871aff534c2d",
+        "tables": 61,
+        "views": 14,
+        "privateObjects": 13,
+        "logicalSeconds": 47.868,
+        "pgRestoreSeconds": 0.769,
+        "scope": "isolated local logical recovery; current episode SQL/task guard checks in detailed evidence; no restored HTTP/API exercise",
+        "currentEpisodeTaskChecks": {
+          "status": "PASSED",
+          "sourceAndRestoredEndFunctionSha256": "03fcb509f1323ef2c416fc5d1c3a211da89486f0ecf5e7048b669d5888381ba6",
+          "completedReturningEmployeeTasks": 2,
+          "originalCaseAssignmentRejected": true,
+          "manifestsUnchangedAfterProbe": true,
+          "scope": "restored SQL function/trigger and persisted task workflow; no restored HTTP/API exercise"
+        }
+      }
+    },
+    "sourceHr05Complete": false,
+    "phase2Complete": false,
+    "production": "NOT READY",
+    "limits": [
+      "Task assignee eligibility only; no new-episode resignation/end or repeated rehire",
+      "Current-authorised workspace identity is not external IdP provisioning; no fresh OIDC or production provider test",
+      "No current performance/load, full WCAG conformance, authoritative payroll policy, external consumer or production RPO/RTO claim"
+    ],
+    "environment": "Local API and existing built frontend running. Prior V47 upgraded schema and intermediate browser schemas retained: atlas_acceptance_checkpoint_ah_upgraded_20261017, atlas_acceptance_checkpoint_ah_attempt1_20261017, atlas_acceptance_checkpoint_ah_target1_20261017, atlas_acceptance_checkpoint_ah_target_pass_20261017. No historical tables/private objects/volumes deleted.",
+    "evidence": [
+      "docs/evidence/java-rehire-assignee-verification.txt",
+      "docs/evidence/rehire-assignee-browser-verification.txt",
+      "docs/evidence/rehire-assignee-upgrade.json",
+      "docs/evidence/rehire-assignee-restore.json",
+      "docs/evidence/rehire-assignee-mobile.png"
+    ],
+    "next": "Coordinate episode-scoped resignation/outstanding and employment-end/task/handoff contracts before enabling second-episode resignation/end; keep remaining Phase 2\u20137 source workflows in scope."
+  },
+  "legalNameIncrement": {
+    "phase": "2 / increment AI",
+    "requirements": [
+      "HR-01-F01",
+      "HR-01-D03",
+      "HR-03",
+      "SH-01",
+      "SH-02",
+      "SH-03",
+      "SH-05"
+    ],
+    "frontend": "recorded legal-name private profile, selector/context, preserved errors/no ordinary clearing, shared approval review labels, typed contracts and mobile checks",
+    "backend": "Employee/ChangeRequest legalName, explicit removable-private field subset, existing use-case scopes/version/replay/independent HR/effective versions, V48 allowlist/shape constraints; no inferred base name/backfill",
+    "verification": {
+      "javaTests": 264,
+      "javaFailures": 0,
+      "javaErrors": 0,
+      "javaSkipped": 0,
+      "javaSeconds": 27.909,
+      "fullBrowserTests": 76,
+      "browserDuration": "2.7m",
+      "oidcOnlySkipped": 1,
+      "targetedBrowserTests": 2,
+      "targetedBrowserSeconds": 6.1,
+      "freshOidcRun": false,
+      "checks": [
+        "lint",
+        "strict TypeScript",
+        "Prettier",
+        "Next production build",
+        "Spotless",
+        "Python syntax",
+        "whitespace"
+      ],
+      "deliveryUnitTests": 8,
+      "unchangedHistoricalBusinessTables": 60,
+      "inferredLegalNames": 0,
+      "restore": {
+        "target": "atlas_restore_686c4c15d46643d4",
+        "tables": 61,
+        "views": 14,
+        "privateObjects": 13,
+        "logicalSeconds": 47.545,
+        "pgRestoreSeconds": 0.672,
+        "apiSeconds": 41.434,
+        "apiReadinessSeconds": 20.082,
+        "privacy": {
+          "status": "PASSED",
+          "roles": [
+            "HR",
+            "self",
+            "manager"
+          ],
+          "scope": "private profile and history on actual restored API; no names in report"
+        },
+        "scope": "local synthetic logical restore plus real API; unchanged business manifests except one expected document-download audit; not production RPO/RTO"
+      }
+    },
+    "sourceHr01Complete": false,
+    "phase2Complete": false,
+    "production": "NOT READY",
+    "limits": [
+      "Records a supplied full name; no country-specific identity structure/document verification, government identifiers or provider profile sync",
+      "Quiesce/remove privacy-unaware earlier readers before enabling writes. Unpatched older backend rollback is unsafe after legalName history exists; staged production rollout/rollback not verified",
+      "No current workload percentiles, full WCAG conformance, provider recovery, authoritative payroll or production recovery claim; remaining source and release gates retained"
+    ],
+    "environment": "Local API/frontend running on fresh V48 atlas_acceptance. Prior private histories preserved in atlas_acceptance_checkpoint_ai_target1_20261017, atlas_acceptance_checkpoint_ai_target2_20261017, atlas_acceptance_checkpoint_ai_target_pass_20261017 and atlas_acceptance_checkpoint_ai_full1_20261017. Recovery API8081 stopped. No history/private object/volume deletion.",
+    "evidence": [
+      "docs/evidence/java-legal-name-verification.txt",
+      "docs/evidence/legal-name-browser-verification.txt",
+      "docs/evidence/legal-name-frontend-verification.txt",
+      "docs/evidence/legal-name-upgrade.json",
+      "docs/evidence/legal-name-restore.json",
+      "docs/evidence/legal-name-restored-api.json",
+      "docs/evidence/legal-name-mobile.png"
+    ],
+    "next": "Complete remaining Core HR contact/identity/lifecycle source criteria within Phase 2; retain coordinated gates for later employment cycles and provider/payroll consumers. All Phase 3\u20137 IDs remain in scope."
+  },
+  "additionalContactsIncrement": {
+    "phase": "2 / increment AJ",
+    "requirements": [
+      "HR-01-F03",
+      "HR-01-D04",
+      "HR-03",
+      "SH-01",
+      "SH-02",
+      "SH-03",
+      "SH-05"
+    ],
+    "frontend": "private current list, atomic replacement editor, independent HR review, eight-request status-filtered history, inline errors/preserved values/dirty handling, stable uncertain-response replay, cancellation/retry and mobile focus recovery",
+    "backend": "framework-free EmergencyContact/ContactRequest, explicit ports and models, outer transaction configuration, normalized JDBC adapters and additive V49; immutable OLD/NEW items/audit, count/sequence reconciliation, employee version locks, independent subject AND employee review, no inferred backfill",
+    "verification": {
+      "javaTests": 272,
+      "javaFailures": 0,
+      "javaErrors": 0,
+      "javaSkipped": 0,
+      "javaSeconds": 29.648,
+      "fullBrowserTests": 78,
+      "browserDuration": "2.9m",
+      "oidcOnlySkipped": 1,
+      "freshOidcRun": false,
+      "checks": [
+        "lint",
+        "strict TypeScript",
+        "Prettier",
+        "Next production build",
+        "Spotless",
+        "Python syntax",
+        "whitespace"
+      ],
+      "deliveryUnitTests": 8,
+      "unchangedHistoricalBusinessTables": 60,
+      "newTablesInitiallyEmpty": 3,
+      "mobile": "390x844 private profile/editor axe tags, no root overflow, 44px filter, native Tab wrap without background controls, Escape retains outer profile and restores opener after refresh; PNGs opened/inspected",
+      "restore": {
+        "target": "atlas_restore_027a9ab8b45c4fe7",
+        "tables": 64,
+        "views": 14,
+        "privateObjects": 13,
+        "logicalSeconds": 51.487,
+        "pgRestoreSeconds": 0.895,
+        "apiSeconds": 44.778,
+        "apiReadinessSeconds": 22.967,
+        "privacy": {
+          "status": "PASSED",
+          "roles": [
+            "HR",
+            "self",
+            "manager",
+            "outsider"
+          ],
+          "scope": "private current and future-approved snapshots/history on actual restored API; no contact values in report"
+        },
+        "scope": "first AJ full regression snapshot; same backend as final focus-only UI fix. Business manifests unchanged except exactly one authorised document-download audit; not production RPO/RTO"
+      }
+    },
+    "sourceHr01Complete": false,
+    "phase2Complete": false,
+    "production": "NOT READY",
+    "limits": [
+      "Primary contact remains its own existing approved-field workflow; up to four additional contacts use whole-list replacement. Country structured-address/identity and phone conventions remain unresolved.",
+      "HR reviews new contact requests in the private profile. Shared-inbox unification/delegation, full notifications and full source IDs are not claimed.",
+      "Existing legal-name privacy-aware reader rollout and older-backend rollback restrictions remain. No production rollout/recovery, workload performance, full WCAG, provider or statutory payroll readiness claim."
+    ],
+    "environment": "Final API/frontend running on fresh V49 atlas_acceptance. Prior histories retained in atlas_acceptance_checkpoint_aj_target1_20261018, atlas_acceptance_checkpoint_aj_target2_20261018, atlas_acceptance_checkpoint_aj_target3_20261018 and atlas_acceptance_checkpoint_aj_full1_20261018. Recovery API8081 stopped; restored database and independent document copy retained. No schemas/history/objects/volumes dropped.",
+    "evidence": [
+      "docs/evidence/java-additional-contacts-verification.txt",
+      "docs/evidence/additional-contacts-browser-verification.txt",
+      "docs/evidence/additional-contacts-frontend-verification.txt",
+      "docs/evidence/additional-contacts-upgrade.json",
+      "docs/evidence/additional-contacts-restore.json",
+      "docs/evidence/additional-contacts-restored-api.json",
+      "docs/evidence/additional-contacts-visual-verification.txt",
+      "docs/evidence/additional-contacts-mobile.png",
+      "docs/evidence/additional-contacts-editor-mobile.png"
+    ],
+    "next": "Continue remaining Phase 2 Core HR contact/structured-address, configured legal-entity/identity and lifecycle criteria. Retain coordinated gates for repeated employment cycles and real provider/payroll consumers. All Phase 3\u20137 requirements remain in scope."
+  },
+  "contactInboxIncrement": {
+    "phase": "2 / increment AK",
+    "requirements": [
+      "SH-02-D03",
+      "HR-03",
+      "SH-01",
+      "SH-02",
+      "SH-05"
+    ],
+    "frontend": "Approvals categories, private OWN/independent REVIEW contact queues, status/pagination, shared review modal, focus after refresh, error/retry/abort, own tracking and mobile cards",
+    "backend": "published inbox use case derives scope from current server actor; adapter implements parameterised tenant/owner/exclusion filters for count and rows in existing read-only repeatable-read transaction; existing AJ review port/state/audit reused",
+    "schema": "V49 unchanged; no new migration, backfill or history rewrite",
+    "verification": {
+      "javaTests": 274,
+      "javaFailures": 0,
+      "javaErrors": 0,
+      "javaSkipped": 0,
+      "javaSeconds": 27.993,
+      "fullBrowserTests": 80,
+      "browserDuration": "2.8m",
+      "oidcOnlySkipped": 1,
+      "freshOidcRun": false,
+      "deliveryUnitTests": 8,
+      "checks": [
+        "lint",
+        "strict TypeScript",
+        "Prettier",
+        "Next production build",
+        "Spotless",
+        "Python syntax",
+        "whitespace"
+      ],
+      "additionalBrowserReads": "Own tracking, manager own-only options/no decision action, actual held request abort on category exit and no stale region; desktop/mobile selects >=44px, no root overflow and PNGs opened/inspected",
+      "accessibility": "Initial success-banner text measured 4.15:1, darkened; final mobile axe includes success notice and passes. Not full WCAG conformance.",
+      "restore": {
+        "target": "atlas_restore_fd6d82ad04be4f0a",
+        "tables": 64,
+        "views": 14,
+        "privateObjects": 13,
+        "logicalSeconds": 50.244,
+        "pgRestoreSeconds": 0.902,
+        "apiSeconds": 43.295,
+        "apiReadinessSeconds": 20.559,
+        "privacy": {
+          "status": "PASSED",
+          "roles": [
+            "author HR",
+            "independent HR",
+            "self",
+            "manager",
+            "outsider"
+          ],
+          "scope": "OWN and independent REVIEW queue reads on actual restored API; values omitted"
+        },
+        "scope": "local synthetic logical restore and actual restored API; exactly one expected document-download audit, other business manifests unchanged; not production RPO/RTO"
+      }
+    },
+    "sourceSh02Complete": false,
+    "phase2Complete": false,
+    "production": "NOT READY",
+    "limits": [
+      "Separate employee-change/contact categories; badge remains employee-change-only and category count is explicitly scoped. No delegation, configurable multistage routing or all-module inbox completion.",
+      "Current workload percentiles, full manual WCAG, production security/availability/recovery/staged rollout/rollback/migration and authoritative payroll-rule validation remain unresolved. Prior private-reader and lifecycle rollback gates remain."
+    ],
+    "environment": "Local frontend/API running on V49 atlas_acceptance with completed full regression fixtures. Previous synthetic histories retained in atlas_acceptance_checkpoint_ak_target1_20261018 and atlas_acceptance_checkpoint_ak_target2_20261018. Recovery API8081 stopped; recovered database/private copy retained. No schema/history/object/volume drops.",
+    "evidence": [
+      "docs/evidence/java-contact-inbox-verification.txt",
+      "docs/evidence/contact-inbox-browser-verification.txt",
+      "docs/evidence/contact-inbox-frontend-verification.txt",
+      "docs/evidence/contact-inbox-visual-verification.txt",
+      "docs/evidence/contact-inbox-restore.json",
+      "docs/evidence/contact-inbox-restored-api.json",
+      "docs/evidence/contact-inbox-desktop.png",
+      "docs/evidence/contact-inbox-mobile.png",
+      "docs/evidence/contact-inbox-card-mobile.png"
+    ],
+    "next": "Continue remaining Phase 2 Core HR structured contact/address, configured legal-entity/identity and lifecycle criteria. Preserve gates for repeated cycles and external provider/payroll consumers. Delegation, multistage approvals and all Phase 3\u20137 requirements remain in scope."
   }
 }

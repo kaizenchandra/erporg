@@ -1,9 +1,9 @@
 {
-  "recordedAt": "2026-10-16T21:27:28.742621+00:00",
+  "recordedAt": "2026-10-17T11:52:53.139914+00:00",
   "status": "PASSED",
   "scope": "local synthetic restored API; excludes production infrastructure and IdP recovery",
-  "targetDatabase": "atlas_restore_7ad2b69fd3cf4307",
-  "readinessSeconds": 16.874,
+  "targetDatabase": "atlas_restore_b5ba129d7591436a",
+  "readinessSeconds": 18.347,
   "flywayStartupValidation": true,
   "checks": [
     "readiness",
@@ -30,16 +30,19 @@
     "effective template revisions/retirement and correction history",
     "private retention/hold journal and independent release",
     "scoped resignations, private history and pending exit coordination",
+    "private pending-resignation withdrawal receipt, matching terminal audit and unchanged status/access",
+    "original case/end episode ownership with source/capture provenance and unrelated-user denial",
     "assigned exit tasks, private audit and no resignation access",
     "current task assignment/cancellation, HR-only journal and revoked former-assignee reads",
     "retained end/withdrawal and replacement history, current replacement date, original-cutoff Active and suppressed old/pending new targets",
     "approved hires",
     "rehire private review/history, preserved episodes, future start and legacy-access hold/pending handoffs",
     "onboarding status/history",
-    "reviewed rehire completion, fresh Employee sign-in, retained legacy HR denial and unselected alias denial",
+    "reviewed rehire completion retained, current revocation/private audit, Active employment and denied revoked/alias sign-in",
+    "reviewed replacement history, latest grant/current hold and original plus replacement revocations",
     "record/tenant denial",
     "logout revocation",
     "unchanged business data"
   ],
-  "totalSeconds": 33.8
+  "totalSeconds": 37.726
 }

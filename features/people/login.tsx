@@ -65,6 +65,9 @@ export function Login({
                 <option value="olivia">Olivia Taylor · HR reviewer</option>
                 <option value="marcus">Marcus Chen · Team manager</option>
                 <option value="sophia">Sophia Martinez · Employee</option>
+                <option value="returning-alias">
+                  Jordan Lee · Replacement identity
+                </option>
                 <option value="returning">
                   Jordan Lee · Returning employee
                 </option>

@@ -1,0 +1,14 @@
+Increment AG
+Command: npx playwright test tests/zzzzzzzzzzz-case-episode.spec.ts --grep "case UI"
+
+Running 1 test using 1 worker
+
+(node:3376) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3376) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/zzzzzzzzzzz-case-episode.spec.ts:123:5 › case UI keeps original ownership after rehire and recovers loading/failure with authorised real data (1.7s)
+
+  1 passed (3.1s)
+
+Retained V46 local synthetic API with existing built frontend. No frontend implementation changed; this scoped run is not a rerun of the prior full browser/OIDC suite.

@@ -5,10 +5,10 @@
     "roles": "HR, employee",
     "workflow": "Employee records",
     "phase": 1,
-    "screen": "/ (People / profile / change dialog)",
-    "api": "/api/v1/employees, /api/v1/requests, /api/v1/requests/{id}/decision, /api/v1/employees/{id}/history, /api/v1/directory, /api/v1/employees/{id}, /api/v1/people-summary",
-    "useCase": "PeopleUseCases / PeopleService",
-    "domainModel": "Employee, EmploymentVersion",
+    "screen": "/ (People / profile / change dialog) / private additional-contact editor, history and HR review",
+    "api": "/api/v1/employees, /api/v1/requests, /api/v1/requests/{id}/decision, /api/v1/employees/{id}/history, /api/v1/directory, /api/v1/employees/{id}, /api/v1/people-summary, /api/v1/employees/{employeeId}/additional-contacts, /api/v1/employees/{employeeId}/additional-contacts/requests, /api/v1/employees/{employeeId}/additional-contacts/requests/{id}/decision",
+    "useCase": "PeopleUseCases / PeopleService; AdditionalContactsUseCases / AdditionalContactsService",
+    "domainModel": "Employee, EmploymentVersion, EmergencyContact, ContactRequest",
     "acceptanceTests": [
       "HR-01-F01",
       "HR-01-F02",
@@ -18,25 +18,30 @@
       "HR-01-B02",
       "HR-01-B03",
       "HR-01-D01",
-      "HR-01-D02"
+      "HR-01-D02",
+      "HR-01-D03",
+      "HR-01-D04"
     ],
     "frontend": "partial: Phase 1 scope implemented",
     "backend": "partial: Phase 1 scope implemented",
     "verification": "verified subset; remaining criteria open",
-    "reason": "Directory/profile, approved contact/employment fields, hiring identifiers, positions/reporting and display-name maintenance implemented. Full legal identity, structured/multiple contacts and complete lifecycle maintenance remain open.",
+    "reason": "Directory/profile, approved personal/contact/employment fields, hiring identifiers, positions/reporting, display/legal names, primary and up to four additional emergency contacts. Country-specific verified legal identity, structured addresses and complete lifecycle maintenance remain open.",
     "criteria": [
       {
         "id": "HR-01-F01",
         "sourceBehaviour": "View and maintain personal information",
         "acceptance": "Given an authorised HR, employee and valid scoped records, view and maintain personal information through the people workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "partial: approved employee display-name maintenance",
+        "implementation": "partial: approved display name and private recorded legal name",
         "verification": "subset tests in checkpoint",
         "phase": 2,
-        "limitation": "Display name only; legal identity, government identifiers, structured/multiple contacts and external identity-provider profile synchronisation remain open. Stable employee ID and email are preserved; historical names remain in authorised audit.",
+        "limitation": "Recorded full legal name only; no documentary identity verification, government identifiers, country-specific name structure, structured country addresses or external identity-provider synchronisation. Stable employee ID, email and display/login name remain unchanged by legal-name changes.",
         "evidence": [
           "DisplayNameWorkflowTest",
           "DomainTest.displayNamesAreUnicodeAndEmployeeOwnedButNotBlankOrControlText",
-          "tests/display-name.spec.ts"
+          "tests/display-name.spec.ts",
+          "LegalNameWorkflowTest",
+          "LegalNameDomainTest",
+          "tests/legal-name.spec.ts"
         ]
       },
       {
@@ -46,7 +51,7 @@
         "implementation": "partial",
         "verification": "verified private-contact subset; full source behaviour open",
         "phase": 2,
-        "limitation": "One emergency contact; 120-character free-text address; no structured country address or multiple contacts. Approved optional-field removal now implemented.",
+        "limitation": "Primary plus up to four additional emergency contacts; 120-character free-text address, no structured country address. Approved optional-field removal now implemented.",
         "evidence": [
           "PostgresWorkflowTest.privateContactChangesRequireHrReviewAndNeverLeakToManager",
           "PostgresWorkflowTest.privateFutureDateAndInvalidPhoneAreSafe",
@@ -66,8 +71,8 @@
         "id": "HR-01-F03",
         "sourceBehaviour": "View and maintain emergency contacts",
         "acceptance": "Given an authorised HR, employee and valid scoped records, view and maintain emergency contacts through the people workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "partial",
-        "verification": "verified private-contact subset; full source behaviour open",
+        "implementation": "implemented bounded primary plus four additional contacts",
+        "verification": "passed domain/PostgreSQL, live API contracts/privacy/concurrency, browser/mobile/keyboard, source-preserving migration and isolated recovery",
         "phase": 2,
         "evidence": [
           "PostgresWorkflowTest.privateContactChangesRequireHrReviewAndNeverLeakToManager",
@@ -77,12 +82,20 @@
           "DomainTest.removalOnlyAllowsExplicitEmptyOptionalPrivateFields",
           "PostgresWorkflowTest.approvedPrivateRemovalRetainsHistoryAndPermissions",
           "PostgresWorkflowTest.futureAndRejectedRemovalPreserveCurrentPrivateValue",
-          "tests/private-contact.spec.ts"
+          "AdditionalContactsDomainTest",
+          "AdditionalContactsWorkflowTest",
+          "tests/additional-contacts.spec.ts",
+          "docs/evidence/java-additional-contacts-verification.txt",
+          "docs/evidence/additional-contacts-browser-verification.txt",
+          "docs/evidence/additional-contacts-visual-verification.txt",
+          "docs/evidence/additional-contacts-restore.json",
+          "docs/evidence/additional-contacts-restored-api.json"
         ],
-        "limitation": "One emergency contact; 120-character free-text address; no structured country address or multiple contacts. Approved optional-field removal now implemented.",
+        "limitation": "Primary contact uses existing approved field requests. Zero to four additional contacts use an atomic independently approved snapshot; no country-specific phone interpretation or external emergency-response integration.",
         "verifiedBehaviours": [
           "Home address or single emergency contact fields are edited through approved changes; current as-of data shown; manager payloads redacted; HR audit retained.",
-          "Explicit optional-field removal is independently approved, effective-dated and audited; future/rejected removal preserves current value."
+          "Explicit optional-field removal is independently approved, effective-dated and audited; future/rejected removal preserves current value.",
+          "Additional-contact snapshots support independent review, date boundaries, rejection/removal, private paginated history, stable/conflicting replay and stale-approval recovery in PostgreSQL tests."
         ]
       },
       {
@@ -150,6 +163,89 @@
         "evidence": [
           "tests/phase1.spec.ts: directory/profile/browser change workflow",
           "backend/src/test/java/com/atlas/PostgresWorkflowTest.java: approvedChangeAndAuditAreAtomicAndReplaySafe, futureDateDoesNotApplyEarly"
+        ]
+      },
+      {
+        "id": "HR-01-D03",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Self/HR can submit and read a private recorded legal name through independent HR approval and effective history. Require nonblank 1\u2013120 Unicode characters without control characters and no ordinary empty-value removal. Preserve request values after errors and stable replay/version/conflict semantics. Reject manager/team/tenant/private-history access and self review. Future/rejected values do not apply early; approved value does not change display/login name, email, stable ID or public search. Existing records and new hires remain unrecorded until an approved version exists; no inferred legal identity or document verification.",
+        "implementation": "implemented: Employee/ChangeRequest private field, explicit removable-private subset, application approval/read scopes, V48 constraints, typed profile/form/shared review labels and OpenAPI contract",
+        "verification": "passed: 264 full backend tests; 76 full readiness-gated local browser/API tests with one OIDC-only skip; two focused legal-name tests; V48 preserved 60 business-table digests and inferred no names. Restore/API evidence recorded separately in checkpoint. Isolated 61-table/14-projection/13-object restore and actual restored API passed, including HR/self profile/history access and manager redaction/exclusion.",
+        "evidence": [
+          "LegalNameDomainTest",
+          "LegalNameWorkflowTest",
+          "tests/legal-name.spec.ts",
+          "docs/evidence/java-legal-name-verification.txt",
+          "docs/evidence/legal-name-upgrade.json",
+          "docs/evidence/legal-name-browser-verification.txt",
+          "docs/evidence/legal-name-frontend-verification.txt",
+          "docs/evidence/legal-name-restore.json",
+          "docs/evidence/legal-name-restored-api.json"
+        ],
+        "limitation": "Bounded recorded full name only. Country structures, documentary/legal authority, government identifiers and provider sync remain open. Quiesce/remove old privacy-unaware readers before writes; unpatched old-binary rollback is unsafe afterward."
+      },
+      {
+        "id": "HR-01-D04",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Self/HR reads and submits zero to four additional emergency contacts as an atomic effective-dated replacement, separate from primary. Validate bounded name/relationship/phone and reject identical duplicates. Independent HR subject AND employee reviews with version, reason and immutable OLD/NEW/audit snapshots; one pending request, stable/conflicting replay and one concurrent winner. Rejected/future data does not apply early; empty approval removes additional contacts retaining history. Deny managers/unrelated employees/tenant or identity forgery. Provide private paginated current/history/editor/review with field errors, preserved values, dirty handling, uncertain response recovery, abort/retry and mobile accessibility. Verify retained-data migration and isolated restore.",
+        "implementation": "frontend and backend implemented for the bounded additional-contact workflow",
+        "verification": "passed domain/PostgreSQL, live API contracts/privacy/concurrency, browser/mobile/keyboard, source-preserving migration and isolated recovery",
+        "evidence": [
+          "AdditionalContactsDomainTest",
+          "AdditionalContactsWorkflowTest",
+          "tests/additional-contacts.spec.ts",
+          "docs/evidence/additional-contacts-upgrade.json",
+          "docs/evidence/java-additional-contacts-verification.txt",
+          "docs/evidence/additional-contacts-browser-verification.txt",
+          "docs/evidence/additional-contacts-visual-verification.txt",
+          "docs/evidence/additional-contacts-restore.json",
+          "docs/evidence/additional-contacts-restored-api.json"
+        ],
+        "behaviourEvidence": [
+          {
+            "behaviour": "Shape, bounds, no identical duplicates, immutable list",
+            "frontend": "implemented",
+            "backend": "implemented",
+            "verification": "AdditionalContactsDomainTest and invalid editor/browser recovery"
+          },
+          {
+            "behaviour": "Approved/future/rejected/empty snapshots and unchanged primary contact",
+            "frontend": "implemented",
+            "backend": "implemented",
+            "verification": "AdditionalContactsWorkflowTest and both browser/API tests"
+          },
+          {
+            "behaviour": "Self/HR scope, manager/outsider/tenant denial and independent reviewer aliases",
+            "frontend": "implemented",
+            "backend": "implemented",
+            "verification": "PostgreSQL privacy/alias tests, live API denial and restored API reads"
+          },
+          {
+            "behaviour": "One pending request, version conflicts, stable/conflicting command and decision replay, one concurrent winner",
+            "frontend": "implemented",
+            "backend": "implemented",
+            "verification": "PostgreSQL workflow tests, uncertain browser response and concurrent live decisions"
+          },
+          {
+            "behaviour": "Bounded history, OLD/NEW snapshots and immutable matching audit",
+            "frontend": "implemented",
+            "backend": "implemented",
+            "verification": "PostgreSQL pagination/SQL negative tests, OpenAPI snapshots and recovery reconciliation"
+          },
+          {
+            "behaviour": "Required labels, inline errors, dirty recovery, cancellation and mobile dialog focus",
+            "frontend": "implemented",
+            "backend": "validation errors implemented",
+            "verification": "Full browser contact workflow plus final visual/keyboard/axe check"
+          },
+          {
+            "behaviour": "Retained-data upgrade and isolated restored API",
+            "frontend": "same API contract; browser on restored database not exercised",
+            "backend": "implemented",
+            "verification": "60 preexisting business digests unchanged; 64 tables/14 projections/13 objects, private restored reads and denials"
+          }
         ]
       }
     ],
@@ -504,7 +600,7 @@
     "workflow": "Employee self-service",
     "phase": 1,
     "screen": "/ (People / profile / change dialog)",
-    "api": "/api/v1/employees, /api/v1/requests, /api/v1/requests/{id}/decision, /api/v1/employees/{id}/history, /api/v1/requests/{id}/withdraw",
+    "api": "/api/v1/employees, /api/v1/requests, /api/v1/requests/{id}/decision, /api/v1/employees/{id}/history, /api/v1/requests/{id}/withdraw, /api/v1/additional-contact-inbox",
     "useCase": "PeopleUseCases / PeopleService",
     "domainModel": "ChangeRequest",
     "acceptanceTests": [
@@ -522,7 +618,7 @@
     "frontend": "partial: Phase 1 scope implemented",
     "backend": "partial: Phase 1 scope implemented",
     "verification": "verified subset; remaining criteria open",
-    "reason": "Complete phone-change workflow with approval, status and correct as-of date. Other personal fields remain Phase 2.",
+    "reason": "Approved personal/contact changes and private tracking are implemented subsets; contact requests can now be found in an Approvals category. Remaining country identity/address and full personal-data maintenance stay Phase 2.",
     "criteria": [
       {
         "id": "HR-03-F01",
@@ -732,7 +828,9 @@
         "HR-03-D06"
       ],
       "limits": "Pending requester-owned changes only. Does not reverse approved changes or add delegated/admin withdrawal. Private requests remain protected after role downgrade. Source IDs remain partial."
-    }
+    },
+    "additionalContactsSubset": "AJ: private profile requests and independent HR decisions, scoped self/HR reads, generic owner status notification and immutable old/new decision audit verified. Shared inbox unification, delegation and full source requirement completion are not inferred.",
+    "contactInboxSubset": "AK: separate Approvals contact category, server-derived OWN and independent HR REVIEW queues, reused AJ decisions/history. Full shared delegation and all-module inbox coverage remain open."
   },
   {
     "id": "HR-04",
@@ -904,9 +1002,9 @@
     "workflow": "Employment lifecycle",
     "phase": 2,
     "screen": "/ (People / Hiring, profile employment history and Resignations), My exit tasks",
-    "api": "/api/v1/hiring/requests, /api/v1/hiring/requests/{id}/decision, /api/v1/hiring/requests/{id}/history, /api/v1/hiring/requests/{id}/complete-onboarding, /api/v1/hiring/requests/employees/{id}/employment-history, /api/v1/resignations, /api/v1/resignations/{id}/decision, /api/v1/resignations/{id}/history, /api/v1/resignations/{id}/tasks, /api/v1/exit-tasks, /api/v1/exit-tasks/{id}/complete, /api/v1/exit-tasks/{id}/history, /api/v1/exit-tasks/{id}/management, /api/v1/exit-tasks/{id}/management-history, /api/v1/resignations/{id}/employment-end, /api/v1/resignations/{id}/employment-end/withdrawals, /api/v1/resignations/{id}/employment-end/withdrawals/{withdrawalId}/review, /api/v1/resignations/{id}/employment-end/rescheduling, /api/v1/resignations/{id}/employment-end/rescheduling/{rescheduleId}/review, /api/v1/employees/{employee}/rehire, /api/v1/employees/{employee}/rehire/{id}/review, /api/v1/employees/{employee}/rehire/activation, /api/v1/employees/{employee}/rehire/activation/{id}/review",
-    "useCase": "HiringUseCases / HiringService; ResignationUseCases / ResignationService; remaining lifecycle use cases planned; ExitTaskUseCases / ExitTaskService; EmploymentEndUseCases / EmploymentEndService, EndRescheduleUseCases / EndRescheduleService, RehireUseCases / RehireService, RehireActivationUseCases / RehireActivationService",
-    "domainModel": "Employee, HireRequest, Resignation, immutable audit, pending exit handoff, ExitTask, ExitTask management journal/current assignment, EmploymentEnd, effective status and pending final-pay/external-identity handoffs, EndWithdrawal, EndReschedule, Rehire, RehireDetails, EmploymentEpisode, RehireActivation, RehireCompletion, fresh access grant",
+    "api": "/api/v1/hiring/requests, /api/v1/hiring/requests/{id}/decision, /api/v1/hiring/requests/{id}/history, /api/v1/hiring/requests/{id}/complete-onboarding, /api/v1/hiring/requests/employees/{id}/employment-history, /api/v1/resignations, /api/v1/resignations/{id}/decision, /api/v1/resignations/{id}/history, /api/v1/resignations/{id}/tasks, /api/v1/exit-tasks, /api/v1/exit-tasks/{id}/complete, /api/v1/exit-tasks/{id}/history, /api/v1/exit-tasks/{id}/management, /api/v1/exit-tasks/{id}/management-history, /api/v1/resignations/{id}/employment-end, /api/v1/resignations/{id}/employment-end/withdrawals, /api/v1/resignations/{id}/employment-end/withdrawals/{withdrawalId}/review, /api/v1/resignations/{id}/employment-end/rescheduling, /api/v1/resignations/{id}/employment-end/rescheduling/{rescheduleId}/review, /api/v1/employees/{employee}/rehire, /api/v1/employees/{employee}/rehire/{id}/review, /api/v1/employees/{employee}/rehire/activation, /api/v1/employees/{employee}/rehire/activation/{id}/review, /api/v1/employees/{employee}/rehire/access, /api/v1/employees/{employee}/rehire/access/revoke, /api/v1/employees/{employee}/rehire/access/replacement, /api/v1/employees/{employee}/rehire/access/replacement/{id}/review, /api/v1/resignations/{id}/withdrawal, /api/v1/resignations/{id}/episode",
+    "useCase": "HiringUseCases / HiringService; ResignationUseCases / ResignationService; remaining lifecycle use cases planned; ExitTaskUseCases / ExitTaskService; EmploymentEndUseCases / EmploymentEndService, EndRescheduleUseCases / EndRescheduleService, RehireUseCases / RehireService, RehireActivationUseCases / RehireActivationService, RehireAccessUseCases / RehireAccessService, IdentityReplacementUseCases / IdentityReplacementService; ResignationUseCases.withdraw / withdrawal; ResignationUseCases.episode / EmploymentEpisodeRef.originalForCase",
+    "domainModel": "Employee, HireRequest, Resignation, immutable audit, pending exit handoff, ExitTask, ExitTask management journal/current assignment, EmploymentEnd, effective status and pending final-pay/external-identity handoffs, EndWithdrawal, EndReschedule, Rehire, RehireDetails, EmploymentEpisode, RehireActivation, RehireCompletion, fresh access grant, RehireAccessRevocation, IdentityReplacement, immutable local access grant registry, ResignationWithdrawal, CaseEpisode, EmploymentEpisodeRef",
     "acceptanceTests": [
       "HR-05-F01",
       "HR-05-F02",
@@ -934,12 +1032,23 @@
       "HR-05-D15",
       "HR-05-D16",
       "HR-05-D17",
-      "HR-05-D18"
+      "HR-05-D18",
+      "HR-05-D19",
+      "HR-05-D20",
+      "HR-05-D21",
+      "HR-05-D22",
+      "HR-05-D23",
+      "HR-05-D24",
+      "HR-05-D25",
+      "HR-05-D26",
+      "HR-05-D27",
+      "HR-05-D28",
+      "HR-05-D29"
     ],
-    "frontend": "partial: hire/onboarding, resignation/tasks/end, withdrawal/replacement and reviewed rehire planning with episode history",
-    "backend": "partial: effective lifecycle plus immutable rehire onboarding episode and legacy identity hold; provisioning/completion/consumers pending",
+    "frontend": "partial: lifecycle, local access, pending withdrawal and private original-episode provenance",
+    "backend": "partial: audited lifecycle and immutable original case/end episode ownership with compatible submission writers",
     "verification": "verified hiring/onboarding/resignation/tasks and voluntary employment-end/local denial subsets; remaining lifecycle and downstream consumers open",
-    "reason": "Approved voluntary-resignation employment end and local denial work with retained history. Involuntary termination, schedule correction/withdrawal, rehire, final pay and external IdP delivery remain open. Pre-effective end withdrawal added in X; amendment/rescheduling, resignation withdrawal, rehire and broader termination remain open. Y adds one independently reviewed replacement date on a current/withdrawn schedule; rehire, involuntary termination and further replacement control remain open. Z adds first rehire into a new Onboarding episode with legacy identities blocked; completion/provisioning/repeated cycles remain open. Reviewed first-rehire completion and one fresh Employee-only identity now implemented. Repeated cycles, grant revocation/replacement, external provider and payroll/benefit consumers remain open.",
+    "reason": "Implemented bounded hiring/onboarding, transfers through approved changes, voluntary resignation, assigned exit tasks, effective employment end with pre-effective withdrawal and one reviewed replacement date, first rehire with separate episodes, reviewed completion/fresh Employee-only local access, audited terminal fresh-grant revocation with subject-level holds, and one independently reviewed replacement identity/new epoch with inspectable prior grants/revocations. Original requester withdrawal of an unreviewed resignation is implemented. Full involuntary termination, resignation amendment/approved withdrawal, further date corrections, repeated cycles/new-episode end, additional identity replacement/general suspension, payroll/benefit consumers, live IdP delivery and authoritative country/entity policies remain open. Original-episode case links and an owned-end projection now preserve history through first rehire. New-episode cases/end and repeated cycles remain explicitly disabled pending coordinated status/access migration.",
     "criteria": [
       {
         "id": "HR-05-F01",
@@ -959,7 +1068,7 @@
         "id": "HR-05-F02",
         "sourceBehaviour": "Process rehire",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, process rehire through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "partial: first rehire, reviewed onboarding completion and fresh Employee-only local access",
+        "implementation": "partial: first rehire, reviewed completion/fresh local access and terminal access revocation",
         "verification": "verified bounded Z planning/episode subset: actual PostgreSQL/HTTP date/access tests, live browser/contracts/axe, separate OIDC compatibility and restored episode/history/pending state; completion/provisioning remain open",
         "phase": 2,
         "evidence": [
@@ -1070,10 +1179,10 @@
         "id": "HR-05-B04",
         "sourceBehaviour": "Trigger access workflows",
         "acceptance": "Given an authorised HR, IT, payroll and valid scoped records, trigger access workflows through the lifecycle workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "partial: local sign-in and every authenticated request enforce cutoff, pending external-identity handoff only",
+        "implementation": "partial: effective end, reviewed fresh rehire local grant/session epoch and terminal subject-level revocation",
         "verification": "verified bounded W subset: actual PostgreSQL and HTTP cutoff/session test, browser scheduling/contracts/axe, separate OIDC compatibility and restored context; see checkpoint",
         "phase": 2,
-        "limitation": "Voluntary resignation end only; provisional inclusive day/UTC convention. No amendment/withdrawal, rehire, involuntary termination, statutory final-pay calculation, external IdP disable/session revocation, unused-session sweep or live delivery. Production policy/rollout remain unverified.",
+        "limitation": "Every authenticated local/API request and sign-in callback deny ended, unstamped/mismatched and revoked subjects; revoked subject holds survive employee/tenant reassignment. Live external IdP provisioning/disablement and complete repeated lifecycle orchestration remain open.",
         "evidence": [
           "EmploymentEndWorkflowTest",
           "EmploymentAccessHttpTest",
@@ -1366,7 +1475,7 @@
           "RehireActivationAccessHttpTest",
           "tests/zzzzzzzz-rehire-activation.spec.ts"
         ],
-        "limitation": "Manual HR attestation; no external provider enablement, payroll/benefit consumers, grant replacement/revocation or repeated employment cycles."
+        "limitation": "Manual HR attestation; no external provider enablement, payroll/benefit consumers, grant replacement/regrant or repeated employment cycles."
       },
       {
         "id": "HR-05-D18",
@@ -1380,7 +1489,204 @@
           "RehireActivationAccessHttpTest",
           "tests/zzzzzzzz-rehire-activation.spec.ts"
         ],
-        "limitation": "Manual HR attestation; no external provider enablement, payroll/benefit consumers, grant replacement/revocation or repeated employment cycles."
+        "limitation": "Manual HR attestation; no external provider enablement, payroll/benefit consumers, grant replacement/regrant or repeated employment cycles."
+      },
+      {
+        "id": "HR-05-D19",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Authorised HR other than the returning employee can immediately revoke the named fresh rehire grant with a required reason, exact employee version and stable command key. Atomically retain the immutable original grant, append one terminal revocation with actor/time/reason/correlation, increment the version, keep employment Active and onboarding complete, and expose private current/revocation state. Stable replay succeeds; unsafe inputs, altered scope/grant/key and competing commands cannot create another revocation.",
+        "implementation": "implemented: terminal local first-rehire grant revocation subset",
+        "verification": "passed: 234 backend, 67 final browser/API, separate final OIDC and 55-table/eight-view/13-object isolated V40 restore. See increment AB.",
+        "evidence": [
+          "RehireAccessDomainTest",
+          "RehireActivationWorkflowTest.accessRevocationIsTerminalAuditedAndNeverFallsBackToLegacyHr",
+          "RehireActivationAccessHttpTest",
+          "tests/zzzzzzzzz-rehire-revocation.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Immediate HR security action under provisional company policy, not employment end or external IdP disablement. No replacement/undo, general employee suspension or repeated cycles."
+      },
+      {
+        "id": "HR-05-D20",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "After fresh-grant revocation, every authenticated request denies even a previously unused valid session and new sign-in denies the selected identity and all aliases without falling back to retained privileged memberships. UI explains immediate scope, preserves errors/input/unsaved state, waits for confirmed outcomes and shows the private receipt. Restore reconciles the journal/current handoff and proves revoked/alias sign-in denial without restoring sessions or changing business history. The revoked identity subject stays denied after administrative reassignment to another employee or tenant.",
+        "implementation": "implemented: terminal local first-rehire grant revocation subset",
+        "verification": "passed: 234 backend, 67 final browser/API, separate final OIDC and 55-table/eight-view/13-object isolated V40 restore. See increment AB.",
+        "evidence": [
+          "RehireAccessDomainTest",
+          "RehireActivationWorkflowTest.accessRevocationIsTerminalAuditedAndNeverFallsBackToLegacyHr",
+          "RehireActivationAccessHttpTest",
+          "tests/zzzzzzzzz-rehire-revocation.spec.ts",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py",
+          "RehireActivationWorkflowTest.revokedSubjectCannotReturnThroughMembershipReassignmentOrAnotherTenant"
+        ],
+        "limitation": "Immediate HR security action under provisional company policy, not employment end or external IdP disablement. No replacement/undo, general employee suspension or repeated cycles."
+      },
+      {
+        "id": "HR-05-D21",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "After revocation of the original completed first-rehire grant, HR may nominate a different existing unused and unheld mapped identity. A different HR subject AND employee, excluding the target, independently approves or rejects with exact snapshot, required reason and stable key. Approval revalidates identity/predecessor/employment and atomically appends one Employee-only replacement grant with a new server-only epoch. Preserve original grant, revocation, completion, employment and raw memberships. Bound history to twenty attempts and one approved replacement; enforce concurrent review, immutable SQL/deferred reconciliation and safe replay.",
+        "implementation": "implemented: one reviewed local identity replacement subset",
+        "verification": "passed: 241 full backend, 69 final browser/API, separate OIDC, V40-to-V41 upgrade and 58-table/ten-view/13-object isolated restore/API. See increment AC.",
+        "evidence": [
+          "IdentityReplacementDomainTest",
+          "RehireActivationWorkflowTest",
+          "RehireActivationAccessHttpTest",
+          "tests/zzzzzzzzzz-identity-replacement.spec.ts",
+          "docs/evidence/identity-replacement-upgrade.json",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "No IdP provisioning, further replacement, repeated employment cycles/new-episode end or payroll/benefit consumers. Source HR-05 remains partial."
+      },
+      {
+        "id": "HR-05-D22",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Require fresh sign-in for the replacement; unused old sessions, revoked original subject and aliases stay denied. Prevent role fallback after subject mapping changes. The replacement is independently revocable, and replay of original revocation never revokes the replacement. HR UI shows scope and independent decision context, retains validation/input/unsaved state, waits for confirmed writes and exposes both private grant/revocation receipts after replacement. Contracts, authorization, mobile axe/overflow, PostgreSQL and restored API verify state, history and persistent holds without exposing epochs or keys.",
+        "implementation": "implemented: one reviewed local identity replacement subset",
+        "verification": "passed: 241 full backend, 69 final browser/API, separate OIDC, V40-to-V41 upgrade and 58-table/ten-view/13-object isolated restore/API. See increment AC.",
+        "evidence": [
+          "IdentityReplacementDomainTest",
+          "RehireActivationWorkflowTest",
+          "RehireActivationAccessHttpTest",
+          "tests/zzzzzzzzzz-identity-replacement.spec.ts",
+          "docs/evidence/identity-replacement-upgrade.json",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "No IdP provisioning, further replacement, repeated employment cycles/new-episode end or payroll/benefit consumers. Source HR-05 remains partial."
+      },
+      {
+        "id": "HR-05-D23",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Original requester can withdraw their own SUBMITTED resignation with exact nonnegative integral request version, required reason and stable key. Reject another employee, manager/HR acting for someone else, same-employee alias and other tenant. Retain original snapshot, append one immutable private receipt/audit, expose terminal WITHDRAWN and release the outstanding slot. Do not change employee version, employment/access or create/reverse exit handoffs. Stale employee-profile snapshot does not prevent pending-request withdrawal; stable replay remains valid after a fresh submission.",
+        "implementation": "implemented: pending resignation withdrawal subset",
+        "verification": "passed: 246 full backend, 71 final browser/API including committed-write/lost-response recovery, separate OIDC and 59-table/ten-view/13-object isolated restore/API. See increment AD.",
+        "evidence": [
+          "ResignationWorkflowTest",
+          "ResignationWithdrawalDomainTest",
+          "tests/resignation-withdrawal.spec.ts",
+          "docs/evidence/resignation-withdrawal-upgrade.json",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Only the original authenticated requester and unreviewed request. No delegation, amendment or undo of approved resignation/end; no repeated cycles/new-episode end or provider/payroll consumers."
+      },
+      {
+        "id": "HR-05-D24",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Concurrent withdrawal and independent HR review have one winner and one terminal audit. Reject incomplete or forged SQL receipt/state/audit, edited/deleted history, altered replay and withdrawal of approved/rejected/withdrawn requests. UI provides scope, reason validation/focus, retained input/unsaved close, busy/concurrent submit prevention, confirmed outcomes, Withdrawn filter/private receipt/history and fresh-request recovery. Verify real UI/API/PostgreSQL, access denial, live contracts, mobile axe/overflow, migration preservation and isolated restored receipt/audit/unchanged business history.",
+        "implementation": "implemented: pending resignation withdrawal subset",
+        "verification": "passed: 246 full backend, 71 final browser/API including committed-write/lost-response recovery, separate OIDC and 59-table/ten-view/13-object isolated restore/API. See increment AD.",
+        "evidence": [
+          "ResignationWorkflowTest",
+          "ResignationWithdrawalDomainTest",
+          "tests/resignation-withdrawal.spec.ts",
+          "docs/evidence/resignation-withdrawal-upgrade.json",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Only the original authenticated requester and unreviewed request. No delegation, amendment or undo of approved resignation/end; no repeated cycles/new-episode end or provider/payroll consumers."
+      },
+      {
+        "id": "HR-05-D25",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Persist immutable original-episode ownership for every resignation, including tenant/request/employee, episode/start snapshot, source submission instant and separate capture provenance. New submissions create one COMMAND link atomically; stable replay does not add links. V42 migration preserves source histories and identifies later MIGRATED_V42 capture without inventing a historical actor/time. Reject contradictory legacy chronology, unreconciled incomplete writes, forged or mutable links. Complete older original-episode submission/audit contracts may derive exactly one COMPAT_COMMAND at deferred validation, without weakening identity/source/episode guards.",
+        "implementation": "implemented: original-episode case ownership foundation",
+        "verification": "passed: 253 full backend, 73 final browser/API, separate legacy-upgrade browser and OIDC; source-preserving V43/V44 upgrade and 60-table/eleven-view/13-object isolated restore/API with actual immutable-link probe. See increment AE.",
+        "evidence": [
+          "CaseEpisodeDomainTest",
+          "ResignationWorkflowTest",
+          "OnboardingWorkflowTest.completedHireSubmitsACaseWithOriginalEpisodeOwnership",
+          "RehireWorkflowTest.approvalCreatesSecondEpisodeAndDatedJobButNeverRestoresLegacyAccess",
+          "tests/zzzzzzzzzzz-case-episode.spec.ts",
+          "docs/evidence/case-episode-upgrade.json",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Original case episode only. V43/V44 require quiesced migration; production staged rollout and actual old-binary smoke remain unverified. No new-episode resignation/end, repeated rehire, payroll/benefit or provider consumer."
+      },
+      {
+        "id": "HR-05-D26",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Self/HR can read case ownership and explicit link provenance through the real UI/API; deny manager/other employee/tenant or forged role headers. Preserve original ownership after withdrawal, decision and first rehire; join current ends to their owning episode without enabling new-episode or repeated-cycle writes. Verify current/new-hire submissions, UTC effective-date boundaries, compatibility and negative SQL fixtures, source-preserving upgrade, loading/error/retry/cancellation, mobile axe/overflow and isolated restored link/end projections with immutable receipt/access checks.",
+        "implementation": "implemented: original-episode case ownership foundation",
+        "verification": "passed: 253 full backend, 73 final browser/API, separate legacy-upgrade browser and OIDC; source-preserving V43/V44 upgrade and 60-table/eleven-view/13-object isolated restore/API with actual immutable-link probe. See increment AE.",
+        "evidence": [
+          "CaseEpisodeDomainTest",
+          "ResignationWorkflowTest",
+          "OnboardingWorkflowTest.completedHireSubmitsACaseWithOriginalEpisodeOwnership",
+          "RehireWorkflowTest.approvalCreatesSecondEpisodeAndDatedJobButNeverRestoresLegacyAccess",
+          "tests/zzzzzzzzzzz-case-episode.spec.ts",
+          "docs/evidence/case-episode-upgrade.json",
+          "scripts/restore_check.py",
+          "scripts/restore_application_check.py"
+        ],
+        "limitation": "Original case episode only. V43/V44 require quiesced migration; production staged rollout and actual old-binary smoke remain unverified. No new-episode resignation/end, repeated rehire, payroll/benefit or provider consumer."
+      },
+      {
+        "id": "HR-05-D27",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Select the latest started employment episode before applying its own current end or exact-rehire completion. Preserve original configured state, future-start and exact inactive/completion date boundaries. No tenant, predecessor end, wrong-start anchor or other-rehire completion may leak across episodes. Verify existing directory/profile/access readers and retain all historical records.",
+        "implementation": "implemented: bounded episode-local read projection; command gates unchanged",
+        "verification": "passed: 254 full backend tests, one existing real browser/mobile/axe regression, 59 history-table upgrade digests and boundary equivalence on retained data. Restore evidence recorded separately. Isolated restore passed: 60 tables, 12 views, 13 private objects; restored SQL status/start functions match source at retained boundaries (no new restored API exercise).",
+        "evidence": [
+          "EpisodeStatusProjectionTest",
+          "RehireWorkflowTest",
+          "RehireActivationWorkflowTest",
+          "docs/evidence/java-episode-status-verification.txt",
+          "docs/evidence/episode-status-browser-verification.txt",
+          "docs/evidence/episode-status-upgrade.json",
+          "docs/evidence/episode-status-restore.json"
+        ],
+        "limitation": "Original and first rehire only. Forward-looking isolated projection fixtures do not prove new-episode end commands. Employee-wide end lookup/manager eligibility and lifecycle command limits remain conservative. Access grants are not yet episode-owned. No repeated cycle, provider consumer or production performance/recovery claim."
+      },
+      {
+        "id": "HR-05-D28",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Every local rehire grant has immutable exact tenant/employee/episode/rehire/start ownership and a within-episode sequence. Initial grant derives from its activation; replacement inherits the original predecessor episode. Existing insertion contracts automatically register ownership atomically. Migration rejects unreconciled provenance and preserves grant/epoch/revocation history. Authentication and session epochs deny an otherwise valid grant from another episode while preserving held-subject and original-session suppression.",
+        "implementation": "implemented: bounded initial rehire and one replacement ownership; current authentication consumes episode-bound grant view",
+        "verification": "passed: 257 full backend tests and one existing real browser/mobile regression. Retained V45-to-V46 59 historical-table digests unchanged; isolated restore evidence recorded separately. Restore passed: 61 tables, 14 projections, 13 private objects, exact owner reconciliation and actual immutable-owner update rejection; no new restored API exercise.",
+        "evidence": [
+          "RehireActivationWorkflowTest",
+          "RehireActivationAccessHttpTest",
+          "docs/evidence/java-grant-episode-verification.txt",
+          "docs/evidence/grant-episode-browser-verification.txt",
+          "docs/evidence/grant-episode-upgrade.json",
+          "docs/evidence/grant-episode-restore.json"
+        ],
+        "limitation": "Episode 2 and grant sequence 1/2 only. Command/task/handoff/employee-wide constraints still require coordinated migration before new-episode resignation/end or repeated rehire. No real old-binary/staged production rollout, full browser/OIDC rerun or load target claimed."
+      },
+      {
+        "id": "HR-05-D29",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Assign and reassign a colleague exit task to an active first rehire using its current episode end and current authorised identity, then complete it as the Employee through the real UI/API. Ignore the predecessor end for assignee eligibility; deny future/onboarding-without-grant, scheduled/ended, revoked, unmapped and cross-tenant assignees. Retain departing-case closure, version/replay, independent HR, former-assignee denial, private history and immutable audit.",
+        "implementation": "implemented: existing task UI/API with episode-aware backend eligibility and coordinated V47 SQL lifecycle guard",
+        "verification": "passed: 259 full backend tests; 74 full local browser/API tests (one OIDC-only skip), four targeted activation-to-task tests; V47 preserved 60 business-table digests. Restore evidence recorded in checkpoint. Isolated restore passed: 61 tables / 14 projections / 13 private objects; source/restored current end function match, two persisted completed tasks, restored old-case task guard denial and unchanged manifests.",
+        "evidence": [
+          "RehireActivationWorkflowTest.activeRehireReceivesAndCompletesColleagueTasksAndOriginalCaseStaysClosed",
+          "RehireActivationWorkflowTest.revokedRehireCannotReceiveNewOrReassignedTasksDespiteMembershipAndActiveStatus",
+          "RehireWorkflowTest",
+          "tests/zzzzzzzz-rehire-assignee.spec.ts",
+          "docs/evidence/java-rehire-assignee-verification.txt",
+          "docs/evidence/rehire-assignee-upgrade.json",
+          "docs/evidence/rehire-assignee-browser-verification.txt",
+          "docs/evidence/rehire-assignee-restore.json"
+        ],
+        "limitation": "Only task assignee eligibility changes. Old departing-case closure remains conservative. No new-episode resignation/end, repeated rehire, external provider provisioning or payroll consumer."
       }
     ],
     "phases": [
@@ -1488,6 +1794,31 @@
         "tests/zzzzzzzz-rehire-activation.spec.ts"
       ],
       "verification": "See docs/verification.md increment AA for executed results and limits."
+    },
+    "rehireRevocationEvidence": {
+      "phase": 2,
+      "scope": "Immediate HR terminal revocation of the fresh rehire local grant; preserved Active employment, immutable original history, epoch/auth denial and private receipt. Does not complete source ID.",
+      "tests": [
+        "RehireAccessDomainTest",
+        "RehireActivationWorkflowTest",
+        "RehireActivationAccessHttpTest",
+        "tests/zzzzzzzzz-rehire-revocation.spec.ts"
+      ],
+      "verification": "See docs/verification.md increment AB for executed checks, recovery and limits."
+    },
+    "currentAssigneeEvidence": {
+      "workflow": "HR creates/reassigns colleague task; active rehired Employee completes; suspended identities rejected",
+      "screen": "Resignations / Case exit tasks; My exit tasks",
+      "api": [
+        "POST /api/v1/resignations/{id}/tasks",
+        "POST /api/v1/exit-tasks/{id}/management",
+        "POST /api/v1/exit-tasks/{id}/complete"
+      ],
+      "useCase": "ExitTaskService / ExitTaskUseCases; PeopleStore currentEpisodeEndDate and hasCurrentWorkspaceIdentity",
+      "domain": "ExitTask, Actor; published episode/end and grant read projections",
+      "frontend": "existing functional UI verified in targeted browser test",
+      "backend": "implemented: coordinated application/SQL current-episode assignee check; departing-case rule retained",
+      "verification": "see increment AH checkpoint"
     }
   },
   {
@@ -5065,7 +5396,23 @@
         "tests/zzzzzzzz-rehire-activation.spec.ts"
       ],
       "verification": "See docs/verification.md increment AA for executed results and limits."
-    }
+    },
+    "rehireRevocationEvidence": {
+      "phase": 2,
+      "scope": "Immediate HR terminal revocation of the fresh rehire local grant; preserved Active employment, immutable original history, epoch/auth denial and private receipt. Does not complete source ID.",
+      "tests": [
+        "RehireAccessDomainTest",
+        "RehireActivationWorkflowTest",
+        "RehireActivationAccessHttpTest",
+        "tests/zzzzzzzzz-rehire-revocation.spec.ts"
+      ],
+      "verification": "See docs/verification.md increment AB for executed checks, recovery and limits."
+    },
+    "phase2IdentityReplacement": "Partial contribution: independently reviewed bounded local identity replacement with fresh Employee epoch, permanent original subject hold, private immutable grant/revocation audit and generic HR notifications. Remaining source behaviours retain their status.",
+    "phase2ResignationWithdrawal": "Partial contribution: original requester ownership/exact request version, pending-review race resolution, generic HR notification, immutable private withdrawal receipt/audit. Other source behaviours retain their status.",
+    "phase2CaseEpisodeOwnership": "Partial contribution: self/HR provenance API/UI, immutable original-episode link with source versus capture instants and locale-aware date presentation; source behaviour and release limitations remain tracked.",
+    "additionalContactsSubset": "AJ: private profile requests and independent HR decisions, scoped self/HR reads, generic owner status notification and immutable old/new decision audit verified. Shared inbox unification, delegation and full source requirement completion are not inferred.",
+    "contactInboxSubset": "AK: separate Approvals contact category, server-derived OWN and independent HR REVIEW queues, reused AJ decisions/history. Full shared delegation and all-module inbox coverage remain open."
   },
   {
     "id": "SH-02",
@@ -5073,10 +5420,10 @@
     "roles": "requester, approver",
     "workflow": "Approval inbox",
     "phase": 1,
-    "screen": "/ (Approvals)",
-    "api": "/api/v1/employees, /api/v1/requests, /api/v1/requests/{id}/decision, /api/v1/employees/{id}/history, /api/v1/request-inbox",
-    "useCase": "PeopleUseCases / PeopleService",
-    "domainModel": "ApprovalTask, Decision, Delegation",
+    "screen": "/ (Approvals: Employee changes / Emergency contacts categories)",
+    "api": "/api/v1/employees, /api/v1/requests, /api/v1/requests/{id}/decision, /api/v1/employees/{id}/history, /api/v1/request-inbox, /api/v1/additional-contact-inbox",
+    "useCase": "PeopleUseCases / PeopleService; AdditionalContactsUseCases.inbox / review",
+    "domainModel": "ApprovalTask, Decision, Delegation, ContactRequest, InboxScope",
     "acceptanceTests": [
       "SH-02-F01",
       "SH-02-F02",
@@ -5087,60 +5434,73 @@
       "SH-02-B02",
       "SH-02-B03",
       "SH-02-D01",
-      "SH-02-D02"
+      "SH-02-D02",
+      "SH-02-D03"
     ],
-    "frontend": "partial: Phase 1 scope implemented",
-    "backend": "partial: Phase 1 scope implemented",
+    "frontend": "partial: employee-change and contact approval categories implemented",
+    "backend": "partial: single-stage scoped approval and independent HR contact queue",
     "verification": "verified subset; remaining criteria open",
-    "reason": "Single-stage independent approval, rejection and comments verified. Delegation and configurable multistage routing remain Phase 2 and consuming phases.",
+    "reason": "Employee changes and additional contacts have independent approval/rejection/comments with private history. Contact queue derives OWN/REVIEW scope server-side and excludes target/requester employee aliases and subject. Delegation, configurable multistage routing and remaining module inbox coverage remain scheduled, not complete.",
     "criteria": [
       {
         "id": "SH-02-F01",
         "sourceBehaviour": "Show pending tasks",
         "acceptance": "Given an authorised requester, approver and valid scoped records, show pending tasks through the approvals workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "implemented for Phase 1 fields/workflow",
+        "implementation": "implemented scoped employee-change and contact workflows",
         "verification": "passed scoped evidence",
         "phase": 1,
         "evidence": [
           "tests/phase1.spec.ts: approval and rejection browser workflows",
-          "tests/security.spec.ts: independent approval and concurrency"
-        ]
+          "tests/security.spec.ts: independent approval and concurrency",
+          "AdditionalContactInboxTest",
+          "tests/contact-inbox.spec.ts"
+        ],
+        "limitation": "Remaining consuming modules, delegation and configurable multistage routing remain open."
       },
       {
         "id": "SH-02-F02",
         "sourceBehaviour": "Approve",
         "acceptance": "Given an authorised requester, approver and valid scoped records, approve through the approvals workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "implemented for Phase 1 fields/workflow",
+        "implementation": "implemented scoped employee-change and contact workflows",
         "verification": "passed scoped evidence",
         "phase": 1,
         "evidence": [
           "tests/phase1.spec.ts: approval and rejection browser workflows",
-          "tests/security.spec.ts: independent approval and concurrency"
-        ]
+          "tests/security.spec.ts: independent approval and concurrency",
+          "AdditionalContactInboxTest",
+          "tests/contact-inbox.spec.ts"
+        ],
+        "limitation": "Remaining consuming modules, delegation and configurable multistage routing remain open."
       },
       {
         "id": "SH-02-F03",
         "sourceBehaviour": "Reject",
         "acceptance": "Given an authorised requester, approver and valid scoped records, reject through the approvals workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "implemented for Phase 1 fields/workflow",
+        "implementation": "implemented scoped employee-change and contact workflows",
         "verification": "passed scoped evidence",
         "phase": 1,
         "evidence": [
           "tests/phase1.spec.ts: approval and rejection browser workflows",
-          "tests/security.spec.ts: independent approval and concurrency"
-        ]
+          "tests/security.spec.ts: independent approval and concurrency",
+          "AdditionalContactInboxTest",
+          "tests/contact-inbox.spec.ts"
+        ],
+        "limitation": "Remaining consuming modules, delegation and configurable multistage routing remain open."
       },
       {
         "id": "SH-02-F04",
         "sourceBehaviour": "Comment",
         "acceptance": "Given an authorised requester, approver and valid scoped records, comment through the approvals workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "implemented for Phase 1 fields/workflow",
+        "implementation": "implemented scoped employee-change and contact workflows",
         "verification": "passed scoped evidence",
         "phase": 1,
         "evidence": [
           "tests/phase1.spec.ts: approval and rejection browser workflows",
-          "tests/security.spec.ts: independent approval and concurrency"
-        ]
+          "tests/security.spec.ts: independent approval and concurrency",
+          "AdditionalContactInboxTest",
+          "tests/contact-inbox.spec.ts"
+        ],
+        "limitation": "Remaining consuming modules, delegation and configurable multistage routing remain open."
       },
       {
         "id": "SH-02-F05",
@@ -5172,13 +5532,16 @@
         "id": "SH-02-B03",
         "sourceBehaviour": "Record decisions",
         "acceptance": "Given an authorised requester, approver and valid scoped records, record decisions through the approvals workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-        "implementation": "implemented for Phase 1 fields/workflow",
+        "implementation": "implemented scoped employee-change and contact workflows",
         "verification": "passed scoped evidence",
         "phase": 1,
         "evidence": [
           "tests/phase1.spec.ts: approval and rejection browser workflows",
-          "tests/security.spec.ts: independent approval and concurrency"
-        ]
+          "tests/security.spec.ts: independent approval and concurrency",
+          "AdditionalContactInboxTest",
+          "tests/contact-inbox.spec.ts"
+        ],
+        "limitation": "Remaining consuming modules, delegation and configurable multistage routing remain open."
       },
       {
         "id": "SH-02-D01",
@@ -5202,6 +5565,55 @@
         "evidence": [
           "tests/phase1.spec.ts: approval and rejection browser workflows",
           "tests/security.spec.ts: independent approval and concurrency"
+        ]
+      },
+      {
+        "id": "SH-02-D03",
+        "derived": true,
+        "phase": 2,
+        "acceptance": "Additional-contact category in Approvals exposes transaction-consistent bounded status-filtered pages. OWN binds authenticated employee; REVIEW is HR-only and excludes target/requester employee and requester subject, with no caller-owned tenant or employee scope. Reuse existing decision contracts/form, version/replay/concurrency rules and immutable audit. Provide independent review to persisted effective contact, own tracking, loading/error/retry/cancellation, post-refresh focus restoration and mobile accessibility. Category counts are explicit; do not infer delegation or full shared inbox completion. Verify PostgreSQL alias/tenant/pagination, live API schema/denial, browser and restored API.",
+        "implementation": "frontend and backend implemented for the scoped contact queue",
+        "verification": "passed: 274 Java tests, 80 full local browser/API tests (one OIDC-only skip), explicit own/manager/cancellation browser checks and isolated real restored API",
+        "evidence": [
+          "AdditionalContactInboxTest",
+          "tests/contact-inbox.spec.ts",
+          "docs/evidence/java-contact-inbox-verification.txt",
+          "docs/evidence/contact-inbox-browser-verification.txt",
+          "docs/evidence/contact-inbox-visual-verification.txt",
+          "docs/evidence/contact-inbox-restore.json",
+          "docs/evidence/contact-inbox-restored-api.json"
+        ],
+        "behaviourEvidence": [
+          {
+            "behaviour": "Server-owned OWN scope, independent HR REVIEW scope, alias/tenant-safe count and item queries",
+            "frontend": "implemented role-aware scope selection",
+            "backend": "implemented application access policy and scoped read port",
+            "verification": "AdditionalContactInboxTest, live API and real restored API"
+          },
+          {
+            "behaviour": "Bounded status-filtered complete pages and retained snapshots",
+            "frontend": "implemented eight-item pages and status filters",
+            "backend": "implemented exact count and stable bounded ordering in repeatable-read",
+            "verification": "11-request PostgreSQL pagination plus live OpenAPI and retained browser history"
+          },
+          {
+            "behaviour": "Existing independent decision updates current employee and audit",
+            "frontend": "shared review form, preserved error/retry and post-refresh focus",
+            "backend": "reuses AJ review port and transaction; no separate decision policy",
+            "verification": "HR-created E004 request is excluded for author and approved by independent HR through actual browser"
+          },
+          {
+            "behaviour": "Loading/error/retry, own tracking, actual navigation abort and mobile accessibility",
+            "frontend": "implemented",
+            "backend": "safe read API and existing error/correlation handling",
+            "verification": "browser error focus/retry; read-only own/manager controls and actual requestfailed on navigation; mobile axe including corrected success contrast, 44px selects and opened PNGs"
+          },
+          {
+            "behaviour": "Isolated database/object restore and queue-specific recovered access",
+            "frontend": "browser on restored database not exercised",
+            "backend": "verified recovered API for author HR, independent HR, self, manager and outsider",
+            "verification": "64 tables/14 projections/13 objects; one expected document-download audit, other business manifests unchanged"
+          }
         ]
       }
     ],
@@ -5367,7 +5779,11 @@
         "tests/zzzzzzzz-rehire-activation.spec.ts"
       ],
       "verification": "See docs/verification.md increment AA for executed results and limits."
-    }
+    },
+    "phase2IdentityReplacement": "Partial contribution: independently reviewed bounded local identity replacement with fresh Employee epoch, permanent original subject hold, private immutable grant/revocation audit and generic HR notifications. Remaining source behaviours retain their status.",
+    "phase2ResignationWithdrawal": "Partial contribution: original requester ownership/exact request version, pending-review race resolution, generic HR notification, immutable private withdrawal receipt/audit. Other source behaviours retain their status.",
+    "additionalContactsSubset": "AJ: private profile requests and independent HR decisions, scoped self/HR reads, generic owner status notification and immutable old/new decision audit verified. Shared inbox unification, delegation and full source requirement completion are not inferred.",
+    "contactInboxSubset": "AK: separate Approvals contact category, server-derived OWN and independent HR REVIEW queues, reused AJ decisions/history. Full shared delegation and all-module inbox coverage remain open."
   },
   {
     "id": "SH-03",
@@ -5614,7 +6030,21 @@
         "tests/zzzzzzzz-rehire-activation.spec.ts"
       ],
       "verification": "See docs/verification.md increment AA for executed results and limits."
-    }
+    },
+    "rehireRevocationEvidence": {
+      "phase": 2,
+      "scope": "Immediate HR terminal revocation of the fresh rehire local grant; preserved Active employment, immutable original history, epoch/auth denial and private receipt. Does not complete source ID.",
+      "tests": [
+        "RehireAccessDomainTest",
+        "RehireActivationWorkflowTest",
+        "RehireActivationAccessHttpTest",
+        "tests/zzzzzzzzz-rehire-revocation.spec.ts"
+      ],
+      "verification": "See docs/verification.md increment AB for executed checks, recovery and limits."
+    },
+    "phase2IdentityReplacement": "Partial contribution: independently reviewed bounded local identity replacement with fresh Employee epoch, permanent original subject hold, private immutable grant/revocation audit and generic HR notifications. Remaining source behaviours retain their status.",
+    "phase2ResignationWithdrawal": "Partial contribution: original requester ownership/exact request version, pending-review race resolution, generic HR notification, immutable private withdrawal receipt/audit. Other source behaviours retain their status.",
+    "additionalContactsSubset": "AJ: private profile requests and independent HR decisions, scoped self/HR reads, generic owner status notification and immutable old/new decision audit verified. Shared inbox unification, delegation and full source requirement completion are not inferred."
   },
   {
     "id": "SH-04",
@@ -6106,7 +6536,23 @@
         "tests/zzzzzzzz-rehire-activation.spec.ts"
       ],
       "verification": "See docs/verification.md increment AA for executed results and limits."
-    }
+    },
+    "rehireRevocationEvidence": {
+      "phase": 2,
+      "scope": "Immediate HR terminal revocation of the fresh rehire local grant; preserved Active employment, immutable original history, epoch/auth denial and private receipt. Does not complete source ID.",
+      "tests": [
+        "RehireAccessDomainTest",
+        "RehireActivationWorkflowTest",
+        "RehireActivationAccessHttpTest",
+        "tests/zzzzzzzzz-rehire-revocation.spec.ts"
+      ],
+      "verification": "See docs/verification.md increment AB for executed checks, recovery and limits."
+    },
+    "phase2IdentityReplacement": "Partial contribution: independently reviewed bounded local identity replacement with fresh Employee epoch, permanent original subject hold, private immutable grant/revocation audit and generic HR notifications. Remaining source behaviours retain their status.",
+    "phase2ResignationWithdrawal": "Partial contribution: original requester ownership/exact request version, pending-review race resolution, generic HR notification, immutable private withdrawal receipt/audit. Other source behaviours retain their status.",
+    "phase2CaseEpisodeOwnership": "Partial contribution: self/HR provenance API/UI, immutable original-episode link with source versus capture instants and locale-aware date presentation; source behaviour and release limitations remain tracked.",
+    "additionalContactsSubset": "AJ: private profile requests and independent HR decisions, scoped self/HR reads, generic owner status notification and immutable old/new decision audit verified. Shared inbox unification, delegation and full source requirement completion are not inferred.",
+    "contactInboxSubset": "AK: separate Approvals contact category, server-derived OWN and independent HR REVIEW queues, reused AJ decisions/history. Full shared delegation and all-module inbox coverage remain open."
   },
   {
     "id": "SH-06",
@@ -6662,7 +7108,8 @@
         "tests/zzzzzzzz-rehire-activation.spec.ts"
       ],
       "verification": "See docs/verification.md increment AA for executed results and limits."
-    }
+    },
+    "phase2CaseEpisodeOwnership": "Partial contribution: self/HR provenance API/UI, immutable original-episode link with source versus capture instants and locale-aware date presentation; source behaviour and release limitations remain tracked."
   },
   {
     "id": "SH-10",

@@ -287,9 +287,11 @@ test("independent completion grants one fresh Employee login, refreshes Active s
     })
     .click();
   await expect(panel).toContainText(
-    "Fresh local Employee access for returning",
+    "Original local Employee grant for returning",
   );
-  await expect(panel).toContainText("Other aliases have no new grant");
+  await expect(panel).toContainText(
+    "The original grant did not restore HR/manager privilege",
+  );
   await expect(
     page.getByRole("region", {
       name: "Employment episodes and rehire",
@@ -310,7 +312,9 @@ test("independent completion grants one fresh Employee login, refreshes Active s
     ),
   ).toBe(true);
   await panel
-    .getByText("Other aliases have no new grant", { exact: false })
+    .getByText("The original grant did not restore HR/manager privilege", {
+      exact: false,
+    })
     .scrollIntoViewIfNeeded();
   await page.screenshot({
     path: "docs/evidence/rehire-activation-mobile.png",

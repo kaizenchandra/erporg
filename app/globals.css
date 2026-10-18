@@ -1217,7 +1217,7 @@ tbody tr.selected {
   background: #ecf7f1;
   border: 1px solid #d4eadd;
   border-radius: 8px;
-  color: #398365;
+  color: #266044;
   padding: 14px 18px;
   font-size: 12px;
   margin-top: 20px;
@@ -2378,4 +2378,73 @@ tbody tr.selected {
 .badge.ended {
   background: #edf1f4;
   color: #526571;
+}
+
+/* Current access is nested inside the completion panel. */
+.rehire-access-panel {
+  padding-inline: 0;
+}
+
+.additional-contacts > label,
+.additional-contact-form fieldset > label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.additional-contacts > label > select {
+  min-height: 44px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+}
+.additional-contact-form fieldset {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.additional-contact-form legend {
+  padding-inline: 6px;
+  font-weight: 600;
+}
+
+.contact-inbox {
+  display: grid;
+  gap: 16px;
+}
+.contact-inbox > h2,
+.contact-inbox > p {
+  margin: 0;
+}
+.contact-inbox > label {
+  max-width: 480px;
+}
+.contact-inbox .benefit-card {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.contact-inbox .benefit-card > h3,
+.contact-inbox .benefit-card > p {
+  margin: 0;
+}
+.contact-inbox .badge,
+.contact-inbox .benefit-card > button {
+  justify-self: start;
+}
+.contact-inbox summary {
+  min-height: 44px;
+  padding-block: 12px;
+  cursor: pointer;
 }

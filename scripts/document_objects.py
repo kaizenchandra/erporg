@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 import os
 
-SOURCE_ROOT = Path('/private/tmp/atlas-private-documents')
+SOURCE_ROOT = Path(os.environ.get('ATLAS_DOCUMENTS_LOCAL_ROOT', str(Path(__file__).resolve().parent.parent / 'backend' / '.local' / 'private-documents')))
 
 
 def copy_objects(sql, database, destination):

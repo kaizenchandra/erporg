@@ -62,6 +62,15 @@ public final class ResignationService implements ResignationUseCases {
         });
   }
 
+  public CaseEpisode episode(String subject, String id) {
+    return reads.run(
+        () -> {
+          var a = actor(subject);
+          access(a, store.get(a.tenant(), id, false));
+          return store.episode(a.tenant(), id);
+        });
+  }
+
   public Resignation submit(String subject, ResignationCommands.Submit c, String correlation) {
     Resignation.validate(c.lastWorkingDate(), c.reason());
     long v = version(c.employeeVersion());
@@ -86,6 +95,9 @@ public final class ResignationService implements ResignationUseCases {
           if (store.outstanding(a.tenant(), employee.id()))
             throw new ChangeRequest.Conflict(
                 "An outstanding resignation already exists. Review it before submitting another.");
+          var episode =
+              EmploymentEpisodeRef.originalForCase(
+                  store.episodes(a.tenant(), employee.id()), LocalDate.now(clock));
           var r =
               new Resignation(
                   UUID.randomUUID().toString(),
@@ -101,8 +113,54 @@ public final class ResignationService implements ResignationUseCases {
                   null,
                   null,
                   null);
-          store.insert(a.tenant(), r, c.idempotencyKey(), correlation);
+          store.insert(a.tenant(), r, episode, c.idempotencyKey(), correlation);
           return r;
+        });
+  }
+
+  public Optional<ResignationWithdrawal> withdrawal(String subject, String id) {
+    return reads.run(
+        () -> {
+          var a = actor(subject);
+          access(a, store.get(a.tenant(), id, false));
+          return store.withdrawal(a.tenant(), id);
+        });
+  }
+
+  public ResignationWithdrawal withdraw(
+      String subject, String id, ResignationCommands.Withdraw c, String correlation) {
+    long v = version(c.version());
+    key(c.idempotencyKey());
+    if (c.reason() == null || c.reason().isBlank() || c.reason().length() > 500)
+      throw new ChangeRequest.Validation(
+          Map.of("reason", "A withdrawal reason of 1–500 characters is required."));
+    return tx.run(
+        () -> {
+          var a = actor(subject);
+          var initial = store.get(a.tenant(), id, false);
+          if (!a.subject().equals(initial.requestedBy())
+              || !a.employeeId().equals(initial.employeeId())) throw new ChangeRequest.Denied();
+          people.employee(a, initial.employeeId(), LocalDate.now(clock), true);
+          var r = store.get(a.tenant(), id, true);
+          var prior = store.withdrawalDuplicate(a.tenant(), subject, c.idempotencyKey());
+          if (prior.isPresent()) {
+            var old = prior.get();
+            if (!old.requestId().equals(id)
+                || old.inputVersion() != v
+                || !old.reason().equals(c.reason().trim()))
+              throw new ChangeRequest.Conflict("Key was used for another resignation withdrawal.");
+            return old;
+          }
+          var receipt =
+              ResignationWithdrawal.withdraw(
+                  r,
+                  a,
+                  c.reason(),
+                  v,
+                  clock.instant().truncatedTo(java.time.temporal.ChronoUnit.MICROS),
+                  correlation);
+          store.withdraw(a.tenant(), receipt, c.idempotencyKey());
+          return receipt;
         });
   }
 
@@ -136,6 +194,11 @@ public final class ResignationService implements ResignationUseCases {
             if (employee.version() != r.employeeVersion())
               throw new ChangeRequest.Conflict(
                   "The employee changed. Reject this request and submit a fresh resignation.");
+            var original =
+                EmploymentEpisodeRef.originalForCase(
+                    store.episodes(a.tenant(), employee.id()), LocalDate.now(clock));
+            if (store.episode(a.tenant(), id).episodeNumber() != original.number())
+              throw new ChangeRequest.Conflict("Case episode changed; review its provenance.");
             Resignation.eligible(employee, r.lastWorkingDate(), LocalDate.now(clock));
           }
           var decided =

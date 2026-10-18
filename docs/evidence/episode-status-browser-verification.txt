@@ -1,0 +1,5 @@
+Increment AF
+Command: npx playwright test tests/zzzzzzzzzzz-case-episode.spec.ts --grep "case UI"
+Result: 1 passed (2.6s), Chromium; retained local synthetic V45 API with existing production-built frontend.
+Verified current Active rehire API versus original case ownership, private history UI, loading/failure/retry/cancellation, mobile axe and horizontal overflow. Existing screenshot docs/evidence/case-episode-mobile.png updated by test.
+No frontend implementation changed. Full 73-test browser/OIDC runs remain prior AE evidence, not rerun AF evidence.

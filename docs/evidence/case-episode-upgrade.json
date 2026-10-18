@@ -1,0 +1,69 @@
+{
+  "status": "PASSED",
+  "scope": "Local synthetic V42-to-V43 upgrade; not production migration rehearsal",
+  "historicalTablesUnchanged": {
+    "hr_resignation": {
+      "rows": 9,
+      "sha256": "c48e30d4e4449be45a541930e86739ca79fcc0ceb2503a6779edd3c579315595"
+    },
+    "hr_resignation_audit": {
+      "rows": 18,
+      "sha256": "830a4dcb0f235e99b4e76303c76801a3dc826d02a2c1fb78a669888c5be40f8b"
+    },
+    "hr_resignation_handoff": {
+      "rows": 5,
+      "sha256": "a458f9ab07013973cccba23fdd2043022ff9436f173bac0d1c4ea407db7ba2eb"
+    },
+    "hr_resignation_withdrawal": {
+      "rows": 3,
+      "sha256": "0d9e8c6bd8c19fadb6f6aa28cee99e67ac6637f4977f4845b672d406911aac62"
+    },
+    "hr_employment_end": {
+      "rows": 4,
+      "sha256": "7dd36b78b8cf78bbd9e80f2f229a129b974a1d53d6f51ef44fc98b02d2637948"
+    },
+    "hr_rehire": {
+      "rows": 3,
+      "sha256": "5d6508033f46e88860c9d9fce3d98055e70854fb01ce9eb9ddda54a3bf44e29c"
+    }
+  },
+  "legacyLinks": 9,
+  "invalidLegacyLinks": 0,
+  "ownedCurrentEnds": 4,
+  "negativePreflight": "passed in actual PostgreSQL with rollback-isolated contradictory legacy chronology",
+  "compatibilityUpgrade": {
+    "status": "PASSED",
+    "scope": "Local V43-to-V44, no live older-binary rollout claim",
+    "historicalTablesUnchanged": {
+      "hr_case_episode": {
+        "rows": 9,
+        "sha256": "ec6b65b1b9a48040b68dd23dd6bff11495036f20bf10653188c5edd98e84b114"
+      },
+      "hr_resignation": {
+        "rows": 9,
+        "sha256": "d70038286edf00cc13bf74128e385870b0090d412839ebbcf9a6f094082a8435"
+      },
+      "hr_resignation_audit": {
+        "rows": 18,
+        "sha256": "9fe659779c7ae25b6283db660ac29b5de28932c0745ff0fe692fffe26c464dd8"
+      },
+      "hr_resignation_handoff": {
+        "rows": 5,
+        "sha256": "06cf711496f2d505d85c3206316697150f5f1c7ed1caaeb0396a62272f6b99b8"
+      },
+      "hr_resignation_withdrawal": {
+        "rows": 4,
+        "sha256": "dd9e3f2941ea2a2545baa94c1a56506a49049a93a34afaa850f90fcf6f8fd123"
+      },
+      "hr_employment_end": {
+        "rows": 4,
+        "sha256": "210838e884ecf6fa818cd5f86ee25f648ed19aa10d598acb7630a0f4b40fef48"
+      },
+      "hr_rehire": {
+        "rows": 3,
+        "sha256": "dcf3e09685fecd4a6d96f4c2cc8d282ce290417fdbf1908b35d1f2f26026f9e3"
+      }
+    },
+    "legacyWriterSqlContract": "passed in actual PostgreSQL; complete submission/audit receives one COMPAT_COMMAND at deferred validation; incomplete write fails and compatible case can be withdrawn"
+  }
+}

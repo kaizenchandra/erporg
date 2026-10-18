@@ -6,3 +6,7 @@ docs/evidence
 playwright-report
 test-results
 .env*
+
+# Never send persistent private development data in build contexts
+.local
+**/.local

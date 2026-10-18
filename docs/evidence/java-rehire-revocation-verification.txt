@@ -1,0 +1,10 @@
+Increment AB — 2026-10-17
+Command: JAVA_HOME=<JDK21> mvn -f backend/pom.xml -Dmaven.repo.local=/private/tmp/atlas-m2 spotless:apply test
+Actual PostgreSQL / ClamAV and architecture negative fixtures.
+{'tests': 234, 'failures': 0, 'errors': 0, 'skipped': 0}
+BUILD SUCCESS, 39.347 seconds.
+Four new rollback-isolated PostgreSQL tests cover terminal revocation, stable/conflicting replay, preserved Active employment/completion/original grant/epoch/legacy role, current identity handoff, exact/fractional/stale versions and named grant, role/tenant/target alias denial, SQL snapshot and append-only guards. New framework-free domain test protects reason/version/self-action.
+Extended real HTTP/JDBC-session test performs competing independent HR revocations: one 200 and one 409, one persisted event. An unused freshly authenticated session and new selected/alias sign-in all deny after revocation; HR reads Active employment and REVOKED access. No runtime clock-control endpoint or live IdP action.
+Initial targeted attempt failed because Docker/PostgreSQL were unavailable. After starting retained services, 14 targeted tests passed. First full run exposed a test adapter still using the old document root and a SQL probe using transaction-start now() before the new grant; adapters aligned and probe uses clock_timestamp(). Final full result above.
+
+Final subject-hold regression: revokedSubjectCannotReturnThroughMembershipReassignmentOrAnotherTenant reassigns the revoked subject to E001 with HR role, then other tenant/E900; actor/epoch/private context remain denied. Additive V40 index and SQL actor guard applied; final full suite above includes this fix. No applied V39 checksum changed.

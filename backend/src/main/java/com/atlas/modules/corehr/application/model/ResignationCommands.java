@@ -12,6 +12,11 @@ public final class ResignationCommands {
       BigDecimal employeeVersion,
       String idempotencyKey) {}
 
+  public record WithdrawalContext(
+      com.atlas.modules.corehr.domain.model.ResignationWithdrawal receipt) {}
+
+  public record Withdraw(String reason, BigDecimal version, String idempotencyKey) {}
+
   public record Review(
       String decision, String comment, BigDecimal version, String idempotencyKey) {}
 }

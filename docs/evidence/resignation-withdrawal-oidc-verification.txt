@@ -1,0 +1,5 @@
+Command: OIDC_TEST=1 npx playwright test tests/oidc.spec.ts
+Real local Keycloak on isolated atlas_oidc_withdraw_ad_20261017; privileged synthetic TOTP and provider logout.
+  ✓  1 tests/oidc.spec.ts:17:5 › OIDC code flow requires MFA for the privileged synthetic account (1.7s)
+  1 passed (3.3s)
+Sandbox compatibility only, not production provider lifecycle assurance.

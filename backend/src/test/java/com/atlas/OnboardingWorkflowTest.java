@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class OnboardingWorkflowTest {
   @Autowired HiringUseCases hiring;
+  @Autowired ResignationUseCases resignations;
   @Autowired PeopleUseCases people;
   @Autowired OrganisationUseCases organisation;
   @Autowired JdbcTemplate jdbc;
@@ -176,5 +177,30 @@ class OnboardingWorkflowTest {
                 "invalid"));
     assertEquals(
         0, jdbc.queryForObject("select count(*) from hr_onboarding_completion", Integer.class));
+  }
+
+  @Test
+  void completedHireSubmitsACaseWithOriginalEpisodeOwnership() {
+    var start = LocalDate.now(ZoneOffset.UTC);
+    var hire = hire(start);
+    hiring.completeOnboarding(hr(), hire.id(), command(), "completed");
+    // Explicit synthetic identity fixture; not evidence of live provider provisioning.
+    jdbc.update(
+        "insert into identity_membership(subject,tenant,employee_id,name,role) values('new-case-owner','atlas',?,'Synthetic owner','EMPLOYEE')",
+        hire.employeeId());
+    var request =
+        resignations.submit(
+            "new-case-owner",
+            new ResignationCommands.Submit(
+                start.plusDays(30),
+                "Synthetic new hire resignation",
+                java.math.BigDecimal.ONE,
+                UUID.randomUUID().toString()),
+            "new-hire-case");
+    var link = resignations.episode("new-case-owner", request.id());
+    assertEquals(hire.employeeId(), link.employeeId());
+    assertEquals(start, link.episodeStartDate());
+    assertEquals(1, link.episodeNumber());
+    jdbc.execute("set constraints all immediate");
   }
 }

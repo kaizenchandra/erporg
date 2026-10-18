@@ -38,19 +38,20 @@ def expect(condition, label):
         raise RuntimeError(label)
 
 
-def run():
+def run(restore_evidence=Path("docs/evidence/restore-check.json"), evidence=Path("docs/evidence/restore-application-check.json"), verify_legal_name=False, verify_additional_contacts=False, verify_contact_inbox=False):
     report = {"recordedAt": datetime.now(timezone.utc).isoformat(), "status": "FAILED",
               "scope": "local synthetic restored API; excludes production infrastructure and IdP recovery"}
     process = None
     started = time.monotonic()
     try:
-        restore = json.loads(Path("docs/evidence/restore-check.json").read_text())
+        restore = json.loads(restore_evidence.read_text())
         target = restore["targetDatabase"]
         expect(restore["status"] == "PASSED" and re.fullmatch(r"atlas_restore_[a-f0-9]{16}", target), "Verified synthetic restore target required")
         expect(restore["sourceSchema"] == "atlas_acceptance", "Unexpected source schema")
         report["targetDatabase"] = target
         private_root = restore["privateObjects"]["restoredRoot"]
-        expect(restore["privateObjects"]["status"] == "PASSED" and re.fullmatch(r"/private/tmp/atlas-document-restore-[a-f0-9]{16}", private_root), "Verified independent private-object copy required")
+        expected_root = Path(__file__).resolve().parent.parent / "backend" / ".local" / "restored-documents" / target.removeprefix("atlas_restore_")
+        expect(restore["privateObjects"]["status"] == "PASSED" and Path(private_root) == expected_root and expected_root.resolve() == expected_root and not expected_root.is_symlink(), "Verified independent private-object copy required")
         before = manifest(target)
         projections_before = projection_manifest(target)
         expect(projections_before == restore["projectionManifest"], "Restored task projection changed since verification")
@@ -114,6 +115,21 @@ def run():
                     expect(status == 200 and len(resignation_history) == 2 and resignation_history[-1]["newStatus"] == "APPROVED", "Restored resignation history differs")
                 else:
                     expect(status == 403, "Restored resignation tenant denial failed")
+                withdrawn_id = sql(target, "select request_id from atlas_acceptance.hr_resignation_withdrawal where tenant='atlas' and employee_id='E005' order by recorded_at limit 1")
+                expect(bool(re.fullmatch(r"[a-f0-9-]{36}", withdrawn_id)), "Withdrawn synthetic resignation fixture required")
+                status, withdrawal_receipt = request(session, "/api/v1/resignations/" + withdrawn_id + "/withdrawal")
+                if role == "HR" or employee_id == "E005":
+                    expect(status == 200 and withdrawal_receipt["receipt"]["requestId"] == withdrawn_id and withdrawal_receipt["receipt"]["actor"] == "olivia" and withdrawal_receipt["receipt"]["newVersion"] == 1, "Restored private withdrawal receipt differs")
+                    status, withdrawn_history = request(session, "/api/v1/resignations/" + withdrawn_id + "/history")
+                    expect(status == 200 and len(withdrawn_history) == 2 and withdrawn_history[-1]["newStatus"] == "WITHDRAWN" and withdrawn_history[-1]["reason"] == withdrawal_receipt["receipt"]["reason"] and withdrawn_history[-1]["correlationId"] == withdrawal_receipt["receipt"]["correlationId"], "Restored withdrawal audit differs")
+                else:
+                    expect(status == 403, "Restored withdrawal receipt privacy failed")
+                status, case_episode = request(session, "/api/v1/resignations/" + resignation_id + "/episode")
+                if role == "HR" or employee_id == "E003":
+                    expect(status == 200 and case_episode["employeeId"] == "E003" and case_episode["episodeNumber"] == 1 and case_episode["origin"] == "COMMAND" and case_episode["sourceRecordedAt"] == case_episode["linkedAt"] and case_episode["linkedBy"] == "sophia", "Restored case episode ownership differs")
+                    expect(int(sql(target, "select episode_number from atlas_acceptance.hr_episode_end_current where tenant='atlas' and request_id='" + resignation_id + "'")) == 1, "Restored end episode ownership differs")
+                else:
+                    expect(status == 403, "Restored private case episode denial failed")
                 status, own_tasks = request(session, "/api/v1/exit-tasks?size=100")
                 expect(status == 200 and own_tasks["total"] == int(sql(target, "select count(*) from atlas_acceptance.hr_exit_task_current where tenant='" + actor["tenant"] + "' and assignee_id='" + employee_id + "'")), "Restored own-task scope differs")
                 status, case_tasks = request(session, "/api/v1/resignations/" + resignation_id + "/tasks")
@@ -168,6 +184,22 @@ def run():
                     expect(status == 200 and episodes["episodes"][1]["state"] == "ACTIVE", "Restored active episode differs")
                 else:
                     expect(status == 403, "Restored private completion denial failed")
+                status, access = request(session, "/api/v1/employees/E-RETURN-TEST/rehire/access")
+                if role == "HR":
+                    expect(status == 200 and access["accessStatus"] == "REVOKED" and access["employmentStatus"] == "Active", "Restored local revocation/status differs")
+                    expect(access["revocation"]["actor"] == "amelia" and access["revocation"]["subject"] == "returning-alias" and access["revocation"]["newVersion"] == access["revocation"]["inputVersion"] + 1, "Restored private revocation history differs")
+                    expect(access["employeeVersion"] == access["revocation"]["newVersion"], "Restored revocation version differs")
+                    expect(sql(target, "select status from atlas_acceptance.hr_rehire_handoff_current h join atlas_acceptance.hr_rehire r on r.tenant=h.tenant and r.id=h.rehire_id where r.employee_id='E-RETURN-TEST' and h.target='IDENTITY_REVIEW'") == "LOCAL_ACCESS_REVOKED", "Restored identity handoff differs")
+                else:
+                    expect(status == 403, "Restored private revocation context denial failed")
+                status, replacement = request(session, "/api/v1/employees/E-RETURN-TEST/rehire/access/replacement")
+                if role == "HR":
+                    expect(status == 200 and replacement["grant"]["grantNumber"] == 2 and replacement["grant"]["subject"] == "returning-alias" and replacement["accessStatus"] == "REVOKED" and not replacement["canRequest"], "Restored replacement current state differs")
+                    expect([r["status"] for r in replacement["history"]] == ["REJECTED", "APPROVED"] and replacement["history"][-1]["reviewer"] == "olivia", "Restored replacement review history differs")
+                    expect([g["subject"] for g in replacement["grants"]] == ["returning", "returning-alias"] and [r["subject"] for r in replacement["revocations"]] == ["returning", "returning-alias"], "Restored private access history differs")
+                    expect(int(sql(target, "select count(*) from atlas_acceptance.hr_local_access_grant where employee_id='E-RETURN-TEST'")) == 2 and int(sql(target, "select count(*) from atlas_acceptance.hr_rehire_access_revocation where employee_id='E-RETURN-TEST'")) == 2, "Restored original/replacement grant and hold counts differ")
+                else:
+                    expect(status == 403, "Restored replacement history privacy failed")
                 if role == "HR":
                     status, departments = request(session, "/api/v1/organisation/departments")
                     expect(status == 200 and len(departments) == int(sql(target, "select count(*) from atlas_acceptance.hr_department where tenant='atlas'")), "Restored department references differ")
@@ -275,32 +307,72 @@ def run():
             expect(request(assigned, "/api/v1/exit-tasks/" + managed_id + "/history")[0] == 403, "Former assignee retained task history access")
             _, token = request(assigned, "/api/csrf")
             expect(request(assigned, "/api/logout", b"", {token["headerName"]: token["token"]})[0] == 204 and request(assigned, "/api/v1/session")[0] == 401, "Assigned session logout failed")
-            returning = client()
-            _, token = request(returning, "/api/csrf")
-            credentials = urllib.parse.urlencode({"username": "returning", "password": "atlas-demo"}).encode()
-            expect(request(returning, "/api/login", credentials, {token["headerName"]: token["token"], "Content-Type": "application/x-www-form-urlencoded"})[0] == 204, "Restored fresh Employee sign-in failed")
-            status, actor = request(returning, "/api/v1/session")
-            expect(status == 200 and actor["role"] == "EMPLOYEE" and actor["employeeId"] == "E-RETURN-TEST", "Restored fresh Employee mapping differs")
-            status, own = request(returning, "/api/v1/people-summary")
-            expect(status == 200 and own["total"] == 1, "Restored returning scope differs")
-            status, profile = request(returning, "/api/v1/employees/E-RETURN-TEST")
-            expect(status == 200 and profile["status"] == "Active", "Restored returning profile differs")
-            expect(request(returning, "/api/v1/employees/E001", headers={"X-Role":"HR"})[0] == 403, "Retained legacy HR role was restored")
-            expect(request(returning, "/api/v1/employees/E-RETURN-TEST/rehire/activation")[0] == 403, "Returning Employee gained private HR context")
-            _, token = request(returning, "/api/csrf")
-            expect(request(returning, "/api/logout", b"", {token["headerName"]: token["token"]})[0] == 204 and request(returning, "/api/v1/session")[0] == 401, "Restored fresh session logout failed")
-            alias = client()
-            _, token = request(alias, "/api/csrf")
-            credentials = urllib.parse.urlencode({"username": "returning-alias", "password": "atlas-demo"}).encode()
-            expect(request(alias, "/api/login", credentials, {token["headerName"]: token["token"], "Content-Type": "application/x-www-form-urlencoded"})[0] == 401, "Restored unselected alias gained access")
+            for user in ["returning", "returning-alias"]:
+                returning = client()
+                _, token = request(returning, "/api/csrf")
+                credentials = urllib.parse.urlencode({"username": user, "password": "atlas-demo"}).encode()
+                expect(request(returning, "/api/login", credentials, {token["headerName"]: token["token"], "Content-Type": "application/x-www-form-urlencoded"})[0] == 401, "Restored revoked/alias identity gained access")
+                expect(request(returning, "/api/v1/session")[0] == 401, "Restored revoked identity retained a session")
             expect(projection_manifest(target) == projections_before, "Restored API changed task projection")
+            if verify_legal_name:
+                supplied = sql(target, "set search_path=atlas_acceptance; select hr_employment_value('atlas'::varchar,'E003'::varchar,'legalName'::varchar,''::varchar,(now() at time zone 'UTC')::date)").splitlines()[-1]
+                expect(bool(supplied), "Restored approved legal-name fixture required")
+                for user, private in [("amelia", True), ("sophia", True), ("marcus", False)]:
+                    reader = client()
+                    _, token = request(reader, "/api/csrf")
+                    credentials = urllib.parse.urlencode({"username": user, "password": "atlas-demo"}).encode()
+                    expect(request(reader, "/api/login", credentials, {token["headerName"]: token["token"], "Content-Type": "application/x-www-form-urlencoded"})[0] == 204, "Private-name reader sign-in failed")
+                    status, profile = request(reader, "/api/v1/employees/E003")
+                    expect(status == 200 and profile["legalName"] == (supplied if private else None), "Restored legal-name field permission differs")
+                    status, history = request(reader, "/api/v1/employees/E003/history")
+                    expect(status == 200 and any(a["field"] == "legalName" for a in history) == private, "Restored legal-name audit permission differs")
+                    _, token = request(reader, "/api/csrf")
+                    expect(request(reader, "/api/logout", b"", {token["headerName"]: token["token"]})[0] == 204, "Private-name reader logout failed")
+                report["legalNamePrivacy"] = {"status": "PASSED", "roles": ["HR", "self", "manager"], "scope": "private profile and history on actual restored API; no names in report"}
+            if verify_additional_contacts:
+                contact_path = "/api/v1/employees/E003/additional-contacts"
+                private_context = None
+                for user, private in [("amelia", True), ("sophia", True), ("marcus", False), ("outsider", False)]:
+                    reader = client()
+                    _, token = request(reader, "/api/csrf")
+                    credentials = urllib.parse.urlencode({"username": user, "password": "atlas-demo"}).encode()
+                    expect(request(reader, "/api/login", credentials, {token["headerName"]: token["token"], "Content-Type": "application/x-www-form-urlencoded"})[0] == 204, "Contact reader sign-in failed")
+                    status, context = request(reader, contact_path)
+                    expect(status == (200 if private else 403), "Restored contact permission differs")
+                    if private:
+                        expect(len(context["contacts"]) == 2 and context["requests"]["total"] == 2, "Restored current/future contact fixture differs")
+                        if private_context is not None:
+                            expect(context == private_context, "Restored self and HR contact snapshots differ")
+                        private_context = context
+                    _, token = request(reader, "/api/csrf")
+                    expect(request(reader, "/api/logout", b"", {token["headerName"]: token["token"]})[0] == 204, "Contact reader logout failed")
+                report["additionalContactPrivacy"] = {"status": "PASSED", "roles": ["HR", "self", "manager", "outsider"], "scope": "private current and future-approved snapshots/history on actual restored API; no contact values in report"}
+            if verify_contact_inbox:
+                for user in ["amelia", "olivia", "sophia", "marcus", "outsider"]:
+                    reader = client()
+                    _, token = request(reader, "/api/csrf")
+                    credentials = urllib.parse.urlencode({"username": user, "password": "atlas-demo"}).encode()
+                    expect(request(reader, "/api/login", credentials, {token["headerName"]: token["token"], "Content-Type": "application/x-www-form-urlencoded"})[0] == 204, "Queue reader sign-in failed")
+                    status, own = request(reader, "/api/v1/additional-contact-inbox?scope=OWN&status=ALL")
+                    expect(status == 200, "Restored own queue unavailable")
+                    if user == "sophia":
+                        expect(own["total"] == 2 and all(r["employeeId"] == "E003" for r in own["items"]), "Restored own contact queue differs")
+                    elif user in ["amelia", "marcus", "outsider"]:
+                        expect(own["total"] == 0, "Restored own queue leaked another employee")
+                    status, review = request(reader, "/api/v1/additional-contact-inbox?scope=REVIEW&status=ALL")
+                    expect(status == (200 if user in ["amelia", "olivia"] else 403), "Restored HR queue permission differs")
+                    if user in ["amelia", "olivia"]:
+                        expect(any(r["employeeId"] == "E004" for r in review["items"]) == (user == "olivia"), "Restored independent-review scope differs")
+                    _, token = request(reader, "/api/csrf")
+                    expect(request(reader, "/api/logout", b"", {token["headerName"]: token["token"]})[0] == 204, "Queue reader logout failed")
+                report["contactInboxPrivacy"] = {"status": "PASSED", "roles": ["author HR", "independent HR", "self", "manager", "outsider"], "scope": "OWN and independent REVIEW queue reads on actual restored API; values omitted"}
             after = manifest(target)
             expect({k:v for k,v in after.items() if k != "employee_document_audit"} == {k:v for k,v in before.items() if k != "employee_document_audit"}, "Application smoke changed restored business data")
             expect(after["employee_document_audit"]["rows"] == before["employee_document_audit"]["rows"] + 1, "Exactly one restored download audit required")
             retained_audit = sql(target, "select row_to_json(a)::text from atlas_acceptance.employee_document_audit a where id<=" + str(prior_document_audit_max) + " order by id")
             expect(hashlib.sha256(retained_audit.encode()).hexdigest() == prior_document_audit_digest, "Original restored document audit changed")
             expect(sql(target, "select action from atlas_acceptance.employee_document_audit where id>" + str(prior_document_audit_max)) == "DOWNLOAD_AUTHORISED", "Unexpected restored audit mutation")
-            report["checks"] = ["readiness", "Flyway validation", "anonymous denial", "four identity mappings including assigned manager", "scoped counts", "scoped organisation roots/branch/effective node and minimal fields", "profile reads", "approved requests", "approval audit", "department references and audit", "position catalogue and audit", "employee position and approval history", "reporting candidates and approval history", "display-name approval history", "withdrawn request history", "benefits catalogue and audit", "benefit selections, audit and pending deduction", "independent private document storage, download integrity and new audit", "immutable rescan history and effective availability", "immutable document version chain and latest projection", "document templates, classification audit and latest completeness", "effective template revisions/retirement and correction history", "private retention/hold journal and independent release", "scoped resignations, private history and pending exit coordination", "assigned exit tasks, private audit and no resignation access", "current task assignment/cancellation, HR-only journal and revoked former-assignee reads", "retained end/withdrawal and replacement history, current replacement date, original-cutoff Active and suppressed old/pending new targets", "approved hires", "rehire private review/history, preserved episodes, future start and legacy-access hold/pending handoffs", "onboarding status/history", "reviewed rehire completion, fresh Employee sign-in, retained legacy HR denial and unselected alias denial", "record/tenant denial", "logout revocation", "unchanged business data"]
+            report["checks"] = ["readiness", "Flyway validation", "anonymous denial", "four identity mappings including assigned manager", "scoped counts", "scoped organisation roots/branch/effective node and minimal fields", "profile reads", "approved requests", "approval audit", "department references and audit", "position catalogue and audit", "employee position and approval history", "reporting candidates and approval history", "display-name approval history", "withdrawn request history", "benefits catalogue and audit", "benefit selections, audit and pending deduction", "independent private document storage, download integrity and new audit", "immutable rescan history and effective availability", "immutable document version chain and latest projection", "document templates, classification audit and latest completeness", "effective template revisions/retirement and correction history", "private retention/hold journal and independent release", "scoped resignations, private history and pending exit coordination", "private pending-resignation withdrawal receipt, matching terminal audit and unchanged status/access", "original case/end episode ownership with source/capture provenance and unrelated-user denial", "assigned exit tasks, private audit and no resignation access", "current task assignment/cancellation, HR-only journal and revoked former-assignee reads", "retained end/withdrawal and replacement history, current replacement date, original-cutoff Active and suppressed old/pending new targets", "approved hires", "rehire private review/history, preserved episodes, future start and legacy-access hold/pending handoffs", "onboarding status/history", "reviewed rehire completion retained, current revocation/private audit, Active employment and denied revoked/alias sign-in", "reviewed replacement history, latest grant/current hold and original plus replacement revocations", "record/tenant denial", "logout revocation", "unchanged business data"]
             report["status"] = "PASSED"
     except (RuntimeError, OSError, ValueError, KeyError, subprocess.TimeoutExpired) as error:
         report["error"] = str(error) if isinstance(error, RuntimeError) else "Restore evidence or local tool unavailable"
@@ -313,7 +385,7 @@ def run():
                 os.killpg(process.pid, signal.SIGKILL)
                 process.wait()
         report["totalSeconds"] = round(time.monotonic() - started, 3)
-        Path("docs/evidence/restore-application-check.json").write_text(json.dumps(report, indent=2) + "\n")
+        evidence.write_text(json.dumps(report, indent=2) + "\n")
         print(json.dumps(report))
     return 0 if report["status"] == "PASSED" else 1
 

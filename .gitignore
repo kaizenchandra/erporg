@@ -51,3 +51,6 @@ test-results/
 
 # Python delivery checks
 __pycache__/
+
+# Persistent synthetic private development data; never commit files
+**/.local/

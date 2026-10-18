@@ -130,11 +130,13 @@ test("contract validator rejects incorrect types, formats and unexpected private
     managerId: null,
     startDate: "2026-10-14",
     positionCode: "",
+    legalName: "",
     version: 0,
   };
   expect(validate(employee)).toBe(true);
   for (const altered of [
     { ...employee, version: "0" },
+    { ...employee, legalName: 42 },
     { ...employee, startDate: "2026-02-30" },
     { ...employee, bankAccount: "must-not-leak" },
   ])

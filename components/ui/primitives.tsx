@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import { Icon } from "./icon";
 export function Avatar({
   name,
@@ -43,12 +43,15 @@ export function Modal({
   children,
   onClose,
   wide = false,
+  closeDisabled = false,
 }: {
   title: string;
   children: React.ReactNode;
   onClose: () => void;
   wide?: boolean;
+  closeDisabled?: boolean;
 }) {
+  const titleId = useId();
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const dialog = ref.current;
@@ -65,16 +68,19 @@ export function Modal({
       className={`dialog ${wide ? "wide" : ""}`}
       onCancel={(e) => {
         e.preventDefault();
-        onClose();
+        e.stopPropagation();
+        if (!closeDisabled) onClose();
       }}
-      aria-labelledby="dialog-title"
+      aria-busy={closeDisabled}
+      aria-labelledby={titleId}
     >
       <header className="dialog-header">
-        <h2 id="dialog-title">{title}</h2>
+        <h2 id={titleId}>{title}</h2>
         <button
           className="icon-button"
           onClick={onClose}
           aria-label="Close panel"
+          disabled={closeDisabled}
         >
           <Icon name="close" />
         </button>

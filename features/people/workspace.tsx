@@ -8,7 +8,7 @@ import type { Employee } from "@/lib/contracts";
 import { useWorkspaceData } from "./use-workspace-data";
 import { Directory } from "./directory";
 import { Profile, ChangeForm } from "./profile";
-import { Approvals } from "./approvals";
+import { ApprovalWorkspace } from "./approval-workspace";
 import { nav, type View } from "./navigation";
 import { Sidebar } from "./sidebar";
 import { Login } from "./login";
@@ -358,7 +358,10 @@ export function Workspace() {
                 </>
               )}
               {view === "Approvals" && (
-                <Approvals
+                <ApprovalWorkspace
+                  key={
+                    actor.subject + actor.tenant + actor.role + actor.employeeId
+                  }
                   revision={summary}
                   pending={pending}
                   actor={actor}

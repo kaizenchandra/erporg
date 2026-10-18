@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Badge, Empty, Modal, formatDate } from "@/components/ui/primitives";
+import { ResignationWithdrawalPanel } from "./resignation-withdrawal";
+import { CaseEpisodePanel } from "./case-episode";
 import { EmploymentEndPanel } from "./employment-end";
 import { CaseExitTasks } from "./exit-tasks";
 import { api, ApiError } from "@/lib/api";
@@ -95,6 +97,7 @@ export function Resignations({
             <option value="SUBMITTED">Pending review</option>
             <option value="APPROVED">Approved</option>
             <option value="REJECTED">Rejected</option>
+            <option value="WITHDRAWN">Withdrawn</option>
           </select>
         </label>
       </div>
@@ -128,7 +131,7 @@ export function Resignations({
                   <p>
                     {r.status === "APPROVED"
                       ? "Pending exit coordination"
-                      : r.status === "REJECTED"
+                      : ["REJECTED", "WITHDRAWN"].includes(r.status)
                         ? "You may submit a fresh request."
                         : "Awaiting independent HR review"}
                   </p>
@@ -176,7 +179,10 @@ export function Resignations({
           key={selected === "new" ? "new" : selected.id}
           actor={actor}
           request={selected === "new" ? null : selected}
-          onClose={() => setSelected(null)}
+          onClose={() => {
+            setSelected(null);
+            reload();
+          }}
           onSaved={() => {
             setSelected(null);
             setNotice("Request recorded. Review the current status below.");
@@ -273,13 +279,14 @@ function ResignationForm({
     <Modal
       title={request ? "Review resignation" : "Request my resignation"}
       onClose={close}
+      closeDisabled={busy || taskBusy || endBusy}
     >
       <form
         className="change-form"
         noValidate
         onSubmit={async (event) => {
           event.preventDefault();
-          if (busy) return;
+          if (busy || (request && !canDecide)) return;
           if (!request && !employee) return;
           setBusy(true);
           setError("");
@@ -368,6 +375,7 @@ function ResignationForm({
                 </div>
               )}
             </dl>
+            <CaseEpisodePanel requestId={request.id} />
             {history ? (
               <details>
                 <summary>Resignation audit ({history.length})</summary>
@@ -389,6 +397,13 @@ function ResignationForm({
             ) : (
               <p role="status">Loading private history…</p>
             )}
+            <ResignationWithdrawalPanel
+              request={request}
+              actor={actor}
+              onDirty={setTaskDirty}
+              onBusy={setTaskBusy}
+              onSaved={onSaved}
+            />
             {canDecide ? (
               <>
                 <label htmlFor="resignation-decision">
@@ -438,7 +453,9 @@ function ResignationForm({
                     : "Pending exit coordination. Final pay, exit tasks and access removal have not been executed."
                   : request.status === "SUBMITTED"
                     ? "Awaiting independent HR review. You cannot review your own resignation."
-                    : "Rejected. You may submit a fresh request."}
+                    : request.status === "WITHDRAWN"
+                      ? "Withdrawn before review. Employment and access are unchanged; you may submit a fresh request."
+                      : "Rejected. You may submit a fresh request."}
               </p>
             )}
           </>

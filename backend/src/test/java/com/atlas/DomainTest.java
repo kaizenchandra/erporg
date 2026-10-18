@@ -25,6 +25,7 @@ class DomainTest {
           "E2",
           day,
           "",
+          "",
           2);
   final Actor self = new Actor("employee", "t", "E3", "Employee", "EMPLOYEE");
   final Actor manager = new Actor("manager", "t", "E2", "Manager", "MANAGER");
@@ -104,7 +105,7 @@ class DomainTest {
 
   @Test
   void removalOnlyAllowsExplicitEmptyOptionalPrivateFields() {
-    for (String field : ChangeRequest.PRIVATE_FIELDS) {
+    for (String field : ChangeRequest.REMOVABLE_PRIVATE_FIELDS) {
       assertDoesNotThrow(
           () -> ChangeRequest.validate(field, "", "Remove obsolete value", day, day));
       assertThrows(

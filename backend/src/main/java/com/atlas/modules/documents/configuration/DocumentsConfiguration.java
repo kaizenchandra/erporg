@@ -82,7 +82,7 @@ public class DocumentsConfiguration {
       JdbcClient db,
       PlatformTransactionManager manager,
       WorkforceAccess access,
-      @Value("${atlas.documents.local-root:/private/tmp/atlas-private-documents}") String root,
+      @Value("${atlas.documents.local-root:${user.dir}/.local/private-documents}") String root,
       @Value("${atlas.documents.scanner-host:127.0.0.1}") String host,
       @Value("${atlas.documents.scanner-port:3311}") int port) {
     var template = new TransactionTemplate(manager);

@@ -15,8 +15,6 @@ public interface ExitTaskStore {
 
   void manage(String tenant, Management event, String key);
 
-  boolean hasIdentity(String tenant, String employeeId);
-
   Rows mine(String tenant, String assignee, Query query);
 
   List<ExitTask> forCase(String tenant, String requestId);

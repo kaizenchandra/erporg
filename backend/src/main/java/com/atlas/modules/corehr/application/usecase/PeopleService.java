@@ -98,6 +98,7 @@ public final class PeopleService implements PeopleUseCases {
         e.managerId(),
         e.startDate(),
         e.positionCode(),
+        null,
         e.version());
   }
 
@@ -151,6 +152,7 @@ public final class PeopleService implements PeopleUseCases {
               switch (c.field()) {
                 case "phone" -> e.phone();
                 case "name" -> effectiveEmployee.name();
+                case "legalName" -> effectiveEmployee.legalName();
                 case "title" -> e.title();
                 case "department" -> effectiveEmployee.department();
                 case "positionCode" -> effectiveEmployee.positionCode();

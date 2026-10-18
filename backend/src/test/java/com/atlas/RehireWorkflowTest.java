@@ -134,6 +134,7 @@ class RehireWorkflowTest {
   @Test
   void approvalCreatesSecondEpisodeAndDatedJobButNeverRestoresLegacyAccess() {
     var end = former();
+    var ownership = resignations.episode("amelia", end.requestId());
     var before = people.profile(people.actor("amelia"), "E003");
     var proposed = command(LocalDate.now(ZoneOffset.UTC).plusDays(5));
     var c =
@@ -155,12 +156,39 @@ class RehireWorkflowTest {
     var context = rehires.context("amelia", "E003");
     assertTrue(context.legacyAccessBlocked());
     assertEquals(2, context.episodes().size());
+    assertEquals(ownership, resignations.episode("amelia", end.requestId()));
+    assertEquals(
+        1,
+        db.queryForObject(
+            "select episode_number from hr_episode_end_current where tenant='atlas' and request_id=?",
+            Integer.class,
+            end.requestId()));
+    assertEquals(
+        ownership.episodeStartDate(),
+        db.queryForObject(
+            "select episode_start_date from hr_episode_end_current where tenant='atlas' and request_id=?",
+            LocalDate.class,
+            end.requestId()));
+    var states =
+        db.queryForList(
+            "select episode_number,inactive_date,completion_effective_date from hr_employment_episode_state where tenant='atlas' and employee_id='E003' order by episode_number");
+    assertEquals(2, states.size());
+    assertEquals(1, states.get(0).get("episode_number"));
+    assertEquals(java.sql.Date.valueOf(end.inactiveDate()), states.get(0).get("inactive_date"));
+    assertEquals(2, states.get(1).get("episode_number"));
+    assertNull(states.get(1).get("inactive_date"));
+    assertNull(states.get(1).get("completion_effective_date"));
     assertEquals("SCHEDULED", context.episodes().get(1).state());
     assertEquals(end.inactiveDate(), context.episodes().getFirst().inactiveDate());
     assertEquals(before.startDate(), context.episodes().getFirst().startDate());
     var store = new JdbcPeopleStore(JdbcClient.create(db.getDataSource()));
     var hr = people.actor("amelia");
     assertEquals("Ended", store.employee(hr, "E003", c.startDate().minusDays(1), false).status());
+    assertEquals(
+        Optional.of(end.inactiveDate()),
+        store.currentEpisodeEndDate("atlas", "E003", c.startDate().minusDays(1)));
+    assertTrue(store.currentEpisodeEndDate("atlas", "E003", c.startDate()).isEmpty());
+    assertFalse(store.hasCurrentWorkspaceIdentity("atlas", "E003", c.startDate()));
     var projected = store.employee(hr, "E003", c.startDate(), false);
     assertEquals("Onboarding", projected.status());
     assertEquals(c.startDate(), projected.startDate());

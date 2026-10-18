@@ -11,6 +11,8 @@ insert into hr_resignation_audit(tenant,request_id,old_status,new_status,actor,r
 select tenant,id,null,'SUBMITTED',requested_by,reason,last_working_date,recorded_at,'former-submit' from hr_resignation where tenant='atlas' and id='rehire-former-resignation';
 insert into hr_resignation_audit(tenant,request_id,old_status,new_status,actor,reason,effective_date,recorded_at,correlation_id)
 select tenant,id,'SUBMITTED','APPROVED',decided_by,comment,last_working_date,decided_at,'former-review' from hr_resignation where tenant='atlas' and id='rehire-former-resignation';
+insert into hr_case_episode(tenant,request_id,employee_id,episode_number,episode_start_date,source_recorded_at,linked_at,origin,linked_by,correlation_id)
+select r.tenant,r.id,r.employee_id,1,e.start_date,r.recorded_at,r.recorded_at,'COMMAND',r.requested_by,'former-submit' from hr_resignation r join hr_employee e on e.tenant=r.tenant and e.id=r.employee_id where r.tenant='atlas' and r.id='rehire-former-resignation';
 insert into hr_resignation_handoff(tenant,request_id,employee_id,effective_date,recorded_at,correlation_id,status)
 select tenant,id,employee_id,last_working_date,decided_at,'former-review','PENDING_EXIT_COORDINATION' from hr_resignation where tenant='atlas' and id='rehire-former-resignation';
 insert into hr_employment_end(tenant,request_id,employee_id,last_working_date,inactive_date,actor,actor_employee_id,reason,input_version,new_version,old_status,new_status,recorded_at,correlation_id,idempotency_key)

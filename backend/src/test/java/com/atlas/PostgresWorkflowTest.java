@@ -288,7 +288,7 @@ class PostgresWorkflowTest {
     jdbc.update(
         "update hr_employee set address='Old address', emergency_contact_name='Old contact', emergency_contact_relationship='Sibling', emergency_contact_phone='+1 202 555 9000' where tenant=? and id='E003'",
         self().tenant());
-    for (String field : ChangeRequest.PRIVATE_FIELDS) {
+    for (String field : ChangeRequest.REMOVABLE_PRIVATE_FIELDS) {
       var before = people.profile(self(), "E003");
       var command =
           new Submit(

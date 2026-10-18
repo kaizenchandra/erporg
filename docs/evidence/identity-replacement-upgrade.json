@@ -1,0 +1,20 @@
+{
+  "status": "PASSED",
+  "scope": "Local synthetic V40-to-V41 upgrade only; not production migration rehearsal",
+  "historicalTablesUnchanged": {
+    "hr_rehire_access": {
+      "rows": 1,
+      "sha256": "1639e63269bc8eb9d523e8fdd68125fc256eacda040f60e51fa062065de8feff"
+    },
+    "hr_rehire_access_revocation": {
+      "rows": 1,
+      "sha256": "f82ea04ea25f45d355d779cb0ccecea00f5786ff4df8c9854b9a97127d92f141"
+    },
+    "hr_rehire_completion": {
+      "rows": 1,
+      "sha256": "70cca242140f25f0776dee60a5d84208f4cf98a1d0316307cbbf7d7e859f7f0c"
+    }
+  },
+  "originalGrantsRegistered": 1,
+  "missingOrChangedRegistryCopies": 0
+}

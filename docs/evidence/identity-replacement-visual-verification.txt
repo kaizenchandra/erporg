@@ -1,0 +1,1 @@
+2026-10-17: visually inspected identity-replacement-mobile.png after final full browser pass. Profile header/close, context and expanded grant disclosure readable at 390x844; long grant references wrap and modal scrolls. Automated mobile axe/no horizontal page overflow passed. Manual screen-reader/zoom and all WCAG 2.2 AA criteria remain unverified.

@@ -1,1 +1,5 @@
 target
+
+# Never send persistent private development data in build contexts
+.local
+**/.local

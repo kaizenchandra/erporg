@@ -237,7 +237,8 @@ export function Approvals({
               <div>
                 <strong>{active.employeeName}</strong>
                 <small>
-                  {active.employeeId} · {active.field}
+                  {active.employeeId} ·{" "}
+                  {changeFieldLabels[active.field] ?? active.field}
                 </small>
               </div>
             </div>

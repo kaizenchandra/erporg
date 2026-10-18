@@ -61,6 +61,7 @@ class RehireActivationAccessHttpTest {
 
   @Autowired MutableClock clock;
   @Autowired PeopleUseCases people;
+  @Autowired RehireAccessUseCases access;
   @Autowired ResignationUseCases resignations;
   @Autowired EmploymentEndUseCases ends;
   @Autowired RehireUseCases rehires;
@@ -105,6 +106,8 @@ class RehireActivationAccessHttpTest {
         "resolved");
     db.update("update identity_membership set role='HR' where subject='sophia'");
     db.update("update identity_membership set employee_id='E003',role='HR' where subject='marcus'");
+    var neverUsedReplacement = client();
+    assertEquals(204, login(neverUsedReplacement, "marcus"));
     var neverUsed = client();
     assertEquals(204, login(neverUsed, "sophia"));
     var unused = client();
@@ -245,5 +248,143 @@ class RehireActivationAccessHttpTest {
                 HttpResponse.BodyHandlers.ofString())
             .statusCode());
     assertEquals(401, get(fresh, "/api/v1/session").statusCode());
+    var held = client();
+    assertEquals(204, login(held, "sophia"));
+    var current = access.context("amelia", "E003");
+    var competing = client();
+    assertEquals(204, login(competing, "olivia"));
+    var firstToken = json.readTree(get(hr, "/api/csrf").body());
+    var secondToken = json.readTree(get(competing, "/api/csrf").body());
+    var uri =
+        URI.create("http://127.0.0.1:" + port + "/api/v1/employees/E003/rehire/access/revoke");
+    var firstBody =
+        json.writeValueAsString(
+            new RehireAccessModels.Revoke(
+                current.activationId(),
+                "Immediate security suspension",
+                BigDecimal.valueOf(current.employeeVersion()),
+                UUID.randomUUID().toString()));
+    var secondBody =
+        json.writeValueAsString(
+            new RehireAccessModels.Revoke(
+                current.activationId(),
+                "Competing security suspension",
+                BigDecimal.valueOf(current.employeeVersion()),
+                UUID.randomUUID().toString()));
+    var first =
+        hr.sendAsync(
+            HttpRequest.newBuilder(uri)
+                .header(firstToken.get("headerName").asText(), firstToken.get("token").asText())
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(firstBody))
+                .build(),
+            HttpResponse.BodyHandlers.ofString());
+    var second =
+        competing.sendAsync(
+            HttpRequest.newBuilder(uri)
+                .header(secondToken.get("headerName").asText(), secondToken.get("token").asText())
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(secondBody))
+                .build(),
+            HttpResponse.BodyHandlers.ofString());
+    var statuses =
+        new java.util.ArrayList<Integer>(
+            List.of(first.get().statusCode(), second.get().statusCode()));
+    java.util.Collections.sort(statuses);
+    assertEquals(List.of(200, 409), statuses);
+    assertEquals(
+        1, db.queryForObject("select count(*) from hr_rehire_access_revocation", Integer.class));
+    assertEquals(401, get(held, "/api/v1/session").statusCode());
+    assertEquals(401, login(client(), "sophia"));
+    assertEquals(401, login(client(), "marcus"));
+    assertEquals(
+        "Active", json.readTree(get(hr, "/api/v1/employees/E003").body()).get("status").asText());
+    assertEquals(
+        "REVOKED",
+        json.readTree(get(hr, "/api/v1/employees/E003/rehire/access").body())
+            .get("accessStatus")
+            .asText());
+    var replacementPath = "/api/v1/employees/E003/rehire/access/replacement";
+    var replacementVersion =
+        json.readTree(get(hr, replacementPath).body()).get("employeeVersion").asLong();
+    var submitted =
+        postAsync(
+                hr,
+                replacementPath,
+                new IdentityReplacementModels.Submit(
+                    "marcus",
+                    "Configure different existing identity",
+                    BigDecimal.valueOf(replacementVersion),
+                    UUID.randomUUID().toString()))
+            .get();
+    assertEquals(200, submitted.statusCode());
+    var replacementId = json.readTree(submitted.body()).get("id").asText();
+    db.update(
+        "update identity_membership set tenant='atlas',employee_id='E004',role='HR' where subject='outsider'");
+    var third = client();
+    assertEquals(204, login(third, "outsider"));
+    var reviewPath = replacementPath + "/" + replacementId + "/review";
+    var approvalA =
+        postAsync(
+            competing,
+            reviewPath,
+            new IdentityReplacementModels.Review(
+                "APPROVED",
+                "Independent review A",
+                BigDecimal.valueOf(replacementVersion),
+                UUID.randomUUID().toString()));
+    var approvalB =
+        postAsync(
+            third,
+            reviewPath,
+            new IdentityReplacementModels.Review(
+                "APPROVED",
+                "Independent review B",
+                BigDecimal.valueOf(replacementVersion),
+                UUID.randomUUID().toString()));
+    var reviewStatuses =
+        new java.util.ArrayList<Integer>(
+            List.of(approvalA.get().statusCode(), approvalB.get().statusCode()));
+    java.util.Collections.sort(reviewStatuses);
+    assertEquals(List.of(200, 409), reviewStatuses);
+    assertEquals(401, get(neverUsedReplacement, "/api/v1/session").statusCode());
+    assertEquals(401, login(client(), "sophia"));
+    var newIdentity = client();
+    assertEquals(204, login(newIdentity, "marcus"));
+    assertEquals(
+        "EMPLOYEE", json.readTree(get(newIdentity, "/api/v1/session").body()).get("role").asText());
+    assertEquals(403, get(newIdentity, "/api/v1/employees/E001").statusCode());
+    var newGrant = json.readTree(get(hr, "/api/v1/employees/E003/rehire/access").body());
+    assertEquals(2, newGrant.get("grantNumber").asInt());
+    assertEquals(replacementId, newGrant.get("activationId").asText());
+    var revokedReplacement =
+        postAsync(
+                hr,
+                "/api/v1/employees/E003/rehire/access/revoke",
+                new RehireAccessModels.Revoke(
+                    replacementId,
+                    "Revoke replacement identity",
+                    BigDecimal.valueOf(newGrant.get("employeeVersion").asLong()),
+                    UUID.randomUUID().toString()))
+            .get();
+    assertEquals(200, revokedReplacement.statusCode());
+    assertEquals(401, get(newIdentity, "/api/v1/session").statusCode());
+    assertEquals(401, login(client(), "marcus"));
+    assertEquals(401, login(client(), "sophia"));
+    assertEquals(2, db.queryForObject("select count(*) from hr_local_access_grant", Integer.class));
+    assertEquals(
+        2, db.queryForObject("select count(*) from hr_rehire_access_revocation", Integer.class));
+  }
+
+  java.util.concurrent.CompletableFuture<HttpResponse<String>> postAsync(
+      HttpClient client, String path, Object command) throws Exception {
+    var t = json.readTree(get(client, "/api/csrf").body());
+    return client.sendAsync(
+        HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + path))
+            .header(t.get("headerName").asText(), t.get("token").asText())
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(json.writeValueAsString(command)))
+            .build(),
+        HttpResponse.BodyHandlers.ofString());
   }
 }

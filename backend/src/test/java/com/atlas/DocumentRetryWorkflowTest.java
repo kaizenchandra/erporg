@@ -37,7 +37,7 @@ class DocumentRetryWorkflowTest {
   @Autowired org.springframework.jdbc.core.simple.JdbcClient client;
   @Autowired com.atlas.modules.corehr.api.WorkforceAccess workforce;
 
-  @Value("${atlas.documents.local-root:/private/tmp/atlas-private-documents}")
+  @Value("${atlas.documents.local-root:${user.dir}/.local/private-documents}")
   String root;
 
   DocumentsService outage() {

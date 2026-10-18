@@ -1,0 +1,6 @@
+Increment AH: current-episode task assignees
+Command: JAVA_HOME=<JDK21> mvn -f backend/pom.xml -Dmaven.repo.local=/private/tmp/atlas-m2 test -q
+Actual local PostgreSQL 18.6 / ClamAV; synthetic schemas.
+{"tests": 259.0, "failures": 0.0, "errors": 0.0, "skipped": 0.0, "time": 27.893}
+Passed after coordinating the application and V47 SQL task guard. Initial regression correctly exposed the old SQL assignee check and failed; it is not passing evidence.
+Includes current-episode create/reassign/completion, former-assignee denial, original-case closure, revoked/tenant identity rejection, future episode boundary checks, HTTP access/concurrency and architecture negative fixtures.
