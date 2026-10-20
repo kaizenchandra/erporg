@@ -1,0 +1,280 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24159 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] ------------------------< com.atlas:atlas-api >-------------------------
+[INFO] Building atlas-api 0.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] Loaded 24159 auto-discovered prefixes for remote repository maven-central (prefixes-maven-central.txt)
+[WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+[INFO] Loaded 7 auto-discovered prefixes for remote repository shibboleth-repo (prefixes-shibboleth-repo.txt)
+[INFO] Loaded 24159 auto-discovered prefixes for remote repository maven_central (prefixes-maven_central.txt)
+[INFO] 
+[INFO] --- spotless:3.0.0:apply (default-cli) @ atlas-api ---
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/ArchitectureTest.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/modules/payroll/archfixture/BadFinanceAccess.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/finance/adapter/out/persistence/JdbcFinanceStore.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/payroll/adapter/out/persistence/JdbcPayrollStore.java
+[INFO] Spotless.Java is keeping 465 files clean - 4 were changed to be clean, 0 were already clean, 461 were skipped because caching determined they were already clean
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ atlas-api ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] Copying 77 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ atlas-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 374 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ atlas-api ---
+[INFO] skip non existing resourceDirectory /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ atlas-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 91 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Some input files use or override a deprecated API.
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ atlas-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.atlas.ArchitectureTest
+01:18:10.873 [main] INFO com.tngtech.archunit.core.PluginLoader -- Detected Java version 21.0.12.1
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.756 s -- in com.atlas.ArchitectureTest
+[INFO] Running com.atlas.PayrollCalculationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.atlas.PayrollCalculationTest
+[INFO] Running com.atlas.PayrollAccountingWorkflowTest
+01:18:12.667 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.PayrollAccountingWorkflowTest]: PayrollAccountingWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+01:18:12.752 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.PayrollAccountingWorkflowTest
+01:18:12.786 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.PayrollAccountingWorkflowTest]: PayrollAccountingWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+01:18:12.787 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.PayrollAccountingWorkflowTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-21T01:18:13.007+05:30  INFO 69510 --- [atlas-api] [           main] c.atlas.PayrollAccountingWorkflowTest    : Starting PayrollAccountingWorkflowTest using Java 21.0.12.1 with PID 69510 (started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-21T01:18:13.009+05:30  INFO 69510 --- [atlas-api] [           main] c.atlas.PayrollAccountingWorkflowTest    : The following 1 profile is active: "local"
+2026-10-21T01:18:15.166+05:30  INFO 69510 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-21T01:18:15.467+05:30  INFO 69510 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5ff88620
+2026-10-21T01:18:15.469+05:30  INFO 69510 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-21T01:18:15.598+05:30  INFO 69510 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_payfin_f7d6a53dc13f (PostgreSQL 18.6)
+2026-10-21T01:18:15.769+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.database.base.Schema   : Creating schema "atlas_payfin_f7d6a53dc13f" ...
+2026-10-21T01:18:15.777+05:30  INFO 69510 --- [atlas-api] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "atlas_payfin_f7d6a53dc13f"."flyway_schema_history" ...
+2026-10-21T01:18:15.864+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_payfin_f7d6a53dc13f": null
+2026-10-21T01:18:15.885+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "1 - core hr"
+2026-10-21T01:18:15.973+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "2 - synthetic workspace"
+2026-10-21T01:18:15.995+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "3 - oidc subjects"
+2026-10-21T01:18:16.011+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "4 - jdbc sessions"
+2026-10-21T01:18:16.039+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "5 - private contact details"
+2026-10-21T01:18:16.071+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "6 - department reference"
+2026-10-21T01:18:16.101+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "7 - department seed audit"
+2026-10-21T01:18:16.128+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "8 - hiring workflow"
+2026-10-21T01:18:16.186+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "9 - second hr reviewer"
+2026-10-21T01:18:16.202+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "10 - onboarding completion"
+2026-10-21T01:18:16.232+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "11 - hire tenant integrity"
+2026-10-21T01:18:16.254+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "12 - position catalogue"
+2026-10-21T01:18:16.286+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "13 - position assignment"
+2026-10-21T01:18:16.315+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "14 - position assignment integrity"
+2026-10-21T01:18:16.341+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "15 - reporting changes"
+2026-10-21T01:18:16.374+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "16 - employee display name"
+2026-10-21T01:18:16.396+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "17 - request withdrawal"
+2026-10-21T01:18:16.436+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "18 - benefits catalogue"
+2026-10-21T01:18:16.485+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "19 - benefit rule snapshot"
+2026-10-21T01:18:16.519+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "20 - benefit selections"
+2026-10-21T01:18:16.595+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "21 - benefit selection integrity"
+2026-10-21T01:18:16.640+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "22 - private employee documents"
+2026-10-21T01:18:16.692+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "23 - document scan retry"
+2026-10-21T01:18:16.723+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "24 - immutable document versions"
+2026-10-21T01:18:16.771+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "25 - document templates and completeness"
+2026-10-21T01:18:16.808+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "26 - document template revisions and corrections"
+2026-10-21T01:18:16.841+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "27 - document retention and legal holds"
+2026-10-21T01:18:16.865+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "28 - independent hold release subject"
+2026-10-21T01:18:16.877+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "29 - resignation workflow"
+2026-10-21T01:18:16.919+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "30 - resignation audit reconciliation"
+2026-10-21T01:18:16.935+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "31 - exit task coordination"
+2026-10-21T01:18:16.969+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "32 - exit task management"
+2026-10-21T01:18:16.994+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "33 - effective employment end"
+2026-10-21T01:18:17.037+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "34 - employment end withdrawal"
+2026-10-21T01:18:17.087+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "35 - employment end reschedule"
+2026-10-21T01:18:17.143+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "36 - current end handoff identity"
+2026-10-21T01:18:17.156+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "37 - rehire onboarding episode"
+2026-10-21T01:18:17.204+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "38 - reviewed rehire activation"
+2026-10-21T01:18:17.265+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "39 - revoke fresh rehire access"
+2026-10-21T01:18:17.281+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "40 - revoked identity hold"
+2026-10-21T01:18:17.293+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "41 - reviewed identity replacement"
+2026-10-21T01:18:17.336+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "42 - pending resignation withdrawal"
+2026-10-21T01:18:17.372+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "43 - original case episode ownership"
+2026-10-21T01:18:17.405+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "44 - compatible original episode writers"
+2026-10-21T01:18:17.423+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "45 - episode local status projection"
+2026-10-21T01:18:17.445+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "46 - access grant episode ownership"
+2026-10-21T01:18:17.477+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "47 - current episode task assignees"
+2026-10-21T01:18:17.489+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "48 - private recorded legal name"
+2026-10-21T01:18:17.549+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "49 - additional emergency contacts"
+2026-10-21T01:18:17.658+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "50 - pending benefit withdrawal"
+2026-10-21T01:18:17.675+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "51 - structured private postal address"
+2026-10-21T01:18:17.706+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "52 - declared legal entity references"
+2026-10-21T01:18:17.738+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "53 - reviewed legal entity retirement"
+2026-10-21T01:18:17.774+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "54 - private recorded birth date"
+2026-10-21T01:18:17.806+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "55 - schema local birth date guard"
+2026-10-21T01:18:17.820+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "56 - company work calendars"
+2026-10-21T01:18:17.849+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "57 - dated company calendar amendments"
+2026-10-21T01:18:17.878+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "58 - calendar revision guard result"
+2026-10-21T01:18:17.893+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "59 - company calendar retirement"
+2026-10-21T01:18:17.923+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "60 - private personal email"
+2026-10-21T01:18:17.947+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "61 - approved employee calendar assignment"
+2026-10-21T01:18:18.025+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "62 - approved employee entity assignment"
+2026-10-21T01:18:18.086+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "63 - capture entity requester employee"
+2026-10-21T01:18:18.135+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "64 - protect entity request provenance"
+2026-10-21T01:18:18.162+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "65 - employee audit keyset index"
+2026-10-21T01:18:18.182+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "66 - department parent correction"
+2026-10-21T01:18:18.214+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "67 - department parent business order"
+2026-10-21T01:18:18.229+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "68 - schema scoped department hierarchy lock"
+2026-10-21T01:18:18.244+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "69 - department parent truncate protection"
+2026-10-21T01:18:18.262+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "70 - attendance timesheets"
+2026-10-21T01:18:18.319+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "71 - timekeeping provenance and dates"
+2026-10-21T01:18:18.337+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "72 - timesheet return and recall"
+2026-10-21T01:18:18.355+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "73 - timesheet period controls"
+2026-10-21T01:18:18.376+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "74 - timesheet bulk receipts"
+2026-10-21T01:18:18.392+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "75 - time report range index"
+2026-10-21T01:18:18.418+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "76 - payroll finance foundation"
+2026-10-21T01:18:18.492+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_payfin_f7d6a53dc13f" to version "77 - local financial grants"
+2026-10-21T01:18:18.513+05:30  INFO 69510 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 77 migrations to schema "atlas_payfin_f7d6a53dc13f", now at version v77 (execution time 00:01.470s)
+2026-10-21T01:18:19.751+05:30  INFO 69510 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-21T01:18:20.472+05:30  INFO 69510 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-21T01:18:20.608+05:30  INFO 69510 --- [atlas-api] [           main] c.atlas.PayrollAccountingWorkflowTest    : Started PayrollAccountingWorkflowTest in 7.792 seconds (process running for 10.232)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/private/tmp/atlas-m2/net/bytebuddy/byte-buddy-agent/1.17.8/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+2026-10-21T01:18:24.518+05:30  WARN 69510 --- [atlas-api] [           main] com.zaxxer.hikari.pool.ProxyConnection   : HikariPool-1 - Connection org.postgresql.jdbc.PgConnection@5ff88620 marked as broken because of SQLSTATE(0A000), ErrorCode(0)
+
+org.postgresql.util.PSQLException: ERROR: cannot truncate a table referenced in a foreign key constraint
+  Detail: Table "pay_audit" references "pay_run".
+  Hint: Truncate table "pay_audit" at the same time, or use TRUNCATE ... CASCADE.
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2993) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2656) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:446) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:533) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:449) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:371) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:356) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:332) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgStatement.executeUpdate(PgStatement.java:305) ~[postgresql-42.7.13.jar:42.7.13]
+	at com.zaxxer.hikari.pool.ProxyStatement.executeUpdate(ProxyStatement.java:120) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.executeUpdate(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.springframework.jdbc.core.JdbcTemplate$1UpdateStatementCallback.doInStatement(JdbcTemplate.java:568) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate$1UpdateStatementCallback.doInStatement(JdbcTemplate.java:565) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:412) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.update(JdbcTemplate.java:580) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at com.atlas.PayrollAccountingWorkflowTest.lambda$periodsPermissionsAndDatabaseGuardsPreventInvalidMutations$19(PayrollAccountingWorkflowTest.java:459) ~[test-classes/:na]
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:54) ~[junit-jupiter-api-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35) ~[junit-jupiter-api-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3223) ~[junit-jupiter-api-6.0.3.jar:6.0.3]
+	at com.atlas.PayrollAccountingWorkflowTest.periodsPermissionsAndDatabaseGuardsPreventInvalidMutations(PayrollAccountingWorkflowTest.java:458) ~[test-classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701) ~[junit-platform-commons-6.0.3.jar:6.0.3]
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502) ~[junit-platform-commons-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70) ~[junit-jupiter-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58) ~[junit-platform-engine-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$2(InterceptingLauncher.java:57) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:56) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:58) ~[junit-platform-launcher-6.0.3.jar:6.0.3]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.apache.maven.surefire.api.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:125) ~[surefire-api-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.executeWithCancellationToken(LauncherAdapter.java:68) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.execute(LauncherAdapter.java:54) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:203) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:168) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:136) ~[surefire-junit-platform-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507) ~[surefire-booter-3.5.6.jar:3.5.6]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495) ~[surefire-booter-3.5.6.jar:3.5.6]
+
+2026-10-21T01:18:24.545+05:30  INFO 69510 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-10-21T01:18:24.583+05:30  INFO 69510 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.99 s -- in com.atlas.PayrollAccountingWorkflowTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  22.464 s
+[INFO] Finished at: 2026-10-21T01:18:24+05:30
+[INFO] ------------------------------------------------------------------------

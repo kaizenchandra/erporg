@@ -1,0 +1,9 @@
+{
+  "result": "PASSED",
+  "schema": "atlas_payfin_browser_20261021d",
+  "fromVersion": 79,
+  "toVersion": 80,
+  "financialTablesUnchanged": 9,
+  "allCountsAndCanonicalHashesMatched": true,
+  "scope": "Retained financial data upgrade; not restore or production migration rehearsal"
+}

@@ -108,6 +108,11 @@ class BenefitsWorkflowTest {
                 return operation.get();
               }
             },
+            new com.atlas.modules.benefits.application.port.out.UnitOfWork() {
+              public <T> T run(java.util.function.Supplier<T> operation) {
+                return operation.get();
+              }
+            },
             Clock.offset(Clock.systemUTC(), Duration.ofDays(2)));
     assertTrue(
         future
@@ -170,12 +175,15 @@ class BenefitsWorkflowTest {
   }
 
   @Test
-  void oversizedCatalogueFailsBeforeReturningTruncatedEligibility() {
+  void oversizedCatalogueReturnsCompleteCountAndBoundedRows() {
     jdbc.update(
-        "insert into benefit_plan(tenant,code,name,currency,monthly_contribution,minimum_service_days,effective_from,created_by,idempotency_key) select 'atlas','BEN-BULK-'||n,'Synthetic bulk plan '||n,'GBP',10.00,0,current_date,'fixture','bulk-key-'||n from generate_series(1,1001)n");
-    assertThrows(
-        CommandConflict.class,
-        () -> benefits.plans("sophia", new PlanQuery("", "ELIGIBLE", 0, 8, "asc")));
+        "insert into benefit_plan(tenant,code,name,currency,monthly_contribution,minimum_service_days,effective_from,created_by,idempotency_key) select 'atlas','BEN-BULK-'||n,'Synthetic bulk plan '||n,'GBP',10.00,0,?,'fixture','bulk-key-'||n from generate_series(1,1001)n",
+        today());
+    var result = benefits.plans("sophia", new PlanQuery("", "ELIGIBLE", 0, 8, "asc"));
+    assertEquals(1001, result.total());
+    assertEquals(8, result.items().size());
+    assertEquals(
+        1, benefits.plans("sophia", new PlanQuery("", "ELIGIBLE", 10, 100, "asc")).items().size());
   }
 
   @Test

@@ -1,0 +1,11 @@
+{
+  "status": "PASSED",
+  "fromVersion": 64,
+  "toVersion": 65,
+  "unchangedBusinessTableDigests": 73,
+  "unchangedProjectionDigests": 15,
+  "newTables": 0,
+  "newSelectionIndex": true,
+  "historicalBackfill": false,
+  "scope": "index-only migration; complete retained business/view digests compared before browser mutations"
+}

@@ -87,6 +87,10 @@ test("HR configures a department; manager transfers an employee; HR approves the
     .getByRole("button", { name: "Request a change", exact: true })
     .click();
   await page.getByLabel("Information to change").selectOption("department");
+  await page
+    .getByRole("dialog")
+    .getByLabel("Find a department", { exact: true })
+    .fill(name);
   await page.getByLabel("New value").selectOption(name);
   await page
     .getByLabel("Reason for change")

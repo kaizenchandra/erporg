@@ -1,0 +1,16 @@
+
+Running 7 tests using 1 worker
+
+(node:43027) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43027) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/benefit-history-pagination.spec.ts:17:5 › complete benefit journal traverses beyond100, retains original provenance and excludes higher IDs until refresh (4.8s)
+  ✓  2 tests/benefit-history-pagination.spec.ts:144:5 › HR browses older benefit events with exact filters, ordered pages and mobile recovery (2.5s)
+  ✓  3 tests/benefit-history-resilience.spec.ts:42:5 › benefit history loads on demand and recovers without hiding plans or resetting filters (1.8s)
+  ✓  4 tests/benefit-history-resilience.spec.ts:102:5 › benefit history remains usable during a catalogue failure and handles an empty journal separately (1.4s)
+  ✓  5 tests/benefit-history-resilience.spec.ts:148:5 › closing benefit history discards a pending read; reopening and role changes clear obsolete history (2.7s)
+  ✓  6 tests/benefits.spec.ts:24:5 › HR configures a demonstration benefit; employee sees own eligibility and exact contribution (2.7s)
+  ✓  7 tests/benefits.spec.ts:108:5 › benefit API denies configuration/history to employees and isolates tenant catalogue (447ms)
+
+  7 passed (17.9s)

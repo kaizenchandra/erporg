@@ -57,12 +57,13 @@ public record BenefitPlan(
   }
 
   public Eligibility eligibility(String status, LocalDate employmentStart, LocalDate today) {
-    if (effectiveFrom.isAfter(today))
+    var window = EligibilityWindow.forEmployment(status, employmentStart, today);
+    if (!window.planStarted(effectiveFrom))
       return new Eligibility(false, "Plan starts on " + effectiveFrom + ".");
-    if (!Set.of("Active", "On leave").contains(status))
+    if (!window.employmentAllowed())
       return new Eligibility(
           false, "Demonstration eligibility requires Active or On leave employment.");
-    if (employmentStart.plusDays(minimumServiceDays).isAfter(today))
+    if (!window.serviceReached(minimumServiceDays))
       return new Eligibility(
           false,
           "Minimum service is reached on " + employmentStart.plusDays(minimumServiceDays) + ".");

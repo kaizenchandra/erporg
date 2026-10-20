@@ -1,0 +1,15 @@
+{
+  "recordedAt": "2026-10-20T21:33:40.160086+00:00",
+  "scope": "Local talent workflow artifacts, not production release approval",
+  "nextBuildId": "6zM3DKYOiC_3hKnDjjLg6",
+  "sha256": {
+    "backend/target/atlas-api-0.1.0.jar": "ee03a94c13a6b5e9bdef45a4071b0d8ab180a711f6ad41d6145d0c708d89ef41",
+    "package-lock.json": "6952088e06803b8ebc8b438ff7d65ec8b88fe9d7eacb40c25fc8c07151b90322",
+    "docs/openapi.json": "aacf80ba08b81d638aa6d39146b79639479ac8601e7e2068a6244239f5039ee0",
+    "features/people/workspace.tsx": "0cf444e05ebd70a9f16a388594097f04584f895b2e3400d5f9216a9e558acdc5",
+    "backend/src/main/resources/db/migration/V82__payroll_talent_intake.sql": "4792232bdf554c8f1321c7b8ffd177d198b81a2c0c43fe0b07687a833f23882e",
+    "backend/src/main/resources/db/migration/V81__talent_workflows.sql": "1b1a102cc717a64d039502d7177f4d10ba29abc937f97e748c640e490bcac313",
+    "backend/src/main/resources/db/migration/V83__succession_assessment_revisions.sql": "27ae9b131e54fbbef173115a6095808e4e182f01f21378571e51e1bbbdeb22e7"
+  },
+  "priorV76V80AndLockUnchanged": true
+}

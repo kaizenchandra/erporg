@@ -1,0 +1,5 @@
+Final 390px production-build Reporting periods screenshot opened and visually inspected after the final three management journeys.
+Readable policy/UTC deadline/limits, persistent labels, standard checkbox layout and clear save announcement; history retains current revision and actor/reason/time. Horizontal tab navigation scrolls; page content does not overflow horizontally.
+Automated serious/critical axe findings: none in this scoped screen; browser document-width check passed.
+Earlier oversized checkboxes were corrected using the existing removal-choice primitive style.
+This is scoped visual/automated evidence, not complete manual assistive-technology coverage or WCAG certification.

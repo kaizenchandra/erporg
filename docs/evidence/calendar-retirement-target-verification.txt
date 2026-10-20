@@ -1,0 +1,13 @@
+
+Running 4 tests using 1 worker
+
+(node:39098) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39098) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/calendar-retirement.spec.ts:64:5 › HR retires dated calendar with read recovery, impact confirmation, uncertain-response replay and preserved earlier mobile preview (3.2s)
+  ✓  2 tests/calendar-retirement.spec.ts:272:5 › retirement APIs enforce exact version/tenant scope, stable replay, amendment interlock and immediate versus scheduled availability (941ms)
+  ✓  3 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (579ms)
+  ✓  4 tests/contracts.spec.ts:115:5 › contract validator rejects incorrect types, formats and unexpected private fields (9ms)
+
+  4 passed (6.0s)

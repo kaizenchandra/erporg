@@ -1,0 +1,9 @@
+AZ initial verification findings (synthetic fixtures; no employee values retained here):
+
+1. Initial 383-test Java run reported four errors: new rollback-only audit fixtures supplied an empty birth-date value contrary to existing database shape constraints. Corrected fixture values.
+2. Second 383-test Java run reported four errors: synthetic rejected-request fixtures lacked required decision actor/comment. Corrected fixture provenance rather than weakening database constraints.
+3. Eight focused Java tests passed; final full verify passed 383 tests with zero failures/errors/skips. See java-employee-audit-pagination-verification.txt for executed final totals.
+4. Initial focused browser run passed three contract tests and new API traversal, then timed out using an exact label selector after keyboard navigation. Corrected to a role/accessible-name combobox selector. Independent UI and cross-profile cancellation rechecks passed; full suite outcome is recorded separately.
+5. First mobile screenshot framed the start of the section at the bottom of the drawer. A supplementary read-only visual run frames the controls and long event separately; product behaviour was unchanged.
+
+No qualifying Next.js framework feedback candidate: these were new fixture/automation corrections, not verified framework behaviour or documentation issues. No new dependency, security scan or performance claim.

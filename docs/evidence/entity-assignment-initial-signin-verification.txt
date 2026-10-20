@@ -1,0 +1,49 @@
+
+Running 5 tests using 1 worker
+
+(node:86537) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86537) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (658ms)
+  ✓  2 tests/contracts.spec.ts:119:5 › calendar history contract rejects private fields, malformed provenance and unbounded pages (7ms)
+  ✓  3 tests/contracts.spec.ts:152:5 › contract validator rejects incorrect types, formats and unexpected private fields (13ms)
+  ✘  4 tests/entity-assignment.spec.ts:65:5 › HR declared entity proposal has independent impact review, private profile and explicit unassignment (522ms)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/entity-assignment.spec.ts:65:5 › HR declared entity proposal has independent impact review, private profile and explicit unassignment 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m401[39m
+
+      76 |       })
+      77 |     ).status(),
+    > 78 |   ).toBe(200);
+         |     ^
+      79 |   const before = await profile(page);
+      80 |   expect(before.legalEntityCode).toBe("");
+      81 |   await page
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/entity-assignment.spec.ts:78:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-assignment-HR-decla-8c677-e-and-explicit-unassignment/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-assignment-HR-decla-8c677-e-and-explicit-unassignment/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/entity-assignment-HR-decla-8c677-e-and-explicit-unassignment/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/entity-assignment-HR-decla-8c677-e-and-explicit-unassignment/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/entity-assignment.spec.ts:65:5 › HR declared entity proposal has independent impact review, private profile and explicit unassignment 
+  1 did not run
+  3 passed (2.5s)
+  1 error was not a part of any test, see above for details

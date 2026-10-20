@@ -15,6 +15,61 @@ import java.util.*;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 public final class JdbcPeopleStore implements PeopleStore {
+  public Optional<String> entityRequesterEmployee(String tenant, String id) {
+    return db.sql(
+            "select requester_employee_id from hr_entity_request_origin where tenant=:tenant and request_id=:id")
+        .param("tenant", tenant)
+        .param("id", id)
+        .query(String.class)
+        .optional();
+  }
+
+  public void lockLegalEntities(String tenant) {
+    new JdbcLegalEntityStore(db).lock(tenant);
+  }
+
+  public Optional<LegalEntity> legalEntityForAssignment(String tenant, String code) {
+    return new JdbcLegalEntityStore(db).find(tenant, code).map(e -> e.entity());
+  }
+
+  public boolean legalEntityRetirementBlocked(String tenant, String code) {
+    return db.sql(
+            "select exists(select 1 from hr_legal_entity_retirement_request r left join hr_legal_entity_retirement_decision d on d.tenant=r.tenant and d.request_id=r.id where r.tenant=:t and r.code=:c and (d.request_id is null or d.decision='APPROVED'))")
+        .param("t", tenant)
+        .param("c", code)
+        .query(Boolean.class)
+        .single();
+  }
+
+  public void lockCalendars(String tenant) {
+    new JdbcCalendarStore(db).lock(tenant);
+  }
+
+  public java.util.Optional<WorkCalendar> calendarForAssignment(String tenant, String code) {
+    return new JdbcCalendarStore(db).find(tenant, code).map(e -> e.calendar());
+  }
+
+  public boolean calendarRetirementRecorded(String tenant, String code) {
+    return new JdbcCalendarRetirementStore(db).find(tenant, code).isPresent();
+  }
+
+  public int calendarPolicyVersion(String tenant, String code) {
+    return db.sql("select count(*) from hr_work_calendar_revision where tenant=:t and code=:c")
+        .param("t", tenant)
+        .param("c", code)
+        .query(Integer.class)
+        .single();
+  }
+
+  public java.util.Optional<Integer> requestedCalendarVersion(String tenant, String requestId) {
+    return db.sql(
+            "select policy_version from hr_calendar_request_policy where tenant=:t and request_id=:r and policy_version is not null")
+        .param("t", tenant)
+        .param("r", requestId)
+        .query(Integer.class)
+        .optional();
+  }
+
   private final JdbcClient db;
 
   public JdbcPeopleStore(JdbcClient db) {
@@ -179,6 +234,15 @@ public final class JdbcPeopleStore implements PeopleStore {
         .orElseThrow(ChangeRequest.Denied::new);
   }
 
+  public LocalDate originalEmploymentStart(String tenant, String employeeId) {
+    return db.sql("select start_date from hr_employee where tenant=:tenant and id=:employee")
+        .param("tenant", tenant)
+        .param("employee", employeeId)
+        .query(LocalDate.class)
+        .optional()
+        .orElseThrow(ChangeRequest.Denied::new);
+  }
+
   private static final String NAME_AT =
       "coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='name' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.name)";
 
@@ -190,7 +254,7 @@ public final class JdbcPeopleStore implements PeopleStore {
           + NAME_AT
           + " name,e.email, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='phone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.phone) phone, hr_employment_value(e.tenant,e.id,'title',e.title,:date) title, hr_employment_value(e.tenant,e.id,'department',e.department,:date) department, hr_employment_value(e.tenant,e.id,'location',e.location,:date) location, hr_employment_status(e.tenant,e.id,e.status,:date) status,"
           + MANAGER_AT
-          + " manager_id,hr_employment_start(e.tenant,e.id,e.start_date,:date) start_date,e.version, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='address' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.address) address, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactName' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_name) emergency_contact_name, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactRelationship' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_relationship) emergency_contact_relationship, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactPhone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_phone) emergency_contact_phone, hr_employment_value(e.tenant,e.id,'positionCode',e.position_code,:date) position_code, hr_employment_value(e.tenant,e.id,'legalName','',:date) legal_name from hr_employee e where e.tenant=:tenant";
+          + " manager_id,hr_employment_start(e.tenant,e.id,e.start_date,:date) start_date,e.version, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='address' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.address) address, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactName' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_name) emergency_contact_name, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactRelationship' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_relationship) emergency_contact_relationship, coalesce((select v.value from hr_version v where v.tenant=e.tenant and v.employee_id=e.id and v.field='emergencyContactPhone' and v.effective_date<=:date order by v.effective_date desc,v.recorded_at desc,v.id desc limit 1),e.emergency_contact_phone) emergency_contact_phone, hr_employment_value(e.tenant,e.id,'positionCode',e.position_code,:date) position_code, hr_employment_value(e.tenant,e.id,'legalName','',:date) legal_name, hr_employment_value(e.tenant,e.id,'birthDate','',:date) birth_date, hr_employment_value(e.tenant,e.id,'personalEmail','',:date) personal_email, coalesce((select a.calendar_code from hr_calendar_assignment a where a.tenant=e.tenant and a.employee_id=e.id and a.episode_start=hr_employment_start(e.tenant,e.id,e.start_date,:date) and a.effective_date<=:date order by a.effective_date desc,a.recorded_at desc,a.version_id desc limit 1),'') calendar_code, coalesce((select a.entity_code from hr_legal_entity_assignment a where a.tenant=e.tenant and a.employee_id=e.id and a.episode_start=hr_employment_start(e.tenant,e.id,e.start_date,:date) and a.effective_date<=:date order by a.effective_date desc,a.recorded_at desc,a.version_id desc limit 1),'') legal_entity_code from hr_employee e where e.tenant=:tenant";
 
   public DirectoryPage directory(PeopleReadScope a, DirectoryQuery q, LocalDate date) {
     String scoped = SELECT + " and (:all or e.id=:self or (:reports and " + MANAGER_AT + "=:self))";
@@ -428,6 +492,14 @@ public final class JdbcPeopleStore implements PeopleStore {
 
   public void decide(
       Actor a, ChangeRequest r, String decision, String comment, Instant now, String correlation) {
+    db.sql(
+            "update hr_request set status=:status,decided_by=:actor,comment=:comment where tenant=:t and id=:id")
+        .param("status", decision)
+        .param("actor", a.subject())
+        .param("comment", comment)
+        .param("t", a.tenant())
+        .param("id", r.id())
+        .update();
     if (decision.equals("APPROVED")) {
       db.sql(
               "insert into hr_version(tenant,employee_id,field,value,effective_date,recorded_at,request_id) values(:t,:e,:f,:v,:date,:now,:r)")
@@ -444,14 +516,6 @@ public final class JdbcPeopleStore implements PeopleStore {
           .param("e", r.employeeId())
           .update();
     }
-    db.sql(
-            "update hr_request set status=:status,decided_by=:actor,comment=:comment where tenant=:t and id=:id")
-        .param("status", decision)
-        .param("actor", a.subject())
-        .param("comment", comment)
-        .param("t", a.tenant())
-        .param("id", r.id())
-        .update();
     if (decision.equals("APPROVED") && r.field().equals("positionCode")) {
       db.sql(
               "insert into hr_position_assignment(tenant,employee_id,position_code,effective_date,recorded_at,request_id) values(:tenant,:employee,:position,:date,:now,:request)")

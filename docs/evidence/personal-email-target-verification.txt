@@ -1,0 +1,13 @@
+
+Running 4 tests using 1 worker
+
+(node:51119) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51119) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (1.2s)
+  ✓  2 tests/contracts.spec.ts:115:5 › contract validator rejects incorrect types, formats and unexpected private fields (11ms)
+  ✓  3 tests/personal-email.spec.ts:35:5 › employee personal email approval and explicit removal preserve work identity with uncertain-response recovery and mobile privacy (5.4s)
+  ✓  4 tests/personal-email.spec.ts:227:5 › personal email APIs enforce tenant and field privacy, replay, concurrent review and future-date boundaries (866ms)
+
+  4 passed (9.2s)

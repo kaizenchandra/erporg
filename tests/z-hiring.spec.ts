@@ -60,7 +60,13 @@ test("hire submission, independent HR approval and assigned employee profile wor
   await page.getByLabel("Job title").fill("Synthetic Analyst");
   await page.getByLabel("Work location").fill("London, UK");
   await page.getByLabel("Reporting manager ID").fill("E002");
-  await page.getByLabel("Department").selectOption("Design");
+  await page
+    .getByRole("dialog")
+    .getByLabel("Find a department", { exact: true })
+    .fill("Design");
+  await page
+    .getByRole("combobox", { name: "Department", exact: false })
+    .selectOption("Design");
   await page.getByLabel("Hiring reason").fill("Synthetic hiring acceptance");
   const axe = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])

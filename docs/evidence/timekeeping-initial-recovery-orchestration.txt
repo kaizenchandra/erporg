@@ -1,0 +1,6 @@
+{"status": "PASSED", "targetDatabase": "atlas_restore_9bec354ddbcd4447", "totalSeconds": 72.586, "scope": "local synthetic PostgreSQL logical restore; not production RPO/RTO"}
+Traceback (most recent call last):
+  File "/private/tmp/atlas_time_recovery.py", line 9, in <module>
+    if result['status']!='PASSED':raise SystemExit('Timekeeping logical recovery failed; retained evidence.')
+       ~~~~~~^^^^^^^^^^
+TypeError: 'int' object is not subscriptable

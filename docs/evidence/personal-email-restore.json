@@ -1,0 +1,463 @@
+{
+  "recordedAt": "2026-10-19T15:55:31.833830+00:00",
+  "sourceSchema": "atlas_acceptance",
+  "targetDatabase": "atlas_restore_5216b4f5e99d487f",
+  "scope": "local synthetic PostgreSQL logical restore; not production RPO/RTO",
+  "status": "PASSED",
+  "backupBytes": 491485,
+  "backupSha256": "f9f3e53803ddd1b4417eecfffba58d5998d6f6a243ff0bc2f2798b6f7f103944",
+  "restoreSeconds": 0.978,
+  "restoredSessionRows": 0,
+  "restoredSessionAttributeRows": 0,
+  "tableManifest": {
+    "flyway_schema_history": {
+      "rows": 60,
+      "sha256": "95405a1140fffb8a0c6aec97c9a4350802412d210d2e0c6a1f0188f8c0c167b2"
+    },
+    "hr_employee": {
+      "rows": 22,
+      "sha256": "5c6f11977dfbb5d9e9ffea1cf89839ef7eee8ce3badb5ce6902baead6d4d6899"
+    },
+    "identity_membership": {
+      "rows": 12,
+      "sha256": "7b8fdae02b8dc04602d21d6bea1625dd0869ab8ca11b09c97f4021675634eff8"
+    },
+    "hr_request": {
+      "rows": 55,
+      "sha256": "84d7b3647657fc9813713d2c788452c2065c2a956728fc0eadbfe5dbca27422e"
+    },
+    "hr_version": {
+      "rows": 30,
+      "sha256": "f216b214d2b0336b0f42d9b27cf1b8f4424fec2ca1d9c504b30a7f410a24063e"
+    },
+    "hr_audit": {
+      "rows": 93,
+      "sha256": "766857d95daed9cdd0c6c32d58fdb50dd9b1d2c52b135e1476094a8b790849f2"
+    },
+    "hr_notification": {
+      "rows": 176,
+      "sha256": "285afee9c0be2149fe33c33a792cf951262b0900cacf3de2c61ec8c21ecd655d"
+    },
+    "hr_department": {
+      "rows": 9,
+      "sha256": "2b81c33473bfd93a088151894a8733ef895f91389d7a7d7992d9e3af63fe18ac"
+    },
+    "hr_department_audit": {
+      "rows": 9,
+      "sha256": "1631444344d112598815644a255739727956dadf76ae6280fc1ce7eb65db445f"
+    },
+    "hr_hire_request": {
+      "rows": 6,
+      "sha256": "01f91df8b1cd356133a90872b33c09a09747a3f58683472b3537d27b400fafaf"
+    },
+    "hr_hire_audit": {
+      "rows": 12,
+      "sha256": "cb02ae07534a8e505cbdf28ea57c976527b2a28e0639efa0d2a1a18269158e78"
+    },
+    "hr_employee_event": {
+      "rows": 9,
+      "sha256": "f1c3ca0241c5be55e273ca4870cef44d850a9c69c67d98742431b9fe5dd5a5e9"
+    },
+    "hr_onboarding_completion": {
+      "rows": 3,
+      "sha256": "54997a3fc0d6cfbb639228eb3e6ead3dc91ac8bd2a81f536eb8368477576d3c2"
+    },
+    "hr_position": {
+      "rows": 5,
+      "sha256": "7ca6a4f3ae0221832f4e2e4f687c454f66e3aae453d7815ce8f5e554b5f73022"
+    },
+    "hr_position_audit": {
+      "rows": 5,
+      "sha256": "f07badec3fbdd8d62736dccc9d2db09dd15a3cfddf71fa606de3fe1465022b46"
+    },
+    "hr_position_assignment": {
+      "rows": 4,
+      "sha256": "2b41e36a373bfb1a743b9549cc7f15c13291c32c00dee71a4509b7db371b4452"
+    },
+    "hr_reporting_assignment": {
+      "rows": 4,
+      "sha256": "359c50c41044cfcbeb549aa5539cad94214efaa39dd8bc63295ef2b1cbb5e71d"
+    },
+    "hr_request_withdrawal": {
+      "rows": 2,
+      "sha256": "505d8164be82ce83ba34622e264d5ceed2aeaa0da77a41387721d37975f9623d"
+    },
+    "benefit_plan": {
+      "rows": 6,
+      "sha256": "9e092c637f18b1cce8c592cf874b804310349ea09338217a58dc5fabe1c83ad2"
+    },
+    "benefit_plan_audit": {
+      "rows": 6,
+      "sha256": "6c6c676d8b8807a3b99a135b694a2719a42bca76fb389e558a7d35820ccd8978"
+    },
+    "benefit_selection": {
+      "rows": 6,
+      "sha256": "a48dcc561e735ada6654db77f6d215f67e10e7cfd0cc67cd22d225fc70084533"
+    },
+    "benefit_dependant": {
+      "rows": 4,
+      "sha256": "6552a18281c0e7ca12a5a438b51cb341548d0d530b12f8488167d6656feea950"
+    },
+    "benefit_selection_audit": {
+      "rows": 10,
+      "sha256": "0c5ee63cc8765403bd53625224cea201b49bb5b19ca077b4c7ef960644ece71a"
+    },
+    "benefit_deduction_handoff": {
+      "rows": 1,
+      "sha256": "226ad5cb142dff1741881f92d9707925b6a23b8958989f5ffb01d3ab293755c9"
+    },
+    "employee_document": {
+      "rows": 21,
+      "sha256": "f44914fcd53b7051dc1147ae1605e641d7b6e27f014771d0a48015862e2a7450"
+    },
+    "employee_document_audit": {
+      "rows": 50,
+      "sha256": "99e5a892e1d59eaa3de19fc96717ddd7c0dac38932dd98b255f8f06b79cf804d"
+    },
+    "employee_document_scan_retry": {
+      "rows": 3,
+      "sha256": "668537b934132e938afae7da06900bb5b18c04f2e33d6e3030f3ba46328e782d"
+    },
+    "employee_document_version": {
+      "rows": 5,
+      "sha256": "5355719d79c80e8fd4c871cc17c0baf369a7213d301ab0ff79407010115fe7a8"
+    },
+    "document_template": {
+      "rows": 4,
+      "sha256": "4b84b8470f20a69fe9ebb747d9ace48020e88587265627386d446ceddbbf1a1a"
+    },
+    "document_template_evidence": {
+      "rows": 4,
+      "sha256": "57d037ba67e2038fd9f4c192e97cbf0dd588312a78b9946b71460d8c6d7acbff"
+    },
+    "document_template_revision": {
+      "rows": 3,
+      "sha256": "ffb6fae56b1381f232571acc8ef7a7e785a98afb856df376f0e12fb5982c4242"
+    },
+    "document_template_reclassification": {
+      "rows": 2,
+      "sha256": "cb5493eb52c2d0576cf1bd64b0a405c95e9d0c79d5f64b582e3bb1f880413fe9"
+    },
+    "document_retention_event": {
+      "rows": 7,
+      "sha256": "d332fdacfe281ea7a5b15ac7ef2b8706d6173c6d3e1a21b487acdbc733b5c261"
+    },
+    "hr_resignation": {
+      "rows": 11,
+      "sha256": "881771e3751802e75eaf04c609732677eaa50f52c4d9870b8eb0800d0e7b84e9"
+    },
+    "hr_resignation_audit": {
+      "rows": 22,
+      "sha256": "8b40955753fb55b9d7ea2a9dcd398a81d406acb2cd15512e13f018292b362fac"
+    },
+    "hr_resignation_handoff": {
+      "rows": 6,
+      "sha256": "7bea5179dec41f360d88fbc7dcde5b34199fbe5d113635d0b03825cbebabada8"
+    },
+    "hr_exit_task": {
+      "rows": 8,
+      "sha256": "36269de60dfd753196aa706c2858ef9c4477d2a01c08d4ff93e737b79fa61615"
+    },
+    "hr_exit_task_audit": {
+      "rows": 14,
+      "sha256": "22bffe8d45a5cfb8e1345276d748aab37449d9ee867383f456a2d9fd4f07a569"
+    },
+    "hr_exit_task_management": {
+      "rows": 5,
+      "sha256": "b840af12e0f9565887d89234689d76665baec1043d2dec15ec89aa979a0584f3"
+    },
+    "hr_employment_end": {
+      "rows": 4,
+      "sha256": "bdafe9575b35fc358fa8e012b925a7c092f45efb4eb91663c3741af031bc6b96"
+    },
+    "hr_employment_end_handoff": {
+      "rows": 8,
+      "sha256": "256537ec650de10f3aca32699a94626c5f0744af290d11d39a40090f1289a2d6"
+    },
+    "hr_end_withdrawal": {
+      "rows": 2,
+      "sha256": "c8769f82ae74fcf5238c91e0f26ca5788dfc694d568afa7997c9744fe0b5490d"
+    },
+    "hr_end_withdrawal_decision": {
+      "rows": 2,
+      "sha256": "3ea0b5af93c17fab0640285442bedb283576ba71f2889d1ca59e6231e32f0cf3"
+    },
+    "hr_end_reschedule": {
+      "rows": 2,
+      "sha256": "6524392a9101c9b4afee37782d4a5f58f56542949c291aef54078dde99dc8a8e"
+    },
+    "hr_end_reschedule_decision": {
+      "rows": 2,
+      "sha256": "b1075f1054622e8c90d131fb0a929a004b609ab31170553e7e195e48508bbfbf"
+    },
+    "hr_end_reschedule_handoff": {
+      "rows": 2,
+      "sha256": "9bde973f4543785a09cb6ffb25f0c99f98f97e6f08dbcd6d304634b70ca48150"
+    },
+    "hr_rehire": {
+      "rows": 3,
+      "sha256": "374f7e3da339e50fe650373671ced4a66be574c03055d220f8fc747b1b629fce"
+    },
+    "hr_rehire_decision": {
+      "rows": 3,
+      "sha256": "9f1932dbaef590f36c462dcfdadbd3c6c6dc35da8f7c4299277df34a9248f9b6"
+    },
+    "hr_employment_episode": {
+      "rows": 2,
+      "sha256": "bae6acf213364bd46a9c98a9ebab943d41c0fa153ad5b14315cecd502f8a89e2"
+    },
+    "hr_rehire_handoff": {
+      "rows": 6,
+      "sha256": "5f0776c08f38f5f2255b3d10a2f3194b65bc8c18cd894c9d72d19901a22c20b0"
+    },
+    "hr_rehire_activation": {
+      "rows": 2,
+      "sha256": "79aae140d8db84b6b11e8b762935564e9442e0b994a2cc244387577ae1efaabb"
+    },
+    "hr_rehire_activation_decision": {
+      "rows": 2,
+      "sha256": "c99d3dcb0f8b4c0a38bfc2eae3467ea5085e1c99b5b701e7961d379b6b2f7600"
+    },
+    "hr_rehire_completion": {
+      "rows": 1,
+      "sha256": "abcb38a69847d0c954e0a7ea878de1244477f365323d956310528b10fef5d9de"
+    },
+    "hr_rehire_access": {
+      "rows": 1,
+      "sha256": "60693d53cab1a8348cbbb60e159cb0cdc092ee90e6a2f33713ca7ef076d116d9"
+    },
+    "hr_rehire_access_revocation": {
+      "rows": 2,
+      "sha256": "682ed61b76a416f2f0ffd1af7cfa7bde24579af56a7ac06ce57f2a36da0c50a6"
+    },
+    "hr_local_access_grant": {
+      "rows": 2,
+      "sha256": "bb62a35b8b1b8ef86998a4a8a55c13bf7832c6a98128347f18e5a891cca62187"
+    },
+    "hr_identity_replacement": {
+      "rows": 2,
+      "sha256": "023a842afb97f7a6d8a2f5238aa15adb7a9bd2e282489b5cc2dcb8c98a510176"
+    },
+    "hr_identity_replacement_decision": {
+      "rows": 2,
+      "sha256": "bf0f2faaa95c924cfe0971eba23a759b6f37b2e8f3ad7be79946bca1951c2c93"
+    },
+    "hr_resignation_withdrawal": {
+      "rows": 4,
+      "sha256": "4c52f687b887597377578af8bdd9bcfd01e7bb34bc17a81a5dcb6ad388c67ef1"
+    },
+    "hr_case_episode": {
+      "rows": 11,
+      "sha256": "737b6e7821f0721f852f7f61e06036adf131d3a9013ff57e97b079070e3957bc"
+    },
+    "hr_access_grant_episode": {
+      "rows": 2,
+      "sha256": "62a276df66d39291f16adb461ed461a8cf6c81b7cc09e1a4a41a5f4f79fd4da6"
+    },
+    "hr_contact_request": {
+      "rows": 3,
+      "sha256": "21bdd0add357f47946539bab6c0885ebc5945c48de15d50d5337c5189313e29e"
+    },
+    "hr_contact_item": {
+      "rows": 5,
+      "sha256": "6b1b81bbcc8d28b1a03e902a5d0df63f4147da3acb2d91ed23b375c60b11af6f"
+    },
+    "hr_contact_audit": {
+      "rows": 6,
+      "sha256": "dfdae89b2ab673027d6c5609cb24a5c1269fdd74b2d64c89a49a713418a509fa"
+    },
+    "hr_legal_entity": {
+      "rows": 17,
+      "sha256": "9e88b410bddfba64f2f4101e425a5114b5e74aaab129a5a364ee0847eb5679a0"
+    },
+    "hr_legal_entity_retirement_request": {
+      "rows": 6,
+      "sha256": "d12169e103b8589689c4f9869207ae2a615f6aaaead9d47bd75187b3e696b517"
+    },
+    "hr_legal_entity_retirement_decision": {
+      "rows": 5,
+      "sha256": "ea7f175e0928629cb06acc90fe9b6575a4e9b95040de6a71e279dab3490321b5"
+    },
+    "hr_work_calendar": {
+      "rows": 25,
+      "sha256": "3c48db134a16576315e405570efd281a9d169536e82b8c0964e00e757b6c0a6c"
+    },
+    "hr_work_calendar_revision": {
+      "rows": 6,
+      "sha256": "f1cf642de35bed8cf5e26424e903c149774b3ac673a1727d2112174f37bbd634"
+    },
+    "hr_work_calendar_retirement": {
+      "rows": 5,
+      "sha256": "09c5486d773c52f224a29f369100962a3a2ecf01fbdac36780506dd36d1f4e9e"
+    }
+  },
+  "projectionManifest": {
+    "hr_exit_task_current": {
+      "rows": 8,
+      "sha256": "b24fb7a100052435e8f7644b5392b438c7be03ca6991323eb2248a29fadb1988"
+    },
+    "hr_end_withdrawal_current": {
+      "rows": 2,
+      "sha256": "269946eb7bddf0abf5fce8174b96ab4629e481ad8389562daf3689fe9a38fb06"
+    },
+    "hr_employment_end_current": {
+      "rows": 4,
+      "sha256": "9907739cdfcebbaae2d48eeb880e7e248d4ea4b1c93da6865d9d558648a99b52"
+    },
+    "hr_employment_end_handoff_current": {
+      "rows": 10,
+      "sha256": "00db5d59afb751d3d126dc1183a459395fbd96aa1149b4ba929c8ef5623b1c5b"
+    },
+    "hr_end_reschedule_current": {
+      "rows": 2,
+      "sha256": "3daa3ca1e417a0b3931401f01ae2a06f2413f56c4baf2e7d4b2f257f471bc5a3"
+    },
+    "hr_rehire_current": {
+      "rows": 3,
+      "sha256": "6f6e191790ea5a9767cfe9e7e3e913a14765e095c1a6105cc337302f5cf8b3df"
+    },
+    "hr_rehire_activation_current": {
+      "rows": 2,
+      "sha256": "6c5c4c1875ab1825c1c96ecbcb9c7cc3eae81432304f2d039bc617a88fa3a028"
+    },
+    "hr_rehire_handoff_current": {
+      "rows": 6,
+      "sha256": "c5b7f4fe76853ed74d0e9f27c873f2e8e73d6247733afe0873ba5fd7017f3083"
+    },
+    "hr_local_access_current": {
+      "rows": 1,
+      "sha256": "387e62ddd387cedd5d1de29d51cbb6ecc90f3272f0bc1d3796f7edfc2f5d6c67"
+    },
+    "hr_identity_replacement_current": {
+      "rows": 2,
+      "sha256": "79fad1a1ba3f8f861f902d71c99879fd37dded63ddab890b41c5918dcdf2e585"
+    },
+    "hr_episode_end_current": {
+      "rows": 4,
+      "sha256": "45e91f937b65d9f817ca4c4ab8a1435b48da77b0d97c33efa269c32caecc0908"
+    },
+    "hr_employment_episode_state": {
+      "rows": 24,
+      "sha256": "4554222107891f181409bd114a16a2149f7b202830590b87f712ba2ab903a293"
+    },
+    "hr_access_grant_episode_source": {
+      "rows": 2,
+      "sha256": "62a276df66d39291f16adb461ed461a8cf6c81b7cc09e1a4a41a5f4f79fd4da6"
+    },
+    "hr_episode_access_current": {
+      "rows": 1,
+      "sha256": "a5956894ee09e6186538b901dafbd0b5aaa89e8b6de006acc153f9a64dd23dab"
+    },
+    "hr_legal_entity_retirement_current": {
+      "rows": 4,
+      "sha256": "38131aaa1b33f18b358f7f6933e4f4518e91e0490aea3555e732683f16487ffe"
+    }
+  },
+  "privateObjects": {
+    "status": "PASSED",
+    "objects": 13,
+    "manifestSha256": "ce449e61bdff2f96e000058e7fc034af3b0d411f6eac17b1338d1eb4c991b0e4",
+    "restoredRoot": "/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/.local/restored-documents/5216b4f5e99d487f",
+    "scope": "independent local synthetic private-object copy; not cloud/encrypted backup or production recovery"
+  },
+  "integrityChecks": {
+    "invalidBenefitWithdrawal": 0,
+    "invalidContactSnapshots": 0,
+    "invalidContactAudit": 0,
+    "invalidRetentionOwnerSequence": 0,
+    "invalidHoldRelease": 0,
+    "shortenedRetention": 0,
+    "invalidTemplateRevisionSequence": 0,
+    "invalidClassificationCorrection": 0,
+    "reusedInitialClassificationRoot": 0,
+    "invalidTemplateEvidence": 0,
+    "orphanRequests": 0,
+    "orphanVersions": 0,
+    "orphanAudit": 0,
+    "orphanDepartments": 0,
+    "orphanDepartmentAudit": 0,
+    "invalidRehireDecision": 0,
+    "invalidRehireEpisodeHandoffs": 0,
+    "invalidEndReschedule": 0,
+    "invalidEndRescheduleHandoffs": 0,
+    "invalidEndWithdrawalDecision": 0,
+    "invalidEmploymentEnd": 0,
+    "invalidEmploymentEndHandoffs": 0,
+    "invalidExitTaskManagementSequence": 0,
+    "invalidExitTaskManagementTerminal": 0,
+    "invalidExitTaskCaseOwner": 0,
+    "invalidExitTaskSequence": 0,
+    "invalidExitTaskAudit": 0,
+    "orphanResignations": 0,
+    "inconsistentResignationHandoffs": 0,
+    "missingResignationHandoffs": 0,
+    "inconsistentResignationAudit": 0,
+    "orphanHires": 0,
+    "orphanHireAudit": 0,
+    "orphanEmployeeEvents": 0,
+    "orphanBenefitAudit": 0,
+    "inconsistentBenefitDeductions": 0,
+    "missingBenefitDeductions": 0,
+    "orphanBenefitDependants": 0,
+    "orphanBenefitSelectionAudit": 0,
+    "invalidDocumentVersions": 0,
+    "invalidDocumentVersionSequence": 0,
+    "invalidDocumentRetry": 0,
+    "invalidDocumentRetrySequence": 0,
+    "orphanDocumentAudit": 0,
+    "missingDocumentAudit": 0,
+    "inconsistentWithdrawals": 0,
+    "inconsistentReportingAssignments": 0,
+    "missingReportingAssignments": 0,
+    "inconsistentPositionAssignments": 0,
+    "missingPositionAssignments": 0,
+    "orphanPositions": 0,
+    "orphanPositionAudit": 0,
+    "orphanCompletions": 0,
+    "failedMigrations": 0,
+    "missingCaseEpisode": 0,
+    "invalidCaseEpisode": 0,
+    "missingEpisodeOwnedEnd": 0,
+    "missingResignationWithdrawal": 0,
+    "invalidResignationWithdrawal": 0,
+    "invalidRehireCompletionGrant": 0,
+    "missingRehireCompletion": 0,
+    "invalidRehireActivationSeparation": 0,
+    "invalidRehireAccessRevocation": 0,
+    "missingInitialRegistryCopy": 0,
+    "invalidReplacementRegistry": 0,
+    "missingReplacementGrant": 0,
+    "invalidReplacementSeparation": 0,
+    "missingGrantEpisode": 0,
+    "invalidGrantEpisode": 0,
+    "invalidPostalRequest": 0,
+    "invalidPostalVersion": 0,
+    "invalidPostalAudit": 0,
+    "legalEntityCatalogueOverLimit": 0,
+    "retirementIndependenceChronology": 0,
+    "retirementAttemptOrder": 0,
+    "invalidBirthDate_hr_request": 0,
+    "invalidBirthDate_hr_version": 0,
+    "invalidBirthDate_hr_audit": 0,
+    "invalidCompanyCalendar": 0,
+    "companyCalendarCatalogueOverLimit": 0,
+    "invalidPersonalEmail_hr_request": 0,
+    "invalidPersonalEmail_hr_version": 0,
+    "invalidPersonalEmail_hr_audit": 0,
+    "invalidCalendarRetirement": 0,
+    "invalidCalendarAmendment": 0
+  },
+  "auditTriggerRestored": true,
+  "approvedRequests": 30,
+  "auditMutationRejected": true,
+  "caseEpisodeMutationRejected": true,
+  "grantEpisodeMutationRejected": true,
+  "benefitWithdrawalAuditMutationRejected": true,
+  "legalEntityMutationRejected": true,
+  "referenceRetirementMutationRejected": true,
+  "companyCalendarMutationRejected": true,
+  "calendarAmendmentMutationRejected": true,
+  "calendarRetirementMutationRejected": true,
+  "totalSeconds": 59.603,
+  "targetRetained": true
+}

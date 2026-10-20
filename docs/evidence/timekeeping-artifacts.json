@@ -1,0 +1,10 @@
+{
+  "sha256": {
+    "backend/target/atlas-api-0.1.0.jar": "9d4407a1cd42593ff89f73338f064e4319549e3305278417ad9206eae7d70b86",
+    "backend/src/main/resources/db/migration/V70__attendance_timesheets.sql": "048691de2d9028984470eae51532fa13b0a48ce7635e258bf2f7ac4851d7e805",
+    "backend/src/main/resources/db/migration/V71__timekeeping_provenance_and_dates.sql": "f7c0f0997612cc53978d58d3ae13ded844acf74308b4dcbf5433fda36a95c5d8",
+    "package-lock.json": "6952088e06803b8ebc8b438ff7d65ec8b88fe9d7eacb40c25fc8c07151b90322"
+  },
+  "frontendBuildId": "t1R5xaC5MstTHDKaF4SCe",
+  "scope": "local verified artifacts and migration/lockfile digests; not a production release or full SBOM/container scan"
+}

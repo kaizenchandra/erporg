@@ -1,0 +1,67 @@
+{
+  "recordedAt": "2026-10-20T21:23:43.690145+00:00",
+  "schema": "atlas_payfin_browser_20261021f",
+  "scope": "Read-only checks for local synthetic talent snapshots; not restore or release certification.",
+  "result": "PASSED",
+  "controls": {
+    "missingLatestAudit": 0,
+    "invalidCompensationBudget": 0,
+    "missingPayrollIntake": 0,
+    "invalidLearningExpiry": 0,
+    "invalidCompletedReview": 0,
+    "incompleteActivatedPlan": 0,
+    "invalidScenarioCost": 0,
+    "completedJoiningPlans": 5,
+    "completedReviews": 5,
+    "completedLearning": 5,
+    "approvedCompensation": 4,
+    "enabledGuards": 27
+  },
+  "failures": [],
+  "tableManifests": {
+    "tal_requisition": {
+      "rows": 8,
+      "sha256": "dc093138e7748b0c808c6d6150082354d07ed5ffb4f5367353d4d5d7aa1574da"
+    },
+    "tal_onboarding": {
+      "rows": 7,
+      "sha256": "b59f18dd62b3c81c84e12bc9d3cb036d1cae97ba651f2115b20123a896459b0d"
+    },
+    "tal_review": {
+      "rows": 5,
+      "sha256": "5652451302f5dca604118675fe13b5e34109b5f79f4da35cef8938d6cc47bda3"
+    },
+    "tal_course": {
+      "rows": 5,
+      "sha256": "8b9624dd50ac1fed002d9508ebb99a02562e0da8731c962267b800b32236a23b"
+    },
+    "tal_enrollment": {
+      "rows": 5,
+      "sha256": "5851841ed2227dfffc7c5ae6634bd688451a868904d7170638f640f828ceffe5"
+    },
+    "tal_compensation": {
+      "rows": 4,
+      "sha256": "4082e61b994596ae602c846d0c0926717351388f30a34a04fd9d0e57ada00cd5"
+    },
+    "tal_succession": {
+      "rows": 4,
+      "sha256": "4f588f6b6fa6675bc8f5065a55f2e011cf70d827ccf6126d77a2cceb539e9c57"
+    },
+    "tal_scenario": {
+      "rows": 4,
+      "sha256": "74099e5989753456ffa4ce9a834102954a07daeb2eca59ca60ed3e39a39bd78f"
+    },
+    "tal_command": {
+      "rows": 170,
+      "sha256": "421e03b5eef1a1c119ec0944b0c62382c312b860b5e1ec271b05c8ae48c65490"
+    },
+    "tal_audit": {
+      "rows": 177,
+      "sha256": "975e0571b08af40a3b0c1217bee459b6eabbe7809e816338dc048313c7854b2e"
+    },
+    "pay_talent_intake": {
+      "rows": 4,
+      "sha256": "2cb1f48b9f004150fd5e7377de5d8d661d5d422eb59487cb67b02473dfb4a3df"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+
+Running 1 test using 1 worker
+
+(node:90790) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:90790) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/zzzzzzzzzzzz-entity-layout.spec.ts:14:5 › final mobile entity field is visible to self and restricted in the manager profile (30.1s)
+
+
+  1) tests/zzzzzzzzzzzz-entity-layout.spec.ts:14:5 › final mobile entity field is visible to self and restricted in the manager profile 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'View Sophia Martinez', exact: true })[22m
+
+
+      50 |   await page
+      51 |     .getByRole("button", { name: `View ${e.name}`, exact: true })
+    > 52 |     .click();
+         |      ^
+      53 |   dialog = page.getByRole("dialog");
+      54 |   row = dialog
+      55 |     .locator("dt")
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/zzzzzzzzzzzz-entity-layout.spec.ts:52:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/zzzzzzzzzzzz-entity-layout-00205-cted-in-the-manager-profile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/zzzzzzzzzzzz-entity-layout-00205-cted-in-the-manager-profile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/zzzzzzzzzzzz-entity-layout-00205-cted-in-the-manager-profile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/zzzzzzzzzzzz-entity-layout-00205-cted-in-the-manager-profile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/zzzzzzzzzzzz-entity-layout.spec.ts:14:5 › final mobile entity field is visible to self and restricted in the manager profile 

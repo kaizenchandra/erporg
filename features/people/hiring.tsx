@@ -4,7 +4,7 @@ import { api, ApiError } from "@/lib/api";
 import { Modal, Badge, Empty, formatDate } from "@/components/ui/primitives";
 import type { Actor, Employee } from "@/lib/contracts";
 import { CompleteOnboardingDialog } from "./complete-onboarding";
-import type { Department } from "./department-reference";
+import { DepartmentPicker } from "./department-picker";
 export type HireRequest = {
   id: string;
   name: string;
@@ -245,8 +245,6 @@ function SubmitHireForm({
   onClose: () => void;
   onSaved: () => void;
 }) {
-  const [departments, setDepartments] = useState<Department[]>([]),
-    [referencesError, setReferencesError] = useState("");
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -262,22 +260,6 @@ function SubmitHireForm({
     [fieldErrors, setFieldErrors] = useState<Record<string, string>>({}),
     [busy, setBusy] = useState(false),
     [key] = useState(() => crypto.randomUUID());
-  useEffect(() => {
-    const controller = new AbortController();
-    api<Department[]>("/api/v1/organisation/departments", {
-      signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]),
-    })
-      .then((items) => {
-        if (!controller.signal.aborted) setDepartments(items);
-      })
-      .catch((err: unknown) => {
-        if (!controller.signal.aborted)
-          setReferencesError(
-            err instanceof Error ? err.message : "Unable to load departments.",
-          );
-      });
-    return () => controller.abort();
-  }, []);
   const dirty =
     Object.entries(values).some(
       ([field, value]) => field !== "startDate" && !!value,
@@ -398,36 +380,14 @@ function SubmitHireForm({
             )}
           </label>
         ))}
-        <label>
-          Department <span>*</span>
-          <select
-            required
-            id="hire-department"
-            aria-invalid={!!fieldErrors.department}
-            aria-describedby={
-              fieldErrors.department ? "hire-department-error" : undefined
-            }
-            value={values.department}
-            onChange={(e) => set("department", e.target.value)}
-          >
-            <option value="">Choose department</option>
-            {departments.map((d) => (
-              <option value={d.name} key={d.code}>
-                {d.name} · {d.costCentre}
-              </option>
-            ))}
-          </select>
-          {fieldErrors.department && (
-            <span className="error" id="hire-department-error">
-              {fieldErrors.department}
-            </span>
-          )}
-        </label>
-        {referencesError && (
-          <p role="alert" className="error">
-            {referencesError} Reopen the form to retry.
-          </p>
-        )}
+        <DepartmentPicker
+          label="Department"
+          id="hire-department"
+          value={values.department}
+          onChange={(value) => set("department", value)}
+          error={fieldErrors.department}
+          disabled={busy}
+        />
         <label>
           Hiring reason <span>*</span>
           <textarea

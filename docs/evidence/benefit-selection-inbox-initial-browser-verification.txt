@@ -1,0 +1,48 @@
+
+Running 3 tests using 1 worker
+
+(node:56424) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56424) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/benefit-selection-inbox.spec.ts:47:5 › employee submission is independently approved through the scoped benefit inbox and retained in own tracking (1.0m)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/benefit-selection-inbox.spec.ts:47:5 › employee submission is independently approved through the scoped benefit inbox and retained in own tracking 
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Approvals', exact: true })[22m
+
+
+      36 | }
+      37 | async function queue(page: Page) {
+    > 38 |   await page.getByRole("button", { name: "Approvals", exact: true }).click();
+         |                                                                      ^
+      39 |   await page
+      40 |     .getByRole("button", { name: "Benefit selections", exact: true })
+      41 |     .click();
+        at queue (/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/benefit-selection-inbox.spec.ts:38:70)
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/benefit-selection-inbox.spec.ts:117:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/benefit-selection-inbox-em-23eb9-nd-retained-in-own-tracking/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/benefit-selection-inbox-em-23eb9-nd-retained-in-own-tracking/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/benefit-selection-inbox-em-23eb9-nd-retained-in-own-tracking/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/benefit-selection-inbox-em-23eb9-nd-retained-in-own-tracking/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/benefit-selection-inbox.spec.ts:47:5 › employee submission is independently approved through the scoped benefit inbox and retained in own tracking 
+  2 did not run
+  1 error was not a part of any test, see above for details

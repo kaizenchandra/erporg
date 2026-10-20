@@ -20,13 +20,15 @@ public record ChangeRequest(
     String comment) {
   public static final Set<String> REMOVABLE_PRIVATE_FIELDS =
       Set.of(
+          "personalEmail",
           "address",
           "emergencyContactName",
           "emergencyContactRelationship",
           "emergencyContactPhone");
   public static final Set<String> PRIVATE_FIELDS =
       java.util.stream.Stream.concat(
-              REMOVABLE_PRIVATE_FIELDS.stream(), java.util.stream.Stream.of("legalName"))
+              REMOVABLE_PRIVATE_FIELDS.stream(),
+              java.util.stream.Stream.of("legalName", "birthDate", "legalEntityCode"))
           .collect(java.util.stream.Collectors.toUnmodifiableSet());
   public static final Set<String> FIELDS =
       Set.of(
@@ -36,8 +38,12 @@ public record ChangeRequest(
           "department",
           "location",
           "positionCode",
+          "calendarCode",
+          "legalEntityCode",
           "managerId",
           "legalName",
+          "birthDate",
+          "personalEmail",
           "address",
           "emergencyContactName",
           "emergencyContactRelationship",
@@ -65,14 +71,58 @@ public record ChangeRequest(
     if (field == null || !FIELDS.contains(field)) errors.put("field", "Choose a supported field.");
     boolean removal =
         field != null
-            && (REMOVABLE_PRIVATE_FIELDS.contains(field) || field.equals("positionCode"))
+            && (REMOVABLE_PRIVATE_FIELDS.contains(field)
+                || field.equals("positionCode")
+                || (field.equals("calendarCode") || field.equals("legalEntityCode")))
             && "".equals(value);
-    if (value == null || (!removal && value.isBlank()) || value.length() > 120)
+    boolean structuredAddress =
+        "address".equals(field) && value != null && value.trim().startsWith(PostalAddress.RESERVED);
+    if (structuredAddress) {
+      try {
+        if (!value.startsWith(PostalAddress.RESERVED))
+          throw new Validation(
+              java.util.Map.of("newValue", "Structured addresses cannot have leading whitespace."));
+        PostalAddress.decode(value);
+      } catch (Validation e) {
+        errors.putAll(e.fields());
+      }
+    }
+    if (value == null
+        || (!removal && value.isBlank())
+        || value.length() > (structuredAddress ? 500 : 120))
       errors.put("newValue", "New value must contain 1–120 characters.");
     else if (!removal
         && ("phone".equals(field) || "emergencyContactPhone".equals(field))
         && !value.matches("[+0-9 ()-]{7,30}"))
       errors.put("newValue", "Enter a valid phone number (7–30 characters).");
+    if ("calendarCode".equals(field)) {
+      try {
+        CalendarAssignment.shape(value == null ? null : value.trim());
+      } catch (Validation e) {
+        errors.putAll(e.fields());
+      }
+    }
+    if ("legalEntityCode".equals(field)) {
+      try {
+        EntityAssignment.shape(value == null ? null : value.trim());
+      } catch (Validation e) {
+        errors.putAll(e.fields());
+      }
+    }
+    if ("personalEmail".equals(field)) {
+      try {
+        PersonalEmail.validate(value);
+      } catch (Validation e) {
+        errors.putAll(e.fields());
+      }
+    }
+    if ("birthDate".equals(field)) {
+      try {
+        BirthDate.parse(value);
+      } catch (Validation e) {
+        errors.putAll(e.fields());
+      }
+    }
     if (("name".equals(field) || "legalName".equals(field))
         && value != null
         && value.codePoints().anyMatch(Character::isISOControl))

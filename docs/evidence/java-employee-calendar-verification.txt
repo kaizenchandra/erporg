@@ -1,0 +1,8 @@
+{
+  "tests": 363.0,
+  "failures": 0.0,
+  "errors": 0.0,
+  "skipped": 0.0,
+  "time": 40.927
+}
+Maven spotless:apply verify/JAR BUILD SUCCESS, 55.291s. Includes actual PostgreSQL, independent HR/alias/version/policy guards, immutable ledgers/freeze, scoped preview, retained amendment replay, actual historical assignment/end/approved rehire boundary and architecture negative fixtures.

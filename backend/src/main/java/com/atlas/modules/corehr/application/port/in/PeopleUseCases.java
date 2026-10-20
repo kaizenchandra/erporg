@@ -19,6 +19,15 @@ public interface PeopleUseCases {
 
   PeopleSummary summary(Actor actor);
 
+  com.atlas.modules.corehr.application.model.PostalAddressModels.Context postalAddress(
+      Actor actor, String id);
+
+  ChangeRequest submitPostalAddress(
+      Actor actor,
+      String id,
+      com.atlas.modules.corehr.application.model.PostalAddressModels.Submit command,
+      String correlation);
+
   Employee profile(Actor actor, String id);
 
   RequestPage requestPage(Actor actor, RequestQuery query);

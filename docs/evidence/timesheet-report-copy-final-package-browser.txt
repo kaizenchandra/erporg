@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:62075) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62075) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/timesheet-report-copy.spec.ts:49:5 › worker copies an owned week, reloads it, submits and manager reports approved allocated minutes (4.0s)
+  ✓  2 tests/timesheet-report-copy.spec.ts:263:5 › report contract rejects unauthorised workers and invalid ranges; export requires CSRF (305ms)
+
+  2 passed (5.6s)

@@ -3,6 +3,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { api, ApiError } from "@/lib/api";
 import type { Actor } from "@/lib/contracts";
 import { BenefitSelections, type SelectablePlan } from "./selections";
+import { BenefitHistory } from "./history";
 import { Modal, formatDate } from "@/components/ui/primitives";
 type Plan = {
   code: string;
@@ -23,20 +24,14 @@ type PlanPage = {
   size: number;
   evaluatedOn: string;
 };
-type PlanAudit = {
-  code: string;
-  actor: string;
-  reason: string;
-  recordedAt: string;
-  effectiveFrom: string;
-  correlationId: string;
-};
 export function BenefitsCatalogue({ actor }: { actor: Actor }) {
   const [search, setSearch] = useState("");
   const [eligibility, setEligibility] = useState("ALL");
   const [page, setPage] = useState(0);
+  const [size, setSize] = useState("8");
   const [direction, setDirection] = useState("asc");
   const [revision, setRevision] = useState(0);
+  const [historyRevision, setHistoryRevision] = useState(0);
   const [selection, setSelection] = useState<SelectablePlan | null>(null);
   const [creating, setCreating] = useState(false);
   const [notice, setNotice] = useState("");
@@ -44,7 +39,7 @@ export function BenefitsCatalogue({ actor }: { actor: Actor }) {
     search,
     eligibility,
     page: String(page),
-    size: "8",
+    size,
     direction,
   }).toString();
   const key = JSON.stringify([
@@ -57,23 +52,20 @@ export function BenefitsCatalogue({ actor }: { actor: Actor }) {
   const [result, setResult] = useState<{
     key: string;
     data?: PlanPage;
-    history?: PlanAudit[];
     error?: string;
   }>();
   const current = result?.key === key ? result : undefined;
+  const failure = useRef<HTMLDivElement>(null);
+  const heading = useRef<HTMLParagraphElement>(null);
+  const focusAfterLoad = useRef(false);
   useEffect(() => {
     const controller = new AbortController();
     const options = {
       signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]),
     };
-    Promise.all([
-      api<PlanPage>(`/api/v1/benefits/plans?${query}`, options),
-      actor.role === "HR"
-        ? api<PlanAudit[]>("/api/v1/benefits/history", options)
-        : Promise.resolve([]),
-    ])
-      .then(([data, history]) => {
-        if (!controller.signal.aborted) setResult({ key, data, history });
+    api<PlanPage>(`/api/v1/benefits/plans?${query}`, options)
+      .then((data) => {
+        if (!controller.signal.aborted) setResult({ key, data });
       })
       .catch((err: unknown) => {
         if (!controller.signal.aborted)
@@ -87,6 +79,13 @@ export function BenefitsCatalogue({ actor }: { actor: Actor }) {
       });
     return () => controller.abort();
   }, [query, key, actor.role]);
+  useEffect(() => {
+    if (current?.error) failure.current?.focus();
+    else if (current?.data && focusAfterLoad.current) {
+      focusAfterLoad.current = false;
+      heading.current?.focus();
+    }
+  }, [current]);
   return (
     <section className="department-reference" aria-label="Benefits catalogue">
       <div className="section-heading">
@@ -142,21 +141,57 @@ export function BenefitsCatalogue({ actor }: { actor: Actor }) {
             <option value="desc">Z to A</option>
           </select>
         </label>
+        <label>
+          Benefit plans per page
+          <select
+            value={size}
+            onChange={(event) => {
+              setSize(event.target.value);
+              setPage(0);
+            }}
+          >
+            <option value="8">8</option>
+            <option value="16">16</option>
+            <option value="32">32</option>
+          </select>
+        </label>
       </div>
       {!current ? (
         <p role="status">Loading benefit plans…</p>
       ) : current.error ? (
-        <div className="error" role="alert">
+        <div ref={failure} className="error" role="alert" tabIndex={-1}>
           {current.error}{" "}
-          <button onClick={() => setRevision((n) => n + 1)}>
+          <button
+            onClick={() => {
+              focusAfterLoad.current = true;
+              setRevision((n) => n + 1);
+            }}
+          >
             Retry benefit plans
           </button>
         </div>
       ) : (
         <>
-          <p className="muted">
+          <p
+            ref={heading}
+            role="status"
+            className="muted"
+            tabIndex={-1}
+            aria-label="Benefit plan results"
+          >
             Evaluated {formatDate(current.data!.evaluatedOn)} ·{" "}
-            {current.data!.total} matching plans · Page {page + 1}
+            {current.data!.total} matching{" "}
+            {current.data!.total === 1 ? "plan" : "plans"} · Page {page + 1}
+            {" · "}Showing{" "}
+            {current.data!.items.length ? page * Number(size) + 1 : 0}–
+            {current.data!.items.length
+              ? Math.min(
+                  current.data!.total,
+                  page * Number(size) + current.data!.items.length,
+                )
+              : 0}
+            {" of "}
+            {current.data!.total}
           </p>
           {!current.data!.items.length ? (
             <p>
@@ -205,40 +240,40 @@ export function BenefitsCatalogue({ actor }: { actor: Actor }) {
             <button
               className="button secondary"
               disabled={page === 0}
-              onClick={() => setPage((n) => n - 1)}
+              onClick={() => {
+                focusAfterLoad.current = true;
+                setPage((n) => n - 1);
+              }}
             >
               Previous benefit plans
             </button>
             <button
               className="button secondary"
-              disabled={(page + 1) * 8 >= current.data!.total}
-              onClick={() => setPage((n) => n + 1)}
+              disabled={(page + 1) * Number(size) >= current.data!.total}
+              onClick={() => {
+                focusAfterLoad.current = true;
+                setPage((n) => n + 1);
+              }}
             >
               Next benefit plans
             </button>
+            <button
+              className="button secondary"
+              onClick={() => {
+                focusAfterLoad.current = true;
+                setPage(0);
+                setRevision((value) => value + 1);
+              }}
+            >
+              Refresh benefit plans
+            </button>
           </div>
-          {actor.role === "HR" && (
-            <details>
-              <summary>Benefit configuration history (latest 100)</summary>
-              {current.history?.length ? (
-                current.history.map((h) => (
-                  <article className="history-event" key={h.code}>
-                    <div>
-                      <strong>{h.code} · Created</strong>
-                      <p>{h.reason}</p>
-                      <small>
-                        {h.actor} · {new Date(h.recordedAt).toISOString()} ·
-                        Effective {formatDate(h.effectiveFrom)}
-                      </small>
-                    </div>
-                  </article>
-                ))
-              ) : (
-                <p>No benefit changes recorded.</p>
-              )}
-            </details>
-          )}
         </>
+      )}
+      {actor.role === "HR" && (
+        <BenefitHistory
+          key={`benefit-history:${actor.tenant}:${actor.subject}:${actor.role}:${historyRevision}`}
+        />
       )}
       <BenefitSelections
         actor={actor}
@@ -253,6 +288,7 @@ export function BenefitsCatalogue({ actor }: { actor: Actor }) {
             setNotice("Demonstration benefit plan created and audit recorded.");
             setPage(0);
             setRevision((n) => n + 1);
+            setHistoryRevision((n) => n + 1);
           }}
         />
       )}

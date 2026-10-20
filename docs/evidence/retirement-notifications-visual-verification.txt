@@ -1,0 +1,1 @@
+Inspected final full-suite retirement-notifications-mobile.png at 390×844. Generic approved outcome, latest-50/acknowledgement disclosure, refresh action and timestamps are readable and wrap within the scrollable dialog. Full browser test verified mobile axe/overflow and keyboard Escape focus restoration. This is not a complete manual WCAG/assistive-technology review.

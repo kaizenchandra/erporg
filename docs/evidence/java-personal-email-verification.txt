@@ -1,0 +1,8 @@
+{
+  "tests": 354.0,
+  "failures": 0.0,
+  "errors": 0.0,
+  "skipped": 0.0,
+  "time": 40.325
+}
+Maven spotless:apply verify: BUILD SUCCESS, 56.938s. Real PostgreSQL 18.6; domain, private effective-date/replay/approval/removal/SQL vocabulary and qualified snapshot guards, all prior workflows and architecture negative fixtures included.

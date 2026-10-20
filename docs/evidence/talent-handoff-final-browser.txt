@@ -1,0 +1,74 @@
+
+Running 5 tests using 1 worker
+
+(node:85135) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:85135) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/talent.spec.ts:132:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks (4.9s)
+  ✓  2 tests/talent.spec.ts:250:5 › performance UI saves employee goals, manager feedback, return, correction and final rating (3.4s)
+  ✓  3 tests/talent.spec.ts:322:5 › learning UI persists eligible assignment and completion with expiry (1.5s)
+  ✘  4 tests/talent.spec.ts:354:5 › compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted (1.0m)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/talent.spec.ts:354:5 › compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted 
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.click: Test ended.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Talent', exact: true })[22m
+    [2m    - locator resolved to <button class="nav-item ">…</button>[22m
+    [2m  - attempting click action[22m
+    [2m    2 × waiting for element to be visible, enabled and stable[22m
+    [2m      - element is visible, enabled and stable[22m
+    [2m      - scrolling into view if needed[22m
+    [2m      - done scrolling[22m
+    [2m      - element is outside of the viewport[22m
+    [2m    - retrying click action[22m
+    [2m    - waiting 20ms[22m
+    [2m    2 × waiting for element to be visible, enabled and stable[22m
+    [2m      - element is visible, enabled and stable[22m
+    [2m      - scrolling into view if needed[22m
+    [2m      - done scrolling[22m
+    [2m      - element is outside of the viewport[22m
+    [2m    - retrying click action[22m
+    [2m      - waiting 100ms[22m
+    [2m    110 × waiting for element to be visible, enabled and stable[22m
+    [2m        - element is visible, enabled and stable[22m
+    [2m        - scrolling into view if needed[22m
+    [2m        - done scrolling[22m
+    [2m        - element is outside of the viewport[22m
+    [2m      - retrying click action[22m
+    [2m        - waiting 500ms[22m
+
+
+      479 |     p.getByRole("button", { name: "Sign out", exact: true }),
+      480 |   ).toBeVisible();
+    > 481 |   await p.getByRole("button", { name: "Talent", exact: true }).click();
+          |                                                                ^
+      482 |   await expect(
+      483 |     p
+      484 |       .getByRole("navigation", { name: "Talent views" })
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/talent.spec.ts:481:64
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/talent.spec.ts:354:5 › compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted 
+  1 did not run
+  3 passed (1.2m)
+  1 error was not a part of any test, see above for details

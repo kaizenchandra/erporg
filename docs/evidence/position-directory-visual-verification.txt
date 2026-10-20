@@ -1,0 +1,5 @@
+BI local visual review, 2026-10-20
+
+Opened and inspected final full-regression position-directory-mobile.png and position-directory-long-mobile.png plus a separate read-only position-directory-controls-mobile.png at390x844. Catalogue heading/actions, search and department picker align within the mobile surface. Timing/order/rows-per-page/refresh controls remain labelled and fit the width. Long planned title, department name/code, effective date and total/page/UTC evaluatedOn wrap within cards and pagination. Creation history remains separate and readable. Additional controls capture reported document overflow=false.
+
+Automated axe WCAG tags and horizontal-overflow assertions pass in the actual browser workflow; keyboard pagination/retry/refresh focus is verified. This is scoped local inspection, not complete manual screen-reader/zoom/browser compatibility or WCAG conformance. No new visual asset generation or framework issue.

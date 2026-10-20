@@ -1,0 +1,6 @@
+Final built application inspected at390×844. These two tests are included in the129-pass full browser suite, not extra counts.
+
+  ✓   26 tests/department-selection.spec.ts:15:5 › position department selection pages, retains values across errors and stale search, then persists resolved name (1.9s)
+  ✓   27 tests/department-selection.spec.ts:140:5 › hire department selection preserves other fields, linked errors and long mobile options (1.5s)
+
+Inspected department-selection-mobile.png from the final full run: persistent search/select labels, visible search focus ring,44px controls and retained80-character Unicode selected-name extension remain within the drawer. The native select abbreviates the visible option at narrow width while a wrapped Selected paragraph exposes the complete value. Planned/business-date guidance, manual retry, page controls and draft form fields remain readable. Selected value survives a search returning different references and a failed read; scoped axe, keyboard/refocus, Enter guard, server validation/error-summary links and page-overflow checks passed. No horizontal clipping in the inspected fieldset/selected text. This is scoped evidence, not full WCAG/manual assistive conformance.

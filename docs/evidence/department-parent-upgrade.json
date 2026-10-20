@@ -1,0 +1,9 @@
+{
+  "status": "PASSED",
+  "fromSchemaVersion": 65,
+  "toSchemaVersion": 68,
+  "unchangedBusinessTables": 73,
+  "unchangedProjections": 15,
+  "newJournalRows": 0,
+  "historicalMigrationsRewritten": false
+}

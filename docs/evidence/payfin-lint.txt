@@ -1,0 +1,11 @@
+
+> erporg@0.1.0 lint
+> eslint --max-warnings=0
+
+
+/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/payroll-accounting.spec.ts
+  243:9  error  'records' is never reassigned. Use 'const' instead  prefer-const
+
+✖ 1 problem (1 error, 0 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+

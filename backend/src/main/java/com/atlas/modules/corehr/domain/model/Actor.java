@@ -29,7 +29,9 @@ public record Actor(String subject, String tenant, String employeeId, String nam
   }
 
   public boolean canReadField(Employee employee, String field) {
-    return canRead(employee)
+    return field != null
+        && ChangeRequest.FIELDS.contains(field)
+        && canRead(employee)
         && (!ChangeRequest.PRIVATE_FIELDS.contains(field)
             || hr()
             || employeeId.equals(employee.id()));
@@ -37,6 +39,8 @@ public record Actor(String subject, String tenant, String employeeId, String nam
 
   public boolean canChange(Employee employee, String field) {
     if (employee.status().equals("Ended")) return false;
+    if (java.util.Set.of("calendarCode", "legalEntityCode").contains(field))
+      return hr() && canRead(employee);
     if (field.equals("name"))
       return canRead(employee) && (hr() || employeeId.equals(employee.id()));
     return canReadField(employee, field)

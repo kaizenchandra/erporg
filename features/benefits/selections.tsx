@@ -2,6 +2,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { api, ApiError } from "@/lib/api";
 import type { Actor } from "@/lib/contracts";
+import { WithdrawSelectionForm } from "./withdraw-selection";
 import { Modal, formatDate } from "@/components/ui/primitives";
 export type SelectablePlan = {
   code: string;
@@ -10,7 +11,8 @@ export type SelectablePlan = {
   monthlyContribution: string;
 };
 type Dependant = { name: string; relationship: string };
-type Selection = {
+export type Selection = {
+  requestedBy: string;
   currency: string;
   monthlyContribution: string;
   id: string;
@@ -29,9 +31,15 @@ type Selection = {
     actor: string;
     reason: string;
     recordedAt: string;
+    correlationId: string;
   }[];
 };
-type SelectionPage = { items: Selection[]; total: number };
+export type SelectionPage = {
+  items: Selection[];
+  total: number;
+  page: number;
+  size: number;
+};
 export function BenefitSelections({
   actor,
   plan,
@@ -41,6 +49,9 @@ export function BenefitSelections({
   plan: SelectablePlan | null;
   onPlanClose: () => void;
 }) {
+  const [withdrawing, setWithdrawing] = useState<Selection | null>(null);
+  const heading = useRef<HTMLHeadingElement>(null),
+    restoreFocus = useRef(false);
   const [page, setPage] = useState(0),
     [revision, setRevision] = useState(0),
     [review, setReview] = useState<Selection | null>(null),
@@ -76,6 +87,12 @@ export function BenefitSelections({
       });
     return () => controller.abort();
   }, [key, page]);
+  useEffect(() => {
+    if (current?.data && restoreFocus.current) {
+      restoreFocus.current = false;
+      heading.current?.focus();
+    }
+  }, [current]);
   const saved = () => {
     onPlanClose();
     setReview(null);
@@ -86,7 +103,7 @@ export function BenefitSelections({
   };
   return (
     <section aria-label="Benefit selections">
-      <h3>
+      <h3 ref={heading} tabIndex={-1}>
         {actor.role === "HR"
           ? "Benefit review and selections"
           : "Your benefit selections"}
@@ -143,13 +160,25 @@ export function BenefitSelections({
                     {s.history.map((h, i) => (
                       <p key={i}>
                         {h.action} · {h.actor} · {h.reason} ·{" "}
-                        {new Date(h.recordedAt).toISOString()}
+                        {new Date(h.recordedAt).toISOString()} · Correlation:{" "}
+                        {h.correlationId}
                       </p>
                     ))}
                   </details>
+                  {s.status === "PENDING" &&
+                    s.employeeId === actor.employeeId &&
+                    s.requestedBy === actor.subject && (
+                      <button
+                        className="button secondary"
+                        onClick={() => setWithdrawing(s)}
+                      >
+                        Withdraw benefit selection
+                      </button>
+                    )}
                   {actor.role === "HR" &&
                     s.status === "PENDING" &&
-                    s.employeeId !== actor.employeeId && (
+                    s.employeeId !== actor.employeeId &&
+                    s.requestedBy !== actor.subject && (
                       <button
                         className="button primary"
                         onClick={() => setReview(s)}
@@ -181,8 +210,27 @@ export function BenefitSelections({
           </div>
         </>
       )}
+      {withdrawing && (
+        <WithdrawSelectionForm
+          selection={withdrawing}
+          onClose={() => {
+            restoreFocus.current = true;
+            setWithdrawing(null);
+            setRevision((n) => n + 1);
+          }}
+          onSaved={() => {
+            restoreFocus.current = true;
+            setWithdrawing(null);
+            setNotice(
+              "Benefit selection withdrawn. History is retained; you may submit a fresh eligible selection.",
+            );
+            setPage(0);
+            setRevision((n) => n + 1);
+          }}
+        />
+      )}
       {(plan || review) && (
-        <SelectionForm
+        <BenefitSelectionForm
           plan={plan}
           review={review}
           onClose={() => {
@@ -195,7 +243,7 @@ export function BenefitSelections({
     </section>
   );
 }
-function SelectionForm({
+export function BenefitSelectionForm({
   plan,
   review,
   onClose,

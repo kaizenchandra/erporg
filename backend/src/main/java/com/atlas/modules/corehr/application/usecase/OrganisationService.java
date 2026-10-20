@@ -102,6 +102,7 @@ public final class OrganisationService implements OrganisationUseCases {
       throw new IllegalArgumentException("A valid idempotency key is required.");
     return tx.run(
         () -> {
+          store.lockHierarchy(actor.tenant());
           var previous = store.duplicate(actor.tenant(), actor.subject(), c.idempotencyKey());
           if (previous.isPresent()) {
             if (!previous

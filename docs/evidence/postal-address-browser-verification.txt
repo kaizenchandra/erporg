@@ -1,0 +1,6 @@
+Local final-build workflow regression
+Command: npx playwright test
+Result: 85 passed, 1 OIDC-only skipped (3.9m).
+Includes all three structured postal tests, real UI -> API -> PostgreSQL -> independent HR approval -> effective profile/history, error preservation, successful POST/lost response retry with identical receipt, typed contracts, manager/unrelated-employee/tenant denial, future effect, country validation, replay and legacy editor cancellation.
+After this full run, a maximum-length presentation fixture exposed horizontal overflow. The wrapping-only CSS correction was built and verified by the focused final checks; the complete suite was not repeated after that CSS-only change.
+Earlier diagnostic runs were not passing evidence: corrected native-dialog/error/mobile selectors and a compile-while-serving build-directory collision. No business history was deleted; synthetic schemas retained.

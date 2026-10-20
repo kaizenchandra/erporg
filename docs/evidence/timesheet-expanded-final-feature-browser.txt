@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:50600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/timesheet-management.spec.ts:100:5 › returned hours are corrected in the editor, resubmitted and independently approved (2.9s)
+  ✓  2 tests/timesheet-management.spec.ts:222:5 › HR controls persist with history; selected manager approvals commit once; mobile controls are accessible (3.2s)
+  ✓  3 tests/timesheet-management.spec.ts:374:5 › worker recalls a pending submission through the connected detail screen (1.3s)
+
+  3 passed (8.7s)

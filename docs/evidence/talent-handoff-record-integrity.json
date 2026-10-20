@@ -1,0 +1,67 @@
+{
+  "recordedAt": "2026-10-20T21:31:30.011332+00:00",
+  "schema": "atlas_payfin_browser_20261021f",
+  "scope": "Read-only checks for local synthetic talent snapshots; not restore or release certification.",
+  "result": "PASSED",
+  "controls": {
+    "missingLatestAudit": 0,
+    "invalidCompensationBudget": 0,
+    "missingPayrollIntake": 0,
+    "invalidLearningExpiry": 0,
+    "invalidCompletedReview": 0,
+    "incompleteActivatedPlan": 0,
+    "invalidScenarioCost": 0,
+    "completedJoiningPlans": 7,
+    "completedReviews": 7,
+    "completedLearning": 7,
+    "approvedCompensation": 6,
+    "enabledGuards": 27
+  },
+  "failures": [],
+  "tableManifests": {
+    "tal_requisition": {
+      "rows": 10,
+      "sha256": "14a69b32db2821c6f863d52d7d66f9f1c66762dafd2941468b311e1a6c497ebd"
+    },
+    "tal_onboarding": {
+      "rows": 9,
+      "sha256": "778292629731b825bbc7a121af1163ba085272ec4a622773425fa5e7a0be51e8"
+    },
+    "tal_review": {
+      "rows": 7,
+      "sha256": "414e0080efc27d08b9935e11cf3dac972cc3c1f8fea925badca5571fad8ad9f4"
+    },
+    "tal_course": {
+      "rows": 7,
+      "sha256": "95cad0b63f293393ac9bd8d656212c6777dd2995d1b2ef4e02e320577ab71381"
+    },
+    "tal_enrollment": {
+      "rows": 7,
+      "sha256": "c19ed3466312667ce7276f662d82b1f40f8ee6acc5a87c98eb5276e3518ab533"
+    },
+    "tal_compensation": {
+      "rows": 6,
+      "sha256": "91c8bf64fce6c21eab102e6aa478f40fc05bf486b8edebec3e15b046aacdac0e"
+    },
+    "tal_succession": {
+      "rows": 6,
+      "sha256": "e728b2ca2e544a1ac05aee2b23dda3d815b941ed5ec035d3294bee4ea1a29f95"
+    },
+    "tal_scenario": {
+      "rows": 6,
+      "sha256": "6ed01838610acb99cf5f428e3689c47411c7a6dfaaeb68de99020e874a7f1722"
+    },
+    "tal_command": {
+      "rows": 232,
+      "sha256": "eed90671f0dd67e35a3fe6f63205be40f85c5135d77c860a4809347abae8fc8c"
+    },
+    "tal_audit": {
+      "rows": 241,
+      "sha256": "435f24cb87a8ab2eaf7863701b6dc4b268cda710959d9b8a3548cdfa8e6f2546"
+    },
+    "pay_talent_intake": {
+      "rows": 6,
+      "sha256": "2cf1effb8e582f6ce1aa6dab20215fbb855192da388b92a61f8705b22ad416eb"
+    }
+  }
+}

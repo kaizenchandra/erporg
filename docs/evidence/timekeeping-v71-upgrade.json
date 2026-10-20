@@ -1,0 +1,14 @@
+{
+  "status": "PASSED",
+  "fromVersion": 70,
+  "toVersion": 71,
+  "unchangedBusinessTables": 79,
+  "unchangedViews": 15,
+  "retainedTimeRows": {
+    "time_shift": 3,
+    "time_sheet": 2,
+    "time_costing_entry": 2,
+    "time_command": 14,
+    "time_audit": 14
+  }
+}

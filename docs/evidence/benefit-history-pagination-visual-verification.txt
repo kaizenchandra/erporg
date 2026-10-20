@@ -1,0 +1,2 @@
+BE visual review, 2026-10-20
+Inspected final390x844 Chrome controls and long-event screenshots. Exact-code/order/size controls, separate UTC/effective dates and long Unicode reasons fit without horizontal overflow; next/previous/refresh targets and the next benefit-review section remain distinct. Mobile axe and keyboard/focused retry tests passed. Scoped visual/automated evidence only; full manual WCAG/assistive-technology review remains open.

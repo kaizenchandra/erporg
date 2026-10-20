@@ -1,0 +1,10 @@
+{
+  "recordedAt": "2026-10-20T21:18:31.267107+00:00",
+  "result": "PASSED",
+  "scope": "Authenticated loopback talent recovery reads; no business mutation or external processing.",
+  "rolesChecked": 4,
+  "capabilityRegistersChecked": 8,
+  "historiesAvailable": true,
+  "ownershipAndTenantDenials": true,
+  "payrollIntakesReconciled": 3
+}

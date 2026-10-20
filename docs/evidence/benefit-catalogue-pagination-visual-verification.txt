@@ -1,0 +1,2 @@
+BF visual review, 2026-10-20
+Inspected final390x844 Chrome screenshot after the full suite. Search/eligibility/order/page-size controls, singular result/range, exact contribution and card selection fit without horizontal overflow. Pagination/refresh remain available by scrolling. Keyboard focus, injected error recovery and mobile axe/overflow passed. Scoped automated/visual evidence only, not full manual WCAG/assistive review.

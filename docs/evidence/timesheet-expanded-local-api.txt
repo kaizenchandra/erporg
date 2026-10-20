@@ -1,0 +1,372 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-20T22:05:23.078+05:30  INFO 45233 --- [atlas-api] [           main] com.atlas.AtlasApplication               : Starting AtlasApplication v0.1.0 using Java 21.0.12.1 with PID 45233 (/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-20T22:05:23.080+05:30  INFO 45233 --- [atlas-api] [           main] com.atlas.AtlasApplication               : The following 2 profiles are active: "local", "acceptance"
+2026-10-20T22:05:23.859+05:30  INFO 45233 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-10-20T22:05:23.874+05:30  INFO 45233 --- [atlas-api] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-20T22:05:23.874+05:30  INFO 45233 --- [atlas-api] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-20T22:05:23.893+05:30  INFO 45233 --- [atlas-api] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 791 ms
+2026-10-20T22:05:24.178+05:30  INFO 45233 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-20T22:05:24.287+05:30  INFO 45233 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@7d18338b
+2026-10-20T22:05:24.288+05:30  INFO 45233 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-20T22:05:24.302+05:30  INFO 45233 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_acceptance (PostgreSQL 18.6)
+2026-10-20T22:05:24.358+05:30  INFO 45233 --- [atlas-api] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 75 migrations (execution time 00:00.031s)
+2026-10-20T22:05:24.403+05:30  INFO 45233 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_acceptance": 71
+2026-10-20T22:05:24.410+05:30  INFO 45233 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_acceptance" to version "72 - timesheet return and recall"
+2026-10-20T22:05:24.450+05:30  INFO 45233 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_acceptance" to version "73 - timesheet period controls"
+2026-10-20T22:05:24.482+05:30  INFO 45233 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_acceptance" to version "74 - timesheet bulk receipts"
+2026-10-20T22:05:24.495+05:30  INFO 45233 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 3 migrations to schema "atlas_acceptance", now at version v74 (execution time 00:00.045s)
+2026-10-20T22:05:25.106+05:30  INFO 45233 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-20T22:05:25.489+05:30  INFO 45233 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-20T22:05:25.523+05:30  INFO 45233 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-10-20T22:05:25.527+05:30  INFO 45233 --- [atlas-api] [           main] com.atlas.AtlasApplication               : Started AtlasApplication in 2.717 seconds (process running for 3.074)
+2026-10-20T22:06:14.898+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-20T22:06:14.899+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-20T22:06:14.902+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2026-10-20T22:06:14.976+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=284eb4ae-afcb-4252-bd4c-79a4093443b8 status=200 duration_ms=70
+2026-10-20T22:06:15.198+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=482049b5-3dd3-4005-8dce-d60bd57573b3 status=204 duration_ms=211
+2026-10-20T22:06:15.221+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=6a302e16-385c-49b8-a5fc-0f1f03979705 status=200 duration_ms=9
+2026-10-20T22:06:15.304+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=dc84c883-b3f8-44da-abc0-7cbbcd524464 status=204 duration_ms=78
+2026-10-20T22:06:15.319+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=673eaf5d-48cd-4d12-ba10-66a05cd0592a status=200 duration_ms=10
+2026-10-20T22:06:15.489+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=14612ef1-ced0-4210-895a-592ba3d11e11 status=200 duration_ms=165
+2026-10-20T22:06:15.527+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=42e2a171-9904-43c3-8e18-c2f6c9f7e900 status=200 duration_ms=11
+2026-10-20T22:06:15.596+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=63c54697-d33c-45ec-84e4-269d507f7efe status=200 duration_ms=64
+2026-10-20T22:06:15.733+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=7113f075-dc4d-4c6d-877c-593510465a02 status=200 duration_ms=1
+2026-10-20T22:06:15.745+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=17e6b775-dca6-4831-a452-6e9f3e47234b status=401 duration_ms=23
+2026-10-20T22:06:15.804+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=dcbe1adb-dfaf-46f0-aa7d-9a2ba9ecfbd6 status=200 duration_ms=6
+2026-10-20T22:06:15.912+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=4c394e48-291c-4dd0-8b70-1f94f6e8a316 status=204 duration_ms=78
+2026-10-20T22:06:15.929+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=32f51099-0bd7-4fd6-a170-e30827fe6c3d status=200 duration_ms=14
+2026-10-20T22:06:15.953+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=a746a9c6-0d32-43a4-b448-340e330e4beb status=200 duration_ms=21
+2026-10-20T22:06:15.981+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=31ea5ca1-2055-492b-901d-25b00ffa5405 status=200 duration_ms=48
+2026-10-20T22:06:15.984+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=4c5de5c9-b3da-42b7-9f90-a6d371e74cc0 status=200 duration_ms=50
+2026-10-20T22:06:16.005+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=a2788020-dc73-41cf-befd-66b03d6892d4 status=200 duration_ms=73
+2026-10-20T22:06:16.203+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=42aa8ac2-e203-4b3e-b502-7cceed97f6d6 status=200 duration_ms=42
+2026-10-20T22:06:16.224+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=79ed5bcd-d8b9-4bce-9be3-fc28f6dca672 status=200 duration_ms=42
+2026-10-20T22:06:16.298+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=c8ed2975-b294-440d-bcb2-f0c933dea7b1 status=200 duration_ms=66
+2026-10-20T22:06:16.400+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=5d04fdbf-c526-4286-9945-af76cb5bdce5 status=200 duration_ms=48
+2026-10-20T22:06:16.490+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=b0b41494-f76c-4d21-9253-7300306a5d1b status=200 duration_ms=85
+2026-10-20T22:06:16.581+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=26629651-29dd-49a9-8aa1-916bebd48cb6 status=200 duration_ms=26
+2026-10-20T22:06:16.661+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=4fc36bb6-a1a3-495f-aaab-c379c9efdd0c status=400 duration_ms=76
+2026-10-20T22:06:48.734+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=403e4a97-e62e-4d7f-ae7e-6e542a60152c status=200 duration_ms=12
+2026-10-20T22:06:48.834+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=64345862-03a3-4620-9d61-5163cf02605e status=204 duration_ms=92
+2026-10-20T22:06:48.845+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=15317087-0468-4649-912f-08556a0c2d47 status=200 duration_ms=5
+2026-10-20T22:06:48.935+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=decb9836-965b-4619-9b5c-eaedb57534be status=204 duration_ms=79
+2026-10-20T22:06:48.953+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=296d9d1b-e125-4c33-a53f-cd4c3c0abf4f status=200 duration_ms=14
+2026-10-20T22:06:49.005+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=b553dbbf-3dfb-4a34-83b3-6c93e5158e83 status=200 duration_ms=49
+2026-10-20T22:06:49.042+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=db612d6c-7dba-4ca6-ac1b-ce41912282ce status=200 duration_ms=8
+2026-10-20T22:06:49.094+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=f2759662-a21a-47d1-87ef-e375478ec4d8 status=200 duration_ms=48
+2026-10-20T22:06:49.180+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=3c217d30-719d-46e3-ad01-960b0444072d status=200 duration_ms=1
+2026-10-20T22:06:49.183+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=6ddbb879-429f-4f6a-b7c1-4a6625537d52 status=401 duration_ms=6
+2026-10-20T22:06:49.270+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=a1be3d44-2b28-4411-883b-eeab6955b36c status=200 duration_ms=9
+2026-10-20T22:06:49.381+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=85eee480-dff2-417b-8812-95034d5ae9ea status=204 duration_ms=88
+2026-10-20T22:06:49.406+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=808923ad-23c4-4ff7-a32a-14dc1ff5d74b status=200 duration_ms=22
+2026-10-20T22:06:49.430+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=394f77b0-b9b6-4edf-beb5-d8b787b95ea4 status=200 duration_ms=20
+2026-10-20T22:06:49.432+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=b2a59cc7-0a59-4e6e-95b9-478fc7d88ac8 status=200 duration_ms=23
+2026-10-20T22:06:49.434+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=784e95a3-7f8c-4cab-8661-588a55b1509e status=200 duration_ms=24
+2026-10-20T22:06:49.446+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=d46e4101-a1f7-4ac6-aa30-62c6cc0424e8 status=200 duration_ms=37
+2026-10-20T22:06:49.652+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=9fd89d92-e4b1-40d5-b704-4bf247a9e0c1 status=200 duration_ms=50
+2026-10-20T22:06:49.665+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=b5eee138-c4fd-4f55-8c73-ee80b6ed72d0 status=200 duration_ms=20
+2026-10-20T22:06:49.733+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=969f8e5e-1987-43c4-b9a6-4b0c07a40a54 status=200 duration_ms=55
+2026-10-20T22:06:49.853+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=f77f4563-d2b4-4d6a-97ba-6c7c9b6c6564 status=200 duration_ms=57
+2026-10-20T22:06:49.882+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=7b1bc23a-a636-442a-a760-656829effc9d status=200 duration_ms=23
+2026-10-20T22:07:50.434+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=823e92f6-8556-44fb-9261-238fc1578081 status=200 duration_ms=42
+2026-10-20T22:07:50.534+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=37280f69-4ae2-4fc1-92b7-c8ec721414cf status=204 duration_ms=86
+2026-10-20T22:07:50.555+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=2442174c-9c51-40c7-9ed4-b2cd7a2f8a13 status=200 duration_ms=13
+2026-10-20T22:07:50.646+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=bf3cb56c-72c9-43b1-a52a-4140928b9e5a status=204 duration_ms=82
+2026-10-20T22:07:50.669+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=31db9691-052e-44b9-8e41-563298a89b3b status=200 duration_ms=18
+2026-10-20T22:07:50.799+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=11abb2e5-22b1-4cfa-8720-fe1e8cefb71d status=200 duration_ms=125
+2026-10-20T22:07:50.842+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=95a55de0-0e36-4330-9487-d97504df30ca status=200 duration_ms=10
+2026-10-20T22:07:50.930+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=bff44a0b-8000-4aae-abd7-283435456518 status=200 duration_ms=84
+2026-10-20T22:07:51.086+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=a03fca89-0c63-4d6d-8f41-91ecb3f88faa status=200 duration_ms=2
+2026-10-20T22:07:51.094+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=55ebe173-c03e-401d-9d73-b4b8766f8eb4 status=401 duration_ms=11
+2026-10-20T22:07:51.171+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=939cface-3d89-4331-87da-4fc5b36eed56 status=200 duration_ms=7
+2026-10-20T22:07:51.283+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=9eae57b5-6797-4c5b-b82c-bc6f53cbc105 status=204 duration_ms=86
+2026-10-20T22:07:51.318+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=2ed4dbcb-2c4c-4b18-a57a-887d2853835e status=200 duration_ms=32
+2026-10-20T22:07:51.357+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=f2f28243-23d6-4473-abfe-17ab5ca5b4fd status=200 duration_ms=30
+2026-10-20T22:07:51.366+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=47ac3994-edc9-4761-93ce-10630ad06dca status=200 duration_ms=39
+2026-10-20T22:07:51.370+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=7cd45392-0183-437f-bf19-394b1f9d24b4 status=200 duration_ms=42
+2026-10-20T22:07:51.385+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=c52a1690-bee4-4b08-beb4-8eccafa3c6ea status=200 duration_ms=61
+2026-10-20T22:07:51.605+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=7785577f-f660-43b6-8292-240b83884e1a status=200 duration_ms=62
+2026-10-20T22:07:51.675+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=bca32cfb-113e-40ab-bb06-a14b8a440d10 status=200 duration_ms=39
+2026-10-20T22:07:51.789+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=cb5f9f07-c8ca-4b1f-b538-c075a1fe54ad status=200 duration_ms=94
+2026-10-20T22:07:51.942+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=f325cfe1-662a-40f7-8a62-73de042a2262 status=200 duration_ms=28
+2026-10-20T22:07:51.960+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=1a8fc137-7c24-4d91-9b7a-a5b66da63d80 status=200 duration_ms=14
+2026-10-20T22:07:52.083+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=4ac1cfae-5fd2-4de8-bc30-ad8ec80656d5 status=200 duration_ms=8
+2026-10-20T22:07:52.163+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=fa6edafa-dcb3-4828-99c9-344a63215a4f status=200 duration_ms=73
+2026-10-20T22:07:52.217+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=94eae353-1aa1-4891-9360-a4432bb0e970 status=200 duration_ms=50
+2026-10-20T22:07:52.218+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=6332361b-0ff5-4e15-981e-0a67433d34e3 status=204 duration_ms=10
+2026-10-20T22:07:52.242+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=34f0878f-25a8-4b67-ae9c-a2088735680c status=200 duration_ms=1
+2026-10-20T22:07:52.262+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=4acc6b13-fadd-408a-b9f2-6ab9ef17c41d status=401 duration_ms=21
+2026-10-20T22:07:52.339+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=751a2b46-c509-49c4-a261-eeb3fe5ffec6 status=200 duration_ms=10
+2026-10-20T22:07:52.427+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=4e22b7ce-8a3b-49ee-afb5-8cef47823cbe status=204 duration_ms=84
+2026-10-20T22:07:52.440+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=cda35bc4-71b4-48ad-b5e6-5fd996685515 status=200 duration_ms=10
+2026-10-20T22:07:52.465+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=5c267302-47ce-458a-8b6b-86b47a30d62d status=200 duration_ms=20
+2026-10-20T22:07:52.467+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=110d0568-324f-464c-9432-d2cdd885101a status=200 duration_ms=23
+2026-10-20T22:07:52.471+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=0e77b5fa-2f44-4239-8299-22ab51001f11 status=200 duration_ms=28
+2026-10-20T22:07:52.474+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=01b834ab-d138-4269-95bc-52ac8688356b status=200 duration_ms=30
+2026-10-20T22:07:52.648+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=963ff087-b60a-4d24-bb41-830e926a81c8 status=200 duration_ms=18
+2026-10-20T22:07:52.750+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=eb3bce5b-469e-40a5-a380-7944b973e5f9 status=200 duration_ms=24
+2026-10-20T22:07:52.802+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=0dca3c27-7449-423c-8bc1-08fb306c46e0 status=200 duration_ms=41
+2026-10-20T22:07:52.812+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=49eeaf4d-8b7d-4ea0-9c28-225d073debac status=200 duration_ms=40
+2026-10-20T22:07:52.925+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=bebe1c6b-6e76-4bfc-814c-5e41a51db77c status=200 duration_ms=31
+2026-10-20T22:07:52.948+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=b0d93c12-33c6-4711-9eac-0c97a7771c23 status=200 duration_ms=19
+2026-10-20T22:07:53.118+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=03d6964c-8b14-4b4a-ae9f-e3dd66d6ed7f status=200 duration_ms=9
+2026-10-20T22:07:53.183+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=af2d59c0-3f46-42b2-926d-5f3a0f2e1abe status=200 duration_ms=45
+2026-10-20T22:07:53.204+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=254e47a0-27c6-4550-bf66-a4957c9c8f7b status=200 duration_ms=16
+2026-10-20T22:08:55.954+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=c5e9df7a-3c52-4862-bfe7-2c4bea5346a7 status=200 duration_ms=46
+2026-10-20T22:08:56.059+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=8db2ba72-3abc-429f-9621-b81451ecfbef status=204 duration_ms=88
+2026-10-20T22:08:56.073+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=9eb82a81-3e79-47a0-a98d-ef7d0847fd79 status=200 duration_ms=7
+2026-10-20T22:08:56.156+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=70c9c8b9-f5b5-428a-9339-43acce0a7b07 status=204 duration_ms=79
+2026-10-20T22:08:56.167+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=97dbaea3-d0be-4531-8cbc-538dd495d714 status=200 duration_ms=8
+2026-10-20T22:08:56.252+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=bf147297-f712-4600-8e71-82ebb34c755b status=200 duration_ms=80
+2026-10-20T22:08:56.301+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=7e5c6a49-42d7-40c4-abdc-9807c40a0555 status=200 duration_ms=13
+2026-10-20T22:08:56.355+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=17575c13-1155-45d8-a004-54a4711c5a9c status=200 duration_ms=50
+2026-10-20T22:08:56.466+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=77f139ea-19a8-48b8-816b-f93d6884fd57 status=200 duration_ms=0
+2026-10-20T22:08:56.471+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=9ac3b4fa-1c39-4feb-a48e-dd2c9cb984ac status=401 duration_ms=5
+2026-10-20T22:08:56.540+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=0d28df91-883a-4d4a-ab29-347ee30d90e7 status=200 duration_ms=8
+2026-10-20T22:08:56.651+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=aae91136-7575-497f-a51d-2116f9337e44 status=204 duration_ms=78
+2026-10-20T22:08:56.663+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=8f78c904-d28f-49f4-83f1-d5bcb25c2f2a status=200 duration_ms=9
+2026-10-20T22:08:56.679+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=b79cb5a7-98ef-49f6-a597-dddb77e71e9b status=200 duration_ms=14
+2026-10-20T22:08:56.684+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=0c247e42-1c69-4916-bdc4-305c434c60bd status=200 duration_ms=17
+2026-10-20T22:08:56.687+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=5d704bbf-71c6-4ee7-827f-f44996bc4bb8 status=200 duration_ms=21
+2026-10-20T22:08:56.696+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=31ebcd8a-2183-4e65-9b9c-988ec0b58573 status=200 duration_ms=31
+2026-10-20T22:08:56.898+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=4e1e2dc3-9c72-4d86-ab18-b7ba47d7e947 status=200 duration_ms=45
+2026-10-20T22:08:56.981+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=71f8ee25-47b4-49b9-9c3d-ffb678f276f9 status=200 duration_ms=32
+2026-10-20T22:08:57.047+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=01a2352a-2bbc-49ee-a480-32e3cbba99db status=200 duration_ms=67
+2026-10-20T22:08:57.118+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=cb43bc48-2499-4d4b-b1fa-40c84f822b94 status=200 duration_ms=21
+2026-10-20T22:08:57.166+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=bdc105a8-14c7-401f-a671-54af712cde36 status=200 duration_ms=42
+2026-10-20T22:08:57.239+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=b2d1a979-0aa6-48b0-9027-fcfa5ceec64f status=200 duration_ms=10
+2026-10-20T22:08:57.301+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=fdfc7fd5-8cba-4a7c-81cd-51650df68032 status=200 duration_ms=59
+2026-10-20T22:08:57.364+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=34b64ecb-e1cc-47e4-8cb0-c3f1fc287b10 status=200 duration_ms=58
+2026-10-20T22:08:57.386+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=ca086413-8f42-4cc5-aead-330e35bf0cff status=204 duration_ms=7
+2026-10-20T22:08:57.415+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=fb5747bd-f1ed-4286-bb9a-6a2a6c51a20f status=200 duration_ms=1
+2026-10-20T22:08:57.420+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=92c6ed55-f6b4-4863-8985-9d90f08d13a7 status=401 duration_ms=6
+2026-10-20T22:08:57.486+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=29ded291-8947-4026-8c22-b56485efb4e0 status=200 duration_ms=7
+2026-10-20T22:08:57.571+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=16896564-2566-4464-8c07-feff8afc6fe7 status=204 duration_ms=78
+2026-10-20T22:08:57.583+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=265380c3-c190-46f6-9150-f8929b123272 status=200 duration_ms=9
+2026-10-20T22:08:57.610+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=376c31b4-8282-48ff-86f2-457898b7cf1e status=200 duration_ms=23
+2026-10-20T22:08:57.612+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=fb6c7f8f-9e42-4798-8e38-6b44dfa8fa7f status=200 duration_ms=26
+2026-10-20T22:08:57.615+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=d8ed2d8d-0ad0-49b8-94f7-5446f02431d3 status=200 duration_ms=28
+2026-10-20T22:08:57.618+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=3a5299a8-45fe-4e0c-bac3-6f0a82ffd0ee status=200 duration_ms=31
+2026-10-20T22:08:57.792+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=28bc84ba-6985-4a7e-a9e5-9017a70610c0 status=200 duration_ms=18
+2026-10-20T22:08:57.887+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=a33e3d6a-c7fd-4737-aeef-9790d943bd83 status=200 duration_ms=23
+2026-10-20T22:08:57.928+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=9f41415c-5275-450a-b4a0-180e3f6fd77d status=200 duration_ms=29
+2026-10-20T22:08:57.933+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=e367f209-e8f7-484b-b061-7cbe1135f1e3 status=200 duration_ms=22
+2026-10-20T22:08:58.005+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=a19ec7dd-cea3-450e-aef7-2a8d71d5dd44 status=200 duration_ms=24
+2026-10-20T22:08:58.022+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=1276f40f-1e81-4945-b689-1e3c6e1272f2 status=200 duration_ms=13
+2026-10-20T22:08:58.210+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=52e15826-91c8-4f76-8939-edd3ce657571 status=200 duration_ms=13
+2026-10-20T22:08:58.252+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=8a80da58-0675-4bd0-b985-f92e0ddf068b status=200 duration_ms=39
+2026-10-20T22:08:58.273+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=0a89242e-50f2-4968-b4f2-cd240f434682 status=200 duration_ms=16
+2026-10-20T22:08:58.331+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=0f62bfd6-9877-4fd7-ab50-c9721071d8d8 status=200 duration_ms=17
+2026-10-20T22:08:58.381+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=f4958af8-8505-4c8a-b249-f2a6763cb5f8 status=200 duration_ms=20
+2026-10-20T22:08:58.402+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=7a9fe12c-4cd5-4de7-b308-55dd39733136 status=200 duration_ms=17
+2026-10-20T22:08:58.508+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=f2c0a491-82b2-43c8-ad70-fb764fd94c8f status=200 duration_ms=47
+2026-10-20T22:08:58.526+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=6e9b8591-777d-43b2-b12f-ee4d9acb7400 status=200 duration_ms=14
+2026-10-20T22:08:58.600+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=187ec254-c96c-4d9a-9ded-44bdcb5520c3 status=200 duration_ms=28
+2026-10-20T22:08:58.610+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=3ae8dd8d-5386-4de0-b2a6-8caedcded28f status=200 duration_ms=7
+2026-10-20T22:08:58.668+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=239d7d3c-6359-4b06-a329-e65955d5d9ef status=200 duration_ms=54
+2026-10-20T22:08:58.702+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=aec0f7fd-5963-48cd-9018-b331afbee174 status=200 duration_ms=19
+2026-10-20T22:08:58.968+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=c6246386-6e7f-444a-8b59-1f45d1aeae19 status=200 duration_ms=12
+2026-10-20T22:08:59.063+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=0b8be8a2-3770-4704-9193-3dee0a95d6da status=204 duration_ms=90
+2026-10-20T22:08:59.073+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=953c4c76-098b-47ee-aef7-bb60f0194d3a status=200 duration_ms=5
+2026-10-20T22:08:59.163+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=9ea5ce0a-2822-40b3-9b97-b175c111bc34 status=204 duration_ms=88
+2026-10-20T22:08:59.173+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=082da307-8138-4316-b5f8-1b24fed5853e status=200 duration_ms=6
+2026-10-20T22:08:59.256+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=b558ed42-3904-4ffd-8ff6-81509ec8d589 status=204 duration_ms=80
+2026-10-20T22:08:59.335+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=7ac22ee0-f24b-4bc5-9e9d-1610e1b3ea13 status=200 duration_ms=1
+2026-10-20T22:08:59.344+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=569154a9-bcef-4209-9acf-dda9a40e65b8 status=401 duration_ms=10
+2026-10-20T22:08:59.413+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=e98a147d-3dba-403a-9ff6-80d55e80db47 status=200 duration_ms=13
+2026-10-20T22:08:59.517+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=89b12ad4-dc3a-4ceb-98bb-50ca4ef79b2e status=204 duration_ms=82
+2026-10-20T22:08:59.542+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=da97f1e2-9441-4980-8cb0-b6f0503bc95e status=200 duration_ms=23
+2026-10-20T22:08:59.570+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=015d7cf3-2de5-49ad-9217-205efe9f1ea3 status=200 duration_ms=25
+2026-10-20T22:08:59.572+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=0aeb30ab-ed0a-403e-8349-ad05256a4236 status=200 duration_ms=26
+2026-10-20T22:08:59.575+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=d6ecedc7-f616-4c37-88dc-5cec68c142c2 status=200 duration_ms=30
+2026-10-20T22:08:59.592+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=603074a7-a31b-4322-9e01-4d4b86cc3c67 status=200 duration_ms=48
+2026-10-20T22:08:59.796+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=95e197e6-436c-47eb-9111-a6077dfb9161 status=200 duration_ms=44
+2026-10-20T22:08:59.813+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=32e51fcc-7e73-4a09-b384-85a42b9ff3ff status=200 duration_ms=25
+2026-10-20T22:08:59.856+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=2481f126-d2d1-49ae-89c8-8e5ee768cbab status=200 duration_ms=30
+2026-10-20T22:08:59.863+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=a174dbc2-a042-4770-9f40-bdc05b281541 status=200 duration_ms=20
+2026-10-20T22:09:00.043+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=aae5e0b8-5392-461c-ac19-20b710356b41 status=200 duration_ms=11
+2026-10-20T22:09:00.096+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=f8309840-8002-44c4-92a8-604b958e43ec status=200 duration_ms=49
+2026-10-20T22:09:00.121+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=92672b87-8a91-4d48-b533-d5283fb031d9 status=200 duration_ms=21
+2026-10-20T22:09:00.155+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=582f1841-96f6-45a4-81e9-5df48b6639b5 status=200 duration_ms=15
+2026-10-20T22:09:00.182+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=2f47102d-1dc5-40e2-bc18-074494cf6b5a status=200 duration_ms=16
+2026-10-20T22:09:00.192+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=57115ba3-f2ba-40a3-a611-e655f5cb2561 status=200 duration_ms=6
+2026-10-20T22:09:00.216+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=6ea350e0-b860-4b67-8068-da4c0d5009e0 status=403 duration_ms=21
+2026-10-20T22:09:00.711+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=510fe3ff-84b7-4673-940d-889218b4d7f5 status=200 duration_ms=14
+2026-10-20T22:09:00.785+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=f940dcf0-74cc-482f-9e8c-443e665094ec status=200 duration_ms=71
+2026-10-20T22:09:00.802+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=072af90b-d822-40fb-9a3e-0d0f765bac7f status=200 duration_ms=8
+2026-10-20T22:09:00.852+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=7931e3a9-f141-4676-b8eb-5ed7ba54f1d6 status=200 duration_ms=46
+2026-10-20T22:09:00.869+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=c7fef34a-a9f5-45bb-913a-12d94e298c4c status=200 duration_ms=7
+2026-10-20T22:09:00.904+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=5e958cbe-87e7-4c54-9e68-e98bcb0b0576 status=200 duration_ms=32
+2026-10-20T22:09:00.920+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=507c1219-7612-4b0f-8685-43e57c922cbe status=200 duration_ms=7
+2026-10-20T22:09:00.964+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=763fef1a-8573-4790-b0f5-1205acc828f1 status=200 duration_ms=41
+2026-10-20T22:09:00.986+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=2aa2a9dd-f127-4c43-97d6-deb7d8610adb status=204 duration_ms=4
+2026-10-20T22:09:01.006+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=e6dfe65d-f4b4-4f62-bee6-a0249d30e935 status=200 duration_ms=1
+2026-10-20T22:09:01.010+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=68be16a9-5fab-4f2c-b031-aad211df6363 status=401 duration_ms=5
+2026-10-20T22:09:01.074+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=67646101-0d5f-4d10-b1c5-bc54feee2820 status=200 duration_ms=7
+2026-10-20T22:09:01.155+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=79feba03-9c25-4b6a-9bd6-b67ac487f590 status=204 duration_ms=74
+2026-10-20T22:09:01.167+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=b732f5d9-6a0c-4ff0-8f82-bb57345d2f43 status=200 duration_ms=9
+2026-10-20T22:09:01.182+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=e8d88c67-5dc7-480c-8bd2-5b7de591c79b status=200 duration_ms=13
+2026-10-20T22:09:01.184+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=2e2b070d-567a-461e-8a65-5a6c1834369d status=200 duration_ms=15
+2026-10-20T22:09:01.187+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=7cf4b97b-7209-4eae-be19-d6ab229745a7 status=200 duration_ms=18
+2026-10-20T22:09:01.203+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=074f8485-11b0-4cef-aa8c-102bae06412e status=200 duration_ms=34
+2026-10-20T22:09:01.412+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=1ec513b9-a9d2-46ce-8c3b-50b1bb7ed11b status=200 duration_ms=53
+2026-10-20T22:09:01.498+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=4d9d0451-7175-4aea-9a25-0a04654e26f6 status=200 duration_ms=29
+2026-10-20T22:09:01.561+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=bb160907-eed7-49a0-8acd-9ce82460c63c status=200 duration_ms=60
+2026-10-20T22:09:01.731+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=3199f525-bf4d-47db-96b5-d6f25d4ca17e status=200 duration_ms=14
+2026-10-20T22:09:01.858+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=ccfce5a1-0574-47cb-aafb-596d23309a4a status=200 duration_ms=124
+2026-10-20T22:09:01.922+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=0ab80f50-01c8-40b0-afde-f01c61e8f215 status=200 duration_ms=58
+2026-10-20T22:09:02.113+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=03518d90-8075-4036-945a-0e616b7c0ca3 status=200 duration_ms=32
+2026-10-20T22:09:02.158+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=acc755e3-829e-4f22-80f7-09ec6d68e7d7 status=200 duration_ms=40
+2026-10-20T22:09:02.174+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=c5280d26-35a8-4866-a9ab-71322d1df052 status=200 duration_ms=11
+2026-10-20T22:09:02.248+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=a0274af8-eab0-41ea-b5c7-e922eba92773 status=409 duration_ms=68
+2026-10-20T22:11:56.604+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=e6b4168e-4a9c-4b9a-97ad-e7ec32c6b337 status=200 duration_ms=13
+2026-10-20T22:11:56.630+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=96f8c6e5-4ed7-4296-86c1-36b5e9c7c65b status=401 duration_ms=39
+2026-10-20T22:11:57.473+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=c4eca67d-f239-4d8d-b536-93553b93b996 status=200 duration_ms=37
+2026-10-20T22:11:57.611+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=cf801a0d-e67b-4143-acc6-e24555c6b8de status=204 duration_ms=131
+2026-10-20T22:11:57.656+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=ff4cec27-e1d6-45bc-b494-441960f01059 status=200 duration_ms=41
+2026-10-20T22:11:57.718+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=9cd30b6e-68ab-4bbb-b531-355158e4a91c status=200 duration_ms=51
+2026-10-20T22:11:57.723+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=a42ac98a-4fed-47ff-9c8f-7dfb432f89a1 status=200 duration_ms=59
+2026-10-20T22:11:57.736+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=2651f1b8-cfa1-4aab-8fdd-04022e98b207 status=200 duration_ms=67
+2026-10-20T22:11:57.771+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=e6770e51-c419-4177-86aa-e617df404af0 status=200 duration_ms=107
+2026-10-20T22:11:57.968+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=7e104619-fbd4-4ba1-83ed-bc6b8ce5b15c status=200 duration_ms=32
+2026-10-20T22:12:00.225+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=d52684ca-030a-446c-8789-66645e720f17 status=200 duration_ms=29
+2026-10-20T22:12:02.268+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=48012aef-8596-4a15-b4e5-e17f242271e6 status=200 duration_ms=66
+2026-10-20T22:12:02.270+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=ee33d8d0-b3f1-4d03-b436-09d96ee4d3bf status=200 duration_ms=68
+2026-10-20T22:12:03.087+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=a7dcab45-f6eb-43fb-92c9-3b0b376fc4e4 status=200 duration_ms=51
+2026-10-20T22:12:03.092+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=fcd38dd1-ef5e-495a-9522-8efc4c88f6dc status=200 duration_ms=56
+2026-10-20T22:12:06.029+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=12e12cee-0510-4dc9-8081-ba78e0028182 status=200 duration_ms=38
+2026-10-20T22:12:06.040+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=18acd360-1ee0-47b1-a93e-f1d42b4aecfc status=200 duration_ms=48
+2026-10-20T22:12:06.044+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=3cc57a6b-3e5d-44f3-88f3-083697caefae status=500 duration_ms=54
+2026-10-20T22:12:06.045+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=4e32944c-ea83-43d0-86cb-5c62cd4794c5 status=500 duration_ms=53
+Exception in thread "http-nio-8080-exec-9" Exception in thread "http-nio-8080-exec-7" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T22:12:07.392+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=ea184cc7-3d5d-41e1-85aa-9d73fb18a32f status=200 duration_ms=35
+2026-10-20T22:12:10.874+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=9b0d562f-272d-49a9-a9a3-109e2d394399 status=200 duration_ms=93
+2026-10-20T22:12:10.942+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=7a9bd8bc-f045-4fea-90f1-874353edc815 status=200 duration_ms=54
+2026-10-20T22:12:15.934+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=0d6cc927-6986-43e6-82ac-029b06dadf73 status=200 duration_ms=35
+2026-10-20T22:12:15.936+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=bfa5ce93-5b9b-4f84-b8e1-1e895e0c0875 status=200 duration_ms=38
+2026-10-20T22:12:18.589+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=1ea672db-bd7c-4e57-b7be-62d29dcba516 status=200 duration_ms=26
+2026-10-20T22:12:20.033+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=a0577bc7-f594-4c81-8f65-0ae5ae3d4dac status=500 duration_ms=29
+Exception in thread "http-nio-8080-exec-3" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T22:12:20.037+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-11] com.atlas.configuration.RequestGuard     : request_completed correlation=516006e0-23df-4953-8e03-55e49c87a5af status=500 duration_ms=30
+Exception in thread "http-nio-8080-exec-11" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T22:12:20.040+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-12] com.atlas.configuration.RequestGuard     : request_completed correlation=f6cfd424-de50-42a2-b49b-2bcb5cf00ca0 status=200 duration_ms=33
+2026-10-20T22:12:20.042+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=b46ab562-078d-466c-a580-57cd2730693e status=200 duration_ms=37
+2026-10-20T22:12:20.920+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=da502405-c96d-44a1-8b29-f04a37edd566 status=200 duration_ms=23
+2026-10-20T22:12:20.922+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=1bce7fbb-0680-43fd-8700-66b370392931 status=200 duration_ms=26
+2026-10-20T22:12:35.642+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=9bb7759b-69a6-4462-bf5a-0653d68ecc3e status=200 duration_ms=24
+2026-10-20T22:12:35.725+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=b8e1843e-430f-4895-9079-8101b2a4aaa6 status=400 duration_ms=76
+2026-10-20T22:12:42.399+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=f19c0840-f4ce-4d37-a255-c681da5dd35c status=400 duration_ms=67
+2026-10-20T22:12:47.597+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=f4304b56-3b67-43c0-ace7-0abe54a79768 status=200 duration_ms=184
+2026-10-20T22:12:47.644+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-13] com.atlas.configuration.RequestGuard     : request_completed correlation=2b94353b-a26a-4eca-b7b9-18af18aa9b7e status=200 duration_ms=38
+2026-10-20T22:12:51.226+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-14] com.atlas.configuration.RequestGuard     : request_completed correlation=f604173d-ecf9-449f-8008-a903e351c4e3 status=200 duration_ms=25
+2026-10-20T22:12:52.463+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-12] com.atlas.configuration.RequestGuard     : request_completed correlation=be172f94-c7b0-45d1-93cb-b6e5e0a89aa2 status=200 duration_ms=39
+2026-10-20T22:12:52.469+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=f5789861-de27-40e9-aa38-a78ef1bcc7be status=200 duration_ms=44
+2026-10-20T22:12:57.244+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=d65ea342-3c7f-4c97-ac6f-dc39f88498c0 status=200 duration_ms=79
+2026-10-20T22:12:59.480+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=cb2189ea-14f8-498b-b328-c21ea2f5bbf6 status=200 duration_ms=86
+2026-10-20T22:12:59.483+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=a5efb043-ae22-45dc-a540-a901fa0984ea status=200 duration_ms=92
+2026-10-20T22:12:59.505+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=28546e88-f595-40c9-a5c8-7985449e6788 status=200 duration_ms=17
+2026-10-20T22:13:05.291+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=60b09c67-db9d-4c07-8070-3a0585e70c11 status=200 duration_ms=60
+2026-10-20T22:13:16.516+05:30  INFO 45233 --- [atlas-api] [io-8080-exec-13] com.atlas.configuration.RequestGuard     : request_completed correlation=344d6534-db92-4084-be8c-84b4da3f2d9a status=200 duration_ms=43
+2026-10-20T22:13:16.520+05:30  INFO 45233 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=fbfeeff3-df0a-409c-a821-073fb0c39f4d status=200 duration_ms=53
+Exception in thread "SpringApplicationShutdownHook" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.apache.commons.logging.impl.Slf4jLogFactory$Slf4jLocationAwareLog.log(Slf4jLogFactory.java:126)
+	at org.apache.commons.logging.impl.Slf4jLogFactory$Slf4jLocationAwareLog.warn(Slf4jLogFactory.java:146)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1202)
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:176)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1153)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:147)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:116)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 13 more

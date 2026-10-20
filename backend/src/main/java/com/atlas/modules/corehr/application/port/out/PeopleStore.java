@@ -13,6 +13,26 @@ import java.time.*;
 import java.util.*;
 
 public interface PeopleStore {
+  Optional<String> entityRequesterEmployee(String tenant, String requestId);
+
+  void lockLegalEntities(String tenant);
+
+  Optional<LegalEntity> legalEntityForAssignment(String tenant, String code);
+
+  boolean legalEntityRetirementBlocked(String tenant, String code);
+
+  void lockCalendars(String tenant);
+
+  Optional<WorkCalendar> calendarForAssignment(String tenant, String code);
+
+  boolean calendarRetirementRecorded(String tenant, String code);
+
+  int calendarPolicyVersion(String tenant, String code);
+
+  Optional<Integer> requestedCalendarVersion(String tenant, String requestId);
+
+  LocalDate originalEmploymentStart(String tenant, String employeeId);
+
   Optional<LocalDate> employmentEndDate(String tenant, String employeeId);
 
   Optional<LocalDate> currentEpisodeEndDate(String tenant, String employeeId, LocalDate asOf);

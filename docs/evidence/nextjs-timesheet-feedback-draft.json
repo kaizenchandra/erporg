@@ -1,0 +1,34 @@
+{
+  "draft": {
+    "schemaVersion": 5,
+    "triggerReason": "unexpected-behavior",
+    "title": "Development page stayed at initial loading state during browser verification",
+    "setup": {
+      "mode": "development",
+      "bundler": "unknown",
+      "relevantFeatures": [
+        "Client Components",
+        "Production build"
+      ]
+    },
+    "steps": [
+      "Run a development server for an application using Client Components.",
+      "Build the same application for production in that checkout during local verification.",
+      "Load the development page in a fresh browser session."
+    ],
+    "observed": [
+      "The server-rendered shell appeared, but client initialization stayed at its loading state until a 30-second browser-test timeout."
+    ],
+    "expected": "Client initialization should finish or surface an actionable error when loading the development page.",
+    "comparison": "Serving the completed production build let the same sign-in journey pass. The underlying cause was not isolated.",
+    "frequency": "once",
+    "outcome": "worked-around",
+    "nextVersion": "16.4.0",
+    "agent": "Codex"
+  },
+  "reviewUrl": "https://nextjs.org/agent-feedback#report=eyJzY2hlbWFWZXJzaW9uIjo1LCJ0cmlnZ2VyUmVhc29uIjoidW5leHBlY3RlZC1iZWhhdmlvciIsInRpdGxlIjoiRGV2ZWxvcG1lbnQgcGFnZSBzdGF5ZWQgYXQgaW5pdGlhbCBsb2FkaW5nIHN0YXRlIGR1cmluZyBicm93c2VyIHZlcmlmaWNhdGlvbiIsInNldHVwIjp7Im1vZGUiOiJkZXZlbG9wbWVudCIsImJ1bmRsZXIiOiJ1bmtub3duIiwicmVsZXZhbnRGZWF0dXJlcyI6WyJDbGllbnQgQ29tcG9uZW50cyIsIlByb2R1Y3Rpb24gYnVpbGQiXX0sInN0ZXBzIjpbIlJ1biBhIGRldmVsb3BtZW50IHNlcnZlciBmb3IgYW4gYXBwbGljYXRpb24gdXNpbmcgQ2xpZW50IENvbXBvbmVudHMuIiwiQnVpbGQgdGhlIHNhbWUgYXBwbGljYXRpb24gZm9yIHByb2R1Y3Rpb24gaW4gdGhhdCBjaGVja291dCBkdXJpbmcgbG9jYWwgdmVyaWZpY2F0aW9uLiIsIkxvYWQgdGhlIGRldmVsb3BtZW50IHBhZ2UgaW4gYSBmcmVzaCBicm93c2VyIHNlc3Npb24uIl0sIm9ic2VydmVkIjpbIlRoZSBzZXJ2ZXItcmVuZGVyZWQgc2hlbGwgYXBwZWFyZWQsIGJ1dCBjbGllbnQgaW5pdGlhbGl6YXRpb24gc3RheWVkIGF0IGl0cyBsb2FkaW5nIHN0YXRlIHVudGlsIGEgMzAtc2Vjb25kIGJyb3dzZXItdGVzdCB0aW1lb3V0LiJdLCJleHBlY3RlZCI6IkNsaWVudCBpbml0aWFsaXphdGlvbiBzaG91bGQgZmluaXNoIG9yIHN1cmZhY2UgYW4gYWN0aW9uYWJsZSBlcnJvciB3aGVuIGxvYWRpbmcgdGhlIGRldmVsb3BtZW50IHBhZ2UuIiwiY29tcGFyaXNvbiI6IlNlcnZpbmcgdGhlIGNvbXBsZXRlZCBwcm9kdWN0aW9uIGJ1aWxkIGxldCB0aGUgc2FtZSBzaWduLWluIGpvdXJuZXkgcGFzcy4gVGhlIHVuZGVybHlpbmcgY2F1c2Ugd2FzIG5vdCBpc29sYXRlZC4iLCJmcmVxdWVuY3kiOiJvbmNlIiwib3V0Y29tZSI6IndvcmtlZC1hcm91bmQiLCJuZXh0VmVyc2lvbiI6IjE2LjQuMCIsImFnZW50IjoiQ29kZXgifQ",
+  "browserOpenAttempted": true,
+  "browserOpenReturnedSuccess": true,
+  "submitted": false,
+  "scope": "Repository-required anonymised feedback review; observed once, cause not confirmed"
+}

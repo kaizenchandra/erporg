@@ -1,4 +1,6 @@
 "use client";
+import { EntityAssignmentContext } from "./entity-assignment-context";
+import { CalendarAssignmentContext } from "./employee-calendar";
 import { useEffect, useState } from "react";
 import {
   Avatar,
@@ -7,7 +9,7 @@ import {
   Modal,
   formatDate,
 } from "@/components/ui/primitives";
-import { changeFieldLabels } from "./field-labels";
+import { changeFieldLabels, formatChangeValue } from "./field-labels";
 import { WithdrawRequest } from "./withdraw-request";
 import { Icon } from "@/components/ui/icon";
 import { api } from "@/lib/api";
@@ -29,6 +31,8 @@ export function Approvals({
     [comment, setComment] = useState(""),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
+  const [calendarReady, setCalendarReady] = useState("");
+  const [entityReady, setEntityReady] = useState("");
   const [withdrawing, setWithdrawing] = useState<ChangeRequest | null>(null);
   const [page, setPage] = useState(0);
   const [retry, setRetry] = useState(0);
@@ -120,15 +124,27 @@ export function Approvals({
                 </div>
                 <h3>{changeFieldLabels[r.field] ?? r.field} change</h3>
                 <p>
-                  {r.oldValue ||
-                    (r.field === "positionCode"
+                  {formatChangeValue(r.field, r.oldValue) ||
+                    ([
+                      "positionCode",
+                      "calendarCode",
+                      "legalEntityCode",
+                    ].includes(r.field)
                       ? "Unassigned"
                       : "Not provided")}
                   <Icon name="arrow" size={14} />
                   <b>
-                    {r.newValue ||
-                      (r.field === "positionCode"
-                        ? "Unassign position"
+                    {formatChangeValue(r.field, r.newValue) ||
+                      ([
+                        "positionCode",
+                        "calendarCode",
+                        "legalEntityCode",
+                      ].includes(r.field)
+                        ? r.field === "legalEntityCode"
+                          ? "Unassign declared entity"
+                          : r.field === "calendarCode"
+                            ? "Unassign calendar"
+                            : "Unassign position"
                         : "Remove value")}
                   </b>
                 </p>
@@ -246,8 +262,12 @@ export function Approvals({
               <div>
                 <span>Current</span>
                 <strong>
-                  {active.oldValue ||
-                    (active.field === "positionCode"
+                  {formatChangeValue(active.field, active.oldValue) ||
+                    ([
+                      "positionCode",
+                      "calendarCode",
+                      "legalEntityCode",
+                    ].includes(active.field)
                       ? "Unassigned"
                       : "Not provided")}
                 </strong>
@@ -256,13 +276,33 @@ export function Approvals({
               <div>
                 <span>Proposed</span>
                 <strong>
-                  {active.newValue ||
-                    (active.field === "positionCode"
-                      ? "Unassign position"
+                  {formatChangeValue(active.field, active.newValue) ||
+                    ([
+                      "positionCode",
+                      "calendarCode",
+                      "legalEntityCode",
+                    ].includes(active.field)
+                      ? active.field === "legalEntityCode"
+                        ? "Unassign declared entity"
+                        : active.field === "calendarCode"
+                          ? "Unassign calendar"
+                          : "Unassign position"
                       : "Remove value")}
                 </strong>
               </div>
             </div>
+            {active.field === "legalEntityCode" && actor.role === "HR" && (
+              <EntityAssignmentContext
+                requestId={active.id}
+                onReady={setEntityReady}
+              />
+            )}
+            {active.field === "calendarCode" && actor.role === "HR" && (
+              <CalendarAssignmentContext
+                requestId={active.id}
+                onReady={setCalendarReady}
+              />
+            )}
             <dl className="review-details">
               <div>
                 <dt>Effective date</dt>
@@ -278,7 +318,9 @@ export function Approvals({
               </div>
             </dl>
             {active.status === "SUBMITTED" &&
-            (!["name", "managerId"].includes(active.field) ||
+            (!["name", "managerId", "calendarCode", "legalEntityCode"].includes(
+              active.field,
+            ) ||
               actor.role === "HR") &&
             active.requestedBy !== actor.subject &&
             active.employeeId !== actor.employeeId &&
@@ -328,7 +370,18 @@ export function Approvals({
                   >
                     Cancel
                   </button>
-                  <button className="button primary" disabled={busy}>
+                  <button
+                    className="button primary"
+                    disabled={
+                      busy ||
+                      (active.field === "legalEntityCode" &&
+                        decision === "APPROVED" &&
+                        entityReady !== active.id) ||
+                      (active.field === "calendarCode" &&
+                        decision === "APPROVED" &&
+                        calendarReady !== active.id)
+                    }
+                  >
                     {busy
                       ? "Saving decision…"
                       : decision === "APPROVED"

@@ -28,6 +28,14 @@ test("HR configures a demonstration benefit; employee sees own eligibility and e
   await signIn(page, "amelia");
   await page.getByRole("button", { name: "Benefits", exact: true }).click();
   await page
+    .getByText("Benefit configuration history", { exact: true })
+    .click();
+  const history = page.getByRole("region", {
+    name: "Benefit configuration events",
+    exact: true,
+  });
+  await expect(history.getByRole("status")).toContainText("Creation events:");
+  await page
     .getByRole("button", { name: "Create benefit plan", exact: true })
     .click();
   await page.getByLabel("Benefit plan code").fill(code);
@@ -55,9 +63,15 @@ test("HR configures a demonstration benefit; employee sees own eligibility and e
   await expect(
     page.getByText("Demonstration benefit plan created and audit recorded."),
   ).toBeVisible();
+  await expect(history).toHaveCount(0);
+  await expect(
+    page.getByText("Benefit configuration history", {
+      exact: true,
+    }),
+  ).toHaveCount(1);
   await page.getByLabel("Search benefit plans").fill(code);
   await expect(page.locator(".benefit-card")).toContainText("£25.50");
-  await page.getByText("Benefit configuration history (latest 100)").click();
+  await page.getByText("Benefit configuration history").click();
   await expect(
     page.locator(".history-event").filter({ hasText: code }),
   ).toContainText("Demonstration company policy fixture");

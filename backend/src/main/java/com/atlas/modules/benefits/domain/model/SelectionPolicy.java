@@ -19,6 +19,16 @@ public final class SelectionPolicy {
     return List.copyOf(entries);
   }
 
+  public static boolean independent(
+      String employeeId, String subject, String targetEmployee, String requester) {
+    return !employeeId.equals(targetEmployee) && !subject.equals(requester);
+  }
+
+  public static void withdraw(String status, long version, long expected) {
+    if (!"PENDING".equals(status) || version != expected)
+      throw new CommandConflict("Selection has already changed; refresh before withdrawing.");
+  }
+
   public static void decide(String status, long version, Long expected, String outcome) {
     if (expected == null)
       throw new InputValidation(Map.of("version", "A request version is required."));

@@ -1,0 +1,6 @@
+
+> erporg@0.1.0 typecheck
+> tsc --noEmit
+
+tests/payroll-accounting.spec.ts(114,26): error TS2737: BigInt literals are not available when targeting lower than ES2020.
+tests/payroll-accounting.spec.ts(455,57): error TS2737: BigInt literals are not available when targeting lower than ES2020.

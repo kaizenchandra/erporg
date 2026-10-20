@@ -30,12 +30,21 @@ public final class SelectionsController {
     return selections.submit(p.getName(), input, correlation);
   }
 
+  @PostMapping("/{id}/withdrawal")
+  SelectionView withdraw(
+      Principal p,
+      @PathVariable String id,
+      @RequestBody WithdrawSelection input,
+      @RequestAttribute("correlationId") String correlation) {
+    return selections.withdraw(p.getName(), id, input, correlation);
+  }
+
   @PostMapping("/{id}/decision")
   SelectionView decide(
       Principal p,
       @PathVariable String id,
-      @RequestBody DecideSelection input,
+      @RequestBody BenefitDecisionInput input,
       @RequestAttribute("correlationId") String correlation) {
-    return selections.decide(p.getName(), id, input, correlation);
+    return selections.decide(p.getName(), id, input.command(), correlation);
   }
 }

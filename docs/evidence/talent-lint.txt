@@ -1,0 +1,13 @@
+
+> erporg@0.1.0 lint
+> eslint --max-warnings=0
+
+
+/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/features/talent/development.tsx
+  50:30  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/features/talent/planning.tsx
+  188:26  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+✖ 2 problems (2 errors, 0 warnings)
+

@@ -1,0 +1,18 @@
+{
+  "result": "PASSED",
+  "sourceErp": {
+    "requirements": 45,
+    "criteria": 436
+  },
+  "timesheet": {
+    "requirements": 60,
+    "behaviours": 203
+  },
+  "payrollAccounting": {
+    "requirements": 90,
+    "behaviours": 409,
+    "fullyCompleteIds": 0
+  },
+  "evidenceAssertions": "Final Java/browser and three financial check results matched; artifact hashes recorded",
+  "productionReady": false
+}

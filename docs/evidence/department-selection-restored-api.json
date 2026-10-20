@@ -1,0 +1,250 @@
+{
+  "recordedAt": "2026-10-19T20:24:53.885451+00:00",
+  "status": "PASSED",
+  "scope": "local synthetic restored API; excludes production infrastructure and IdP recovery",
+  "targetDatabase": "atlas_restore_f40b482358b04f77",
+  "readinessSeconds": 22.954,
+  "flywayStartupValidation": true,
+  "legalNamePrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager"
+    ],
+    "scope": "private profile and history on actual restored API; no names in report"
+  },
+  "additionalContactPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "private current and future-approved snapshots/history on actual restored API; no contact values in report"
+  },
+  "birthDateHistoryWindow": {
+    "limit": 100,
+    "sourceFieldRowsInWindow": 0,
+    "retainedSourceFieldRows": 10,
+    "scope": "deprecated legacy latest-100 window before field filtering; complete page API checks are reported separately when enabled"
+  },
+  "contactInboxPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "author HR",
+      "independent HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "OWN and independent REVIEW queue reads on actual restored API; values omitted"
+  },
+  "departmentDirectory": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "independent HR",
+      "self",
+      "current manager",
+      "other tenant"
+    ],
+    "scope": "actual restored full catalogue IDs/order, resolved parents, direct-child reference counts, current UTC timing and exact complete position listing/department names compared with owned PostgreSQL source; values omitted"
+  },
+  "employeeAuditPagination": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "independent HR",
+      "self",
+      "current manager",
+      "other tenant"
+    ],
+    "scope": "actual recovered complete authorised IDs/order beyond100, private-field options/totals/rows before paging, older birth-date access for self/HR and manager filter denial; legacy capped endpoint kept compatible; values omitted"
+  },
+  "entityAssignmentPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "independent HR",
+      "self",
+      "current manager",
+      "other tenant"
+    ],
+    "scope": "actual recovered private current profile/directory/audit, HR-only immutable reference review and permanent retirement freeze after unassignment; values omitted"
+  },
+  "calendarHistoryPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "independent HR",
+      "self",
+      "current manager",
+      "other tenant"
+    ],
+    "scope": "actual recovered immutable assignment history, exact stable pages/current episode, authorised fields and record/tenant denial; values omitted"
+  },
+  "employeeCalendarPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "independent HR",
+      "self",
+      "current manager",
+      "other tenant"
+    ],
+    "scope": "actual recovered current assignment, effective unassignment 409, HR-only policy snapshot review and persistent policy freeze after unassignment; values omitted"
+  },
+  "personalEmailPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "independent HR",
+      "self",
+      "manager",
+      "other tenant"
+    ],
+    "scope": "actual recovered current private personal email and history, future value not applied early, no directory search leakage; values omitted"
+  },
+  "calendarRetirementPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "independent HR",
+      "self",
+      "manager",
+      "other tenant"
+    ],
+    "scope": "actual restored provenance, command closure, retained earlier preview, unavailable retired preview and list availability; private values omitted"
+  },
+  "calendarAmendmentPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "independent HR",
+      "self",
+      "manager",
+      "other tenant"
+    ],
+    "scope": "actual recovered amendment context/snapshots and before/after date classification; non-HR denied; values omitted"
+  },
+  "companyCalendarPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "independent HR",
+      "self",
+      "manager",
+      "other tenant"
+    ],
+    "scope": "actual recovered complete calendar snapshot, scoped count, closure classification and non-HR denial; values omitted"
+  },
+  "recordedBirthDatePrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "independent HR",
+      "self",
+      "manager",
+      "other tenant"
+    ],
+    "scope": "actual recovered private profile and history matched retained versions; values omitted"
+  },
+  "retirementInboxPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "author HR",
+      "reviewer HR",
+      "self",
+      "manager",
+      "other tenant"
+    ],
+    "scope": "actual recovered OWN/REVIEW IDs and totals match captured identity ownership; forged scope ignored and non-HR denied; values omitted"
+  },
+  "retirementNotificationPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "author HR",
+      "reviewer HR",
+      "self",
+      "manager",
+      "other tenant"
+    ],
+    "scope": "retained notification rows and latest-50 actual recovered API content matched; non-HR retirement messages absent; message values omitted"
+  },
+  "benefitWithdrawalPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "retained WITHDRAWN snapshots, original owner audit and absent deduction on real restored API; no values in report"
+  },
+  "postalAddressPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "typed private address on actual restored API; no address values in report"
+  },
+  "referenceRetirementPrivacy": {
+    "status": "PASSED",
+    "scope": "retained independent proposal/approval and immediate/future catalogue filters with HR-only context; no values in report"
+  },
+  "legalEntityPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "immutable current/planned reference catalogue and creation provenance on actual recovered API; assignment checked separately when enabled"
+  },
+  "checks": [
+    "readiness",
+    "Flyway validation",
+    "anonymous denial",
+    "four identity mappings including assigned manager",
+    "scoped counts",
+    "scoped organisation roots/branch/effective node and minimal fields",
+    "profile reads",
+    "approved requests",
+    "approval audit",
+    "department references and audit",
+    "position catalogue and audit",
+    "employee position and approval history",
+    "reporting candidates and approval history",
+    "display-name approval history",
+    "withdrawn request history",
+    "benefits catalogue and audit",
+    "benefit selections, audit and pending deduction",
+    "independent private document storage, download integrity and new audit",
+    "immutable rescan history and effective availability",
+    "immutable document version chain and latest projection",
+    "document templates, classification audit and latest completeness",
+    "effective template revisions/retirement and correction history",
+    "private retention/hold journal and independent release",
+    "scoped resignations, private history and pending exit coordination",
+    "private pending-resignation withdrawal receipt, matching terminal audit and unchanged status/access",
+    "original case/end episode ownership with source/capture provenance and unrelated-user denial",
+    "assigned exit tasks, private audit and no resignation access",
+    "current task assignment/cancellation, HR-only journal and revoked former-assignee reads",
+    "retained end/withdrawal and replacement history, current replacement date, original-cutoff Active and suppressed old/pending new targets",
+    "approved hires",
+    "rehire private review/history, preserved episodes, future start and legacy-access hold/pending handoffs",
+    "onboarding status/history",
+    "reviewed rehire completion retained, current revocation/private audit, Active employment and denied revoked/alias sign-in",
+    "reviewed replacement history, latest grant/current hold and original plus replacement revocations",
+    "record/tenant denial",
+    "logout revocation",
+    "unchanged business data"
+  ],
+  "totalSeconds": 54.988
+}

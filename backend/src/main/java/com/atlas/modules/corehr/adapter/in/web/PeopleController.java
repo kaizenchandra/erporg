@@ -83,8 +83,10 @@ public class PeopleController {
 
   @PostMapping("/requests")
   ChangeRequest submit(
-      Principal p, @RequestBody Submit c, @RequestAttribute("correlationId") String correlation) {
-    return people.submit(session(p), c, correlation);
+      Principal p,
+      @RequestBody EmployeeChangeInput c,
+      @RequestAttribute("correlationId") String correlation) {
+    return people.submit(session(p), c.command(), correlation);
   }
 
   @PostMapping("/requests/{id}/withdraw")

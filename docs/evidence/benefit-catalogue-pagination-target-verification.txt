@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:49842) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:49842) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/benefit-catalogue-pagination.spec.ts:23:5 › catalogue exceeds1000 with exact bounded totals, literal filters and isolated tenant reads (16.7s)
+  ✓  2 tests/benefit-catalogue-pagination.spec.ts:112:5 › employee browses full catalogue, recovers retained filters and selects a plan beyond the former cap (2.4s)
+
+  2 passed (46.4s)

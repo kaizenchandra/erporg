@@ -1,0 +1,1 @@
+Next production build, ESLint (zero warnings), strict TypeScript, Prettier, Python syntax, eight delivery unit checks and git diff --check passed. No dependency/schema changes; no fresh OIDC, dependency/container/security audit or load measurement claim.

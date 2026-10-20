@@ -1,0 +1,5 @@
+Final built UI + packaged Java V53 API + actual PostgreSQL/scanner
+Command: npx playwright test
+Result: 92 passed, one OIDC-only skipped (3.1m).
+New reference retirement: controlled context 503/error focus/retry; preserved request/comment validation; committed request/lost-response recovery with identical proposal ID; independent HR approval; retained creation and separate decision provenance; mobile axe/overflow/focus return; exact live context/proposal/page contracts; fractional/null versions and role/tenant denials; stable request/decision replay; concurrent review one 200/one 409; approved future retirement remains CURRENT. Existing employee, lifecycle, benefits, document, configuration and maximum-length presentation checks included.
+Initial target run completed approval but its final text locator matched both modal and background card; scoped to the context before final full regression. API target passed. No fresh OIDC/provider test or production readiness claim.

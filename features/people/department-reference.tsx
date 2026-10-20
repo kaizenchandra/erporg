@@ -1,7 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { Modal, formatDate } from "@/components/ui/primitives";
+import { Modal } from "@/components/ui/primitives";
+import {
+  DepartmentDirectory,
+  DepartmentParentPicker,
+} from "./department-directory";
+import { DepartmentParentDialog } from "./department-parent";
+import { ReferenceHistory } from "./reference-history";
 import type { Actor } from "@/lib/contracts";
 export type Department = {
   code: string;
@@ -10,51 +16,13 @@ export type Department = {
   costCentre: string;
   effectiveFrom: string;
 };
-export type DepartmentAudit = {
-  code: string;
-  actor: string;
-  reason: string;
-  recordedAt: string;
-  effectiveFrom: string;
-  correlationId: string;
-};
 export function DepartmentReference({ actor }: { actor: Actor }) {
-  const [departments, setDepartments] = useState<Department[]>([]);
-  const [history, setHistory] = useState<DepartmentAudit[]>([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [restoreParentFocus, setRestoreParentFocus] = useState(false);
+  const [parentCode, setParentCode] = useState<string | null>(null);
+  const [savedCode, setSavedCode] = useState("");
   const [revision, setRevision] = useState(0);
   const [creating, setCreating] = useState(false);
   const [notice, setNotice] = useState("");
-  useEffect(() => {
-    const controller = new AbortController();
-    const options = {
-      signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]),
-    };
-    Promise.all([
-      api<Department[]>("/api/v1/organisation/departments", options),
-      actor.role === "HR"
-        ? api<DepartmentAudit[]>("/api/v1/organisation/history", options)
-        : Promise.resolve([]),
-    ])
-      .then(([items, audit]) => {
-        if (!controller.signal.aborted) {
-          setDepartments(items);
-          setHistory(audit);
-          setError("");
-        }
-      })
-      .catch((err: unknown) => {
-        if (!controller.signal.aborted)
-          setError(
-            err instanceof Error ? err.message : "Unable to load departments.",
-          );
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setLoading(false);
-      });
-    return () => controller.abort();
-  }, [actor.role, revision]);
   return (
     <section aria-label="Department reference" className="department-reference">
       <div className="section-heading">
@@ -66,63 +34,45 @@ export function DepartmentReference({ actor }: { actor: Actor }) {
         )}
       </div>
       <p className="muted">
-        Department codes and names are fixed. DEMO cost-centre mappings require
-        finance configuration. Future departments are available for changes on
-        or after their start date.
+        Department codes and names are fixed. HR can correct current reference
+        parents with retained history. DEMO cost-centre mappings require finance
+        configuration. Future departments are available for changes on or after
+        their start date.
       </p>
       {notice && <p role="status">{notice}</p>}
-      {loading && <p role="status">Loading department references…</p>}
-      {error && (
-        <div className="error" role="alert">
-          {error}
-          <button onClick={() => setRevision((n) => n + 1)}>
-            Retry departments
-          </button>
-        </div>
-      )}
-      <div className="detail-grid">
-        {departments.map((d) => (
-          <article key={d.code}>
-            <h4>{d.name}</h4>
-            <p>
-              {d.code} · Cost centre {d.costCentre}
-            </p>
-            <p>
-              Parent:{" "}
-              {departments.find((p) => p.code === d.parentCode)?.name ??
-                "Root department"}
-            </p>
-            <p>
-              {d.effectiveFrom > new Date().toISOString().slice(0, 10)
-                ? "Planned"
-                : "Effective"}{" "}
-              · {formatDate(d.effectiveFrom)}
-            </p>
-          </article>
-        ))}
-      </div>
+      <DepartmentDirectory
+        key={`${actor.tenant}:${actor.subject}:${actor.role}:${revision}`}
+        searchCode={savedCode}
+        focusOnLoad={restoreParentFocus}
+        onLoadedFocus={() => setRestoreParentFocus(false)}
+        onManageParent={actor.role === "HR" ? setParentCode : undefined}
+      />
       {actor.role === "HR" && (
-        <details>
-          <summary>Department configuration history</summary>
-          {history.map((h, i) => (
-            <article className="history-event" key={`${h.code}-${i}`}>
-              <div>
-                <strong>{h.code} · Created</strong>
-                <p>{h.reason}</p>
-                <small>
-                  {h.actor} · {new Date(h.recordedAt).toISOString()} · Effective{" "}
-                  {formatDate(h.effectiveFrom)}
-                </small>
-              </div>
-            </article>
-          ))}
-        </details>
+        <ReferenceHistory
+          key={`department-history:${actor.tenant}:${actor.subject}:${actor.role}:${revision}`}
+          kind="DEPARTMENT"
+        />
+      )}
+      {parentCode && (
+        <DepartmentParentDialog
+          key={`${actor.subject}:${actor.tenant}:${actor.employeeId}:${parentCode}`}
+          code={parentCode}
+          onClose={() => setParentCode(null)}
+          onSaved={() => {
+            setParentCode(null);
+            setRestoreParentFocus(true);
+            setNotice(
+              "Department parent corrected and immutable history recorded. Employee reporting and costing are unchanged.",
+            );
+            setRevision((n) => n + 1);
+          }}
+        />
       )}
       {creating && (
         <CreateDepartmentForm
-          departments={departments}
           onClose={() => setCreating(false)}
-          onSaved={() => {
+          onSaved={(code) => {
+            setSavedCode(code);
             setCreating(false);
             setNotice("Department created and audit recorded.");
             setRevision((n) => n + 1);
@@ -133,13 +83,11 @@ export function DepartmentReference({ actor }: { actor: Actor }) {
   );
 }
 function CreateDepartmentForm({
-  departments,
   onClose,
   onSaved,
 }: {
-  departments: Department[];
   onClose: () => void;
-  onSaved: () => void;
+  onSaved: (code: string) => void;
 }) {
   const [code, setCode] = useState(""),
     [name, setName] = useState(""),
@@ -186,7 +134,7 @@ function CreateDepartmentForm({
                 idempotencyKey: key,
               }),
             });
-            onSaved();
+            onSaved(code);
           } catch (err) {
             setError(
               err instanceof Error
@@ -226,20 +174,7 @@ function CreateDepartmentForm({
             onChange={(e) => setName(e.target.value)}
           />
         </label>
-        <label>
-          Parent department
-          <select
-            value={parentCode}
-            onChange={(e) => setParent(e.target.value)}
-          >
-            <option value="">Root department</option>
-            {departments.map((d) => (
-              <option key={d.code} value={d.code}>
-                {d.name}
-              </option>
-            ))}
-          </select>
-        </label>
+        <DepartmentParentPicker value={parentCode} onChange={setParent} />
         <label>
           Cost-centre code <span>*</span>
           <input

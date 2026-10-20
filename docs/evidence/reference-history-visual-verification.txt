@@ -1,0 +1,6 @@
+Final built application inspected at390×844. These tests are included in the131-pass full suite, not additional pass counts.
+
+  ✓   72 tests/reference-history.spec.ts:17:5 › both reference journals reach beyond100 and preserve scoped ID boundaries and exact contracts (3.5s)
+  ✓   73 tests/reference-history.spec.ts:189:5 › reference history recovers independently, filters old events and cancels closed or stale mobile reads (3.0s)
+
+Inspected reference-history-controls-mobile.png: clear creation-history heading, persistent exact-code Apply/order/page-size labels, UTC/effective explanation and scoped count remain within the viewport below the sticky navigation. Inspected reference-history-event-mobile.png: the complete300-character Unicode reason extension wraps within the event card; actor, UTC recording instant, effective date, trace disclosure and navigation buttons remain readable without horizontal clipping. Code filtering retrieves a real older event outside the legacy100 window. Keyboard pages/focus, focused error/retry, close/held-response cancellation, scoped axe and overflow checks passed. Initial create-refresh key-collision failure was corrected before final build and the full suite now asserts a single directory/history summary after creation. This is scoped visual/automated evidence, not full WCAG/manual assistive conformance.

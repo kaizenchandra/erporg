@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-10-19T17:14:04.267752+00:00",
+  "status": "FAILED",
+  "scope": "local synthetic restored API; excludes production infrastructure and IdP recovery",
+  "targetDatabase": "atlas_restore_e2186723152f4cc2",
+  "readinessSeconds": 21.337,
+  "flywayStartupValidation": true,
+  "legalNamePrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager"
+    ],
+    "scope": "private profile and history on actual restored API; no names in report"
+  },
+  "additionalContactPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "private current and future-approved snapshots/history on actual restored API; no contact values in report"
+  },
+  "error": "Restored birth-date history privacy differs",
+  "totalSeconds": 31.658
+}

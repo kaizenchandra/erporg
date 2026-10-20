@@ -1,0 +1,35 @@
+export type Source = {
+  id: string;
+  employeeId: string;
+  episodeStart: string;
+  week: string;
+  version: number;
+  days: { date: string; minutes: number; activity: string }[];
+  totalMinutes: number;
+};
+export type Run = {
+  id: string;
+  entity: string;
+  employeeId: string;
+  episodeStart: string;
+  source: Source;
+  currency: string;
+  costCentre: string;
+  postingDate: string;
+  hourlyRate: string;
+  gross: string;
+  deduction: string;
+  net: string;
+  ruleVersion: string;
+  exceptions: string[];
+  status: string;
+  version: number;
+  preparedBy: string;
+  preparedEmployee: string;
+  approvedBy: string | null;
+  approvedEmployee: string | null;
+  journalId: string | null;
+  paymentStatus: string;
+  reason: string;
+  recordedAt: string;
+};

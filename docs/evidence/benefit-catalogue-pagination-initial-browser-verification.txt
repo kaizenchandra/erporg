@@ -1,0 +1,48 @@
+
+Running 2 tests using 1 worker
+
+(node:49157) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:49157) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/benefit-catalogue-pagination.spec.ts:23:5 › catalogue exceeds1000 with exact bounded totals, literal filters and isolated tenant reads (20.5s)
+  ✘  2 tests/benefit-catalogue-pagination.spec.ts:112:5 › employee browses full catalogue, recovers retained filters and selects a plan beyond the former cap (30.2s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/benefit-catalogue-pagination.spec.ts:112:5 › employee browses full catalogue, recovers retained filters and selects a plan beyond the former cap 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('region', { name: 'Benefits catalogue', exact: true }).getByLabel('Benefit eligibility', { exact: true })[22m
+
+
+      149 |   await catalogue
+      150 |     .getByLabel("Benefit eligibility", { exact: true })
+    > 151 |     .selectOption("ELIGIBLE");
+          |      ^
+      152 |   await expect(results).toContainText("1005 matching plans");
+      153 |   await page.route(
+      154 |     "**/api/v1/benefits/plans?*",
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/benefit-catalogue-pagination.spec.ts:151:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/benefit-catalogue-paginati-930dd--plan-beyond-the-former-cap/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/benefit-catalogue-paginati-930dd--plan-beyond-the-former-cap/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/benefit-catalogue-paginati-930dd--plan-beyond-the-former-cap/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/benefit-catalogue-paginati-930dd--plan-beyond-the-former-cap/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/benefit-catalogue-pagination.spec.ts:112:5 › employee browses full catalogue, recovers retained filters and selects a plan beyond the former cap 
+  1 passed (52.7s)
+  1 error was not a part of any test, see above for details

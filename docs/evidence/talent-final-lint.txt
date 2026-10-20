@@ -1,0 +1,15 @@
+
+> erporg@0.1.0 lint
+> eslint --max-warnings=0
+
+
+/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/talent.spec.ts
+   12:3  warning  'Onboarding' is defined but never used           @typescript-eslint/no-unused-vars
+   16:3  warning  'Scenario' is defined but never used             @typescript-eslint/no-unused-vars
+   17:3  warning  'Succession' is defined but never used           @typescript-eslint/no-unused-vars
+   18:3  warning  'Enrollment' is defined but never used           @typescript-eslint/no-unused-vars
+  151:7  error    'rows' is never reassigned. Use 'const' instead  prefer-const
+
+✖ 5 problems (1 error, 4 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+

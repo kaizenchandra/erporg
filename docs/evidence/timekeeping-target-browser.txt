@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:28587) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28587) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/timekeeping.spec.ts:74:5 › attendance clocking, duplicate detection, missed-punch correction, history and mobile access (2.4s)
+  ✓  2 tests/timekeeping.spec.ts:182:5 › weekly draft to rejection, revision, independent approval and actual reconciled costing (6.7s)
+  ✓  3 tests/timekeeping.spec.ts:382:5 › direct API enforces scope, exact inputs, DST boundaries, paging and concurrent single allocation (1.0s)
+
+  3 passed (12.0s)

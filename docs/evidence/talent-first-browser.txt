@@ -1,0 +1,48 @@
+
+Running 5 tests using 1 worker
+
+(node:80319) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:80319) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/talent.spec.ts:115:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks (2.0m)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/talent.spec.ts:115:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks 
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.fill: Test ended.
+    Call log:
+    [2m  - waiting for getByRole('region', { name: 'Talent record detail' }).locator('form').filter({ has: getByRole('region', { name: 'Talent record detail' }).getByRole('button', { name: 'Confirm workflow action', exact: true }) }).getByLabel('Reason for this action')[22m
+
+
+      87 | ) {
+      88 |   const f = form(p, button);
+    > 89 |   await f.getByLabel("Reason for this action").fill(reason);
+         |                                                ^
+      90 |   await f.getByRole("button", { name: button, exact: true }).click();
+      91 | }
+      92 | async function open(p: Page, name: string) {
+        at submit (/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/talent.spec.ts:89:48)
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/talent.spec.ts:132:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/talent.spec.ts:115:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks 
+  4 did not run
+  1 error was not a part of any test, see above for details

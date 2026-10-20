@@ -16,6 +16,10 @@ public record Position(String code, String title, String departmentCode, LocalDa
     title = title.trim();
   }
 
+  public boolean currentOn(LocalDate date) {
+    return !effectiveFrom.isAfter(date);
+  }
+
   public void ensureAssignment(Department department, String employeeDepartment, LocalDate date) {
     if (!department.code().equals(departmentCode) || !department.name().equals(employeeDepartment))
       throw new ChangeRequest.Validation(

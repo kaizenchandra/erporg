@@ -1,0 +1,86 @@
+
+Running 113 tests using 1 worker
+
+(node:60254) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60254) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 tests/additional-contacts.spec.ts:37:5 › private additional contacts recover an uncertain submission, receive independent HR review and render on mobile (5.4s)
+  ✓    2 tests/additional-contacts.spec.ts:245:5 › contact APIs enforce scopes, bounds, stable replay and one concurrent future approval (584ms)
+  ✓    3 tests/benefit-selections.spec.ts:51:5 › employee submits dependant selection; independent HR review queues one payroll handoff (2.5s)
+  ✓    4 tests/benefit-selections.spec.ts:125:5 › selection API contracts, privacy, duplicate recovery and competing decisions (733ms)
+  ✓    5 tests/benefit-withdrawal.spec.ts:53:5 › employee withdraws a pending benefit with preserved errors, uncertain-response replay and a fresh selection (2.1s)
+  ✓    6 tests/benefit-withdrawal.spec.ts:189:5 › benefit withdrawal APIs deny altered ownership, validate versions and arbitrate concurrent HR review (614ms)
+  ✓    7 tests/benefits.spec.ts:24:5 › HR configures a demonstration benefit; employee sees own eligibility and exact contribution (2.4s)
+  ✓    8 tests/benefits.spec.ts:94:5 › benefit API denies configuration/history to employees and isolates tenant catalogue (391ms)
+  ✓    9 tests/birth-date.spec.ts:35:5 › employee records a private birth date with independent HR approval and mobile profile; display identity is unchanged (3.7s)
+  ✓   10 tests/birth-date.spec.ts:157:5 › birth-date APIs enforce private requests, history, search and exact concurrent approval with no field clearing (670ms)
+  ✓   11 tests/calendar-amendments.spec.ts:56:5 › HR amends future company policy with impact review, preserved errors, uncertain-response replay and historical/mobile context (2.4s)
+  ✓   12 tests/calendar-amendments.spec.ts:211:5 › amendment APIs enforce role/tenant policy, exact versions, conflicting replay and a concurrent winner without early policy application (794ms)
+  ✓   13 tests/calendar-retirement.spec.ts:64:5 › HR retires dated calendar with read recovery, impact confirmation, uncertain-response replay and preserved earlier mobile preview (2.8s)
+  ✓   14 tests/calendar-retirement.spec.ts:272:5 › retirement APIs enforce exact version/tenant scope, stable replay, amendment interlock and immediate versus scheduled availability (882ms)
+  ✓   15 tests/company-calendars.spec.ts:48:5 › HR records a calendar with preserved validation, lost-response replay, private provenance and mobile authoritative date preview (2.6s)
+  ✓   16 tests/company-calendars.spec.ts:184:5 › calendar APIs enforce HR/tenant scope, date policy, stable and conflicting replay, and concurrent unique creation (821ms)
+  ✓   17 tests/company-calendars.spec.ts:315:5 › calendar list recovers focused reads, pages retained data and cancels stale filter responses (1.6s)
+  ✓   18 tests/contact-inbox.spec.ts:27:5 › independent HR discovers contact request in Approvals, recovers queue error and approves on mobile (2.4s)
+  ✓   19 tests/contact-inbox.spec.ts:165:5 › contact queue API enforces server-owned scope, independent authors and bounded contracts (558ms)
+  ✓   20 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (444ms)
+  ✓   21 tests/contracts.spec.ts:115:5 › contract validator rejects incorrect types, formats and unexpected private fields (10ms)
+  ✓   22 tests/departments.spec.ts:16:5 › HR configures a department; manager transfers an employee; HR approves the real reference (3.1s)
+  ✓   23 tests/display-name.spec.ts:68:5 › employee requests display name, HR approves and effective profile/search/session name persist (3.4s)
+  ✓   24 tests/display-name.spec.ts:163:5 › name API denies manager edits/review and self review; concurrent approvals have one winner (576ms)
+  ✓   25 tests/document-maintenance.spec.ts:88:5 › HR revises template, corrects evidence and retires without deleting history (3.1s)
+  ✓   26 tests/document-maintenance.spec.ts:185:5 › maintenance APIs enforce ordinals, scopes, replay and concurrent single winners (883ms)
+  ✓   27 tests/document-retention.spec.ts:67:5 › HR records explicit retention and hold; independent HR releases with private audit (3.0s)
+  ✓   28 tests/document-retention.spec.ts:167:5 › governance API denies private access and self release, preserves replay and one concurrent winner (882ms)
+  ✓   29 tests/document-retry.spec.ts:75:5 › HR rescans quarantined stored document after real outage; original history remains (13.3s)
+  ✓   30 tests/document-retry.spec.ts:130:5 › retry API denies ordinary roles and fractional versions; concurrent retries commit one result; malware stays blocked (11.8s)
+  ✓   31 tests/document-templates.spec.ts:57:5 › HR creates required text template; employee classifies document and sees completeness and audit (3.2s)
+  ✓   32 tests/document-templates.spec.ts:175:5 › template API isolates configuration/evidence, handles concurrent links and latest blocked version (685ms)
+  ✓   33 tests/document-versions.spec.ts:47:5 › employee uploads scanned replacement, sees immutable versions and explicitly downloads historical file (2.0s)
+  ✓   34 tests/document-versions.spec.ts:110:5 › version API isolates records, rejects fractional/stale branches and preserves one concurrent winner and malware history (682ms)
+  ✓   35 tests/documents.spec.ts:25:5 › private upload scan download and accessible document error recovery (1.8s)
+  ✓   36 tests/documents.spec.ts:88:5 › real scanning rejects EICAR and APIs isolate document records with replay and concurrent upload (573ms)
+  ✘   37 tests/employee-calendar.spec.ts:67:5 › HR assignment is independently reviewed then self previews a dated policy with focused recovery and mobile scope (5.5s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/employee-calendar.spec.ts:67:5 › HR assignment is independently reviewed then self previews a dated policy with focused recovery and mobile scope 
+
+    Error: locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]
+    Call log:
+    [2m  - waiting for getByLabel('Search company calendars')[22m
+    [2m    - locator resolved to <form role="search" class="inbox-search" aria-label="Search company calendars">…</form>[22m
+    [2m    - fill("AW-UI")[22m
+    [2m  - attempting fill action[22m
+    [2m    - waiting for element to be visible, enabled and editable[22m
+
+
+      324 |   ).toBe("");
+      325 |   await page.getByRole("button", { name: "Settings", exact: true }).click();
+    > 326 |   await page.getByLabel("Search company calendars").fill("AW-UI");
+          |                                                     ^
+      327 |   await page
+      328 |     .getByRole("button", { name: "Inspect calendar · AW-UI", exact: true })
+      329 |     .click();
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/employee-calendar.spec.ts:326:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/employee-calendar-HR-assig-c8cba-d-recovery-and-mobile-scope/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/employee-calendar-HR-assig-c8cba-d-recovery-and-mobile-scope/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/employee-calendar-HR-assig-c8cba-d-recovery-and-mobile-scope/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/employee-calendar-HR-assig-c8cba-d-recovery-and-mobile-scope/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/employee-calendar.spec.ts:67:5 › HR assignment is independently reviewed then self previews a dated policy with focused recovery and mobile scope 
+  76 did not run
+  36 passed (1.5m)
+  1 error was not a part of any test, see above for details

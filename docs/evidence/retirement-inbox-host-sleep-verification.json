@@ -1,0 +1,28 @@
+{
+  "scope": "local verification host interruptions; sanitized power metadata only",
+  "initialBrowserRun": {
+    "passed": 95,
+    "skipped": 1,
+    "failed": 1,
+    "sleepStart": "2026-10-19 13:24:18 Asia/Kolkata",
+    "wake": "2026-10-19 13:28:57 Asia/Kolkata",
+    "category": "Clamshell Sleep"
+  },
+  "tracedBrowserRun": {
+    "passed": 95,
+    "skipped": 1,
+    "failed": 1,
+    "sleepStart": "2026-10-19 13:36:31 Asia/Kolkata",
+    "wake": "2026-10-19 13:37:31 Asia/Kolkata",
+    "category": "Clamshell Sleep"
+  },
+  "corroboration": "traced login/read activity has an approximately 59-second gap; JVM reported housekeeper clock leap/thread starvation across the same interval",
+  "applicationChangesForWorkaround": false,
+  "mitigation": "Unchanged application and normal test deadlines; temporary caffeinate process during final browser/restore checks. Cannot prevent clamshell sleep.",
+  "userInterruptedRun": {
+    "status": "INCOMPLETE",
+    "lastLoggedPassingTests": 21,
+    "fixtureSchema": "atlas_acceptance_checkpoint_aq_interrupted_20261019",
+    "note": "Process stopped by turn interruption; no full-suite outcome or recovery claim."
+  }
+}

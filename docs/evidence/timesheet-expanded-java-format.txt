@@ -1,0 +1,19 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24151 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] ------------------------< com.atlas:atlas-api >-------------------------
+[INFO] Building atlas-api 0.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- spotless:3.0.0:apply (default-cli) @ atlas-api ---
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/TimekeepingWorkflowTest.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/timekeeping/application/usecase/TimePeriodService.java
+[INFO] Spotless.Java is keeping 437 files clean - 2 were changed to be clean, 1 were already clean, 434 were skipped because caching determined they were already clean
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.654 s
+[INFO] Finished at: 2026-10-20T22:18:11+05:30
+[INFO] ------------------------------------------------------------------------

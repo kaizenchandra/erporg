@@ -99,11 +99,68 @@ public final class PeopleService implements PeopleUseCases {
         e.startDate(),
         e.positionCode(),
         null,
+        null,
+        null,
+        e.calendarCode(),
+        null,
         e.version());
   }
 
   private PeopleReadScope readScope(Actor actor) {
     return PeopleReadScope.of(actor);
+  }
+
+  public com.atlas.modules.corehr.application.model.PostalAddressModels.Context postalAddress(
+      Actor actor, String id) {
+    var employee = profile(actor, id);
+    if (employee.address() == null) throw new ChangeRequest.Denied();
+    var address = PostalAddress.decode(employee.address());
+    var countries =
+        PostalAddress.countryCodes().stream()
+            .map(
+                code ->
+                    new com.atlas.modules.corehr.application.model.PostalAddressModels.Country(
+                        code,
+                        new java.util.Locale.Builder()
+                            .setRegion(code)
+                            .build()
+                            .getDisplayCountry(java.util.Locale.ENGLISH)))
+            .sorted(
+                java.util.Comparator.comparing(
+                    com.atlas.modules.corehr.application.model.PostalAddressModels.Country::name))
+            .toList();
+    return new com.atlas.modules.corehr.application.model.PostalAddressModels.Context(
+        id,
+        employee.version(),
+        address.isEmpty() ? employee.address() : null,
+        address.orElse(null),
+        countries);
+  }
+
+  public ChangeRequest submitPostalAddress(
+      Actor actor,
+      String id,
+      com.atlas.modules.corehr.application.model.PostalAddressModels.Submit c,
+      String correlation) {
+    var employee = profile(actor, id);
+    if (employee.address() == null) throw new ChangeRequest.Denied();
+    if (c.address() == null)
+      throw new ChangeRequest.Validation(java.util.Map.of("address", "Enter the postal address."));
+    var a = c.address();
+    var value =
+        new PostalAddress(
+            a.line1(), a.line2(), a.locality(), a.region(), a.postalCode(), a.countryCode());
+    return submit(
+        actor,
+        new Submit(
+            id,
+            "address",
+            value.canonicalValue(),
+            c.effectiveDate(),
+            c.reason(),
+            c.version(),
+            c.idempotencyKey()),
+        correlation);
   }
 
   public ChangeRequest submit(Actor actor, Submit c, String correlation) {
@@ -118,12 +175,19 @@ public final class PeopleService implements PeopleUseCases {
       throw new IllegalArgumentException("A valid idempotency key is required.");
     return transactions.run(
         () -> {
+          if (c.field().equals("legalEntityCode")) store.lockLegalEntities(actor.tenant());
+          if (c.field().equals("calendarCode")) store.lockCalendars(actor.tenant());
           if (c.field().equals("managerId")) store.lockReportingGraph(actor.tenant());
           Employee e = store.employee(actor, c.employeeId(), LocalDate.now(clock), true);
           var previous = store.duplicate(actor, c.idempotencyKey(), LocalDate.now(clock));
           if (previous.isPresent()) {
             var p = previous.get();
             ensureRequestVisibleToOwner(actor, e, p);
+            if (p.field().equals("legalEntityCode")
+                && !store
+                    .entityRequesterEmployee(actor.tenant(), p.id())
+                    .filter(actor.employeeId()::equals)
+                    .isPresent()) throw new ChangeRequest.Denied();
             if (!p.employeeId().equals(c.employeeId())
                 || !p.field().equals(c.field())
                 || !p.newValue().equals(c.newValue().trim())
@@ -135,12 +199,23 @@ public final class PeopleService implements PeopleUseCases {
             return p;
           }
           if (!actor.canChange(e, c.field())) throw new ChangeRequest.Denied();
+          if (c.field().equals("address"))
+            PostalAddress.decode(c.newValue()).ifPresent(PostalAddress::requireCurrentCountry);
+          if (c.field().equals("birthDate"))
+            BirthDate.validate(
+                c.newValue(),
+                LocalDate.now(clock),
+                store.originalEmploymentStart(actor.tenant(), e.id()));
           ChangeRequest.validateDate(c.effectiveDate(), LocalDate.now(clock));
           if (e.version() != c.version())
             throw new ChangeRequest.Conflict(
                 "This profile has changed. Refresh before submitting.");
           if (c.field().equals("department"))
             organisation.requireDepartment(actor, c.newValue().trim(), c.effectiveDate());
+          validateEntityAssignment(
+              actor, e.id(), c.field(), c.newValue().trim(), c.effectiveDate());
+          validateCalendarAssignment(
+              actor, e.id(), c.field(), c.newValue().trim(), c.effectiveDate());
           validatePositionTimeline(
               actor, e.id(), c.field(), c.newValue().trim(), c.effectiveDate());
           validateReportingTimeline(
@@ -153,9 +228,13 @@ public final class PeopleService implements PeopleUseCases {
                 case "phone" -> e.phone();
                 case "name" -> effectiveEmployee.name();
                 case "legalName" -> effectiveEmployee.legalName();
+                case "birthDate" -> effectiveEmployee.birthDate();
+                case "personalEmail" -> effectiveEmployee.personalEmail();
                 case "title" -> e.title();
                 case "department" -> effectiveEmployee.department();
                 case "positionCode" -> effectiveEmployee.positionCode();
+                case "calendarCode" -> effectiveEmployee.calendarCode();
+                case "legalEntityCode" -> effectiveEmployee.legalEntityCode();
                 case "managerId" ->
                     effectiveEmployee.managerId() == null ? "" : effectiveEmployee.managerId();
                 case "location" -> e.location();
@@ -233,8 +312,11 @@ public final class PeopleService implements PeopleUseCases {
     return transactions.run(
         () -> {
           var preview = store.request(actor, id, false, LocalDate.now(clock));
-          if (Set.of("name", "managerId").contains(preview.field()) && !actor.hr())
-            throw new ChangeRequest.Denied();
+          if (Set.of("name", "managerId", "calendarCode", "legalEntityCode")
+                  .contains(preview.field())
+              && !actor.hr()) throw new ChangeRequest.Denied();
+          if (preview.field().equals("legalEntityCode")) store.lockLegalEntities(actor.tenant());
+          if (preview.field().equals("calendarCode")) store.lockCalendars(actor.tenant());
           if (preview.field().equals("managerId")) {
             if (!actor.hr()) throw new ChangeRequest.Denied();
             store.lockReportingGraph(actor.tenant());
@@ -244,6 +326,11 @@ public final class PeopleService implements PeopleUseCases {
           var requesterEmployee = store.identityEmployeeId(actor.tenant(), r.requestedBy());
           if (requesterEmployee.isEmpty() || actor.employeeId().equals(requesterEmployee.get()))
             throw new ChangeRequest.Denied();
+          if (r.field().equals("legalEntityCode")
+              && store
+                  .entityRequesterEmployee(actor.tenant(), r.id())
+                  .filter(actor.employeeId()::equals)
+                  .isPresent()) throw new ChangeRequest.Denied();
           r.ensureDecidable(actor, e, c.decision());
           if (c.decision().equals("APPROVED") && store.hasLaterChange(actor, r))
             throw new ChangeRequest.Conflict(
@@ -254,9 +341,52 @@ public final class PeopleService implements PeopleUseCases {
             validatePositionTimeline(actor, e.id(), r.field(), r.newValue(), r.effectiveDate());
           if (c.decision().equals("APPROVED"))
             validateReportingTimeline(actor, e.id(), r.field(), r.newValue(), r.effectiveDate());
+          if (c.decision().equals("APPROVED"))
+            validateEntityAssignment(actor, e.id(), r.field(), r.newValue(), r.effectiveDate());
+          if (c.decision().equals("APPROVED") && r.field().equals("calendarCode")) {
+            validateCalendarAssignment(actor, e.id(), r.field(), r.newValue(), r.effectiveDate());
+            if (!r.newValue().isEmpty()
+                && store.requestedCalendarVersion(actor.tenant(), r.id()).orElse(-1)
+                    != store.calendarPolicyVersion(actor.tenant(), r.newValue()))
+              throw new ChangeRequest.Conflict(
+                  "Calendar policy changed since submission. Reject and resubmit for a fresh review.");
+          }
+          if (c.decision().equals("APPROVED") && r.field().equals("birthDate"))
+            BirthDate.validate(
+                r.newValue(),
+                LocalDate.now(clock),
+                store.originalEmploymentStart(actor.tenant(), e.id()));
           store.decide(actor, r, c.decision(), c.comment().trim(), clock.instant(), correlation);
           return store.request(actor, id, false, LocalDate.now(clock));
         });
+  }
+
+  private void validateEntityAssignment(
+      Actor actor, String id, String field, String code, LocalDate date) {
+    if (!field.equals("legalEntityCode")) return;
+    if (!actor.hr()) throw new ChangeRequest.Denied();
+    var employee = store.employee(actor, id, date, false);
+    EntityAssignment.validate(
+        code,
+        date,
+        employee.startDate(),
+        LocalDate.now(clock),
+        code.isEmpty() ? null : store.legalEntityForAssignment(actor.tenant(), code).orElse(null),
+        !code.isEmpty() && store.legalEntityRetirementBlocked(actor.tenant(), code));
+  }
+
+  private void validateCalendarAssignment(
+      Actor actor, String employeeId, String field, String code, LocalDate date) {
+    if (!field.equals("calendarCode")) return;
+    if (!actor.hr()) throw new ChangeRequest.Denied();
+    var employee = store.employee(actor, employeeId, date, false);
+    CalendarAssignment.validate(
+        code,
+        date,
+        employee.startDate(),
+        LocalDate.now(clock),
+        code.isEmpty() ? null : store.calendarForAssignment(actor.tenant(), code).orElse(null),
+        !code.isEmpty() && store.calendarRetirementRecorded(actor.tenant(), code));
   }
 
   private void validateReportingTimeline(

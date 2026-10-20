@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:25321) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25321) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/department-selection.spec.ts:15:5 › position department selection pages, retains values across errors and stale search, then persists resolved name (2.8s)
+  ✓  2 tests/department-selection.spec.ts:140:5 › hire department selection preserves other fields, linked errors and long mobile options (1.6s)
+
+  2 passed (5.9s)

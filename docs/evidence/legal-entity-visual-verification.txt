@@ -1,0 +1,5 @@
+Final catalogue/editor mobile states: automated axe WCAG A/AA tags and root overflow checks passed at 390x844. Dialog preserves a linked code error and other values; saved card exposes unverified status, country/currency/time-zone/date and actor/reason/time/correlation. Creation audit summary has a 44px minimum target.
+Opened and visually inspected legal-entity-mobile.png and legal-entity-errors-mobile.png. Required labels, unverified/reference scope and error text remain visible/readable with vertical scrolling and no checked horizontal clipping. Screenshots contain synthetic data only.
+No full manual screen-reader/WCAG certification, broad browser/device or production-performance claim.
+
+After the full suite, removed only the internal delivery-phase caption from the user-facing heading and rebuilt. Final read-only mobile Chrome inspection passed via Toggle navigation -> Settings; persisted cards, corrected HR configuration caption and viewport checked. Opened legal-entity-settings-final-mobile.png. No full-suite repeat after this text-only caption change; no business data was written.

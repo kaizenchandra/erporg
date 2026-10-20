@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 
+import { TalentWorkspace } from "@/features/talent/workspace";
+import { FinanceWorkspace } from "@/features/finance/workspace";
+import { PayrollWorkspace } from "@/features/payroll/workspace";
 import { Icon } from "@/components/ui/icon";
-import { Avatar, Empty, Modal } from "@/components/ui/primitives";
+import { Avatar } from "@/components/ui/primitives";
 import { api, signOut } from "@/lib/api";
 import type { Employee } from "@/lib/contracts";
 import { useWorkspaceData } from "./use-workspace-data";
@@ -19,6 +22,10 @@ import { Hiring } from "./hiring";
 import { MyExitTasks } from "./exit-tasks";
 import { Resignations } from "./resignations";
 import { Organisation } from "./organisation";
+import { NotificationPanel } from "./notifications";
+import { LegalEntitiesSettings } from "@/features/settings/legal-entities";
+import { CompanyCalendars } from "@/features/settings/company-calendars";
+import { TimeWorkspace } from "@/features/timekeeping/workspace";
 export function Workspace() {
   const {
     actor,
@@ -43,6 +50,7 @@ export function Workspace() {
   const [authMode, setAuthMode] = useState("oidc");
   const reset = () => {
     resetData();
+    setNotificationPanel(false);
     setProfile(null);
     setChange(null);
     setSearch("");
@@ -81,6 +89,7 @@ export function Workspace() {
   }, []);
   useEffect(() => {
     const expired = () => {
+      setNotificationPanel(false);
       setProfile(null);
       setChange(null);
       setSearch("");
@@ -91,6 +100,12 @@ export function Workspace() {
     return () => window.removeEventListener("atlas-session-expired", expired);
   }, []);
   const go = (v: View) => {
+    if (
+      !window.dispatchEvent(
+        new Event("atlas-before-navigation", { cancelable: true }),
+      )
+    )
+      return;
     setView(v);
     setMenu(false);
     setNotice("");
@@ -147,6 +162,8 @@ export function Workspace() {
             <button
               className="icon-button notification-button"
               aria-label={`Notifications (${notifications.length})`}
+              title="Count at last workspace refresh; open for latest messages"
+              disabled={!actor}
               onClick={() => setNotificationPanel(true)}
             >
               <Icon name="bell" />
@@ -374,7 +391,53 @@ export function Workspace() {
                   }}
                 />
               )}
-              {!["People", "Overview", "Approvals"].includes(view) && (
+              {view === "Time & attendance" && (
+                <TimeWorkspace
+                  key={
+                    actor.subject + actor.tenant + actor.role + actor.employeeId
+                  }
+                  actor={actor}
+                />
+              )}
+              {view === "Payroll" && (
+                <PayrollWorkspace
+                  key={actor.subject + actor.tenant + actor.employeeId}
+                  actor={actor}
+                />
+              )}
+              {view === "Finance & operations" && (
+                <FinanceWorkspace
+                  key={actor.subject + actor.tenant + actor.employeeId}
+                  actor={actor}
+                />
+              )}
+              {view === "Talent" && (
+                <TalentWorkspace
+                  key={JSON.stringify([
+                    actor.subject,
+                    actor.tenant,
+                    actor.employeeId,
+                    actor.role,
+                  ])}
+                  actor={actor}
+                />
+              )}
+              {view === "Settings" && (
+                <>
+                  <LegalEntitiesSettings actor={actor} />
+                  <CompanyCalendars actor={actor} />
+                </>
+              )}
+              {![
+                "People",
+                "Overview",
+                "Approvals",
+                "Settings",
+                "Time & attendance",
+                "Payroll",
+                "Finance & operations",
+                "Talent",
+              ].includes(view) && (
                 <section className="planned-card">
                   <div className="planned-icon">
                     <Icon
@@ -449,29 +512,11 @@ export function Workspace() {
           onSaved={saved}
         />
       )}
-      {notificationPanel && (
-        <Modal
-          title="Notifications"
+      {notificationPanel && actor && (
+        <NotificationPanel
+          key={`${actor.tenant}:${actor.subject}`}
           onClose={() => setNotificationPanel(false)}
-        >
-          <div className="notification-list">
-            {notifications.length ? (
-              notifications.map((n) => (
-                <article key={n.id}>
-                  <Icon name="check" />
-                  <div>
-                    <strong>{n.message}</strong>
-                    <small>{new Date(n.recordedAt).toLocaleString()}</small>
-                  </div>
-                </article>
-              ))
-            ) : (
-              <Empty title="A quiet moment">
-                Status updates on your requests will appear here.
-              </Empty>
-            )}
-          </div>
-        </Modal>
+        />
       )}
     </div>
   );

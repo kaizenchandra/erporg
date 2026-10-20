@@ -1,0 +1,21 @@
+
+> erporg@0.1.0 lint
+> eslint --max-warnings=0
+
+
+/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/features/timekeeping/reports.tsx
+  24:23  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/features/timekeeping/reports.tsx:24:23
+  22 | export function TimeReports() {
+  23 |   const [from, setFrom] = useState(
+> 24 |       monday(new Date(Date.now() - 28 * 86400000)),
+     |                       ^^^^^^^^^^ Cannot call impure function
+  25 |     ),
+  26 |     [through, setThrough] = useState(monday()),
+  27 |     [employeeId, setEmployee] = useState(""),  react-hooks/purity
+
+✖ 1 problem (1 error, 0 warnings)
+

@@ -1,0 +1,11 @@
+{
+  "recordedAt": "2026-10-20T21:18:32.104769+00:00",
+  "result": "PASSED",
+  "scope": "Authenticated local reads after final package restart; no financial mutation or bank verification",
+  "rolesChecked": 4,
+  "linkedFinalizedResultsChecked": 1,
+  "controlTotalsMatched": true,
+  "crossTenantDenied": true,
+  "financeOnlyPayrollAccessDenied": true,
+  "employeeLedgerAccessDenied": true
+}

@@ -12,6 +12,8 @@ import java.time.Instant;
 import java.util.*;
 
 public interface OrganisationStore {
+  void lockHierarchy(String tenant);
+
   List<Department> departments(String tenant);
 
   PositionPage positions(String tenant, PositionQuery query);

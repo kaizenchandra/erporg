@@ -1,0 +1,53 @@
+
+Running 3 tests using 1 worker
+
+(node:28176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/timekeeping.spec.ts:72:5 › attendance clocking, duplicate detection, missed-punch correction, history and mobile access (1.5s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/timekeeping.spec.ts:72:5 › attendance clocking, duplicate detection, missed-punch correction, history and mobile access 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeFocused[2m([22m[2m)[22m failed
+
+    Locator: getByRole('alert')
+    Expected: focused
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <div role="alert" tabindex="-1" class="error time-error">…</div> aka getByText('A shift is already open.')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+    [2m  - Expect "toBeFocused" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('alert')[22m
+
+
+       95 |   await page.getByRole("button", { name: "Clock in", exact: true }).click();
+       96 |   expect((await duplicate).status()).toBe(409);
+    >  97 |   await expect(page.getByRole("alert")).toBeFocused();
+          |                                         ^
+       98 |   await expect(page.getByRole("alert")).toContainText("already open");
+       99 |   await page.getByRole("button", { name: "Clock out", exact: true }).click();
+      100 |   await expect(
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/timekeeping.spec.ts:97:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/timekeeping-attendance-clo-ca461-n-history-and-mobile-access/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/timekeeping-attendance-clo-ca461-n-history-and-mobile-access/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/timekeeping-attendance-clo-ca461-n-history-and-mobile-access/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/timekeeping-attendance-clo-ca461-n-history-and-mobile-access/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/timekeeping.spec.ts:72:5 › attendance clocking, duplicate detection, missed-punch correction, history and mobile access 
+  2 did not run
+  1 error was not a part of any test, see above for details

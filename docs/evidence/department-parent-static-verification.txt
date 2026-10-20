@@ -1,0 +1,8 @@
+
+> erporg@0.1.0 typecheck
+> tsc --noEmit
+
+
+> erporg@0.1.0 lint
+> eslint --max-warnings=0
+

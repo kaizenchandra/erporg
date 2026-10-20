@@ -1,0 +1,15 @@
+# Phase 2 increment BC: complete organisation reference creation history
+
+Prerequisites: retained immutable department/position creation journals, current HR identity/tenant policy and BB workflows. Scope: SH-05, SH-01, SH-06 and HR-02. Legacy latest100 arrays remain compatible/deprecated; no new creation/editing policy or source-ID completion.
+
+Add HR-only GET `/api/v1/organisation/reference-history`: kind DEPARTMENT/POSITION, exact code optional, recorded order asc/desc, page0–100000, size1–50, optional decimal-string throughId. First read selects the maximum eligible ID after tenant/code scope; later pages retain it to exclude higher-ID writes. Every page rechecks HR and current tenant before count/selection. String IDs avoid JavaScript precision loss. A bounded10s repeatable-read transaction owns watermark/count/rows. Application models/ports/use case remain framework-free; JDBC reads only owned journals. No migrations, rewrites or new dependency.
+
+Consistency is explicit: immutable rows within the ID boundary have deterministic `(recorded_at,id)` ordering; offset pages can change if a pre-reserved lower ID commits late. Counts describe committed scoped rows in that boundary, not a multi-request MVCC snapshot or exactly-once export. throughId is untrusted navigation, never authorisation. Filter/order/page-size changes and refresh reset the boundary; queries may only request page>0 with an explicit boundary.
+
+UI: on-demand Department/Position configuration history details, persistent code filter with Apply (no premature invalid-code reads), recorded order/page size, scoped count, previous/next/refresh, UTC recording versus effective date, actor/reason/correlation disclosure. Error/loading/empty/retry and cancellation remain independent from catalogue queries. Close/unmount aborts reads and hides retained payload; identity/tenant/create revision remount resets. No bulk action/export.
+
+Acceptance before implementation:
+1. Real PostgreSQL traverses every event beyond100 in both kinds, tied-time deterministic order, exact code/empty/count pages; private HR/tenant scope and all query bounds. Higher-ID appends stay out until refresh; document lower-ID late commits. Preserve immutable source and legacy arrays.
+2. Browser actual creation → retained history, filtering/order/paging/reset, focused error/retry, independent catalogue availability, close/query cancellation, mobile/keyboard/axe/long content. Non-HR sees no control and direct API403; forged identity hints cannot widen scope. No mocked response is business completion.
+3. Execute strict contracts/negative fixtures, existing workflows/architecture tests and full regression. Restore checker compares complete scoped journal IDs/order/provenance for HR identities and denies non-HR. No values in recovery reports. No production NFR/ASVS/manual WCAG claim.
+4. Update all45 source traceability with separate UI/backend evidence and scoped criteria. Creation history only; hierarchy maintenance, other reference/module journals, retention policy and later phases remain open.

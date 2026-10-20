@@ -1,0 +1,13 @@
+{
+  "status": "PASSED",
+  "scope": "authenticated intercepted presentation fixture only; stored business records unchanged",
+  "textCharacters": 500,
+  "referenceCodeCharacters": 30,
+  "viewport": 390,
+  "documentWidth": 390,
+  "textClientWidth": 316,
+  "textScrollWidth": 316,
+  "cardWidth": 358,
+  "computedOverflowWrap": "anywhere",
+  "note": "Unbroken Latin reason and long code inspected; no inner or document overflow. Separate Unicode fixture also kept document width at 390. Not backend persistence or full WCAG conformance evidence."
+}

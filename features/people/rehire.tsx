@@ -5,7 +5,7 @@ import type { Actor } from "@/lib/contracts";
 import { formatDate } from "@/components/ui/primitives";
 import { RehireActivationPanel } from "./rehire-activation";
 import { ManagerPicker } from "./manager-picker";
-import type { Department } from "./department-reference";
+import { DepartmentPicker } from "./department-picker";
 export type Rehire = {
   id: string;
   employeeId: string;
@@ -69,7 +69,6 @@ export function RehirePanel({
   onSaved: () => Promise<void>;
 }) {
   const [data, setData] = useState<RehireContext | null>(null),
-    [departments, setDepartments] = useState<Department[]>([]),
     [revision, setRevision] = useState(0),
     [error, setError] = useState(""),
     [fields, setFields] = useState<Record<string, string>>({}),
@@ -83,19 +82,11 @@ export function RehirePanel({
     heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     const c = new AbortController();
-    Promise.all([
-      api<RehireContext>(`/api/v1/employees/${employeeId}/rehire`, {
-        signal: c.signal,
-      }),
-      api<Department[]>("/api/v1/organisation/departments", {
-        signal: c.signal,
-      }),
-    ])
-      .then(([r, d]) => {
-        if (!c.signal.aborted) {
-          setData(r);
-          setDepartments(d);
-        }
+    api<RehireContext>(`/api/v1/employees/${employeeId}/rehire`, {
+      signal: AbortSignal.any([c.signal, AbortSignal.timeout(10000)]),
+    })
+      .then((r) => {
+        if (!c.signal.aborted) setData(r);
       })
       .catch((e: unknown) => {
         if (!c.signal.aborted)
@@ -384,37 +375,16 @@ export function RehirePanel({
                 <div className="form-grid">
                   {field("startDate", "Rehire start date", "date")}
                   {field("title", "Rehire job title")}
-                  <div>
-                    <label htmlFor="rehire-department">
-                      Rehire department (required)
-                    </label>
-                    <select
-                      id="rehire-department"
-                      required
-                      value={values.department}
-                      aria-invalid={!!fields.department}
-                      aria-describedby={
-                        fields.department
-                          ? "rehire-department-error"
-                          : undefined
-                      }
-                      onChange={(e) =>
-                        setValues({ ...values, department: e.target.value })
-                      }
-                    >
-                      <option value="">Choose department</option>
-                      {departments.map((d) => (
-                        <option key={d.code} value={d.name}>
-                          {d.name}
-                        </option>
-                      ))}
-                    </select>
-                    {fields.department && (
-                      <p className="field-error" id="rehire-department-error">
-                        {fields.department}
-                      </p>
-                    )}
-                  </div>
+                  <DepartmentPicker
+                    label="Rehire department (required)"
+                    id="rehire-department"
+                    value={values.department}
+                    onChange={(department) =>
+                      setValues({ ...values, department })
+                    }
+                    error={fields.department}
+                    disabled={busy}
+                  />
                   {field("location", "Rehire location")}
                   <ManagerPicker
                     id="rehire-managerId"

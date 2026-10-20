@@ -1,0 +1,14 @@
+
+Running 5 tests using 1 worker
+
+(node:24377) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24377) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (854ms)
+  ✓  2 tests/contracts.spec.ts:123:5 › employee audit page contract rejects malformed cursors, IDs, options and extra private properties (6ms)
+  ✓  3 tests/contracts.spec.ts:157:5 › calendar history contract rejects private fields, malformed provenance and unbounded pages (5ms)
+  ✓  4 tests/contracts.spec.ts:190:5 › contract validator rejects incorrect types, formats and unexpected private fields (10ms)
+  ✓  5 tests/corehr-command-version.spec.ts:14:5 › fractional employee revision is rejected without a request; preserved form recovers through independent approval (2.3s)
+
+  5 passed (4.3s)

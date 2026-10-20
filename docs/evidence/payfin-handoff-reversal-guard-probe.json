@@ -1,0 +1,8 @@
+{
+  "result": "PASSED",
+  "schema": "atlas_payfin_browser_20261021f",
+  "scope": "Transactional rejected-insert probe, not a payment or production posting",
+  "specificSourceGuardRejected": true,
+  "callerSchema": "pg_catalog",
+  "financialTableManifestsUnchanged": 9
+}

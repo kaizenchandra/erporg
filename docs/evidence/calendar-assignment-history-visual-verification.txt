@@ -1,0 +1,5 @@
+Real Chrome, built Next, packaged verified API/JDBC.
+Inspected final 390x844 mobile screenshot: long synthetic Unicode calendar name wraps, numbered approved/unassigned cards, scheduled/episode labels, separate effective and UTC recorded times, no horizontal overflow.
+Automated WCAG2/2.1/2.2 A/AA tags: zero violations in tested view. Keyboard Enter paging, success/error focus, explicit retry/refresh/hide/reopen, empty state and delayed real-response cancellation passed. Actual contact approval proves record-version remount hides/collapses old history.
+Full manual assistive-technology/zoom/browser-matrix review remains unverified.
+Next agent feedback reporting pass: reviewed; no qualifying new framework issue retained.

@@ -1,0 +1,13 @@
+
+Running 4 tests using 1 worker
+
+(node:59870) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59870) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (860ms)
+  ✓  2 tests/contracts.spec.ts:115:5 › contract validator rejects incorrect types, formats and unexpected private fields (11ms)
+  ✓  3 tests/employee-calendar.spec.ts:67:5 › HR assignment is independently reviewed then self previews a dated policy with focused recovery and mobile scope (4.3s)
+  ✓  4 tests/employee-calendar.spec.ts:273:5 › assignment APIs enforce HR-only commands, policy snapshots, unassignment, replay and concurrent policy arbitration (1.1s)
+
+  4 passed (7.5s)

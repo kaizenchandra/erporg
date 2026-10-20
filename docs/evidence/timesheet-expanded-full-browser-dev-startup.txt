@@ -1,0 +1,48 @@
+
+Running 157 tests using 1 worker
+
+(node:48141) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:48141) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘    1 tests/additional-contacts.spec.ts:37:5 › private additional contacts recover an uncertain submission, receive independent HR review and render on mobile (30.2s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/additional-contacts.spec.ts:37:5 › private additional contacts recover an uncertain submission, receive independent HR review and render on mobile 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByLabel('Workspace account')[22m
+
+
+      10 | async function signIn(page: Page, user: string) {
+      11 |   await page.goto("/");
+    > 12 |   await page.getByLabel("Workspace account").selectOption(user);
+         |                                              ^
+      13 |   await page
+      14 |     .getByRole("button", { name: "Enter workspace", exact: true })
+      15 |     .click();
+        at signIn (/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/additional-contacts.spec.ts:12:46)
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/additional-contacts.spec.ts:40:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/additional-contacts-privat-de51b-review-and-render-on-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/additional-contacts-privat-de51b-review-and-render-on-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/additional-contacts-privat-de51b-review-and-render-on-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/additional-contacts-privat-de51b-review-and-render-on-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/additional-contacts.spec.ts:37:5 › private additional contacts recover an uncertain submission, receive independent HR review and render on mobile 
+  156 did not run
+  1 error was not a part of any test, see above for details

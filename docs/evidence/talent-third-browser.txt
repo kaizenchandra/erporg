@@ -1,0 +1,65 @@
+
+Running 5 tests using 1 worker
+
+(node:80989) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:80989) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/talent.spec.ts:113:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks (1.0m)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/talent.spec.ts:113:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks 
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.selectOption: Test ended.
+    Call log:
+    [2m  - waiting for getByLabel('Task assignee')[22m
+    [2m    - locator resolved to <select required="" name="assignee">…</select>[22m
+    [2m  - attempting select option action[22m
+    [2m    - waiting for element to be visible and enabled[22m
+    [2m  - element was detached from the DOM, retrying[22m
+    [2m    - locator resolved to <select required="" name="assignee">…</select>[22m
+    [2m  - attempting select option action[22m
+    [2m    2 × waiting for element to be visible and enabled[22m
+    [2m      - element is not visible[22m
+    [2m    - retrying select option action[22m
+    [2m    - waiting 20ms[22m
+    [2m    2 × waiting for element to be visible and enabled[22m
+    [2m      - element is not visible[22m
+    [2m    - retrying select option action[22m
+    [2m      - waiting 100ms[22m
+    [2m    114 × waiting for element to be visible and enabled[22m
+    [2m        - element is not visible[22m
+    [2m      - retrying select option action[22m
+    [2m        - waiting 500ms[22m
+
+
+      198 |   await p
+      199 |     .getByLabel("Joining information and acknowledgements")
+    > 200 |     .fill("Equipment and privacy guidance acknowledged");
+          |                                         ^
+      201 |   await submit(detail(p), "Save joining form");
+      202 |   for (const title of ["Collect equipment", "Complete orientation"]) {
+      203 |     await detail(p).getByText("Add joining task", { exact: true }).click();
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/talent.spec.ts:200:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/talent.spec.ts:113:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks 
+  4 did not run
+  1 error was not a part of any test, see above for details

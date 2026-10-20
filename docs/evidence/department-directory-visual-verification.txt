@@ -1,0 +1,5 @@
+Final mobile visual review at390×844 on the final built application. The read-only layout test is included in the complete127-pass browser suite, not an additional pass count.
+
+  ✓  128 tests/zzzzzzzzzzzzzz-department-layout.spec.ts:3:5 › final mobile department filters and resolved parent remain readable for employee (1.3s)
+
+Inspected department-directory-controls-mobile.png and department-directory-parent-mobile.png. Persistent search/timing/relationship/order/page-size labels are readable, the search input and selects use consistent minimum44px controls, and the active selector has a visible focus ring. The separate parent frame shows the exact resolved parent code/name, cost-centre reference, effective date, reference-count explanation and navigation buttons. Content stays within the viewport without horizontal clipping; keyboard Tab and scoped axe/overflow checks passed. UTC evaluation is intentionally19Oct while the operator's local date is20Oct. These images are synthetic reference data. Initial element capture and pre-polish evidence retained. This is scoped evidence, not full WCAG/manual assistive conformance.

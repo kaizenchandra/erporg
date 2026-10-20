@@ -1,0 +1,2878 @@
+{
+  "baseline": "Authoritative user-supplied detailed timesheet baseline FE-01\u2013FE-28 / BE-01\u2013BE-32, received 2026-10-21",
+  "sourceErpInventory": "45 original IDs remain governed separately by docs/traceability.json; this is an additive 60-ID baseline.",
+  "assumptions": [
+    "Independent application; no SAP Fieldglass or Workday connection is implied.",
+    "Workday-oriented employee/manager/payroll flows and shared controls are phase 3/4. Fieldglass-oriented buyer/supplier/billing flows require internal identity, assignment and billing capabilities plus phase 6 dependencies.",
+    "Weekly Monday\u2013Sunday local duration template is existing behaviour, not a claim of configurable templates.",
+    "Activity codes are free text labels, never evidence of an assignment catalogue.",
+    "No statutory overtime, break, holiday, payroll or billing rules are invented.",
+    "Copying reuses existing time zone and labelled minutes; future/pre-employment time and target policy are revalidated. Schedule autofill is incomplete.",
+    "Reports are bounded to 1000 sheets and 53 reporting weeks; all filtered results are exported, not selected page only. Reports contain minutes, not monetary costs."
+  ],
+  "completionPolicy": "Every behaviour must have real UI, backend, persistence, authorisation and executed checks before a source requirement is complete. Status implemented-subset is not complete.",
+  "rows": [
+    {
+      "id": "FE-01",
+      "roles": "All roles",
+      "screenAndApi": "Session / time navigation",
+      "applicationAndDomain": "Identity / scope",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-01.1",
+          "check": "Sign in using configured authentication",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-01.1, FE-01.2, FE-01.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-01.2",
+          "check": "Display only role-permitted actions",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-01.1, FE-01.2, FE-01.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-01.3",
+          "check": "Reject prohibited server requests",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-01.1, FE-01.2, FE-01.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-01.1, FE-01.2, FE-01.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-02",
+      "roles": "Worker / manager",
+      "screenAndApi": "My week / GET dashboard?week={Monday}",
+      "applicationAndDomain": "TimeService.dashboard / current Sheet / Period / current review scope",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-02.1",
+          "check": "Display status and deadline",
+          "status": "partial: persisted status verified; configured policy displayed; no deadline reminder job",
+          "testReferences": [
+            "TimekeepingWorkflowTest.dashboardUsesCurrentEpisodeAndCurrentTeamScopeWithoutInferringSchedule",
+            "tests/timesheet-report-copy.spec.ts \u2014 weekly dashboard"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "FE-02.2",
+          "check": "Calculate missing time from expected schedule",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest.dashboardUsesCurrentEpisodeAndCurrentTeamScopeWithoutInferringSchedule",
+            "tests/timesheet-report-copy.spec.ts \u2014 weekly dashboard"
+          ]
+        },
+        {
+          "id": "FE-02.3",
+          "check": "Show pending approvals and alerts",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest.dashboardUsesCurrentEpisodeAndCurrentTeamScopeWithoutInferringSchedule",
+            "tests/timesheet-report-copy.spec.ts \u2014 weekly dashboard"
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "TimekeepingWorkflowTest.dashboardUsesCurrentEpisodeAndCurrentTeamScopeWithoutInferringSchedule",
+        "tests/timesheet-report-copy.spec.ts \u2014 weekly dashboard"
+      ]
+    },
+    {
+      "id": "FE-03",
+      "roles": "Worker / HR",
+      "screenAndApi": "Reporting periods / GET periods/{week}",
+      "applicationAndDomain": "Period revisions",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-03.1",
+          "check": "Navigate configured weeks",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-03.1, FE-03.2; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-03.2",
+          "check": "Display open or closed status and deadline",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-03.1, FE-03.2; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-03.1, FE-03.2; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-04",
+      "roles": "Worker",
+      "screenAndApi": "Sheet editor / POST sheets",
+      "applicationAndDomain": "Sheet / Entry / Template",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-04.1",
+          "check": "Enter daily duration",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-04.1, FE-04.2, FE-04.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-04.2",
+          "check": "Enter start/end intervals",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-04.1, FE-04.2, FE-04.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-04.3",
+          "check": "Apply assigned template",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-04.1, FE-04.2, FE-04.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-04.1, FE-04.2, FE-04.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-05",
+      "roles": "Worker",
+      "screenAndApi": "Assignment selector / planned assignments API",
+      "applicationAndDomain": "Effective assignment",
+      "phase": [
+        3,
+        6
+      ],
+      "frontendStatus": "missing",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "FE-05.1",
+          "check": "Select eligible job and position",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-05.1, FE-05.2, FE-05.3, FE-05.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-05.2",
+          "check": "Select project task and worktag",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-05.1, FE-05.2, FE-05.3, FE-05.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-05.3",
+          "check": "Select cost centre and work order",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-05.1, FE-05.2, FE-05.3, FE-05.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-05.4",
+          "check": "Display applicable assignment dates",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-05.1, FE-05.2, FE-05.3, FE-05.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-05.1, FE-05.2, FE-05.3, FE-05.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-06",
+      "roles": "Worker / HR",
+      "screenAndApi": "Category selector / planned categories API",
+      "applicationAndDomain": "Time category",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "missing",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "FE-06.1",
+          "check": "Select regular and overtime",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-06.1, FE-06.2, FE-06.3, FE-06.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-06.2",
+          "check": "Select unpaid break",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-06.1, FE-06.2, FE-06.3, FE-06.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-06.3",
+          "check": "Select on-call and holiday work",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-06.1, FE-06.2, FE-06.3, FE-06.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-06.4",
+          "check": "Only configured eligible categories are available",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-06.1, FE-06.2, FE-06.3, FE-06.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-06.1, FE-06.2, FE-06.3, FE-06.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-07",
+      "roles": "Worker",
+      "screenAndApi": "Attendance / POST punches/{action}",
+      "applicationAndDomain": "Shift / Time event",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-07.1",
+          "check": "Clock in",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-07.1, FE-07.2, FE-07.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-07.2",
+          "check": "Clock out",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-07.1, FE-07.2, FE-07.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-07.3",
+          "check": "Record breaks when enabled",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-07.1, FE-07.2, FE-07.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-07.1, FE-07.2, FE-07.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-08",
+      "roles": "Worker",
+      "screenAndApi": "My timesheets / POST sheets",
+      "applicationAndDomain": "Sheet / Entry",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-08.1",
+          "check": "Save an incomplete draft",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-08.1, FE-08.2, FE-08.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-08.2",
+          "check": "Reload persisted draft",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-08.1, FE-08.2, FE-08.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-08.3",
+          "check": "Resume permitted edits",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-08.1, FE-08.2, FE-08.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-08.1, FE-08.2, FE-08.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-09",
+      "roles": "Worker",
+      "screenAndApi": "Copy details / POST sheets/copy",
+      "applicationAndDomain": "Sheet / copy provenance",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-09.1",
+          "check": "Copy eligible prior-period entries without overwriting",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest.copiesAreOwnedVersionedIdempotentAndNeverOverwriteOrPost",
+            "TimekeepingWorkflowTest.concurrentCopyRetriesCreateExactlyOneDraftAndReceipt",
+            "tests/timesheet-report-copy.spec.ts \u2014 copy/reload/submit/approve"
+          ]
+        },
+        {
+          "id": "FE-09.2",
+          "check": "Revalidate target period and employment",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest.copiesAreOwnedVersionedIdempotentAndNeverOverwriteOrPost",
+            "TimekeepingWorkflowTest.concurrentCopyRetriesCreateExactlyOneDraftAndReceipt",
+            "tests/timesheet-report-copy.spec.ts \u2014 copy/reload/submit/approve"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "FE-09.3",
+          "check": "Autofill from effective work schedules",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest.copiesAreOwnedVersionedIdempotentAndNeverOverwriteOrPost",
+            "TimekeepingWorkflowTest.concurrentCopyRetriesCreateExactlyOneDraftAndReceipt",
+            "tests/timesheet-report-copy.spec.ts \u2014 copy/reload/submit/approve"
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "TimekeepingWorkflowTest.copiesAreOwnedVersionedIdempotentAndNeverOverwriteOrPost",
+        "TimekeepingWorkflowTest.concurrentCopyRetriesCreateExactlyOneDraftAndReceipt",
+        "tests/timesheet-report-copy.spec.ts \u2014 copy/reload/submit/approve"
+      ]
+    },
+    {
+      "id": "FE-10",
+      "roles": "Worker / approver / cost viewer",
+      "screenAndApi": "Details / GET sheets/{id}",
+      "applicationAndDomain": "Sheet / Allocation / Rate snapshot",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-10.1",
+          "check": "Display daily and period minutes",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-10.1, FE-10.2, FE-10.3, FE-10.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-10.2",
+          "check": "Display configured overtime",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-10.1, FE-10.2, FE-10.3, FE-10.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-10.3",
+          "check": "Display billable hours",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-10.1, FE-10.2, FE-10.3, FE-10.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-10.4",
+          "check": "Restrict monetary costs to authorised roles",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-10.1, FE-10.2, FE-10.3, FE-10.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-10.1, FE-10.2, FE-10.3, FE-10.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-11",
+      "roles": "Worker / reviewer",
+      "screenAndApi": "Editor and evidence",
+      "applicationAndDomain": "Validation / Exception",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-11.1",
+          "check": "Highlight missing fields and invalid durations",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-11.1, FE-11.2, FE-11.3, FE-11.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-11.2",
+          "check": "Detect overlaps and missed punches",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-11.1, FE-11.2, FE-11.3, FE-11.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-11.3",
+          "check": "Detect invalid assignments",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-11.1, FE-11.2, FE-11.3, FE-11.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-11.4",
+          "check": "Display unusual-hours and policy warning/block rules",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-11.1, FE-11.2, FE-11.3, FE-11.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-11.1, FE-11.2, FE-11.3, FE-11.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-12",
+      "roles": "Worker / reviewer",
+      "screenAndApi": "Details / planned comments and attachments API",
+      "applicationAndDomain": "Comment / private document link",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-12.1",
+          "check": "Persist explanations",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-12.1, FE-12.2, FE-12.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-12.2",
+          "check": "Attach validated private supporting documents",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-12.1, FE-12.2, FE-12.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-12.3",
+          "check": "Authorise attachment retrieval",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-12.1, FE-12.2, FE-12.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-12.1, FE-12.2, FE-12.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-13",
+      "roles": "Worker",
+      "screenAndApi": "Details / POST sheets/{id}/actions",
+      "applicationAndDomain": "Sheet / Declaration",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-13.1",
+          "check": "Review totals before submitting",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "FE-13.2",
+          "check": "Persist required declaration version and acknowledgement",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ]
+        },
+        {
+          "id": "FE-13.3",
+          "check": "Submit through valid transition",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+        "tests/timesheet-management.spec.ts (prior BM evidence)",
+        "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+      ]
+    },
+    {
+      "id": "FE-14",
+      "roles": "Worker / approver",
+      "screenAndApi": "Details and Time history",
+      "applicationAndDomain": "Sheet / Audit / Approval route",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-14.1",
+          "check": "Display status",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-14.1, FE-14.2, FE-14.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-14.2",
+          "check": "Display pending named approvers",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-14.1, FE-14.2, FE-14.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-14.3",
+          "check": "Display full history and reasons",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-14.1, FE-14.2, FE-14.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-14.1, FE-14.2, FE-14.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-15",
+      "roles": "Worker / HR",
+      "screenAndApi": "Details and editor",
+      "applicationAndDomain": "Sheet / Adjustment",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-15.1",
+          "check": "Recall pending submission under policy",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "FE-15.2",
+          "check": "Correct returned records and resubmit",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "FE-15.3",
+          "check": "Request governed post-processing adjustments",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+        "tests/timesheet-management.spec.ts (prior BM evidence)",
+        "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+      ]
+    },
+    {
+      "id": "FE-16",
+      "roles": "Manager / buyer / delegate",
+      "screenAndApi": "Team approvals",
+      "applicationAndDomain": "Approval task / scoped query",
+      "phase": [
+        3,
+        6
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-16.1",
+          "check": "Filter by worker and period",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-16.1, FE-16.2, FE-16.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-16.2",
+          "check": "Filter by organisation and project",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-16.1, FE-16.2, FE-16.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-16.3",
+          "check": "Filter by supplier and exception",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-16.1, FE-16.2, FE-16.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-16.1, FE-16.2, FE-16.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-17",
+      "roles": "Approver / delegate",
+      "screenAndApi": "Team approvals / selected-actions",
+      "applicationAndDomain": "Sheet / immutable batch receipt",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-17.1",
+          "check": "Approve return or reject with comments",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-17.1, FE-17.2, FE-17.3, FE-17.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-17.2",
+          "check": "Scope individual decisions",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-17.1, FE-17.2, FE-17.3, FE-17.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-17.3",
+          "check": "Scope bulk decisions to explicit selected records",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-17.1, FE-17.2, FE-17.3, FE-17.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-17.4",
+          "check": "Apply configured authority and approval order",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-17.1, FE-17.2, FE-17.3, FE-17.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-17.1, FE-17.2, FE-17.3, FE-17.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-18",
+      "roles": "Manager / buyer",
+      "screenAndApi": "Team overview",
+      "applicationAndDomain": "Expected worker / Sheet / Exception",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-18.1",
+          "check": "Show team submissions",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-18.1, FE-18.2, FE-18.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-18.2",
+          "check": "Identify missing expected timesheets",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-18.1, FE-18.2, FE-18.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-18.3",
+          "check": "Show overtime pending approvals and exceptions",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-18.1, FE-18.2, FE-18.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-18.1, FE-18.2, FE-18.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-19",
+      "roles": "Worker / approver",
+      "screenAndApi": "Notifications",
+      "applicationAndDomain": "Notification / delivery attempt",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "missing",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "FE-19.1",
+          "check": "Show reminders",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-19.1, FE-19.2, FE-19.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-19.2",
+          "check": "Show approval requests and returns",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-19.1, FE-19.2, FE-19.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-19.3",
+          "check": "Show downstream failures",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-19.1, FE-19.2, FE-19.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-19.1, FE-19.2, FE-19.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-20",
+      "roles": "Worker / manager / HR",
+      "screenAndApi": "Time reports / GET reports / POST reports/export",
+      "applicationAndDomain": "ReportRow / Allocation",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-20.1",
+          "check": "Filter authorised time and approval status",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest.reportsAndExportsAreScopedBoundedAndReconcileToRealAllocations",
+            "TimeReportLimitTest",
+            "TimeReportCsvTest",
+            "tests/timesheet-report-copy.spec.ts \u2014 filtered report/CSV/access/CSRF"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "FE-20.2",
+          "check": "Export all matching bounded results",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest.reportsAndExportsAreScopedBoundedAndReconcileToRealAllocations",
+            "TimeReportLimitTest",
+            "TimeReportCsvTest",
+            "tests/timesheet-report-copy.spec.ts \u2014 filtered report/CSV/access/CSRF"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "FE-20.3",
+          "check": "Report exceptions",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest.reportsAndExportsAreScopedBoundedAndReconcileToRealAllocations",
+            "TimeReportLimitTest",
+            "TimeReportCsvTest",
+            "tests/timesheet-report-copy.spec.ts \u2014 filtered report/CSV/access/CSRF"
+          ]
+        },
+        {
+          "id": "FE-20.4",
+          "check": "Report authorised labour costs",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest.reportsAndExportsAreScopedBoundedAndReconcileToRealAllocations",
+            "TimeReportLimitTest",
+            "TimeReportCsvTest",
+            "tests/timesheet-report-copy.spec.ts \u2014 filtered report/CSV/access/CSRF"
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "TimekeepingWorkflowTest.reportsAndExportsAreScopedBoundedAndReconcileToRealAllocations",
+        "TimeReportLimitTest",
+        "TimeReportCsvTest",
+        "tests/timesheet-report-copy.spec.ts \u2014 filtered report/CSV/access/CSRF"
+      ]
+    },
+    {
+      "id": "FE-21",
+      "roles": "HR / time administrator",
+      "screenAndApi": "Reporting periods and planned administration",
+      "applicationAndDomain": "Effective configuration",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-21.1",
+          "check": "Manage templates and calendars",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-21.1, FE-21.2, FE-21.3, FE-21.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-21.2",
+          "check": "Manage categories policies and rates",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-21.1, FE-21.2, FE-21.3, FE-21.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-21.3",
+          "check": "Manage approval routing and delegation",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-21.1, FE-21.2, FE-21.3, FE-21.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-21.4",
+          "check": "Manage access assignments",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-21.1, FE-21.2, FE-21.3, FE-21.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-21.1, FE-21.2, FE-21.3, FE-21.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-22",
+      "roles": "Worker / approver",
+      "screenAndApi": "Responsive time workspace",
+      "applicationAndDomain": "Shared workflows",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-22.1",
+          "check": "Operate time entry on supported mobile sizes",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-22.1, FE-22.2, FE-22.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-22.2",
+          "check": "Submit on mobile",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-22.1, FE-22.2, FE-22.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-22.3",
+          "check": "Review and approve on mobile with keyboard and assistive technology",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-22.1, FE-22.2, FE-22.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-22.1, FE-22.2, FE-22.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-23",
+      "roles": "Worker / buyer / supplier",
+      "screenAndApi": "Planned supplier workspace",
+      "applicationAndDomain": "Buyer / Supplier / access grant",
+      "phase": [
+        3,
+        6
+      ],
+      "frontendStatus": "partial",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "FE-23.1",
+          "check": "Provide worker views",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-23.1, FE-23.2, FE-23.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-23.2",
+          "check": "Scope buyer views",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-23.1, FE-23.2, FE-23.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-23.3",
+          "check": "Scope supplier representative views",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-23.1, FE-23.2, FE-23.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-23.1, FE-23.2, FE-23.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-24",
+      "roles": "Authorised importer",
+      "screenAndApi": "Planned time import screen",
+      "applicationAndDomain": "Import batch / row results",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "missing",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "FE-24.1",
+          "check": "Upload bounded time data",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-24.1, FE-24.2, FE-24.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-24.2",
+          "check": "Display each row outcome",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-24.1, FE-24.2, FE-24.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-24.3",
+          "check": "Give correction instructions and replay without duplicates",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-24.1, FE-24.2, FE-24.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-24.1, FE-24.2, FE-24.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-25",
+      "roles": "Worker / reviewer",
+      "screenAndApi": "Planned schedule context",
+      "applicationAndDomain": "Schedule / Holiday / Absence",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "missing",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "FE-25.1",
+          "check": "Display scheduled hours",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-25.1, FE-25.2, FE-25.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-25.2",
+          "check": "Display holidays",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-25.1, FE-25.2, FE-25.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-25.3",
+          "check": "Display relevant absence beside entries",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-25.1, FE-25.2, FE-25.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-25.1, FE-25.2, FE-25.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-26",
+      "roles": "Buyer / supplier",
+      "screenAndApi": "Planned billing status",
+      "applicationAndDomain": "Billing handoff / adjustment",
+      "phase": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "frontendStatus": "missing",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "FE-26.1",
+          "check": "Display ready for invoicing",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-26.1, FE-26.2, FE-26.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-26.2",
+          "check": "Display invoiced time",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-26.1, FE-26.2, FE-26.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-26.3",
+          "check": "Display awaiting-correction state",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-26.1, FE-26.2, FE-26.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal implementation remains authorised. Live provider connection additionally needs verified contracts, credentials and identifier ownership.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-26.1, FE-26.2, FE-26.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "FE-27",
+      "roles": "Payroll operator / worker",
+      "screenAndApi": "Planned payroll status",
+      "applicationAndDomain": "Payroll handoff / acknowledgement",
+      "phase": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "frontendStatus": "missing",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "FE-27.1",
+          "check": "Display readiness",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-27.1, FE-27.2, FE-27.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-27.2",
+          "check": "Display processing outcome",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-27.1, FE-27.2, FE-27.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-27.3",
+          "check": "Display outstanding issues",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-27.1, FE-27.2, FE-27.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal implementation remains authorised. Live provider connection additionally needs verified contracts, credentials and identifier ownership.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-27.1, FE-27.2, FE-27.3; existing subset evidence remains BM, without full source sign-off."
+      ],
+      "financialConsumerIncrement": {
+        "checkpoint": "BO",
+        "status": "partial backend consumer; timekeeping processing-status UI and corrections remain incomplete",
+        "implementation": "ApprovedTimeAccess/TimeUseCases.approvedSource \u2192 PayrollUseCases.prepare \u2192 Finance payroll journal contract. Independent demonstration processing only; no bank/provider transfer.",
+        "verification": "PayrollAccountingWorkflowTest and payroll-accounting.spec.ts"
+      }
+    },
+    {
+      "id": "FE-28",
+      "roles": "Integration operator",
+      "screenAndApi": "Planned reconciliation screen",
+      "applicationAndDomain": "Transfer / attempt / difference",
+      "phase": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "frontendStatus": "missing",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "FE-28.1",
+          "check": "Display successful transfers",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-28.1, FE-28.2, FE-28.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-28.2",
+          "check": "Display rejected records and retries",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-28.1, FE-28.2, FE-28.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "FE-28.3",
+          "check": "Display unresolved differences",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: FE-28.1, FE-28.2, FE-28.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal implementation remains authorised. Live provider connection additionally needs verified contracts, credentials and identifier ownership.",
+      "acceptanceTests": [
+        "Planned behaviour checks: FE-28.1, FE-28.2, FE-28.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-01",
+      "roles": "All roles",
+      "screenAndApi": "Session and all time endpoints",
+      "applicationAndDomain": "Identity / organisational scope",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-01.1",
+          "check": "Authenticate requests",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-01.1, BE-01.2, BE-01.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-01.2",
+          "check": "Enforce read edit submit and approve grants",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-01.1, BE-01.2, BE-01.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-01.3",
+          "check": "Enforce import and export grants",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-01.1, BE-01.2, BE-01.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-01.1, BE-01.2, BE-01.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-02",
+      "roles": "HR / integration operator",
+      "screenAndApi": "Published corehr TimeWorkforceAccess",
+      "applicationAndDomain": "Worker / employment episode / assignment",
+      "phase": [
+        3,
+        6
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-02.1",
+          "check": "Maintain workers managers and employment dates",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-02.1, BE-02.2, BE-02.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-02.2",
+          "check": "Maintain jobs and assignments",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-02.1, BE-02.2, BE-02.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-02.3",
+          "check": "Maintain suppliers and organisational boundaries",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-02.1, BE-02.2, BE-02.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-02.1, BE-02.2, BE-02.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-03",
+      "roles": "Worker / importer",
+      "screenAndApi": "Save copy and planned assignment eligibility",
+      "applicationAndDomain": "Employment episode / effective rule",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-03.1",
+          "check": "Validate worker episode and dates",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-03.1, BE-03.2, BE-03.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-03.2",
+          "check": "Resolve effective assignments",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-03.1, BE-03.2, BE-03.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-03.3",
+          "check": "Resolve permitted time-entry system",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-03.1, BE-03.2, BE-03.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-03.1, BE-03.2, BE-03.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-04",
+      "roles": "HR / worker",
+      "screenAndApi": "GET periods/{week} / POST periods",
+      "applicationAndDomain": "Immutable Period revisions",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-04.1",
+          "check": "Persist reporting weeks and deadlines",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-04.1, BE-04.2, BE-04.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-04.2",
+          "check": "Enforce open and closed state",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-04.1, BE-04.2, BE-04.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-04.3",
+          "check": "Apply configured calendars",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-04.1, BE-04.2, BE-04.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-04.1, BE-04.2, BE-04.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-05",
+      "roles": "Worker / reviewer",
+      "screenAndApi": "Sheet and history APIs",
+      "applicationAndDomain": "Sheet / Entry / Audit",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-05.1",
+          "check": "Store headers daily entries totals and versions",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-05.1, BE-05.2, BE-05.3, BE-05.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-05.2",
+          "check": "Store comments",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-05.1, BE-05.2, BE-05.3, BE-05.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-05.3",
+          "check": "Store attachments",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-05.1, BE-05.2, BE-05.3, BE-05.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-05.4",
+          "check": "Store declarations",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-05.1, BE-05.2, BE-05.3, BE-05.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-05.1, BE-05.2, BE-05.3, BE-05.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-06",
+      "roles": "Worker / importer",
+      "screenAndApi": "Save / correction validation",
+      "applicationAndDomain": "TimePolicy / assignment rules",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-06.1",
+          "check": "Validate required fields and date ranges",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-06.1, BE-06.2, BE-06.3, BE-06.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-06.2",
+          "check": "Detect overlaps and duplicate daily entries",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-06.1, BE-06.2, BE-06.3, BE-06.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-06.3",
+          "check": "Validate assignment eligibility",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-06.1, BE-06.2, BE-06.3, BE-06.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-06.4",
+          "check": "Enforce configured hour limits",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-06.1, BE-06.2, BE-06.3, BE-06.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-06.1, BE-06.2, BE-06.3, BE-06.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-07",
+      "roles": "Worker / payroll / billing",
+      "screenAndApi": "Time calculation use case",
+      "applicationAndDomain": "Minutes / calculation snapshot",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-07.1",
+          "check": "Calculate elapsed worked minutes",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-07.1, BE-07.2, BE-07.3, BE-07.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-07.2",
+          "check": "Deduct unpaid breaks",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-07.1, BE-07.2, BE-07.3, BE-07.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-07.3",
+          "check": "Apply configured rounding",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-07.1, BE-07.2, BE-07.3, BE-07.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-07.4",
+          "check": "Calculate overtime and premiums",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-07.1, BE-07.2, BE-07.3, BE-07.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-07.1, BE-07.2, BE-07.3, BE-07.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-08",
+      "roles": "Worker / reviewer",
+      "screenAndApi": "Planned schedule validation",
+      "applicationAndDomain": "Schedule / holiday / absence contracts",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-08.1",
+          "check": "Apply work schedules",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-08.1, BE-08.2, BE-08.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-08.2",
+          "check": "Apply holidays",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-08.1, BE-08.2, BE-08.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-08.3",
+          "check": "Detect absence conflicts",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-08.1, BE-08.2, BE-08.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-08.1, BE-08.2, BE-08.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-09",
+      "roles": "Worker / approver",
+      "screenAndApi": "POST sheets/{id}/actions",
+      "applicationAndDomain": "Sheet state machine",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-09.1",
+          "check": "Enforce draft submitted approved returned rejected and corrected states",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "BE-09.2",
+          "check": "Require correction before resubmission",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "BE-09.3",
+          "check": "Track independent payroll and billing processing states",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+        "tests/timesheet-management.spec.ts (prior BM evidence)",
+        "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+      ]
+    },
+    {
+      "id": "BE-10",
+      "roles": "Manager / buyer / delegate",
+      "screenAndApi": "Review queue / planned route resolution",
+      "applicationAndDomain": "Approval route / stage / task",
+      "phase": [
+        3,
+        6
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-10.1",
+          "check": "Route to current manager",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-10.1, BE-10.2, BE-10.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-10.2",
+          "check": "Route project buyer or group approvals",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-10.1, BE-10.2, BE-10.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-10.3",
+          "check": "Support separate job/project routes and ordered stages",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-10.1, BE-10.2, BE-10.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-10.1, BE-10.2, BE-10.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-11",
+      "roles": "Approver / delegate / HR",
+      "screenAndApi": "Planned delegation and reminder jobs",
+      "applicationAndDomain": "Delegation / reminder / escalation",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-11.1",
+          "check": "Authorise bounded substitute approvers",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-11.1, BE-11.2, BE-11.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-11.2",
+          "check": "Remind overdue tasks",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-11.1, BE-11.2, BE-11.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-11.3",
+          "check": "Escalate according to configured rules",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-11.1, BE-11.2, BE-11.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-11.1, BE-11.2, BE-11.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-12",
+      "roles": "Worker / HR",
+      "screenAndApi": "Save / transition / period controls",
+      "applicationAndDomain": "Sheet / Period / downstream lock",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-12.1",
+          "check": "Lock submitted and approved edits",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-12.1, BE-12.2, BE-12.3, BE-12.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-12.2",
+          "check": "Enforce period closure",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-12.1, BE-12.2, BE-12.3, BE-12.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-12.3",
+          "check": "Lock processed payroll and invoiced time",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-12.1, BE-12.2, BE-12.3, BE-12.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-12.4",
+          "check": "Permit only governed correction flows",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-12.1, BE-12.2, BE-12.3, BE-12.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-12.1, BE-12.2, BE-12.3, BE-12.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-13",
+      "roles": "Worker / HR / payroll / billing",
+      "screenAndApi": "Planned adjustment requests",
+      "applicationAndDomain": "Original Sheet / Adjustment / allocation",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-13.1",
+          "check": "Preserve original approved records",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-13.1, BE-13.2, BE-13.3, BE-13.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-13.2",
+          "check": "Authorise corrections and recalculate",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-13.1, BE-13.2, BE-13.3, BE-13.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-13.3",
+          "check": "Reapprove adjustments",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-13.1, BE-13.2, BE-13.3, BE-13.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-13.4",
+          "check": "Create downstream delta records",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-13.1, BE-13.2, BE-13.3, BE-13.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-13.1, BE-13.2, BE-13.3, BE-13.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-14",
+      "roles": "Worker / approver",
+      "screenAndApi": "Planned time notification processor",
+      "applicationAndDomain": "Business event / outbox / delivery",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-14.1",
+          "check": "Emit committed workflow notifications",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-14.1, BE-14.2, BE-14.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-14.2",
+          "check": "Generate deadline reminders",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-14.1, BE-14.2, BE-14.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-14.3",
+          "check": "Persist delivery attempts and outcomes",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-14.1, BE-14.2, BE-14.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-14.1, BE-14.2, BE-14.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-15",
+      "roles": "Worker / authorised reviewer",
+      "screenAndApi": "GET history/{employeeId}",
+      "applicationAndDomain": "Append-only Audit",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-15.1",
+          "check": "Record actor instant action and reason",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "BE-15.2",
+          "check": "Record old and new values",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "BE-15.3",
+          "check": "Retain correlation and copy provenance",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "BE-15.4",
+          "check": "Restrict audit access",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+            "tests/timesheet-management.spec.ts (prior BM evidence)",
+            "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "TimekeepingWorkflowTest (actual PostgreSQL workflows, auth, immutable audit and transitions)",
+        "tests/timesheet-management.spec.ts (prior BM evidence)",
+        "tests/timesheet-report-copy.spec.ts (BN verified subset)"
+      ]
+    },
+    {
+      "id": "BE-16",
+      "roles": "Importer / integration operator",
+      "screenAndApi": "Planned imports API",
+      "applicationAndDomain": "ImportBatch / ImportRow",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-16.1",
+          "check": "Accept spreadsheet clock supplier and external records",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-16.1, BE-16.2, BE-16.3, BE-16.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-16.2",
+          "check": "Validate bounded batches",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-16.1, BE-16.2, BE-16.3, BE-16.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-16.3",
+          "check": "Return row errors",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-16.1, BE-16.2, BE-16.3, BE-16.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-16.4",
+          "check": "Allow safe correction and replay",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-16.1, BE-16.2, BE-16.3, BE-16.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-16.1, BE-16.2, BE-16.3, BE-16.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-17",
+      "roles": "Integration operator",
+      "screenAndApi": "Planned outbound ports / transfers",
+      "applicationAndDomain": "Mapping / transfer / acknowledgement",
+      "phase": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-17.1",
+          "check": "Exchange worker and assignment data",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-17.1, BE-17.2, BE-17.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-17.2",
+          "check": "Exchange time and approval data",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-17.1, BE-17.2, BE-17.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-17.3",
+          "check": "Exchange payroll and billing data via supported interfaces",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-17.1, BE-17.2, BE-17.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal implementation remains authorised. Live provider connection additionally needs verified contracts, credentials and identifier ownership.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-17.1, BE-17.2, BE-17.3; existing subset evidence remains BM, without full source sign-off."
+      ],
+      "financialConsumerIncrement": {
+        "checkpoint": "BO",
+        "status": "partial backend consumer; timekeeping processing-status UI and corrections remain incomplete",
+        "implementation": "ApprovedTimeAccess/TimeUseCases.approvedSource \u2192 PayrollUseCases.prepare \u2192 Finance payroll journal contract. Independent demonstration processing only; no bank/provider transfer.",
+        "verification": "PayrollAccountingWorkflowTest and payroll-accounting.spec.ts"
+      }
+    },
+    {
+      "id": "BE-18",
+      "roles": "Worker / approver / operator",
+      "screenAndApi": "Command receipts and planned transfer deduplication",
+      "applicationAndDomain": "Command / unique Sheet / transfer key",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-18.1",
+          "check": "Prevent duplicate entries and submissions",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-18.1, BE-18.2, BE-18.3, BE-18.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-18.2",
+          "check": "Prevent duplicate imports",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-18.1, BE-18.2, BE-18.3, BE-18.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-18.3",
+          "check": "Prevent duplicate payroll and billing handoffs",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-18.1, BE-18.2, BE-18.3, BE-18.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-18.4",
+          "check": "Return stable outcomes on safe retry",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-18.1, BE-18.2, BE-18.3, BE-18.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-18.1, BE-18.2, BE-18.3, BE-18.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-19",
+      "roles": "Integration operator",
+      "screenAndApi": "Planned reconciliation API",
+      "applicationAndDomain": "Transfer / acknowledgement / difference",
+      "phase": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-19.1",
+          "check": "Track exports and acknowledgements",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-19.1, BE-19.2, BE-19.3, BE-19.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-19.2",
+          "check": "Track rejected records and failures",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-19.1, BE-19.2, BE-19.3, BE-19.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-19.3",
+          "check": "Support bounded authorised retries",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-19.1, BE-19.2, BE-19.3, BE-19.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-19.4",
+          "check": "Reconcile unresolved differences",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-19.1, BE-19.2, BE-19.3, BE-19.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal implementation remains authorised. Live provider connection additionally needs verified contracts, credentials and identifier ownership.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-19.1, BE-19.2, BE-19.3, BE-19.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-20",
+      "roles": "Worker / manager / HR",
+      "screenAndApi": "GET reports / POST reports/export",
+      "applicationAndDomain": "ReportRow / Allocation",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-20.1",
+          "check": "Summarise scoped hours and approval states",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest.reportsAndExportsAreScopedBoundedAndReconcileToRealAllocations",
+            "TimeReportLimitTest",
+            "tests/timesheet-report-copy.spec.ts"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "BE-20.2",
+          "check": "Summarise exceptions",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest.reportsAndExportsAreScopedBoundedAndReconcileToRealAllocations",
+            "TimeReportLimitTest",
+            "tests/timesheet-report-copy.spec.ts"
+          ]
+        },
+        {
+          "id": "BE-20.3",
+          "check": "Summarise authorised labour costs",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest.reportsAndExportsAreScopedBoundedAndReconcileToRealAllocations",
+            "TimeReportLimitTest",
+            "tests/timesheet-report-copy.spec.ts"
+          ]
+        },
+        {
+          "id": "BE-20.4",
+          "check": "Summarise downstream processing",
+          "status": "not individually signed off",
+          "testReferences": [
+            "TimekeepingWorkflowTest.reportsAndExportsAreScopedBoundedAndReconcileToRealAllocations",
+            "TimeReportLimitTest",
+            "tests/timesheet-report-copy.spec.ts"
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "TimekeepingWorkflowTest.reportsAndExportsAreScopedBoundedAndReconcileToRealAllocations",
+        "TimeReportLimitTest",
+        "tests/timesheet-report-copy.spec.ts"
+      ]
+    },
+    {
+      "id": "BE-21",
+      "roles": "HR / time administrator",
+      "screenAndApi": "Reporting periods and planned effective config API",
+      "applicationAndDomain": "Policy / Template / Calendar / Rate / Mapping",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-21.1",
+          "check": "Version effective policies templates and calendars",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-21.1, BE-21.2, BE-21.3, BE-21.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-21.2",
+          "check": "Version rate rules and mappings",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-21.1, BE-21.2, BE-21.3, BE-21.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-21.3",
+          "check": "Version approval rules",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-21.1, BE-21.2, BE-21.3, BE-21.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-21.4",
+          "check": "Preserve historical configuration snapshots",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-21.1, BE-21.2, BE-21.3, BE-21.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-21.1, BE-21.2, BE-21.3, BE-21.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-22",
+      "roles": "Worker / reviewer / HR",
+      "screenAndApi": "Save copy decide configurePeriod",
+      "applicationAndDomain": "Optimistic revision / employee lock",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "implemented-subset",
+      "acceptance": [
+        {
+          "id": "BE-22.1",
+          "check": "Reject stale edits",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest",
+            "TimeIdentityRaceTest",
+            "tests/timesheet-report-copy.spec.ts"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "BE-22.2",
+          "check": "Reject stale copied sources",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest",
+            "TimeIdentityRaceTest",
+            "tests/timesheet-report-copy.spec.ts"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "BE-22.3",
+          "check": "Resolve concurrent approvals safely",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest",
+            "TimeIdentityRaceTest",
+            "tests/timesheet-report-copy.spec.ts"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        },
+        {
+          "id": "BE-22.4",
+          "check": "Prevent silent overwrite",
+          "status": "verified implemented subset; see exact limits",
+          "testReferences": [
+            "TimekeepingWorkflowTest",
+            "TimeIdentityRaceTest",
+            "tests/timesheet-report-copy.spec.ts"
+          ],
+          "limits": "Only employee/manager/HR roles and current module models. Supplier roles, schedules, assignment eligibility and downstream payroll/billing remain incomplete."
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "TimekeepingWorkflowTest",
+        "TimeIdentityRaceTest",
+        "tests/timesheet-report-copy.spec.ts"
+      ]
+    },
+    {
+      "id": "BE-23",
+      "roles": "All roles",
+      "screenAndApi": "Every scoped query and command",
+      "applicationAndDomain": "Tenant / organisation / supplier grant",
+      "phase": [
+        3,
+        6
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-23.1",
+          "check": "Isolate tenants and current employee/team records",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-23.1, BE-23.2, BE-23.3, BE-23.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-23.2",
+          "check": "Isolate buyer organisations",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-23.1, BE-23.2, BE-23.3, BE-23.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-23.3",
+          "check": "Isolate suppliers",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-23.1, BE-23.2, BE-23.3, BE-23.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-23.4",
+          "check": "Restrict administrative access",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-23.1, BE-23.2, BE-23.3, BE-23.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-23.1, BE-23.2, BE-23.3, BE-23.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-24",
+      "roles": "Payroll / billing / cost viewer",
+      "screenAndApi": "Planned valuation use case",
+      "applicationAndDomain": "Rate rule / currency / historical amount",
+      "phase": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-24.1",
+          "check": "Apply configured payable rates",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-24.1, BE-24.2, BE-24.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-24.2",
+          "check": "Apply billable rates",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-24.1, BE-24.2, BE-24.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-24.3",
+          "check": "Preserve historical rate currency rounding and values",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-24.1, BE-24.2, BE-24.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-24.1, BE-24.2, BE-24.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-25",
+      "roles": "Buyer / billing operator",
+      "screenAndApi": "Planned billing handoff",
+      "applicationAndDomain": "Approved allocation / BillingTransfer",
+      "phase": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-25.1",
+          "check": "Handoff eligible approved time",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-25.1, BE-25.2, BE-25.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-25.2",
+          "check": "Track invoice acknowledgement",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-25.1, BE-25.2, BE-25.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-25.3",
+          "check": "Process auditable billing adjustments",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-25.1, BE-25.2, BE-25.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal implementation remains authorised. Live provider connection additionally needs verified contracts, credentials and identifier ownership.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-25.1, BE-25.2, BE-25.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-26",
+      "roles": "Payroll operator",
+      "screenAndApi": "Planned payroll handoff",
+      "applicationAndDomain": "Approved allocation / PayrollTransfer",
+      "phase": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-26.1",
+          "check": "Handoff eligible calculated time",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-26.1, BE-26.2, BE-26.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-26.2",
+          "check": "Track results",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-26.1, BE-26.2, BE-26.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-26.3",
+          "check": "Process corrections without duplicates",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-26.1, BE-26.2, BE-26.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal implementation remains authorised. Live provider connection additionally needs verified contracts, credentials and identifier ownership.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-26.1, BE-26.2, BE-26.3; existing subset evidence remains BM, without full source sign-off."
+      ],
+      "financialConsumerIncrement": {
+        "checkpoint": "BO",
+        "status": "partial backend consumer; timekeeping processing-status UI and corrections remain incomplete",
+        "implementation": "ApprovedTimeAccess/TimeUseCases.approvedSource \u2192 PayrollUseCases.prepare \u2192 Finance payroll journal contract. Independent demonstration processing only; no bank/provider transfer.",
+        "verification": "PayrollAccountingWorkflowTest and payroll-accounting.spec.ts"
+      }
+    },
+    {
+      "id": "BE-27",
+      "roles": "Worker / clock importer",
+      "screenAndApi": "Attendance APIs and planned conversion",
+      "applicationAndDomain": "Shift / Event / calculated Entry",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-27.1",
+          "check": "Process in and out events",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-27.1, BE-27.2, BE-27.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-27.2",
+          "check": "Process break events",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-27.1, BE-27.2, BE-27.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-27.3",
+          "check": "Convert complete event sequences into calculated time entries",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-27.1, BE-27.2, BE-27.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-27.1, BE-27.2, BE-27.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-28",
+      "roles": "Worker / reviewer",
+      "screenAndApi": "Time validation and planned exception rules",
+      "applicationAndDomain": "ExceptionRule / Exception",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "partial",
+      "acceptance": [
+        {
+          "id": "BE-28.1",
+          "check": "Detect missing punches",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-28.1, BE-28.2, BE-28.3, BE-28.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-28.2",
+          "check": "Detect unusual hours",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-28.1, BE-28.2, BE-28.3, BE-28.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-28.3",
+          "check": "Configure warning versus blocking severity",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-28.1, BE-28.2, BE-28.3, BE-28.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-28.4",
+          "check": "Resolve and audit exceptions",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-28.1, BE-28.2, BE-28.3, BE-28.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-28.1, BE-28.2, BE-28.3, BE-28.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-29",
+      "roles": "Integration administrator",
+      "screenAndApi": "Planned mapping administration",
+      "applicationAndDomain": "ExternalMapping / effective mapping version",
+      "phase": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-29.1",
+          "check": "Map worker and assignment IDs",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-29.1, BE-29.2, BE-29.3, BE-29.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-29.2",
+          "check": "Map categories cost centres and projects",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-29.1, BE-29.2, BE-29.3, BE-29.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-29.3",
+          "check": "Map reporting periods",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-29.1, BE-29.2, BE-29.3, BE-29.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-29.4",
+          "check": "Reject ambiguous unmapped records",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-29.1, BE-29.2, BE-29.3, BE-29.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal implementation remains authorised. Live provider connection additionally needs verified contracts, credentials and identifier ownership.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-29.1, BE-29.2, BE-29.3, BE-29.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-30",
+      "roles": "Integration administrator",
+      "screenAndApi": "Planned ownership administration",
+      "applicationAndDomain": "SystemOfRecord / inbound policy",
+      "phase": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-30.1",
+          "check": "Define worker and assignment ownership",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-30.1, BE-30.2, BE-30.3, BE-30.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-30.2",
+          "check": "Define entered-time and approval ownership",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-30.1, BE-30.2, BE-30.3, BE-30.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-30.3",
+          "check": "Define payroll and billing ownership",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-30.1, BE-30.2, BE-30.3, BE-30.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-30.4",
+          "check": "Reject unauthorised source changes",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-30.1, BE-30.2, BE-30.3, BE-30.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal implementation remains authorised. Live provider connection additionally needs verified contracts, credentials and identifier ownership.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-30.1, BE-30.2, BE-30.3, BE-30.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-31",
+      "roles": "Approver / importer",
+      "screenAndApi": "Planned transferred-time route resolution",
+      "applicationAndDomain": "Import source / approval rule / task",
+      "phase": [
+        3
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-31.1",
+          "check": "Imported time remains subject to configured approval",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-31.1, BE-31.2, BE-31.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-31.2",
+          "check": "Transfer never silently bypasses required approval",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-31.1, BE-31.2, BE-31.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-31.3",
+          "check": "Persist route and decision provenance",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-31.1, BE-31.2, BE-31.3; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal engineering work; not blocked by unavailable provider credentials.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-31.1, BE-31.2, BE-31.3; existing subset evidence remains BM, without full source sign-off."
+      ]
+    },
+    {
+      "id": "BE-32",
+      "roles": "Integration operator / HR",
+      "screenAndApi": "Planned correction synchronisation",
+      "applicationAndDomain": "Adjustment / cancellation / transfer",
+      "phase": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "frontendStatus": "see linked FE criteria; not independently complete",
+      "backendStatus": "missing",
+      "acceptance": [
+        {
+          "id": "BE-32.1",
+          "check": "Propagate corrections",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-32.1, BE-32.2, BE-32.3, BE-32.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-32.2",
+          "check": "Propagate cancellations",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-32.1, BE-32.2, BE-32.3, BE-32.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-32.3",
+          "check": "Retain original and replacement identifiers",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-32.1, BE-32.2, BE-32.3, BE-32.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        },
+        {
+          "id": "BE-32.4",
+          "check": "Reconcile retries and acknowledgement history",
+          "status": "not individually signed off",
+          "testReferences": [
+            "Planned behaviour checks: BE-32.1, BE-32.2, BE-32.3, BE-32.4; existing subset evidence remains BM, without full source sign-off."
+          ]
+        }
+      ],
+      "verification": "BN targeted evidence in docs/verification.md; prior BM evidence retained. Not a full 60-ID completion claim.",
+      "dependencies": "Internal implementation remains authorised. Live provider connection additionally needs verified contracts, credentials and identifier ownership.",
+      "acceptanceTests": [
+        "Planned behaviour checks: BE-32.1, BE-32.2, BE-32.3, BE-32.4; existing subset evidence remains BM, without full source sign-off."
+      ]
+    }
+  ],
+  "productionReady": false
+}

@@ -1,0 +1,15 @@
+Next production builds, strict TypeScript, ESLint zero warnings, Prettier, Spotless/Maven verify/JAR, Python syntax, eight delivery checks and git diff --check passed. After the full browser run, only two calendar guidance sentences were updated to describe implemented amendments and original list snapshots; rebuilt frontend passed two read-only guidance/maximum-text mobile checks (3.2s). No business rule/API/persistence code changed after full regression. No fresh IdP/security/dependency/container/load/real-user performance claim.
+
+Running 2 tests using 1 worker
+
+[1A[2K(node:34459) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:34459) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/2] tests/zz-company-calendar-layout.spec.ts:2:5 › maximum-length calendar presentation stays readable within the mobile dialog
+[1A[2K[2/2] tests/zzzz-calendar-guidance.spec.ts:2:5 › calendar guidance distinguishes original creation from working dated amendments
+[1A[2K  2 passed (3.2s)

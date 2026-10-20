@@ -154,6 +154,33 @@ test("private additional contacts recover an uncertain submission, receive indep
   await page
     .getByRole("button", { name: `View ${before.name}`, exact: true })
     .click();
+  const calendarPanel = page.getByRole("region", {
+    name: "Employee company calendar",
+  });
+  await calendarPanel
+    .getByRole("button", { name: "Preview employee date", exact: true })
+    .click();
+  await expect(calendarPanel.getByRole("alert")).toBeFocused();
+  const changes = page.getByRole("region", {
+    name: "Employee change history",
+    exact: true,
+  });
+  await changes
+    .getByRole("combobox", { name: "History action", exact: true })
+    .selectOption("REJECTED");
+  await expect(changes.getByRole("status")).toContainText("Page 1");
+  await page
+    .getByRole("button", {
+      name: "Show calendar assignment history",
+      exact: true,
+    })
+    .click();
+  await expect(
+    page.getByRole("region", {
+      name: "Employee calendar history",
+      exact: true,
+    }),
+  ).toContainText("0 approved calendar records");
   await page
     .getByRole("button", {
       name: "Review additional contact request",
@@ -183,6 +210,28 @@ test("private additional contacts recover an uncertain submission, receive indep
     "post",
   );
   await expect(review).not.toBeVisible();
+  await expect(calendarPanel).toContainText(
+    "Employee changed. Preview the date again",
+  );
+  await expect(calendarPanel.getByRole("alert")).toHaveCount(0);
+  await expect(
+    changes.getByRole("combobox", { name: "History action", exact: true }),
+  ).toHaveValue("ALL");
+  await expect(
+    page.getByRole("button", {
+      name: "Show calendar assignment history",
+      exact: true,
+    }),
+  ).toHaveAttribute("aria-expanded", "false");
+  await expect(
+    page
+      .getByRole("region", { name: "Employee calendar history", exact: true })
+      .getByRole("status"),
+  ).toHaveCount(0);
+  await calendarPanel
+    .getByRole("button", { name: "Preview employee date", exact: true })
+    .click();
+  await expect(calendarPanel.getByRole("alert")).toBeFocused();
   await signOut(page);
   await signIn(page, "sophia");
   await page.setViewportSize({ width: 390, height: 844 });

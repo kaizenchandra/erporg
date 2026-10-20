@@ -6,7 +6,10 @@ import java.time.Instant;
 import java.util.*;
 
 public interface PlanStore {
-  List<BenefitPlan> plans(String tenant, int limit);
+  PlanBatch plans(
+      String tenant,
+      PlanQuery query,
+      com.atlas.modules.benefits.domain.model.EligibilityWindow eligibility);
 
   Optional<CreatePlan> duplicate(String tenant, String subject, String key);
 

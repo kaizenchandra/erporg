@@ -1,0 +1,7 @@
+Final local built UI + packaged Java API + real PostgreSQL/scanner
+Command: npx playwright test
+Result: 90 passed, 1 OIDC-only skipped (3.4m).
+Three new Settings scenarios pass: controlled read outage/loading/error focus/retry and empty state; backend validation with preserved values; successful-write/lost-response stable replay; creation audit and mobile axe/overflow; live exact OpenAPI catalogue/options/create contracts; HR/tenant denials, concurrent duplicate receipt, future filter, invalid vocabulary/query bounds; real 13-record pagination/filter reset and employee view without HR actions. Existing postal maximum-length profile/editor/comparison checks are included in this full run. No mocks are counted as workflow persistence; outage/lost response are fault injection around real API calls. No fresh OIDC/provider test was run.
+Targeted pre-final checks: 2 passed (5.4s) on retained upgrade data; expanded final full suite covers the later outage/pagination additions.
+
+Post-suite change: only removed an internal delivery-phase caption; rebuilt and inspected the final mobile navigation/catalogue read-only in Chrome. No business logic or data change; the complete suite was not repeated for this caption-only edit.

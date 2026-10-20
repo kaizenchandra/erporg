@@ -1,0 +1,189 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24151 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] ------------------------< com.atlas:atlas-api >-------------------------
+[INFO] Building atlas-api 0.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] Loaded 24151 auto-discovered prefixes for remote repository maven-central (prefixes-maven-central.txt)
+[WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+[INFO] Loaded 7 auto-discovered prefixes for remote repository shibboleth-repo (prefixes-shibboleth-repo.txt)
+[INFO] Loaded 24151 auto-discovered prefixes for remote repository maven_central (prefixes-maven_central.txt)
+[INFO] 
+[INFO] --- spotless:3.0.0:apply (default-cli) @ atlas-api ---
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/DepartmentParentWorkflowTest.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/corehr/adapter/out/persistence/JdbcDepartmentDirectoryStore.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/corehr/adapter/out/persistence/JdbcOrganisationStore.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/corehr/adapter/out/persistence/JdbcDepartmentParentStore.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/corehr/application/model/DepartmentParentModels.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/corehr/application/usecase/DepartmentParentService.java
+[INFO] Spotless.Java is keeping 414 files clean - 6 were changed to be clean, 0 were already clean, 408 were skipped because caching determined they were already clean
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ atlas-api ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] Copying 68 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ atlas-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 333 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ atlas-api ---
+[INFO] skip non existing resourceDirectory /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ atlas-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 81 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Some input files use or override a deprecated API.
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ atlas-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.atlas.DepartmentParentWorkflowTest
+18:06:31.263 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.DepartmentParentWorkflowTest]: DepartmentParentWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:06:31.326 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.DepartmentParentWorkflowTest
+18:06:31.353 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.DepartmentParentWorkflowTest]: DepartmentParentWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:06:31.354 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.DepartmentParentWorkflowTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-20T18:06:31.486+05:30  INFO 9293 --- [atlas-api] [           main] com.atlas.DepartmentParentWorkflowTest   : Starting DepartmentParentWorkflowTest using Java 21.0.12.1 with PID 9293 (started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-20T18:06:31.487+05:30  INFO 9293 --- [atlas-api] [           main] com.atlas.DepartmentParentWorkflowTest   : The following 1 profile is active: "local"
+2026-10-20T18:06:32.113+05:30  INFO 9293 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-20T18:06:32.198+05:30  INFO 9293 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3d98729a
+2026-10-20T18:06:32.199+05:30  INFO 9293 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-20T18:06:32.212+05:30  INFO 9293 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_bj_5e4c3eaf4870 (PostgreSQL 18.6)
+2026-10-20T18:06:32.247+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.database.base.Schema   : Creating schema "atlas_bj_5e4c3eaf4870" ...
+2026-10-20T18:06:32.250+05:30  INFO 9293 --- [atlas-api] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "atlas_bj_5e4c3eaf4870"."flyway_schema_history" ...
+2026-10-20T18:06:32.307+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_bj_5e4c3eaf4870": null
+2026-10-20T18:06:32.313+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "1 - core hr"
+2026-10-20T18:06:32.347+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "2 - synthetic workspace"
+2026-10-20T18:06:32.360+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "3 - oidc subjects"
+2026-10-20T18:06:32.367+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "4 - jdbc sessions"
+2026-10-20T18:06:32.382+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "5 - private contact details"
+2026-10-20T18:06:32.392+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "6 - department reference"
+2026-10-20T18:06:32.406+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "7 - department seed audit"
+2026-10-20T18:06:32.413+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "8 - hiring workflow"
+2026-10-20T18:06:32.435+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "9 - second hr reviewer"
+2026-10-20T18:06:32.442+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "10 - onboarding completion"
+2026-10-20T18:06:32.453+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "11 - hire tenant integrity"
+2026-10-20T18:06:32.464+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "12 - position catalogue"
+2026-10-20T18:06:32.477+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "13 - position assignment"
+2026-10-20T18:06:32.492+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "14 - position assignment integrity"
+2026-10-20T18:06:32.503+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "15 - reporting changes"
+2026-10-20T18:06:32.516+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "16 - employee display name"
+2026-10-20T18:06:32.523+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "17 - request withdrawal"
+2026-10-20T18:06:32.535+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "18 - benefits catalogue"
+2026-10-20T18:06:32.549+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "19 - benefit rule snapshot"
+2026-10-20T18:06:32.557+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "20 - benefit selections"
+2026-10-20T18:06:32.583+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "21 - benefit selection integrity"
+2026-10-20T18:06:32.594+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "22 - private employee documents"
+2026-10-20T18:06:32.611+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "23 - document scan retry"
+2026-10-20T18:06:32.628+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "24 - immutable document versions"
+2026-10-20T18:06:32.643+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "25 - document templates and completeness"
+2026-10-20T18:06:32.661+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "26 - document template revisions and corrections"
+2026-10-20T18:06:32.682+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "27 - document retention and legal holds"
+2026-10-20T18:06:32.693+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "28 - independent hold release subject"
+2026-10-20T18:06:32.701+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "29 - resignation workflow"
+2026-10-20T18:06:32.720+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "30 - resignation audit reconciliation"
+2026-10-20T18:06:32.733+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "31 - exit task coordination"
+2026-10-20T18:06:32.756+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "32 - exit task management"
+2026-10-20T18:06:32.774+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "33 - effective employment end"
+2026-10-20T18:06:32.793+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "34 - employment end withdrawal"
+2026-10-20T18:06:32.816+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "35 - employment end reschedule"
+2026-10-20T18:06:32.841+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "36 - current end handoff identity"
+2026-10-20T18:06:32.849+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "37 - rehire onboarding episode"
+2026-10-20T18:06:32.878+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "38 - reviewed rehire activation"
+2026-10-20T18:06:32.905+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "39 - revoke fresh rehire access"
+2026-10-20T18:06:32.920+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "40 - revoked identity hold"
+2026-10-20T18:06:32.930+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "41 - reviewed identity replacement"
+2026-10-20T18:06:32.962+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "42 - pending resignation withdrawal"
+2026-10-20T18:06:32.977+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "43 - original case episode ownership"
+2026-10-20T18:06:32.992+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "44 - compatible original episode writers"
+2026-10-20T18:06:33.002+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "45 - episode local status projection"
+2026-10-20T18:06:33.013+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "46 - access grant episode ownership"
+2026-10-20T18:06:33.028+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "47 - current episode task assignees"
+2026-10-20T18:06:33.035+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "48 - private recorded legal name"
+2026-10-20T18:06:33.045+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "49 - additional emergency contacts"
+2026-10-20T18:06:33.065+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "50 - pending benefit withdrawal"
+2026-10-20T18:06:33.073+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "51 - structured private postal address"
+2026-10-20T18:06:33.086+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "52 - declared legal entity references"
+2026-10-20T18:06:33.097+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "53 - reviewed legal entity retirement"
+2026-10-20T18:06:33.114+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "54 - private recorded birth date"
+2026-10-20T18:06:33.122+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "55 - schema local birth date guard"
+2026-10-20T18:06:33.129+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "56 - company work calendars"
+2026-10-20T18:06:33.142+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "57 - dated company calendar amendments"
+2026-10-20T18:06:33.153+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "58 - calendar revision guard result"
+2026-10-20T18:06:33.159+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "59 - company calendar retirement"
+2026-10-20T18:06:33.170+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "60 - private personal email"
+2026-10-20T18:06:33.180+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "61 - approved employee calendar assignment"
+2026-10-20T18:06:33.199+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "62 - approved employee entity assignment"
+2026-10-20T18:06:33.217+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "63 - capture entity requester employee"
+2026-10-20T18:06:33.228+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "64 - protect entity request provenance"
+2026-10-20T18:06:33.233+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "65 - employee audit keyset index"
+2026-10-20T18:06:33.239+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "66 - department parent correction"
+2026-10-20T18:06:33.251+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "67 - department parent business order"
+2026-10-20T18:06:33.257+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bj_5e4c3eaf4870" to version "68 - schema scoped department hierarchy lock"
+2026-10-20T18:06:33.264+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 68 migrations to schema "atlas_bj_5e4c3eaf4870", now at version v68 (execution time 00:00.459s)
+2026-10-20T18:06:33.849+05:30  INFO 9293 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-20T18:06:34.153+05:30  INFO 9293 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-20T18:06:34.183+05:30  INFO 9293 --- [atlas-api] [           main] com.atlas.DepartmentParentWorkflowTest   : Started DepartmentParentWorkflowTest in 2.796 seconds (process running for 3.309)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/private/tmp/atlas-m2/net/bytebuddy/byte-buddy-agent/1.17.8/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.862 s -- in com.atlas.DepartmentParentWorkflowTest
+[INFO] Running com.atlas.DepartmentDirectoryWorkflowTest
+2026-10-20T18:06:35.083+05:30  INFO 9293 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.DepartmentDirectoryWorkflowTest]: DepartmentDirectoryWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-20T18:06:35.084+05:30  INFO 9293 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.DepartmentDirectoryWorkflowTest
+2026-10-20T18:06:35.084+05:30  INFO 9293 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.DepartmentDirectoryWorkflowTest]: DepartmentDirectoryWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-20T18:06:35.085+05:30  INFO 9293 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.DepartmentDirectoryWorkflowTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-20T18:06:35.097+05:30  INFO 9293 --- [atlas-api] [           main] c.atlas.DepartmentDirectoryWorkflowTest  : Starting DepartmentDirectoryWorkflowTest using Java 21.0.12.1 with PID 9293 (started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-20T18:06:35.097+05:30  INFO 9293 --- [atlas-api] [           main] c.atlas.DepartmentDirectoryWorkflowTest  : The following 1 profile is active: "local"
+2026-10-20T18:06:35.238+05:30  INFO 9293 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-10-20T18:06:35.244+05:30  INFO 9293 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@2b6d9650
+2026-10-20T18:06:35.244+05:30  INFO 9293 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-10-20T18:06:35.245+05:30  INFO 9293 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_test (PostgreSQL 18.6)
+2026-10-20T18:06:35.258+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 69 migrations (execution time 00:00.009s)
+2026-10-20T18:06:35.267+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_test": 66
+2026-10-20T18:06:35.268+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_test" to version "67 - department parent business order"
+2026-10-20T18:06:35.278+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_test" to version "68 - schema scoped department hierarchy lock"
+2026-10-20T18:06:35.283+05:30  INFO 9293 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 2 migrations to schema "atlas_test", now at version v68 (execution time 00:00.003s)
+2026-10-20T18:06:35.784+05:30  INFO 9293 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-20T18:06:35.842+05:30  INFO 9293 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-20T18:06:35.847+05:30  INFO 9293 --- [atlas-api] [           main] c.atlas.DepartmentDirectoryWorkflowTest  : Started DepartmentDirectoryWorkflowTest in 0.76 seconds (process running for 4.973)
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 54.67 s -- in com.atlas.DepartmentDirectoryWorkflowTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:04 min
+[INFO] Finished at: 2026-10-20T18:07:29+05:30
+[INFO] ------------------------------------------------------------------------

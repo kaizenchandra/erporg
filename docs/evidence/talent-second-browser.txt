@@ -1,0 +1,71 @@
+
+Running 5 tests using 1 worker
+
+(node:80683) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:80683) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/talent.spec.ts:113:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks (2.0m)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/talent.spec.ts:113:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks 
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.fill: Test ended.
+    Call log:
+    [2m  - waiting for getByLabel('Task title')[22m
+    [2m    - locator resolved to <input required="" type="text" name="title" maxlength="180"/>[22m
+    [2m    - fill("Complete orientation")[22m
+    [2m  - attempting fill action[22m
+    [2m    2 × waiting for element to be visible, enabled and editable[22m
+    [2m      - element is not visible[22m
+    [2m    - retrying fill action[22m
+    [2m    - waiting 20ms[22m
+    [2m    - waiting for element to be visible, enabled and editable[22m
+    [2m  - element was detached from the DOM, retrying[22m
+    [2m    - locator resolved to <input required="" type="text" name="title" maxlength="180"/>[22m
+    [2m    - fill("Complete orientation")[22m
+    [2m  - attempting fill action[22m
+    [2m    2 × waiting for element to be visible, enabled and editable[22m
+    [2m      - element is not visible[22m
+    [2m    - retrying fill action[22m
+    [2m    - waiting 20ms[22m
+    [2m    2 × waiting for element to be visible, enabled and editable[22m
+    [2m      - element is not visible[22m
+    [2m    - retrying fill action[22m
+    [2m      - waiting 100ms[22m
+    [2m    229 × waiting for element to be visible, enabled and editable[22m
+    [2m        - element is not visible[22m
+    [2m      - retrying fill action[22m
+    [2m        - waiting 500ms[22m
+
+
+      197 |   for (const title of ["Collect equipment", "Complete orientation"]) {
+      198 |     await detail(p).getByText("Add joining task", { exact: true }).click();
+    > 199 |     await p.getByLabel("Task title").fill(title);
+          |                                      ^
+      200 |     await p.getByLabel("Task assignee").selectOption("E001");
+      201 |     if (title === "Complete orientation")
+      202 |       await p.getByRole("checkbox", { name: "Collect equipment" }).check();
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/talent.spec.ts:199:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/talent-recruitment-UI-conv-ed0ce-tes-dependent-joining-tasks/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/talent.spec.ts:113:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks 
+  4 did not run
+  1 error was not a part of any test, see above for details

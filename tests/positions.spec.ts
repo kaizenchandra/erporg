@@ -43,6 +43,10 @@ test("HR creates a position with recoverable validation; employee browses scoped
   await page.getByLabel("Position code", { exact: false }).fill("lowercase");
   await page.getByRole("dialog").getByLabel("Position title").fill(title);
   await page
+    .getByRole("dialog")
+    .getByLabel("Find a department", { exact: true })
+    .fill(department.code);
+  await page
     .getByLabel("Department for position")
     .selectOption(department.code);
   await page
@@ -74,7 +78,7 @@ test("HR creates a position with recoverable validation; employee browses scoped
   await page.getByLabel("Search positions").fill(code);
   await expect(page.locator(".position-card")).toHaveCount(1);
   await expect(page.locator(".position-card")).toContainText(title);
-  await page.getByText("Position configuration history (latest 100)").click();
+  await page.getByText("Position configuration history").click();
   await expect(
     page.locator(".history-event").filter({ hasText: code }),
   ).toContainText("Synthetic position approved");
@@ -90,9 +94,7 @@ test("HR creates a position with recoverable validation; employee browses scoped
   await expect(
     page.getByRole("button", { name: "Create position", exact: true }),
   ).toHaveCount(0);
-  await expect(
-    page.getByText("Position configuration history (latest 100)"),
-  ).toHaveCount(0);
+  await expect(page.getByText("Position configuration history")).toHaveCount(0);
   await page.getByLabel("Search positions").fill(code);
   await expect(page.locator(".position-card")).toContainText(title);
   await page.getByLabel("Search positions").fill("No-such-position-");

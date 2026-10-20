@@ -1,0 +1,56 @@
+
+Running 4 tests using 1 worker
+
+(node:59671) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59671) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (965ms)
+  ✓  2 tests/contracts.spec.ts:115:5 › contract validator rejects incorrect types, formats and unexpected private fields (10ms)
+  ✘  3 tests/employee-calendar.spec.ts:67:5 › HR assignment is independently reviewed then self previews a dated policy with focused recovery and mobile scope (1.3s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/employee-calendar.spec.ts:67:5 › HR assignment is independently reviewed then self previews a dated policy with focused recovery and mobile scope 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByRole('alert')
+    Expected substring: [32m"Calendar choices temporarily unavailable"[39m
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" class="error">…</p> aka getByText('We could not complete this')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('alert')[22m
+
+
+      114 |   );
+      115 |   await page.getByLabel("Information to change").selectOption("calendarCode");
+    > 116 |   await expect(page.getByRole("alert")).toContainText(
+          |                                         ^
+      117 |     "Calendar choices temporarily unavailable",
+      118 |   );
+      119 |   await page
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/employee-calendar.spec.ts:116:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/employee-calendar-HR-assig-c8cba-d-recovery-and-mobile-scope/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/employee-calendar-HR-assig-c8cba-d-recovery-and-mobile-scope/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/employee-calendar-HR-assig-c8cba-d-recovery-and-mobile-scope/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/employee-calendar-HR-assig-c8cba-d-recovery-and-mobile-scope/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/employee-calendar.spec.ts:67:5 › HR assignment is independently reviewed then self previews a dated policy with focused recovery and mobile scope 
+  1 did not run
+  2 passed (3.5s)
+  1 error was not a part of any test, see above for details

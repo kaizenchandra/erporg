@@ -1,16 +1,81 @@
 # Operations and release gates
 
+
+## BL — attendance/timesheet operations (V71)
+
+Local verified services expose Time & attendance and Approvals → Timesheets. Use the existing synthetic employee/manager/HR sign-in; no new external credentials are needed. Startup remains `docker compose --profile documents up -d --wait postgres document-scanner`, Java21/Maven backend with `local,acceptance` profiles and a dedicated synthetic schema, then `npm run build` / `npm start`. Prefer the packaged JAR from the backend working directory so private-document paths and running classes stay stable during recovery verification. Detailed commands remain in README.
+
+V70 adds five owned time tables; V71 adds provenance/own-sheet/interval indexes and a positive-future-date guard. Retained V69→70 and V70→71 comparisons passed without rewriting existing business data. These normal index builds were exercised on synthetic workloads; choose an online index strategy for production volumes before deployment. Source/day-unique approved allocations, immutable receipts/audit and deferred reconciliation remain in PostgreSQL. No time payment job or broker runs.
+
+Run Java, browser and recovery sequentially because document outage tests deliberately stop the local scanner. Preserve synthetic history: rename/archive used acceptance schemas rather than deleting rows or private objects. Full browser fixtures use a clean dedicated schema; current `atlas_acceptance` retains the complete153-pass dataset, while separate initial/focused/upgraded/final-feature schemas remain retained. All other historical schemas/private copies remain intact.
+
+```sh
+# Run after the complete browser fixture set exists, with no concurrent writes.
+JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home python3 scripts/timekeeping_recovery_drill.py
+# Optional new evidence prefix (existing outputs are refused):
+# python3 scripts/timekeeping_recovery_drill.py --prefix docs/evidence/new-time-drill
+```
+
+This V71 drill includes all80 table manifests,15 existing projections, independent private-object copies, actual immutable-time mutation probes, allocation/overlap reconciliation and recovered HTTP comparisons for four roles. It creates a new retained database and stops only its own loopback8081 API. The repeatable wrapper's CLI/compilation was checked; the underlying logical and recovered-API stages were actually executed for `atlas_restore_9bec354ddbcd4447`. Initial orchestration treated an integer return code as a mapping; corrected orchestration completed against that same successful retained target. No cloud encryption/PITR/production RPO/RTO or IdP recovery is claimed.
+
+Monitor readiness, request status/duration/correlation and database health through the existing operational controls. As an authorised operator, reconcile approved sheet totals to their daily time allocations and inspect the count of open shifts over24h; do not put employee IDs, reasons or snapshots in telemetry/alert labels. Configure an accountable review SLA before enabling overdue reminders. An allocation mismatch must block further downstream processing and trigger investigation; never repair it by deleting financial/time history.
+
+Application rollback and database recovery are separate. Use a compatible, validated artifact against V71; do not roll back to the reproduced receipt-scope defect. Database restore is an isolated exercise until an explicit authorised migration/release step. No destructive down migration is provided. Statutory working-time rules, earlier/ended-episode reconciliation, correction governance, real project/rate mappings, payroll consumption and production retention/hold policy remain release dependencies.
+
+
+## BK — deploying the exact-revision transport fix locally
+
+No schema/dependency change; V69 remains current. The verified packaged backend JAR now rejects fractional employee, postal-address and onboarding command revisions with a version field error; exact decimal/exponent revisions remain compatible. The existing frontend production build is reused because application frontend sources did not change. Restarted only the observed synthetic API listener; retained all acceptance fixtures, private objects and prior restore databases. Full browser and recovery were not rerun for this increment. For the regression run `npx playwright test tests/corehr-command-version.spec.ts tests/contracts.spec.ts`; Java verification command remains below. No public release authorised or performed.
+
+
+Current BJ: V66–V69 add current-date department parent correction, effective reference projections and immutable journals/guards. Deploy a projection-compatible backend before its UI; legacy backend rollback after corrections is unsafe. Run Java, browser and recovery sequentially. See the BJ section below and [current evidence](verification.md).
+
+BG adds `/api/v1/benefits/selection-inbox` with no schema/dependency changes (V65). Deploy the additive backend before the Approvals category; older clients keep the existing selections API. Backend rollback loses the new queue and restores the older decision-actor resolution boundary, so preserve the new reader/access fix while new UI remains deployed. No financial/history rewrite or destructive down migration. Focused `npx playwright test tests/benefit-selection-inbox.spec.ts` creates fixed BG plans and real pending/approved selections; archive a used synthetic schema before repeating. Recovery adds `verify_benefit_inbox=True` with inbox/all previous flags and compares OWN/REVIEW status/count/IDs/order/private snapshots/dependants with restored SQL, plus retained history count/correlation. Local recovery is not production RPO/RTO. [Scope](benefit-selection-inbox.md).
+
+After a successful fresh full browser run, reproduce the current Phase2 recovery checks from the repository root with Java21/Maven/Docker available. This targets only the documented synthetic `atlas_acceptance` schema, creates a new retained restore database/private copy and starts/stops its own isolated API8081. Keep the main API on its packaged JAR because the recovered smoke compiles classes separately. The following invokes the same checker flags used for BJ evidence:
+
+```sh
+python3 - <<'PY'
+import sys
+from pathlib import Path
+sys.path.insert(0, "scripts")
+import restore_check
+import restore_application_check
+backup = Path("docs/evidence/department-parent-restore.json")
+smoke = Path("docs/evidence/department-parent-restored-api.json")
+names = """legal_name additional_contacts contact_inbox benefit_withdrawal
+postal_address legal_entities reference_retirement retirement_notifications
+retirement_inbox birth_date company_calendars calendar_amendments calendar_retirement
+personal_email employee_calendar calendar_history entity_assignment audit_pagination
+department_directory reference_history benefit_history benefit_catalogue benefit_inbox department_parents""".split()
+if restore_check.run(backup):
+    raise SystemExit(1)
+raise SystemExit(restore_application_check.run(
+    backup, smoke, **{"verify_" + name: True for name in names}
+))
+PY
+```
+
+BF keeps the existing plans API shape/default8 and schemaV65; no dependency/migration/backfill. Updated readers support catalogues beyond1000; rolling back to the old backend restores its1000 refusal, so assess actual tenant counts before rollback. C-collation order/PostgreSQL lower-search replace the former Java in-memory semantics; international collation governance remains open. Run the full Java/frontend/browser gates on synthetic fixtures. Focused `npx playwright test tests/benefit-catalogue-pagination.spec.ts` creates1005 fixed-code plans and a real pending selection; preserve/archive a used schema before repeating, rather than deleting immutable rows. Recovery adds `verify_benefit_catalogue=True` with existing inbox/all prior flags, compares complete immutable values/order against owned SQL and reconciles ELIGIBLE pages with current domain-evaluated ALL results. Domain/SQL equivalence is independently tested through Java, not reimplemented as statutory policy in the restore script. Local logical/API restore is not a production RPO/RTO claim. [Scope](benefit-catalogue-pagination.md).
+
+BE adds `/api/v1/benefits/creation-history` without schema/dependency changes. Roll out the API before the new frontend; retain the deprecated latest100 API for older clients. Frontend rollback can use that endpoint without rewriting history. Keep the new endpoint available until its readers are retired; an older backend cannot serve the new history panel. All immutable configuration/private objects stay retained. Run `mvn -f backend/pom.xml verify`, frontend strict checks/build and the full browser suite on fresh synthetic fixtures; focused `npx playwright test tests/benefit-history-pagination.spec.ts tests/benefit-history-resilience.spec.ts tests/benefits.spec.ts` creates fixed BE codes, so archive a used schema before repeating it. New recovery option `verify_benefit_history=True` requires `verify_contact_inbox=True` and compares complete restored provenance for HR/independent HR while denying other roles. Keep all prior verification flags; local restore timings are not production RPO/RTO. [Scope](benefit-history-pagination.md).
+
+BD checkpoint changes frontend presentation only. Build/serve Next with the existing packaged V65 API and synthetic PostgreSQL; run `npx playwright test tests/benefit-history-resilience.spec.ts tests/benefits.spec.ts --trace retain-on-failure` for five focused checks. Fixtures use fresh codes and retain immutable plan/history records; avoid unbounded repetition on long-lived data. No schema/data rollback or private-object deletion is needed for this presentation change. Backend393/full browser131+1-skip/isolated restore evidence remains from BC, not a fresh BD run. New build/static/focused/visual evidence is in [verification](verification.md). Production gates remain open.
+
 ## Environments
+
 Local compose binds PostgreSQL and Keycloak to loopback. `local` enables synthetic credentials; `oidc-demo` enables real OIDC with synthetic provider credentials. Neither may be combined with `prod`. Production requires APP_ORIGIN, DB_URL/USER/PASSWORD, OIDC_ISSUER/CLIENT_ID/CLIENT_SECRET from approved secret management; all are missing deployment decisions, not embedded live credentials. Test data is synthetic. Do not expose the local stack publicly.
 
 Deploy topology: approved TLS ingress -> Next.js -> Spring monolith -> private PostgreSQL. Object storage arrives with DS-01. Dockerfiles are supplied, not evidence of successful image builds or scans. Provider dev mode/H2 is only for the identity sandbox; production IdP database, HA, backups and MFA enrollment are an infrastructure decision.
 
 ## Health and observation
+
 `GET http://127.0.0.1:8080/actuator/health` and `/actuator/health/readiness` provide health. RequestGuard emits metadata only (correlation, status, elapsed milliseconds); no personal fields, payloads, credentials or bank data. Audit transaction records contain controlled personal changes; they are not telemetry. Spring's HTTP meter infrastructure is installed. Central collection, traces, dashboard deployment and alerts are **not yet verified**.
 
 Proposed dashboards: request latency/errors by route template, DB pool saturation, pending approval age, denied requests, job backlog and failed integrations. Proposed alerts: 5xx >2%/5min, readiness down 2min, exhausted pool 5min, later-phase stuck outbox/payroll reconciliation. Run a synthetic alert drill before release. In-memory per-address request limits are local/single-instance controls (600 requests/minute, 30 form sign-ins/minute); configure distributed ingress limits and trusted proxy policy before scaling. JSON bodies <=32KiB, forms <=32KiB.
 
 ## Backup / restore runbook — local synthetic drill exercised
+
 Run `python3 scripts/restore_check.py` while synthetic browser tests are idle. It is hardcoded to the local compose PostgreSQL service and `atlas_acceptance` schema, which must contain approved changes from previous browser tests. It dumps that schema in custom format, creates a unique `atlas_restore_<random>` database, restores with exit-on-error, and compares all table row counts and SHA-256 content digests. It checks request/version/audit references, migration success records, and proves the restored append-only audit trigger rejects an update. A second manifest confirms the probe left data unchanged.
 
 No existing database is overwritten or dropped. The dump stays in process memory; only digests/counts and timing are written to `docs/evidence/restore-check.json`. The new database is retained for inspection. The recorded completed-workflow target is `atlas_restore_ae37d135a3274e1d`; an earlier schema-fixture drill also retained `atlas_restore_9437ae4322694998`. These contain only synthetic data. Review exact names before any later manual cleanup; never use wildcard deletion.
@@ -20,12 +85,15 @@ Executed drill: 31,372-byte dump, 13 employee rows, 67 requests (18 approved), 1
 This is a small local logical restore, not encrypted offsite backup, point-in-time recovery or full service recovery. Source manifests are read before the dump; concurrent synthetic writes cause a safe comparison failure, so keep the fixture idle. Production requires a consistent recovery-point strategy, encrypted PITR/WAL shipping, residency/access decisions, IdP/object-store backups, infrastructure reconstruction, migration validation against the deployed artifact, application smoke tests and reconciliation. Production RPO <=15 minutes and RTO <=4 hours remain blocked/unmeasured.
 
 ## Deployment and rollback
+
 Before deploy: all tests; signed/scanned digest-pinned artifacts; schema compatibility review; approved backup and restore evidence; staged smoke tests. Expand/contract migrations: add nullable structures first, deploy compatible readers/writers, backfill with resumable jobs, remove old columns only in a later release after observation. App rollback restores the prior artifact only if schema remains compatible. Database recovery restores PITR into an isolated cluster and reconciles subsequent writes; destructive down-migrations are not an assumed rollback.
 
 ## Incident
+
 Restrict privileged actions, retain correlation/audit evidence, identify tenant/scope without copying PII into incident logs, notify accountable owner, revoke identity sessions as appropriate, restore only after reconciliation, record chronology and corrective controls. Live communications require separate authorisation.
 
 ## Release checklist
+
 NOT approved for production. Missing: country/legal rules, identity lifecycle/revocation propagation, production MFA enforcement policy, residency/retention approval, large-data server pagination, delegated/multistage approvals, field breadth, CSP rollout, operational dashboards/alerts, load/failure testing, production recovery exercise, full ASVS review, dependency/container/secret/SAST closure, signed SBOMs and deployment rollback rehearsal. No performance, availability, RPO/RTO or WCAG conformance claim.
 
 CI runs lint/typecheck/format/build, actual PostgreSQL tests, browser workflows and accessibility. Dependency job is deliberately failing on unaccepted high findings rather than silently ignoring them. npm audit found a development dependency chain (`braces` <=3.0.3 via micromatch/fast-glob and Next ESLint plugin), GHSA-vfj7-8cjw-p6xm. npm's suggested downgrade of eslint-config-next is not applied because it breaks version alignment. Requires upstream fix or reviewed alternative before release; no risk acceptance has been granted. Docker build/scans and CI remote execution have not been executed in this session.
@@ -33,14 +101,17 @@ CI runs lint/typecheck/format/build, actual PostgreSQL tests, browser workflows 
 Tooling support note: npm also marks inherited ESLint 9.39.5 as unsupported. It remains pinned for the current verified toolchain; migrate to a supported ESLint version compatible with the Next plugin and rerun checks before release.
 
 ## Dependency audit evidence
+
 Run `python3 scripts/audit_dependencies.py` from the repository root. Exit 0 means no high/critical npm findings; exit 1 blocks on such findings; exit 2 means evidence could not be obtained or parsed. It writes full and runtime-only reports plus lockfile hash and UTC timestamp under `docs/evidence/dependencies`. An audit pass alone is never a release approval. CI preserves artifacts on failure and runs the separate Trivy step even when npm blocks. Review the advisory and supported dependency ranges before remediation; never force an incompatible downgrade solely to get a green audit.
 
 ## Application verification after restore
+
 After the logical restore drill, run `JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home python3 scripts/restore_application_check.py` on this workstation (use your Java 21 home elsewhere). The script requires the successful restore evidence and unchanged manifests, refuses any target without the generated `atlas_restore_<hex>` name, and refuses occupied port 8081. It starts a separate loopback-only API using the local synthetic identity profile and the restored `atlas_acceptance` schema. It verifies Flyway startup validation, readiness, HR/employee/other-tenant sign-in, scoped counts and profiles, approved requests/audit history, denial and logout. Full-row digests must remain unchanged. The temporary API process group is stopped on completion/failure; restored database is retained. The main API on 8080 is not restarted.
 
 Executed: readiness in 9.753 seconds; whole application smoke check 11.851 seconds; all checks passed. Evidence: `docs/evidence/restore-application-check.json`. This covers API application recovery on the same local machine; no browser was pointed to the restored instance. It does not restore the IdP, rebuild infrastructure, recover offsite secrets/certificates, test PITR or establish production RPO/RTO.
 
 ## JDBC session deployment and recovery
+
 Flyway V4 adds vendor session tables; Spring Boot owns their lifecycle after migration. Existing in-memory sessions require sign-in again on first deployment. Compatible application restarts preserve JDBC sessions; cross-version serialized attributes need explicit deployment testing. Database outage behavior/load and production encryption/least-privilege controls remain release gates.
 
 Run `JAVA_HOME=<Java21> python3 scripts/session_cluster_check.py` to launch two isolated loopback instances on 8082/8083 in `atlas_session_check`, test shared authentication/restart/logout replay/expiry, then stop those instances. The script changes expiry only for synthetic Sophia sessions in that dedicated schema. Executed: passed in 18.288 seconds.
@@ -48,9 +119,11 @@ Run `JAVA_HOME=<Java21> python3 scripts/session_cluster_check.py` to launch two 
 The logical restore script now excludes data in `spring_session` and `spring_session_attributes` while restoring their schema. It explicitly verifies zero restored session rows; business-data manifests deliberately exclude volatile authentication state. Latest logical drill passed in 5.625 seconds to `atlas_restore_f11b41fa30464c50`; application smoke against that target passed in 9.837 seconds. The target is retained. Previous retained targets remain historical evidence and do not contain V4. Production/PITR recovery must invalidate all restored sessions before exposure; this requires the authorised recovery procedure, not reuse of the local scripts against live data.
 
 ## V5 private-contact rollout
+
 V5 adds employee columns with empty defaults and expands allowed change-field constraints. Review schema and deploy the matching API/frontend together. Existing base contact values are empty until approved changes exist. The newest privacy policy excludes private request/history data from manager paths; an older application artifact lacks that policy. After private records are written, rollback must use an artifact retaining the private-field access controls or restrict affected workflows until a forward fix. Schema additivity alone does not make an old authorisation implementation safe. Recovery evidence from earlier V4 drills remains historical; V5 restore/application compatibility must be exercised before release.
 
 ## Department reference rollout and recovery
+
 V6 backfills existing employee department names, then V7 records bootstrap audit without altering prior migration history. Initial cost-centre codes start with DEMO and require accountable finance configuration before payroll costing. Departments are create-only; production cost-centre/hierarchy changes require a future versioned workflow. Apply matching frontend/backend for validated transfers; arbitrary unknown department names now fail submission/approval. Pending legacy department requests must be reconciled before approval.
 
 Recovery manifests now include `hr_department` and `hr_department_audit`; drills check parent/audit links and restored API reference/history reads. See latest `docs/evidence/restore-check.json` and `restore-application-check.json`; older recorded targets remain retained synthetic historical snapshots.
@@ -58,6 +131,7 @@ Recovery manifests now include `hr_department` and `hr_department_audit`; drills
 Latest department-aware retained recovery target: `atlas_restore_4528e3d188de4ce6`. Nine business/schema table digests matched; department parent/audit links passed. API smoke now compares HR reference counts with that HR tenant's restored rows, not all tenants. Local restore 6.632 seconds; application smoke 9.620 seconds. Production recovery targets remain unverified.
 
 ## Hiring rollout, handoff and acceptance workload
+
 Before V8 on production data, reconcile duplicate case-normalized work emails within each tenant; the unique index deliberately rejects conflicting data rather than silently merging employees. V8 is additive; V9 is local/oidc-demo seed-only. Approved hires currently enter Onboarding and create a PENDING employee-created event. There is no payroll/identity worker or retry/replay operator yet, so do not treat the queued event as delivery evidence or onboarding completion. Hiring approvals are reviewed under People → Hiring, separately from employee-change approvals.
 
 For the expanded local browser suite use `spring-boot.run.profiles=local,acceptance`. Acceptance budgets are 240 sign-ins and 2400 routine requests per minute, still per-address/per-instance; prod rejects this profile. Default budgets are 30/600. Never run acceptance against real data. CI configuration was updated; remote CI remains unexecuted.
@@ -65,36 +139,43 @@ For the expanded local browser suite use `spring-boot.run.profiles=local,accepta
 Latest twelve-table recovery target is `atlas_restore_c94140e68d104864`, retained synthetic data. It includes approved hires, hire audit and pending provisioning events, with row digests and orphan checks. Logical restore 8.572 seconds, restored API smoke 10.576 seconds. No provider/account/payroll consumer recovery or production RPO/RTO achievement is implied.
 
 ## V10/V11 onboarding rollout and recovery
+
 Apply additive V10 completion history then V11 composite tenant/hire/employee foreign keys through Flyway before deploying the matching API. Completion is a manual HR operation; no scheduled activation or access/payroll provisioning is implied. One initial completion per employee is deliberate; rehire requires a separately designed versioned lifecycle. Do not roll back to an artifact that cannot preserve status/history invariants after confirmations exist. Application rollback and database recovery require separate assessment; no destructive reverse migration is supplied.
 
 Latest synthetic restore: 13 table digests, completion links and audit guards passed; target `atlas_restore_2009d2661af44778` retained. Logical drill 8.698 seconds, restored API smoke 11.85 seconds. Session data excluded; full browser/IdP/production infrastructure recovery remains untested. Pending employee events remain undelivered; do not manually mark them delivered without a verified consumer/reconciliation workflow.
 
 ## V12 position catalogue rollout
+
 Apply additive V12 with Flyway and deploy the matching API/UI. New tables hr_position and hr_position_audit are corehr-owned and included in logical recovery manifests. References are immutable; corrections/reorganisation require a future explicit versioned workflow, not direct database edits. No automatic employee assignment, payroll costing or identity action occurs. Application rollback can hide this reference-only UI but must retain data/migration history; database recovery remains a separate operation.
 
 Latest V12 synthetic recovery target: `atlas_restore_adfd27ccf1124e68`; 15 table digests verified, logical drill 10.171 seconds and restored API smoke 14.665 seconds. Position catalogue/audit and existing lifecycle/auth reads passed without business mutations. Evidence applies to its recorded snapshot only.
 
 ## V13/V14 primary assignment rollout
+
 Additive V13 introduces position_code and allowed change-field constraints plus tenant/employee/request/position foreign keys for immutable assignment records. V14 requires inserted assignments to match approved effective versions. Deploy matching API/contracts/UI; preserve these guards during application rollback after assignments exist. Position assignment changes no pay or credentials. One-primary/multiple-incumbent semantics are provisional and require business confirmation before production. No destructive reverse migration. Recovery manifest now includes hr_position_assignment and reconciles it with approved versions.
 
 Final V13/V14 synthetic recovery target: `atlas_restore_d9c549d8d40248fe`, 16 table digests including reconciled assignment ledger/versions; logical drill 11.02 seconds and restored API smoke 12.712 seconds. Existing snapshots remain historical; production PITR/RPO/RTO and provider recovery are not measured.
 
 ## V15 reporting rollout
+
 Additive V15 expands allowed employment fields and adds immutable reporting-assignment records and approved-version consistency checks. Deploy API/UI together and verify effective access with existing sessions. Do not roll back to an artifact whose team scopes read only base manager_id after reporting changes exist: that could expose records to former managers. Retain the effective-scope policy or roll forward. Database recovery and application rollback remain separate actions. No production migration is authorised or executed. Graph limits are explicit engineering safety bounds; capacity tuning/load verification remains open.
 
 Latest V15 synthetic recovery target: `atlas_restore_a448fdcee0f14fc4`; 17 table digests and reporting/version reconciliation passed. Logical drill 12.45 seconds; restored API smoke 15.558 seconds. Sessions excluded; measurements are local observations, not production recovery targets.
 
 ## V16 display-name rollout
+
 V16 additively expands allowed change/version fields. Deploy matching API/contracts/UI; preserve HR-only name decisions during rollback while pending name requests exist. Older read projections show base names rather than effective names, so plan a compatible rollback/roll-forward artifact. No provider profile synchronisation or legal identity change occurs. Backup schema/data manifests already include the owning request/version/audit tables; restored API smoke now checks display-name approval history.
 
 Latest V16 synthetic recovery target: `atlas_restore_d93c6c82fe804d3e`; 17 table digests verified, logical drill 12.464 seconds and restored API smoke 13.18 seconds. Display-name history preserved, sessions excluded. This does not establish production RPO/RTO.
 
 ## V17 pending-withdrawal rollout
+
 V17 adds the Withdrawn state, requester actor constraint and immutable consistency-checked withdrawal ledger. Deploy API/UI/contracts together; older clients may display an unfamiliar terminal state but must never reopen it. Keep rejection/approval actor constraints and withdrawal audit intact on rollback. Include hr_request_withdrawal in backups/manifests; restore smoke verifies withdrawn inbox/history. No employment/financial history deletion or destructive reverse migration is supplied.
 
 Latest V17 synthetic recovery target: `atlas_restore_c8e477008ef240b6`; 18 table digests and withdrawal/request consistency verified, logical drill 13.003 seconds and restored API smoke 16.753 seconds. Sessions excluded; production recovery targets remain unmeasured.
 
 ## V18/V19 benefits rollout
+
 V18 introduces benefits-owned plan/audit tables and immutable configuration triggers. V19 backfills/stores DEMO-FIXED-MONTHLY-v1 rule metadata; current implementation supports that version only. Apply additive migrations before matching API/UI. Rules are demonstration references requiring accountable country/company/entity policy validation before production use. Future rule upgrades need backward-compatible version dispatch and migrations; never rewrite historical snapshots. Plan edits/enrolment/actual deduction processing remain planned. Catalogue safety bound is 1000 references; growth/throughput is not measured. Restore manifest includes both benefits tables and API smoke reads demo catalogue/history.
 
 Latest V18/V19 synthetic recovery target: `atlas_restore_e0a25656a78e4f19`; 20 table digests preserved including benefit rule snapshots/audit. Logical drill 14.581 seconds; restored API smoke 14.878 seconds. Sessions excluded; production recovery remains unmeasured.
@@ -184,12 +265,15 @@ AB final access review: the revocation hold follows the globally unique identity
 Persistent development private roots and restored copies are excluded from Git and both frontend/backend Docker build contexts. Backend images copy only pom/src and the packaged jar. Container builds/scans remain unexecuted; no production artefact or encryption/backup assurance is inferred.
 
 ## Increment AC rollout and recovery
+
 V41 adds registry/request/decision tables and two current projections, retaining all original V39/V40 audit and holds. Drain registry-unaware binaries before enabling replacement; do not roll back to an original-grant-only reader. No applied checksum rewritten. One reviewed replacement per first-rehire episode is supported, not arbitrary repeat cycles. Both grants remain independently revocable; original revocation replay cannot revoke the replacement. Provider account operations remain manual/unimplemented. Recovery scripts compare all 58 business/migration tables, ten projections and private object digests, verify decision/grant/predecessor reconciliation, then use a separate local API to inspect both private histories and deny held identities. Local timings are not production recovery targets. Existing missing temporary object bytes remain unrecovered; backend/.local persistence is not encrypted/offsite backup or a host-restart recovery claim.
 
 ## Increment AD rollout
+
 V42 expands the resignation terminal state and adds an immutable withdrawal receipt. Apply additive migration before a compatible reader/writer and drain withdrawal-unaware versions before enabling writes; reverting to a binary unable to represent WITHDRAWN is unsafe. Do not edit applied migrations or delete receipts to restore a pending state. An approved resignation/end is unaffected; corrections require separately authorised workflows. Restore now covers 59 business/migration tables and ten projections, matching receipt/audit and private retrieval/denial. Results are local synthetic evidence, not production recovery targets.
 
 ## Increment AE migration and recovery
+
 V43 adds/backfills original-case links with preflight provenance checks; V44 supplies deferred compatibility for a complete older original-submission/audit contract. Quiesce writers across both migrations: V43 alone rejects older writers. Final-schema SQL compatibility is tested, not a live old-binary deployment. An ambiguous legacy chronology fails closed for explicit reconciliation. Preserve all source rows and applied migration checksums; do not edit links to reassign old cases to a new episode. Original-episode limits remain until a coordinated future migration. Recovery now compares 60 business/migration tables and eleven projections, verifies case/end references and executes a restored link-update rejection probe. Production expand/contract rollout, old-binary smoke/rollback and infrastructure recovery remain gates.
 
 Increment AF: local services were stopped at resume. PostgreSQL retained its schemas/volume; restart did not delete data. A fresh pull of `clamav/clamav:1.5.4` failed native ARM selection: the inspected manifest publishes linux/amd64 only. Compose now explicitly selects linux/amd64 for this pinned scanner, requiring emulation on ARM development hosts. Official image context: https://github.com/Cisco-Talos/clamav-docker/. Scanner then started and all backend tests passed. This is local compatibility evidence, not production scanner throughput or fresh-signature evidence.
@@ -213,3 +297,140 @@ V49 adds private request/item/audit tables without backfill or changes to existi
 ### AK: queue rollout and recovery
 
 The contact inbox is an additive read API/UI change on V49; no migration or historical data rewrite is required. Coordinate the new UI with an API exposing `/api/v1/additional-contact-inbox`. Old APIs return unavailable/404; existing profile review remains compatible. The earlier legal-name and lifecycle/privacy rollback gates still apply. Extend actual restored-API verification with `verify_contact_inbox=True` alongside legal-name/contact checks; it inspects OWN/REVIEW scope for author HR, independent HR, employee, manager and another tenant without logging values. Counts and page items must both remain scoped. Replaying decisions continues through the original contact endpoint; no separate queue event or reconciliation table exists. The navigation badge continues to count employee changes, with contact totals shown in its category; it is not an all-module total.
+
+### AL: pending benefit withdrawal rollout and recovery
+
+V50 expands benefits state/action constraints and the transition guard without rewriting old rows. Preserve its applied checksum; no destructive down migration is supplied. Coordinate the new withdrawal UI with the new API. Existing readers display the additional terminal state, but deployment/old-binary rollback is not production-verified, and prior legal-name/lifecycle privacy gates still apply. WITHDRAWN uses the existing immutable terminal audit; do not delete its dependants or treat it as a provider cancellation or payroll reversal. Recovery reconciles original ownership, matching withdrawal audit and absent deduction. Opt in to `verify_benefit_withdrawal=True` in the actual restored-API helper, alongside earlier private-field checks, to inspect self/HR history and manager/other-tenant exclusion. API recovery remains a separate gate from application rollback.
+
+Local setup observation (AL): OrbStack was stopped and the temporary Maven cache was absent after environment restart. The local runtime was started, PostgreSQL/scanner health verified and pinned dependencies re-downloaded before Java verification. Reproducible dependency pins remain unchanged; a disposable cache is not an offline build archive. No production host/IdP/storage recovery follows from this local setup.
+Once WITHDRAWN rows exist, the previous state/action allowlists cannot be reinstated without invalidating retained history. Do not delete or rewrite withdrawals to force a down migration. Application reader compatibility and database point-in-time recovery are separate decisions and require a staged rehearsal before production use.
+
+### AM structured address migration and recovery
+
+V51 preflights literal `@POSTAL/` collisions across employee address and address request/version/audit values and fails for explicit review; never repair checksums or rewrite history to bypass it. Wider version/request/audit columns retain field-specific constraints. Preserve old free text; never infer components. Coordinate API/frontend rollout before enabling structured writes. Older clients/binaries have not been verified for structured history; narrowing columns after new writes is unsafe. Application rollback and database recovery require separate reviewed procedures and the existing private legal-name reader gate still applies.
+
+Postal recovery verification adds typed self/HR reads and manager/other-tenant denial to the actual recovered API, alongside all existing identity/contact/benefit and document checks. Digest-only evidence and synthetic private copies remain local. This is not a production RPO/RTO exercise.
+
+Do not compile or package into `backend/target/classes` while an acceptance API is serving that directory through `spring-boot:run`: lazy class loading can fail during replacement. Run Java tests first, package once, then serve the executable JAR from the backend directory for browser acceptance. Recovered API verification must use the same reviewed sources/artifact version; it must never mutate or replace the source database.
+
+### AN legal-entity reference migration
+
+V52 adds one empty immutable configuration/audit table. It does not infer an entity from addresses, locations, departments or benefits and does not assign existing employees. Preserve V51 history; application rollback and database removal are separate decisions. Older binaries ignore this table but have not been certified for production rollback alongside all earlier private/lifecycle changes. Country, currency and time-zone vocabulary comes from the pinned runtime and is not statutory validation; record/approve real deployment policy separately.
+
+The updated current-version restore inventory includes `hr_legal_entity`, its full creation provenance, catalogue-limit integrity check and mutation/truncate probes. Optional recovered-API verification checks HR access and employee/manager/tenant denial for current/planned reference fixtures. Retain independent restored database and object copies; never overwrite the source. No production recovery or release approval is implied.
+
+### AO retirement migration, readers and recovery
+
+V53 adds two empty immutable retirement tables and one synchronous Core HR projection. It does not rewrite or retire prior references. Update all readers before enabling real retirement commands; V52 readers do not exclude retired references. No application rollback or production deployment has been certified. SQL schema recovery and application rollback require separate plans; do not delete history or repair migration checksums to narrow the schema.
+
+The current-version restore inventory includes retirement proposals, decisions and the current projection. Recovery checks compare complete row/projection digests, verify attempt/independence/chronology integrity, and execute update/truncate rejection probes within rollback-protected blocks. Parent-table truncate probes now use CASCADE so they exercise the immutable trigger despite new foreign-key dependencies; a bare FK-blocked truncate is not treated as proof of the trigger. Actual recovered API checks reuse existing HR/non-HR sessions to verify effective and scheduled filters and protected proposal/decision history. This is local synthetic recovery only.
+
+### AP — retirement inbox delivery
+
+No new migration, dependency, queue or background process. V53 data remains compatible; old proposals/decisions receive no notification backfill. Application rollback stops future retirement prompts/outcomes but preserves already stored generic messages and all business history. Notification write failure rolls back the retirement command; retry with the same unchanged body/key. More than 1000 HR memberships in the tenant produces an explicit conflict before mutation; administrators must review membership governance/capacity before retry, not remove business history. Zero eligible recipients means no inbox rows; manual authorised Settings review remains available. Latest 50 is a read bound, not a delivery/retention/acknowledgement guarantee. External delivery, reminders, escalation and receipt reconciliation remain future SH-03 work. Recovery verifies retained notification rows plus authorised API reads and non-HR/tenant exclusion.
+
+### AQ — retirement queue rollout
+
+No schema/index/dependency change; schema stays V53, existing history is unchanged and no records are backfilled. Deploy the backend read endpoint before its frontend category. Decisions still run through the existing use cases. If queue UI is rolled back, retirement context/review remains available through authorised Settings; newly stored generic prompts may mention Reference retirements until both versions align. Application rollback preserves proposals/decisions/notifications; database recovery remains a separate operation. Maximum 50 rows per page, 4000 page index, existing ten-second repeatable-read snapshot. Governed application bounds permit 200 references × 20 attempts; these are not a load-tested capacity commitment. Recovery verifies both server-owned scopes and role/tenant denial with actual retained records.
+
+### AR — birth-date migration and recovery
+
+V54 expands existing supported-field constraints and installs canonical/chronology guards on Core HR request/version/audit. It creates no personal values or new tables. Deploy privacy-aware backend readers before enabling writes, then the matching frontend; do not permit mixed old readers after birth-date requests/audit exist. Rolling deployment and an older-version privacy backport remain unverified release gates. Do not serve the previous JAR as rollback after writes unless its field policy has been backported and tested. Preserve migration/history; application rollback and database recovery are separate plans.
+
+Current-version recovery checks all three birth-date streams against canonical dates, original start and UTC recording date, compares complete retained manifests and verifies actual restored HR/self versus manager/other-tenant profile/history. Add `verify_birth_date=True` with `verify_contact_inbox=True` to the recovered-API invocation using every prior flag. Use matching release scripts with older backups; V54 checks require V54 functions. Reports omit private values. Retain independent restore databases/objects and targeted checkpoint schemas. These local synthetic drills establish neither production retention nor RPO/RTO.
+
+AR corrective migration V55: the first restored audit-mutation probe exposed V54's reliance on caller search path. V55 qualifies the employee table and validation function by `TG_TABLE_SCHEMA` using identifier quoting and bound values. It preserves V54 checksum/history and personal snapshots. A PostgreSQL test sets search path to pg_catalog and verifies a qualified birth-date audit update reaches the immutable-audit guard. Retained-data upgrade and complete recovery are repeated on the corrected artifact.
+
+### AS — company calendar rollout and recovery
+
+V56 is additive: one empty immutable Core HR table plus pure array checks, no inference/backfill or assignment. Deploy the backend before exposing its Settings region. Calendar UI rollback leaves snapshots/history intact; application rollback must still meet earlier V54/V55 private-field reader gates. No destructive down migration or checksum repair. Amendments/retirement and consumer assignment need later compatible contracts/migrations. Configuration is company policy only; do not use it as an authoritative public-holiday or payroll feed.
+
+Current-version restore inventory includes `hr_work_calendar`; it compares complete row digests, checks canonical sets/window/catalogue cap and executes rollback-protected update/delete/truncate rejection under pg_catalog-only search path. Recovered-API `verify_company_calendars=True` reuses the five-role reader checks (`verify_contact_inbox=True` required), verifies actual retained policy and closure classification plus non-HR denial, with every prior recovery flag. Reports omit values. Match scripts/artifact to backup version; retain independent restored databases/private objects and source checkpoint schemas. Local synthetic recovery is not production RPO/RTO or mixed-version rollout evidence.
+
+### AT — amendment migrations, readers and recovery
+
+V57 adds one empty immutable revision table and guards. Its initial targeted test exposed an uncaptured guard validation result; V58 replaces the function and preserves V57 checksum/history. Deploy the final artifact (both migrations) before enabling writes; no data is seeded or backfilled. Base calendar rows, metadata and previous effective-date results are unchanged. New revisions require current exact version, a strictly later date within validity/today–one-year and at most twenty amendments. Invalid/stale commands retain the draft; reopen current context for a stale version, or retry the unchanged body/key after an uncertain response. Scheduled amendments cannot currently be cancelled/replaced on the same date.
+
+Roll out amendment-aware preview/context readers before writes. An older application ignores revision history and can return wrong classifications; additive tables do not make application rollback safe. A tested reader backport/write gate and production consumer governance remain release gates alongside earlier private-field rollback constraints. No down migration/history deletion/checksum repair.
+
+Current restore inventory includes `hr_work_calendar_revision`, validates canonical arrays/parent/contiguous date and recording order, and probes immutable update/delete/truncate with rollback-protected blocks under pg_catalog-only search path. Parent truncate probes use CASCADE to reach the immutable trigger despite the FK. Recovered API `verify_calendar_amendments=True` requires the existing multi-role `verify_contact_inbox=True` loop and all prior flags; it compares retained policy/history and verifies before/after date preview plus non-HR denial. Reports omit values; independent restored DB/private copies/source checkpoint schemas remain retained. This is local synthetic recovery, not production RPO/RTO.
+
+AU V59 rollout: additive retirement table and schema-local guards preserve existing policies. Deploy retirement-aware readers before enabling writes; older readers can misclassify retired dates, while older amendment writers are rejected by the new guard. Use a verified write gate/backport before production rollout. These gates are not evidenced locally; reverting the application is not automatically safe. No destructive reverse migration or retirement deletion/reactivation is supported. Local recovery probes compare retirement provenance and earlier/unavailable date boundaries on the actual recovered API. They do not establish production RPO/RTO.
+
+To reproduce AU locally, use a fresh synthetic acceptance schema with the packaged API and built frontend, then `npx playwright test --trace retain-on-failure`. Run `scripts.restore_check.run(Path("docs/evidence/calendar-retirement-restore.json"))` and `restore_application_check.run` against that report with `verify_contact_inbox=True`, `verify_calendar_retirement=True` plus the previous workflow flags. Keep the host awake and do not rebuild the serving JAR/frontend during verification. The restored API uses isolated port 8081 and is stopped by the checker; retain its database/private-file copy for inspection.
+
+AV V60 rollout/recovery: no table or employee column is added, and existing rows are preserved. Additive vocabulary expansion is not proof of safe application rollback: deploy personal-email-aware private readers before enabling writes, or backport the privacy policy and test it. Older readers may misclassify the new field. Never remove private history to permit rollback. Local recovery adds `verify_personal_email=True` alongside `verify_contact_inbox=True` and prior flags; compare current private value against effective-dated source, check HR/self/manager/other-tenant history restrictions and absence of directory search leakage. This contact address does not change identity, work email, notification routing or actual provider state.
+
+AW V61 adds two immutable ledgers and lookup indexes, with no backfill or existing-row rewrite. Deploy assignment-aware readers and write handlers together before enabling writes; old consumers may ignore episode ownership or review context. Parent-row guards reject later assigned-policy mutations even for old writers, but this does not establish safe rollback. A tested reader-first/write gate/backport remains required before production. Preserve V61 and history rather than deleting assignments to run older code. Shared decision ordering is atomic: approved request status precedes version/ledger capture inside its transaction, and failures roll it back.
+
+Local recovery adds `verify_employee_calendar=True` with `verify_contact_inbox=True` and all prior flags. Compare full request-policy/assignment rows and episode/source links, confirm immutable probes, then test actual recovered current preview, future unassignment 409, HR-only policy context and persistent freeze after clearing. Use separate synthetic schema/database/private-file copy; keep the host awake. No local logical drill establishes production PITR RPO/RTO or live IdP recovery.
+
+AX adds no migration/dependency/topology change (V61 remains current). Approved calendar history reads use one repeatable-read transaction with 10-second transaction scope, exact total and stable bounded page. The recovered-API helper supports `verify_calendar_history=True` alongside `verify_contact_inbox=True`; it checks retained ledger ordering, eight-row second page, current episode, exact allowed output fields and five-role scope on the separate recovered database. Use with the full synthetic suite's AX future-assignment fixtures (10+ records). It does not enable production calendar consumers, guarantee load latency or replace infrastructure/IdP recovery gates. Keep archived fixture schemas and restored private objects; do not reset historical rows to repeat acceptance.
+
+AY: preserve V62/V63 applied checksums; V64 protects entity-request provenance. Verified upgrade path is V61→64 with empty new ledgers/no inferred assignments. V63 deliberately stops if entity requests already exist in an intermediate V62 deployment: review original requester evidence and design an authorised provenance migration, never infer it from current identity membership or disable the preflight. Entity-aware readers/write gating and older-binary rollback remain unverified production gates. Application rollback and database recovery are separate decisions.
+
+Recovery manifests now include `hr_legal_entity_assignment` and `hr_entity_request_origin`. Integrity checks reconcile immutable approved versions/requests, required origins and episode ownership; schema-qualified update/delete/truncate/source-provenance probes must reject changes. Recovered API verification adds `verify_entity_assignment=True` together with `verify_contact_inbox=True` and prior flags. It uses five existing reader sessions to check private current profile/directory/audit, HR-only source context and permanent retirement freeze after clear. Use full synthetic fixtures (AY-UI/AY-API); no production data/provider/payment action is authorised by these checks.
+
+AY recovery finding: the general employee-history endpoint is documented as latest100 before field filtering. Expanded fixtures can move an earlier field completely outside that window without losing its stored rows. Birth-date recovery comparison now verifies exact source-window field counts, retained total and manager masking; it does not claim full historical retrieval. General audit pagination is the next Phase2/SH-05 gap. Initial schema-context and old-window checker failures and their restored databases are retained.
+
+## AZ audit-history rollout and recovery
+
+Apply V65 after V64 using the pinned application/Flyway configuration; it creates the employee audit keyset index only, with a five-second lock timeout. Retain existing tables/history and migration checksums. If index creation cannot acquire the lock, inspect active workload and retry the migration in a reviewed window; no record backfill is needed. The new page endpoint is additive; the deprecated `/history` array endpoint keeps its latest100 compatibility contract. Readers should deploy before switching the profile. Removing application code and recovering database state are separate operations; older-binary/full rollout rollback verification remains a release gate.
+
+`restore_check.py` now requires the selection index. `restore_application_check.run(..., verify_audit_pagination=True)` requires `verify_contact_inbox=True` and the existing fixture flags. It traverses exact scoped source IDs for five local identities, checks options/count/order/privacy and retrieves retained birth-date events outside the legacy window. Keep all prior entity/calendar/lifecycle/document flags enabled. Run against isolated synthetic restores only; counts/digests leave the checker, employee values do not. Preserve unsuccessful restores and original schemas; never overwrite a source database or revive saved sessions. See verification.md for the executed drill and limitations.
+
+## BA department-directory deployment and recovery
+
+No schema migration or dependency change; V65 remains current. Deploy the additive API before the frontend. `/organisation/departments` keeps its legacy at-most1000 array contract for remaining selectors; `/organisation/department-directory` is the complete bounded read. Creation audit's legacy latest100 view is labelled; complete configuration-audit paging remains scheduled. Hierarchy editing/reorganisation and live finance costing remain open.
+
+Add `verify_department_directory=True` to the existing `restore_application_check.run` arguments with `verify_contact_inbox=True` and all earlier flags. It compares complete row order/IDs, resolved parents, direct-child counts and UTC timing against restored owned SQL data across five local roles, without retaining values in reports. Continue the isolated restore/document/session-exclusion and immutable-integrity checks. No destructive migration reversal or source overwrite is involved. See verification.md for actual local recovery; production rollout/older-binary rollback and infrastructure recovery remain release gates.
+
+## BB choice-consumer rollout and recovery
+
+No migration/dependency change; V65 remains current. Deploy GET position-listing support before the frontend. Its additional required departmentName is documented separately as PositionListing; POST Position and legacy department array contracts remain unchanged. Coordinate strict GET consumers; no older-binary/production rollout claim. Source inspection must find no Core HR UI GET of `/api/v1/organisation/departments`; the department-create POST is intentional.
+
+The existing `verify_department_directory=True` recovered-API flag now also compares every position listing and resolved name with restored tenant-owned SQL across five local identities. This synthetic checker bounds its position fixture to100 records and fails rather than truncate; it is not a production exporter/capacity tool. Keep all previous flags enabled. Preserve schemas/private objects and exclude sessions as before. Scope and actual evidence are in verification.md.
+
+## BC reference-history rollout and recovery
+
+No schema/dependency change; V65 remains current. Deploy additive GET `/api/v1/organisation/reference-history` before its frontend readers. Legacy `/organisation/history` and `/organisation/positions/history` arrays retain latest100 compatibility and are deprecated in OpenAPI. New panels are HR-only/on-demand and fail independently from catalogue reads. No data backfill, inferred chronology, purge or retention change.
+
+Add `verify_reference_history=True` with `verify_contact_inbox=True` and all earlier flags to `restore_application_check.run`. It compares complete department/position event IDs/order and exact provenance with restored source for two HR identities and denies all three non-HR identities. Older-code fixtures prove retrieval beyond100. The existing position listing check now pages100 records at a time (fixture safety cap10000) rather than truncating at100; all names remain compared exactly. These checkers are synthetic workload tools, not production exports. Local restore evidence, private copies/session exclusion and release limitations are in verification.md.
+
+### BH: exact benefit decision deployment
+
+No migration or dependency change. Deploy the newly packaged backend before testing the existing frontend. `npx playwright test tests/benefit-decision-version.spec.ts --trace retain-on-failure` creates random synthetic plan codes and performs one real approval; it can run against retained synthetic fixtures without resetting them. The complete Java suite includes isolated retained schemas for HTTP boundary checks. Rolling back the backend reintroduces fractional-version truncation; do not roll back this validation without equivalent protection. No new recovery drill or public release is implied.
+
+### BI: position directory rollout and verification
+
+Deploy the backend with additive GET `/api/v1/organisation/position-directory` before the frontend that uses it. No migration or dependency change; V65 and legacy positions/creation/assignment APIs remain compatible. Reverting only the frontend remains compatible; reverting the backend first makes the new directory unavailable. Preserve archived synthetic schemas/private objects. `npx playwright test tests/position-directory.spec.ts tests/positions.spec.ts tests/benefit-decision-version.spec.ts --trace retain-on-failure` creates random synthetic references and real audited changes on retained synthetic fixtures. Full fixed-code suite still needs an archived/fresh acceptance schema. No actual employee data or live deployment is involved. Existing backup/restore runbook and production release gates remain in force.
+
+### BJ: hierarchy correction deployment and recovery
+
+V66–V69 are additive and applied in order; do not rewrite historical migrations. They add a parent journal/canonical effective projection, protect declarations and journals (including TRUNCATE), reject cross-date regression and namespace hierarchy serialization by schema/tenant. The application translates current parent values in every department-directory branch/count/name and legacy department read. Existing binary rollback that ignores the journal is unsafe once corrections exist: preserve projection/guard-compatible backend code while rolling back the UI. A database recovery must restore declarations, parent journal and functions/triggers together from a verified backup; no destructive down migration is provided.
+
+Only currently effective references can be corrected on the displayed UTC date, with exact revision/reason/key and scope confirmation. This is direct HR configuration with immutable audit; future scheduling/approval routing/costing/reporting changes are not implemented by this action. Investigate server clock drift rather than bypassing the global tenant latest-date guard. New reference creation and parent correction use the same schema/tenant transaction lock. Monitor transaction lock waits/query duration before promising workload performance.
+
+Run Java, browser and restore/recovered API verification sequentially. The browser document-retry suite deliberately stops the shared scanner, so overlapping Java scans correctly quarantine and fail scanner-available expectations. Parent correction focused tests use random synthetic codes and may repeat on retained fixtures; full browser fixtures require an archived/fresh schema. Recovery manifests include `hr_department_parent_change`; `verify_department_parents=True` (with contact-inbox/multi-role and existing flags) verifies complete recovered HR-only history/provenance/current revision and current directory parent/count/name projection against owned SQL. Immutable UPDATE/DELETE/TRUNCATE probes must leave hashes unchanged. No production RPO/RTO or public release is implied.
+
+### Timesheet governance upgrade (V72–V74)
+
+Use the existing PostgreSQL service and startup commands; Flyway applies V72 (new lifecycle states), V73 (append-only weekly controls and database enforcement), V74 (whole-selection bulk receipts) automatically. No additional secrets or commercial-system credentials are required. Keep private document storage unchanged. Local accounts and synthetic data remain development-only. HR configures individual Monday–Sunday periods from Time & attendance → Reporting periods. Record deadline as an ISO instant with offset; the API stores UTC. Unconfigured weeks have no deadline and explicitly labelled local limits. No payroll/billing provider is connected.
+
+Run `npm run typecheck`, `npm run lint -- --max-warnings=0`, `npm run format:check`, `npm run build`; run Java `mvn -f backend/pom.xml verify` using Java21 and the configured local PostgreSQL/scan service. `npx playwright test` expects a fresh synthetic acceptance schema and the local UI/API. Keep existing schemas by renaming; never truncate business/audit tables to reset tests. `ATLAS_TIME_WEEK_OFFSET` supports distinct past synthetic weeks for the focused management suite only; use dates inside the test worker's employment episode.
+
+Schema evolution is additive to existing records, but new RETURNED/CORRECTED states are not supported by old V71 application logic. After these states are used, do not roll back to an old binary without compatibility verification. Prefer a tested forward fix or a compatible known build. Database recovery is a separate isolated restore process, not a destructive down migration. `scripts/timekeeping_recovery_drill.py --prefix <unused-evidence-prefix>` retains a new restore database and reports actual logical/API outcomes; run without concurrent writes and with8081 free. The inventory now includes immutable period revisions and whole-batch receipts, in addition to the earlier time records.
+
+## BO financial operations and retained datasets
+
+Payroll and Finance & operations now expose the implemented demonstration workflows. Use [payroll-accounting.md](payroll-accounting.md) for setup, exact calculation/state semantics, entity-scoped local fixture grants and run commands. V76/V78/V79/V80 are additive module tables/guards; V77 supplies explicit local-only grants and is not loaded in production. Current financial browser fixtures use a dedicated `atlas_payfin_browser_20261021f` schema; A/B/C/D/E and all earlier acceptance/restore schemas remain retained. The previous `atlas_acceptance` is not deleted or silently overwritten. Select an existing schema on API startup to apply its pending Flyway migrations; never rewrite applied migrations or delete financial history to reset a test.
+
+Finalized payroll, demo payslip publication, journal preparation, independent approval/posting and actual payment are separate. Payment status is NOT_CONFIGURED; there are no bank/statutory jobs, credentials or success acknowledgements. A closed-period creation failure leaves no accounting link; authorised reopen and unchanged retry create one source-unique draft. Manual posted corrections require a reviewed counter-entry; payroll corrections and reversal-of-reversal remain blocked pending owned correction workflows.
+
+`verify_financial_records.py` performs read-only totals/linkage/guard/hash checks on explicitly named local synthetic financial schemas. `verify_financial_api.py` checks current persisted results and four-role API denial rules on a loopback origin. Neither performs backup/restore, provider reconciliation or production RPO/RTO verification. Historical restore tooling has not been extended/reverified for these nine financial tables; financial recovery is an explicit release blocker. Do not claim earlier timekeeping restore evidence verifies new payroll or finance recovery.
+
+Keep Java/document-scanner suites separate from document browser fault-injection suites. Stop only observed project local servers before rebuilding; start the backend from `backend` with its packaged JAR, bound to loopback for demo verification. Application rollback can retain additive tables, but older binaries cannot operate the new financial workflows. Database recovery requires a separately validated restore plan, not ad-hoc deletion/down-migration of journals or payroll snapshots.
+
+### Talent operations
+
+Flyway V81–V83 are additive and retain historical financial tables. See [talent setup/recovery](talent.md). An actual local full-schema recovery compared 102 tables and 15 projections, then served verified authenticated reads on a temporary loopback API; that temporary API was stopped. The isolated recovered database remains retained. Source and recovered sessions were excluded from comparison/restore data. No financial history or failed browser fixture was cleared. Eight financial tables remained byte-canonically unchanged against the preceding financial checkpoint; all six original payroll audit rows retained their hash, with two additional PAYSLIP_READ events preserved. Do not attribute those reads to the migration or discard them. Talent's payroll receipt status is RECEIVED only: payroll-effective consumption, bank processing and statutory rules remain unsupported. Review the coverage register before release, not the presence of an enabled navigation item.

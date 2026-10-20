@@ -1,0 +1,14 @@
+{
+  "recordedAt": "2026-10-20T20:43:32.838654+00:00",
+  "scope": "Local synthetic demonstration artifacts; not a release approval",
+  "sha256": {
+    "backend/target/atlas-api-0.1.0.jar": "469dcd12a623f80828b9b8d4062bf21aa5e304b2706c5ef7af758a1ae195482d",
+    "package-lock.json": "6952088e06803b8ebc8b438ff7d65ec8b88fe9d7eacb40c25fc8c07151b90322",
+    "backend/src/main/resources/db/demo/V77__local_financial_grants.sql": "61778e7952a74f4e73a3c06d1459a282cd9b069938c0f064740183e1932c2d4d",
+    "backend/src/main/resources/db/migration/V79__owned_journal_reversal_sources.sql": "80119a5fbf9715bdc5d0b67677b86227f8f08a3508b0d45dab16b76a8bb863bf",
+    "backend/src/main/resources/db/migration/V80__schema_bound_financial_guards.sql": "3d8d02607e99b944c1f80f9df06e3d9289b286d10f21feafee55157e8ccd9d35",
+    "backend/src/main/resources/db/migration/V76__payroll_finance_foundation.sql": "323b5234d6c4e3872bda3ab5ac9adbb15d883c69e391e2a0fe8ff6a35c31f1d8",
+    "backend/src/main/resources/db/migration/V78__financial_result_provenance.sql": "81b27efc4a53692fc86093b77a6b44907cc5883bca3e39842a071ed6e9c6ba17"
+  },
+  "nextBuildId": "F_6WwKh10ISXYO4M5Sz3v"
+}

@@ -7,5 +7,7 @@ public interface SelectionsUseCases {
 
   SelectionView decide(String subject, String id, DecideSelection command, String correlation);
 
+  SelectionView withdraw(String subject, String id, WithdrawSelection command, String correlation);
+
   SelectionPage list(String subject, int page, int size);
 }

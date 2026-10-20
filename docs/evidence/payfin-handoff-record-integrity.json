@@ -1,0 +1,57 @@
+{
+  "recordedAt": "2026-10-20T20:43:04.877015+00:00",
+  "schema": "atlas_payfin_browser_20261021f",
+  "scope": "Read-only quiescent synthetic record checks; not payment-provider or restore verification",
+  "result": "PASSED",
+  "controls": {
+    "invalidPayrollTotals": 0,
+    "invalidJournalTotals": 0,
+    "invalidPayrollJournalLinks": 0,
+    "invalidJournalApprovalIndependence": 0,
+    "invalidPayrollApprovalIndependence": 0,
+    "falselyClaimedPayment": 0,
+    "reversedWithoutPostedCounterEntry": 0,
+    "postedJournals": 3,
+    "finalizedPayrollRuns": 1,
+    "enabledIntegrityGuards": 23
+  },
+  "failures": [],
+  "tableManifests": {
+    "fin_grant": {
+      "rows": 9,
+      "sha256": "249ec35fba768432259ad82f836f5cc74cdbd441034c2e8a9529b5cccca4956a"
+    },
+    "fin_ledger": {
+      "rows": 1,
+      "sha256": "2cd404b5beb1c4e84f5d85807c8931be6e85e9983cb71bcb7fb0ef04b4f9a1cc"
+    },
+    "fin_period": {
+      "rows": 2,
+      "sha256": "253883ae21906aff174b1b55de3a0a5635f064fd1d3c5772189012902b51bc26"
+    },
+    "fin_journal": {
+      "rows": 3,
+      "sha256": "39324dfca2e232f1a4515bba093c88d9a66df884842b361668d5c6900a6ca0b5"
+    },
+    "fin_command": {
+      "rows": 18,
+      "sha256": "8cdab57275b66d6fd3890beba50ebe791308335edf7dec527c9ed520a9efbd60"
+    },
+    "fin_audit": {
+      "rows": 19,
+      "sha256": "894935b0027ac61c33fd7c874882c97baa04eb015e1c56022fd69199c4298a55"
+    },
+    "pay_run": {
+      "rows": 1,
+      "sha256": "08199a3fb274ece690d3f91d73aa89fbcc080f69fea0c7bcbc3284a44c46e3bf"
+    },
+    "pay_command": {
+      "rows": 4,
+      "sha256": "da5a935dfe836a9f08c365e2d73779892a4dd8099a368ca4ef428fd4cbff01d3"
+    },
+    "pay_audit": {
+      "rows": 6,
+      "sha256": "9d87fa645bf96a9c007214bbcf9a2fae19abdd8d4820e13e3ab89234861dfb73"
+    }
+  }
+}

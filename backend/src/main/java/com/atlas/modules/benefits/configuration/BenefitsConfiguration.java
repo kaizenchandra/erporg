@@ -26,8 +26,18 @@ public class BenefitsConfiguration {
             return template.execute(status -> operation.get());
           }
         };
+    var readTemplate = new TransactionTemplate(manager);
+    readTemplate.setReadOnly(true);
+    readTemplate.setTimeout(10);
+    readTemplate.setIsolationLevel(TransactionDefinition.ISOLATION_REPEATABLE_READ);
+    UnitOfWork reads =
+        new UnitOfWork() {
+          public <T> T run(Supplier<T> operation) {
+            return readTemplate.execute(status -> operation.get());
+          }
+        };
     return new BenefitsService(
-        new JdbcPlanStore(jdbc), new CoreHrWorkforceAdapter(access), tx, Clock.systemUTC());
+        new JdbcPlanStore(jdbc), new CoreHrWorkforceAdapter(access), tx, reads, Clock.systemUTC());
   }
 
   @Bean

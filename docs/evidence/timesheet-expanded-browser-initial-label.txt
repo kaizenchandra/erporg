@@ -1,0 +1,47 @@
+
+Running 2 tests using 1 worker
+
+(node:46166) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46166) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/timesheet-management.spec.ts:100:5 › returned hours are corrected in the editor, resubmitted and independently approved (30.2s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/timesheet-management.spec.ts:100:5 › returned hours are corrected in the editor, resubmitted and independently approved 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('dialog', { name: 'Timesheet details and costing', exact: true }).getByLabel('Timesheet decision', { exact: true })[22m
+
+
+      123 |       })
+      124 |       .getByLabel("Timesheet decision", { exact: true })
+    > 125 |       .selectOption("RETURN");
+          |        ^
+      126 |     await page
+      127 |       .getByLabel("Timesheet comment", { exact: false })
+      128 |       .fill("Please correct the daily total");
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/timesheet-management.spec.ts:125:8
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/timesheet-management-retur-a322a--and-independently-approved/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/timesheet-management-retur-a322a--and-independently-approved/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/timesheet-management-retur-a322a--and-independently-approved/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/timesheet-management-retur-a322a--and-independently-approved/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/timesheet-management.spec.ts:100:5 › returned hours are corrected in the editor, resubmitted and independently approved 
+  1 did not run
+  1 error was not a part of any test, see above for details

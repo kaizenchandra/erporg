@@ -1,0 +1,5 @@
+Final wrapping build: 3 focused checks passed (5.3s).
+Command: npx playwright test tests/private-postal-address.spec.ts tests/zz-postal-layout.spec.ts -g "legacy address editor|maximum-length" --reporter=list --output=/private/tmp/atlas-am-layout-final-results
+Read-only checks: persisted structured current value in legacy editor; 120/120/80/80/30-character address presentation fixture in mobile profile/history/editor; long OLD/NEW comparison fixture in approval card. Fixtures replace DOM presentation text only and do not prove additional business writes. Actual persistence is covered by workflow tests.
+Measured dialog/card/root scroll widths within viewport at 390x844 after scoped wrapping fix. Automated axe WCAG A/AA tags pass on tested profile and comparison states; original invalid form and saved profile also pass. No full manual WCAG conformance claim.
+Opened and visually inspected postal-address-errors-mobile.png, postal-address-mobile.png, postal-address-long-mobile.png and postal-address-long-approval-mobile.png. Required labels/errors and long text remain readable and vertically scrollable; no horizontal clipping in checked states.

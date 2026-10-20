@@ -14,13 +14,43 @@ public final class JdbcPlanStore implements PlanStore {
     this.db = db;
   }
 
-  public List<BenefitPlan> plans(String tenant, int limit) {
-    return db.sql(
-            "select code,name,currency,monthly_contribution,minimum_service_days,effective_from,rule_version from benefit_plan where tenant=:tenant order by name,code limit :limit")
-        .param("tenant", tenant)
-        .param("limit", limit)
-        .query(BenefitPlan.class)
-        .list();
+  public PlanBatch plans(
+      String tenant,
+      PlanQuery q,
+      com.atlas.modules.benefits.domain.model.EligibilityWindow window) {
+    String where =
+        " from benefit_plan where tenant=:tenant and position(lower(:search) in lower(code||' '||name))>0 and (:all or (:employment and effective_from<=:date and minimum_service_days<=:days))";
+    var total =
+        parameters(db.sql("select count(*)" + where), tenant, q, window).query(Long.class).single();
+    var rows =
+        parameters(
+                db.sql(
+                    "select code,name,currency,monthly_contribution,minimum_service_days,effective_from,rule_version"
+                        + where
+                        + " order by name collate \"C\" "
+                        + q.direction()
+                        + ",code collate \"C\" asc limit :size offset :offset"),
+                tenant,
+                q,
+                window)
+            .param("size", q.size())
+            .param("offset", (long) q.page() * q.size())
+            .query(BenefitPlan.class)
+            .list();
+    return new PlanBatch(rows, total);
+  }
+
+  private JdbcClient.StatementSpec parameters(
+      JdbcClient.StatementSpec sql,
+      String tenant,
+      PlanQuery q,
+      com.atlas.modules.benefits.domain.model.EligibilityWindow window) {
+    return sql.param("tenant", tenant)
+        .param("search", q.search())
+        .param("all", q.eligibility().equals("ALL"))
+        .param("employment", window.employmentAllowed())
+        .param("date", window.evaluatedOn())
+        .param("days", window.completedServiceDays());
   }
 
   public Optional<CreatePlan> duplicate(String tenant, String subject, String key) {

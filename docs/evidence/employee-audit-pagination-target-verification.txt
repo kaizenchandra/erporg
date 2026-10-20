@@ -1,0 +1,22 @@
+
+Running 1 test using 1 worker
+
+(node:1632) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1632) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/zzzzzzzzzzzzz-audit-history.spec.ts:192:5 › profile history recovers independently, filters older events and cancels stale pages with accessible mobile controls (2.8s)
+
+  1 passed (4.6s)
+
+
+
+Running 1 test using 1 worker
+
+(node:1821) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1821) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/zzzzzzzzzzzzz-audit-history.spec.ts:372:5 › closing a pending audit read cannot replace another employee's history (1.5s)
+
+  1 passed (2.6s)

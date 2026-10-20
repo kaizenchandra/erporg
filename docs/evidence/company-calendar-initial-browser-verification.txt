@@ -1,0 +1,45 @@
+
+Running 5 tests using 1 worker
+
+(node:25052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/company-calendars.spec.ts:48:5 › HR records a calendar with preserved validation, lost-response replay, private provenance and mobile authoritative date preview (30.1s)
+(node:25175) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25175) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 tests/company-calendars.spec.ts:165:5 › calendar APIs enforce HR/tenant scope, date policy, stable and conflicting replay, and concurrent unique creation (958ms)
+  ✓  3 tests/company-calendars.spec.ts:296:5 › calendar list recovers focused reads, pages retained data and cancels stale filter responses (1.6s)
+  ✓  4 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (545ms)
+  ✓  5 tests/contracts.spec.ts:115:5 › contract validator rejects incorrect types, formats and unexpected private fields (8ms)
+
+
+  1) tests/company-calendars.spec.ts:48:5 › HR records a calendar with preserved validation, lost-response replay, private provenance and mobile authoritative date preview 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByLabel('Company closure dates', { exact: true })[22m
+
+
+      75 |   await page.getByLabel("Valid from", { exact: false }).fill(day());
+      76 |   await page.getByLabel("Valid through", { exact: false }).fill(day(-1));
+    > 77 |   await page.getByLabel("Company closure dates", { exact: true }).fill(day(1));
+         |                                                                   ^
+      78 |   await page
+      79 |     .getByLabel("Reason for calendar", { exact: false })
+      80 |     .fill("Company closure recorded from approved synthetic policy");
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/company-calendars.spec.ts:77:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/company-calendars-HR-recor-8d952--authoritative-date-preview/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/company-calendars-HR-recor-8d952--authoritative-date-preview/error-context.md
+
+  1 failed
+    tests/company-calendars.spec.ts:48:5 › HR records a calendar with preserved validation, lost-response replay, private provenance and mobile authoritative date preview 
+  4 passed (51.3s)

@@ -49,9 +49,9 @@ public final class HiringController {
   OnboardingCompletion complete(
       Principal p,
       @PathVariable String id,
-      @RequestBody CompleteOnboarding command,
+      @RequestBody OnboardingInput command,
       @RequestAttribute("correlationId") String correlation) {
-    return hiring.completeOnboarding(people.actor(p.getName()), id, command, correlation);
+    return hiring.completeOnboarding(people.actor(p.getName()), id, command.command(), correlation);
   }
 
   @GetMapping("/employees/{id}/employment-history")

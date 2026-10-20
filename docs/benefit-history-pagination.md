@@ -1,0 +1,12 @@
+# Phase 2 increment BE: complete benefit creation history
+
+Prerequisites: immutable owned benefit-plan journal, current workforce-access published contract, independently loaded BD history panel. Scope HR-06, SH-01, SH-05 and SH-06; no parent requirement completion or new benefits/payroll policy.
+
+Acceptance defined before implementation:
+
+1. New HR-only GET `/api/v1/benefits/creation-history` traverses every owned creation event beyond100. Optional exact uppercase code, asc/desc recording order, page0–100000, size1–50 and decimal-string throughId. Page>0 requires a boundary. First request obtains the maximum scoped ID; subsequent pages exclude higher IDs until refresh. Count and rows use the same bounded10s read-only repeatable snapshot. Current role and server-derived tenant are rechecked before every data read using the published workforce contract; no cross-module internal/table access. IDs remain strings. Legacy `/history` stays compatible/latest100 and is deprecated in OpenAPI.
+2. Document consistency: `(recorded_at,id)` deterministic order with an ID boundary, not a cross-request MVCC snapshot. A lower-ID late commit can shift offset pages/counts. Boundaries are untrusted navigation, never permission. Filter/order/size/refresh reset the boundary; closing/identity/create resets discard private state and cancel obsolete reads.
+3. Browser supports exact-code Apply, order, size, scoped count, previous/next/refresh, UTC recording versus effective date and actor/reason/correlation. Preserve BD independent plan/history recovery, focused failure/retry/keyboard and empty/loading/mobile behaviour. Real REST creation of105+ plans must expose an older event outside the legacy100 and preserve higher-ID refresh behaviour. Direct employee/manager/other-tenant denial and negative contracts remain tested.
+4. Execute domain/application/architecture and actual PostgreSQL integration tests, strict frontend checks/build, focused and fresh full browser regression. Restore checker compares complete recovered IDs/order/provenance with owned SQL and denies non-HR. Preserve all immutable records/private objects and prior evidence. No migration/dependency is expected. No production performance, full WCAG/ASVS or live readiness claim.
+
+All45 source IDs remain tracked with separate UI/backend and criteria status. Remaining approved-plan changes, eligibility/provider/payroll policies, hierarchy maintenance and Phases3–7 remain in scope.

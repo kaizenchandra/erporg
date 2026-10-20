@@ -184,6 +184,9 @@ test("HR plans and independently approves rehire with retained episodes, preserv
     .getByLabel("Rehire job title (required)", { exact: true })
     .fill("Returning analyst");
   await panel
+    .getByLabel("Find a department", { exact: true })
+    .fill("Engineering");
+  await panel
     .getByLabel("Rehire department (required)", { exact: true })
     .selectOption("Engineering");
   await panel

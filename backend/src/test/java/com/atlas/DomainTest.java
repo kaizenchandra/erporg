@@ -26,6 +26,10 @@ class DomainTest {
           day,
           "",
           "",
+          "",
+          "",
+          "",
+          "",
           2);
   final Actor self = new Actor("employee", "t", "E3", "Employee", "EMPLOYEE");
   final Actor manager = new Actor("manager", "t", "E2", "Manager", "MANAGER");

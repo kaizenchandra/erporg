@@ -1,0 +1,58 @@
+
+Running 6 tests using 1 worker
+
+(node:6528) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6528) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/benefit-decision-version.spec.ts:4:5 › fractional benefit decision is rejected by the real API and the preserved form recovers with an exact version (2.0s)
+  ✘  2 tests/position-directory.spec.ts:90:5 › server-dated current and planned positions paginate, refresh and include a real created reference (7.5s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/position-directory.spec.ts:90:5 › server-dated current and planned positions paginate, refresh and include a real created reference 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  getByRole('region', { name: 'Position catalogue', exact: true }).locator('article')
+    Expected: [32m6[39m
+    Received: [31m16[39m
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('region', { name: 'Position catalogue', exact: true }).locator('article')[22m
+    [2m    2 × locator resolved to 10 elements[22m
+    [2m      - unexpected value "10"[22m
+    [2m    7 × locator resolved to 16 elements[22m
+    [2m      - unexpected value "16"[22m
+
+
+      190 |     .getByRole("combobox", { name: /^Position timing/ })
+      191 |     .selectOption("CURRENT");
+    > 192 |   await expect(panel.locator("article")).toHaveCount(6);
+          |                                          ^
+      193 |   await panel
+      194 |     .getByRole("combobox", { name: /^Position timing/ })
+      195 |     .selectOption("PLANNED");
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/position-directory.spec.ts:192:42
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/position-directory-server--0df32-de-a-real-created-reference/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/position-directory-server--0df32-de-a-real-created-reference/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/position-directory-server--0df32-de-a-real-created-reference/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/position-directory-server--0df32-de-a-real-created-reference/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/position-directory.spec.ts:90:5 › server-dated current and planned positions paginate, refresh and include a real created reference 
+  4 did not run
+  1 passed (11.2s)
+  1 error was not a part of any test, see above for details

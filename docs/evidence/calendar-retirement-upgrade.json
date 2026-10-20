@@ -1,0 +1,8 @@
+{
+  "status": "PASSED",
+  "fromVersion": 58,
+  "toVersion": 59,
+  "unchangedExistingBusinessTables": 68,
+  "scope": "All retained pre-upgrade rows; new RET-* fixtures excluded from calendar/revision comparison, and the targeted contract test\u2019s one rejected request, its two audit rows and one notification excluded from their comparisons. No source rows changed. Additive immutable retirement table; no backfill.",
+  "newRetirementRowsAfterTargetedTests": 5
+}

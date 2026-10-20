@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:57235) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:57235) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/benefit-selection-inbox.spec.ts:47:5 › employee submission is independently approved through the scoped benefit inbox and retained in own tracking (4.9s)
+  ✓  2 tests/benefit-selection-inbox.spec.ts:226:5 › benefit inbox API applies private scopes before totals and validates contracts and query limits (924ms)
+  ✓  3 tests/benefit-selection-inbox.spec.ts:294:5 › benefit queue fails independently, cancels a closed read and resets state on category navigation (1.4s)
+
+  3 passed (8.4s)

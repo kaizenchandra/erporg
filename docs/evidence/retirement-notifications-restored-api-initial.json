@@ -1,0 +1,71 @@
+{
+  "recordedAt": "2026-10-18T22:27:54.823034+00:00",
+  "status": "FAILED",
+  "scope": "local synthetic restored API; excludes production infrastructure and IdP recovery",
+  "targetDatabase": "atlas_restore_1ba7a106a5b04d8a",
+  "readinessSeconds": 22.249,
+  "flywayStartupValidation": true,
+  "legalNamePrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager"
+    ],
+    "scope": "private profile and history on actual restored API; no names in report"
+  },
+  "additionalContactPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "private current and future-approved snapshots/history on actual restored API; no contact values in report"
+  },
+  "contactInboxPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "author HR",
+      "independent HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "OWN and independent REVIEW queue reads on actual restored API; values omitted"
+  },
+  "retirementNotificationPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "author HR",
+      "reviewer HR",
+      "self",
+      "manager",
+      "other tenant"
+    ],
+    "scope": "retained notification rows and latest-50 actual recovered API content matched; non-HR retirement messages absent; message values omitted"
+  },
+  "benefitWithdrawalPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "retained WITHDRAWN snapshots, original owner audit and absent deduction on real restored API; no values in report"
+  },
+  "postalAddressPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "typed private address on actual restored API; no address values in report"
+  },
+  "error": "Restored legal-entity fixtures differ",
+  "totalSeconds": 35.462
+}

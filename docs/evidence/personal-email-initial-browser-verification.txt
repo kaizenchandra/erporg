@@ -1,0 +1,41 @@
+
+Running 4 tests using 1 worker
+
+(node:51010) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51010) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (1.2s)
+  ✘  2 tests/contracts.spec.ts:115:5 › contract validator rejects incorrect types, formats and unexpected private fields (5ms)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/contracts.spec.ts:115:5 › contract validator rejects incorrect types, formats and unexpected private fields 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+      135 |     version: 0,
+      136 |   };
+    > 137 |   expect(validate(employee)).toBe(true);
+          |                              ^
+      138 |   for (const altered of [
+      139 |     { ...employee, version: "0" },
+      140 |     { ...employee, legalName: 42 },
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/contracts.spec.ts:137:30
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/contracts-contract-validat-f6c5e-d-unexpected-private-fields/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/contracts-contract-validat-f6c5e-d-unexpected-private-fields/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/contracts.spec.ts:115:5 › contract validator rejects incorrect types, formats and unexpected private fields 
+  2 did not run
+  1 passed (1.8s)
+  1 error was not a part of any test, see above for details

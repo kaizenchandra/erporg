@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-10-19T16:45:21.685921+00:00",
+  "status": "FAILED",
+  "scope": "local synthetic restored API; excludes production infrastructure and IdP recovery",
+  "targetDatabase": "atlas_restore_7d5497d4e77b4c91",
+  "readinessSeconds": 22.596,
+  "flywayStartupValidation": true,
+  "legalNamePrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager"
+    ],
+    "scope": "private profile and history on actual restored API; no names in report"
+  },
+  "additionalContactPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "private current and future-approved snapshots/history on actual restored API; no contact values in report"
+  },
+  "error": "Restored calendar history stable order differs",
+  "totalSeconds": 32.301
+}

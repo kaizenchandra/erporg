@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:10794) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10794) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/department-parent.spec.ts:112:5 › HR corrects a current parent and root with confirmed impact, preserved validation and uncertain-response replay (3.1s)
+  ✓  2 tests/department-parent.spec.ts:222:5 › parent correction API enforces current HR scope, exact dates and revisions, stable replay and single-winner concurrency (1.2s)
+  ✓  3 tests/department-parent.spec.ts:389:5 › paged hierarchy history preserves a draft during retry and cancels closed reads on mobile (2.2s)
+
+  3 passed (8.1s)

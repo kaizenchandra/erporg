@@ -1,0 +1,193 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24159 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] ------------------------< com.atlas:atlas-api >-------------------------
+[INFO] Building atlas-api 0.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] Loaded 24159 auto-discovered prefixes for remote repository maven-central (prefixes-maven-central.txt)
+[WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+[INFO] Loaded 7 auto-discovered prefixes for remote repository shibboleth-repo (prefixes-shibboleth-repo.txt)
+[INFO] Loaded 24159 auto-discovered prefixes for remote repository maven_central (prefixes-maven_central.txt)
+[INFO] 
+[INFO] --- spotless:3.0.0:apply (default-cli) @ atlas-api ---
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/TalentPolicyTest.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/TalentWorkflowTest.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/payroll/adapter/in/web/TalentPayrollController.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/payroll/adapter/in/web/PayrollController.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/talent/adapter/in/web/TalentController.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/talent/application/model/TalentCommands.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/talent/application/port/in/TalentUseCases.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/talent/application/usecase/PlanningWorkflows.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/talent/application/usecase/RecruitingWorkflows.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/talent/application/usecase/TalentService.java
+[INFO] Spotless.Java is keeping 513 files clean - 10 were changed to be clean, 2 were already clean, 501 were skipped because caching determined they were already clean
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ atlas-api ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] Copying 83 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ atlas-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 415 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ atlas-api ---
+[INFO] skip non existing resourceDirectory /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ atlas-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 98 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Some input files use or override a deprecated API.
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ atlas-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.atlas.TalentWorkflowTest
+02:35:53.250 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.TalentWorkflowTest]: TalentWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+02:35:53.340 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.TalentWorkflowTest
+02:35:53.379 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.TalentWorkflowTest]: TalentWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+02:35:53.380 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.TalentWorkflowTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-21T02:35:53.582+05:30  INFO 80544 --- [atlas-api] [           main] com.atlas.TalentWorkflowTest             : Starting TalentWorkflowTest using Java 21.0.12.1 with PID 80544 (started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-21T02:35:53.582+05:30  INFO 80544 --- [atlas-api] [           main] com.atlas.TalentWorkflowTest             : The following 1 profile is active: "local"
+2026-10-21T02:35:54.515+05:30  INFO 80544 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-21T02:35:54.618+05:30  INFO 80544 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4f2fdf3d
+2026-10-21T02:35:54.618+05:30  INFO 80544 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-21T02:35:54.636+05:30  INFO 80544 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_talent_1342179ddd3d (PostgreSQL 18.6)
+2026-10-21T02:35:54.690+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.database.base.Schema   : Creating schema "atlas_talent_1342179ddd3d" ...
+2026-10-21T02:35:54.698+05:30  INFO 80544 --- [atlas-api] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "atlas_talent_1342179ddd3d"."flyway_schema_history" ...
+2026-10-21T02:35:54.782+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_talent_1342179ddd3d": null
+2026-10-21T02:35:54.801+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "1 - core hr"
+2026-10-21T02:35:54.869+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "2 - synthetic workspace"
+2026-10-21T02:35:54.889+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "3 - oidc subjects"
+2026-10-21T02:35:54.903+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "4 - jdbc sessions"
+2026-10-21T02:35:54.931+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "5 - private contact details"
+2026-10-21T02:35:54.950+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "6 - department reference"
+2026-10-21T02:35:54.980+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "7 - department seed audit"
+2026-10-21T02:35:54.993+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "8 - hiring workflow"
+2026-10-21T02:35:55.027+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "9 - second hr reviewer"
+2026-10-21T02:35:55.037+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "10 - onboarding completion"
+2026-10-21T02:35:55.052+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "11 - hire tenant integrity"
+2026-10-21T02:35:55.067+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "12 - position catalogue"
+2026-10-21T02:35:55.082+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "13 - position assignment"
+2026-10-21T02:35:55.098+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "14 - position assignment integrity"
+2026-10-21T02:35:55.113+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "15 - reporting changes"
+2026-10-21T02:35:55.132+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "16 - employee display name"
+2026-10-21T02:35:55.141+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "17 - request withdrawal"
+2026-10-21T02:35:55.156+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "18 - benefits catalogue"
+2026-10-21T02:35:55.179+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "19 - benefit rule snapshot"
+2026-10-21T02:35:55.187+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "20 - benefit selections"
+2026-10-21T02:35:55.219+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "21 - benefit selection integrity"
+2026-10-21T02:35:55.236+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "22 - private employee documents"
+2026-10-21T02:35:55.260+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "23 - document scan retry"
+2026-10-21T02:35:55.279+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "24 - immutable document versions"
+2026-10-21T02:35:55.307+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "25 - document templates and completeness"
+2026-10-21T02:35:55.340+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "26 - document template revisions and corrections"
+2026-10-21T02:35:55.372+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "27 - document retention and legal holds"
+2026-10-21T02:35:55.392+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "28 - independent hold release subject"
+2026-10-21T02:35:55.406+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "29 - resignation workflow"
+2026-10-21T02:35:55.438+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "30 - resignation audit reconciliation"
+2026-10-21T02:35:55.453+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "31 - exit task coordination"
+2026-10-21T02:35:55.482+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "32 - exit task management"
+2026-10-21T02:35:55.508+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "33 - effective employment end"
+2026-10-21T02:35:55.536+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "34 - employment end withdrawal"
+2026-10-21T02:35:55.570+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "35 - employment end reschedule"
+2026-10-21T02:35:55.607+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "36 - current end handoff identity"
+2026-10-21T02:35:55.616+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "37 - rehire onboarding episode"
+2026-10-21T02:35:55.655+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "38 - reviewed rehire activation"
+2026-10-21T02:35:55.706+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "39 - revoke fresh rehire access"
+2026-10-21T02:35:55.726+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "40 - revoked identity hold"
+2026-10-21T02:35:55.738+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "41 - reviewed identity replacement"
+2026-10-21T02:35:55.785+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "42 - pending resignation withdrawal"
+2026-10-21T02:35:55.807+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "43 - original case episode ownership"
+2026-10-21T02:35:55.828+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "44 - compatible original episode writers"
+2026-10-21T02:35:55.840+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "45 - episode local status projection"
+2026-10-21T02:35:55.850+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "46 - access grant episode ownership"
+2026-10-21T02:35:55.870+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "47 - current episode task assignees"
+2026-10-21T02:35:55.879+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "48 - private recorded legal name"
+2026-10-21T02:35:55.892+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "49 - additional emergency contacts"
+2026-10-21T02:35:55.944+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "50 - pending benefit withdrawal"
+2026-10-21T02:35:55.966+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "51 - structured private postal address"
+2026-10-21T02:35:55.987+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "52 - declared legal entity references"
+2026-10-21T02:35:56.008+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "53 - reviewed legal entity retirement"
+2026-10-21T02:35:56.072+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "54 - private recorded birth date"
+2026-10-21T02:35:56.118+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "55 - schema local birth date guard"
+2026-10-21T02:35:56.135+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "56 - company work calendars"
+2026-10-21T02:35:56.195+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "57 - dated company calendar amendments"
+2026-10-21T02:35:56.233+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "58 - calendar revision guard result"
+2026-10-21T02:35:56.251+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "59 - company calendar retirement"
+2026-10-21T02:35:56.286+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "60 - private personal email"
+2026-10-21T02:35:56.313+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "61 - approved employee calendar assignment"
+2026-10-21T02:35:56.365+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "62 - approved employee entity assignment"
+2026-10-21T02:35:56.438+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "63 - capture entity requester employee"
+2026-10-21T02:35:56.460+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "64 - protect entity request provenance"
+2026-10-21T02:35:56.471+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "65 - employee audit keyset index"
+2026-10-21T02:35:56.481+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "66 - department parent correction"
+2026-10-21T02:35:56.502+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "67 - department parent business order"
+2026-10-21T02:35:56.519+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "68 - schema scoped department hierarchy lock"
+2026-10-21T02:35:56.535+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "69 - department parent truncate protection"
+2026-10-21T02:35:56.549+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "70 - attendance timesheets"
+2026-10-21T02:35:56.594+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "71 - timekeeping provenance and dates"
+2026-10-21T02:35:56.608+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "72 - timesheet return and recall"
+2026-10-21T02:35:56.619+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "73 - timesheet period controls"
+2026-10-21T02:35:56.634+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "74 - timesheet bulk receipts"
+2026-10-21T02:35:56.647+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "75 - time report range index"
+2026-10-21T02:35:56.667+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "76 - payroll finance foundation"
+2026-10-21T02:35:56.724+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "77 - local financial grants"
+2026-10-21T02:35:56.732+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "78 - financial result provenance"
+2026-10-21T02:35:56.743+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "79 - owned journal reversal sources"
+2026-10-21T02:35:56.752+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "80 - schema bound financial guards"
+2026-10-21T02:35:56.762+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "81 - talent workflows"
+2026-10-21T02:35:56.801+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "82 - payroll talent intake"
+2026-10-21T02:35:56.813+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_1342179ddd3d" to version "83 - succession assessment revisions"
+2026-10-21T02:35:56.824+05:30  INFO 80544 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 83 migrations to schema "atlas_talent_1342179ddd3d", now at version v83 (execution time 00:01.201s)
+2026-10-21T02:35:57.598+05:30  INFO 80544 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-21T02:35:58.017+05:30  INFO 80544 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-21T02:35:58.048+05:30  INFO 80544 --- [atlas-api] [           main] com.atlas.TalentWorkflowTest             : Started TalentWorkflowTest in 4.618 seconds (process running for 5.185)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/private/tmp/atlas-m2/net/bytebuddy/byte-buddy-agent/1.17.8/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+2026-10-21T02:35:59.499+05:30  INFO 80544 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-10-21T02:35:59.501+05:30  INFO 80544 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.312 s -- in com.atlas.TalentWorkflowTest
+[INFO] Running com.atlas.ArchitectureTest
+2026-10-21T02:35:59.548+05:30  INFO 80544 --- [atlas-api] [           main] com.tngtech.archunit.core.PluginLoader   : Detected Java version 21.0.12.1
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.440 s -- in com.atlas.ArchitectureTest
+[INFO] Running com.atlas.TalentPolicyTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.atlas.TalentPolicyTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ atlas-api ---
+[INFO] Building jar: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar
+[INFO] 
+[INFO] --- spring-boot:4.0.8:repackage (repackage) @ atlas-api ---
+[INFO] Loaded 50 auto-discovered prefixes for remote repository ow2-snapshot (prefixes-ow2-snapshot.txt)
+[INFO] Replacing main artifact /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  18.048 s
+[INFO] Finished at: 2026-10-21T02:36:01+05:30
+[INFO] ------------------------------------------------------------------------

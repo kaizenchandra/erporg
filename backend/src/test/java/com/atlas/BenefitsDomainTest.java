@@ -3,6 +3,7 @@ package com.atlas;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.atlas.modules.benefits.domain.model.BenefitPlan;
+import com.atlas.modules.benefits.domain.model.SelectionPolicy;
 import com.atlas.shared.domain.InputValidation;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -38,5 +39,17 @@ class BenefitsDomainTest {
     assertThrows(
         InputValidation.class,
         () -> new BenefitPlan("BEN-CURRENCY", "Unsupported", "XXX", BigDecimal.ONE, 0, day));
+  }
+
+  @Test
+  void onlyPendingExactVersionSelectionsMayBeWithdrawn() {
+    SelectionPolicy.withdraw("PENDING", 0, 0);
+    for (var status : java.util.List.of("APPROVED", "REJECTED", "WITHDRAWN"))
+      assertThrows(
+          com.atlas.shared.domain.CommandConflict.class,
+          () -> SelectionPolicy.withdraw(status, 1, 0));
+    assertThrows(
+        com.atlas.shared.domain.CommandConflict.class,
+        () -> SelectionPolicy.withdraw("PENDING", 0, 1));
   }
 }

@@ -1,0 +1,56 @@
+
+Running 3 tests using 1 worker
+
+(node:70304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:70304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/payroll-accounting.spec.ts:191:5 › approved time becomes a finalized payslip and a separately approved, posted and reconciled journal (9.4s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/payroll-accounting.spec.ts:191:5 › approved time becomes a finalized payslip and a separately approved, posted and reconciled journal 
+
+    Error: Please use browser.newContext()
+     Please check out https://github.com/dequelabs/axe-core-npm/blob/develop/packages/playwright/error-handling.md
+
+      306 |     ).toContainText("Debits 20.46 · Credits 20.46");
+      307 |     await finance.setViewportSize({ width: 390, height: 844 });
+    > 308 |     const checks = await new AxeBuilder({ page: finance })
+          |                    ^
+      309 |       .include('[aria-label="Finance workspace"]')
+      310 |       .analyze();
+      311 |     expect(
+        at AxeBuilder.analyze (/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/node_modules/@axe-core/playwright/dist/index.js:253:13)
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/payroll-accounting.spec.ts:308:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/payroll-accounting-approve-3a718-sted-and-reconciled-journal/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/payroll-accounting-approve-3a718-sted-and-reconciled-journal/test-failed-4.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/payroll-accounting-approve-3a718-sted-and-reconciled-journal/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/payroll-accounting-approve-3a718-sted-and-reconciled-journal/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/payroll-accounting-approve-3a718-sted-and-reconciled-journal/error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/payroll-accounting-approve-3a718-sted-and-reconciled-journal/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/payroll-accounting-approve-3a718-sted-and-reconciled-journal/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/payroll-accounting.spec.ts:191:5 › approved time becomes a finalized payslip and a separately approved, posted and reconciled journal 
+  2 did not run
+  1 error was not a part of any test, see above for details

@@ -1,0 +1,44 @@
+
+Running 1 test using 1 worker
+
+(node:53602) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53602) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/zz-personal-email-layout.spec.ts:4:5 › maximum supported personal email remains inside the mobile private profile (30.1s)
+
+
+  1) tests/zz-personal-email-layout.spec.ts:4:5 › maximum supported personal email remains inside the mobile private profile 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Open your profile', exact: true })[22m
+
+
+      13 |   await page
+      14 |     .getByRole("button", { name: "Open your profile", exact: true })
+    > 15 |     .click();
+         |      ^
+      16 |   const profile = page.getByRole("dialog", {
+      17 |     name: "Employee profile",
+      18 |     exact: true,
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/zz-personal-email-layout.spec.ts:15:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/zz-personal-email-layout-m-7b869--the-mobile-private-profile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/zz-personal-email-layout-m-7b869--the-mobile-private-profile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/zz-personal-email-layout-m-7b869--the-mobile-private-profile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/zz-personal-email-layout-m-7b869--the-mobile-private-profile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/zz-personal-email-layout.spec.ts:4:5 › maximum supported personal email remains inside the mobile private profile 

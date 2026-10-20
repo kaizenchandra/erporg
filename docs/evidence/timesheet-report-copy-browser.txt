@@ -1,0 +1,61 @@
+
+Running 2 tests using 1 worker
+
+(node:61289) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61289) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/timesheet-report-copy.spec.ts:49:5 › worker copies an owned week, reloads it, submits and manager reports approved allocated minutes (30.2s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/timesheet-report-copy.spec.ts:49:5 › worker copies an owned week, reloads it, submits and manager reports approved allocated minutes 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Next page', exact: true })[22m
+    [2m    - locator resolved to <button disabled type="button">Next page</button>[22m
+    [2m  - attempting click action[22m
+    [2m    2 × waiting for element to be visible, enabled and stable[22m
+    [2m      - element is not enabled[22m
+    [2m    - retrying click action[22m
+    [2m    - waiting 20ms[22m
+    [2m    2 × waiting for element to be visible, enabled and stable[22m
+    [2m      - element is not enabled[22m
+    [2m    - retrying click action[22m
+    [2m      - waiting 100ms[22m
+    [2m    51 × waiting for element to be visible, enabled and stable[22m
+    [2m       - element is not enabled[22m
+    [2m     - retrying click action[22m
+    [2m       - waiting 500ms[22m
+
+
+      93 |       await page
+      94 |         .getByRole("button", { name: "Next page", exact: true })
+    > 95 |         .click();
+         |          ^
+      96 |     await page
+      97 |       .getByRole("button", {
+      98 |         name: `Open timesheet for ${source} · E003`,
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/timesheet-report-copy.spec.ts:95:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/timesheet-report-copy-work-01f6d--approved-allocated-minutes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/timesheet-report-copy-work-01f6d--approved-allocated-minutes/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/timesheet-report-copy-work-01f6d--approved-allocated-minutes/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/timesheet-report-copy-work-01f6d--approved-allocated-minutes/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/timesheet-report-copy.spec.ts:49:5 › worker copies an owned week, reloads it, submits and manager reports approved allocated minutes 
+  1 did not run
+  1 error was not a part of any test, see above for details

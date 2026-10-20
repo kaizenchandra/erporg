@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-10-20T21:18:42.579074+00:00",
+  "result": "PASSED_WITH_AUDIT_APPEND",
+  "fullFinancialTablesUnchanged": [
+    "fin_grant",
+    "fin_ledger",
+    "fin_period",
+    "fin_journal",
+    "fin_command",
+    "fin_audit",
+    "pay_run",
+    "pay_command"
+  ],
+  "priorPayrollAuditRowsPreserved": 6,
+  "priorPayrollAuditHashMatched": true,
+  "additionalAuditActions": [
+    {
+      "action": "PAYSLIP_READ",
+      "count": 2
+    }
+  ],
+  "scope": "Prior financial checkpoint compared with retained local data after talent upgrade; read audit append retained without attribution or deletion"
+}

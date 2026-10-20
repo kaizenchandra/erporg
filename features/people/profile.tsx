@@ -3,14 +3,20 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Modal, Avatar, Badge, formatDate } from "@/components/ui/primitives";
 import type { OnboardingCompletion } from "./complete-onboarding";
 import { RehirePanel } from "./rehire";
+import { PostalAddressPanel } from "./postal-address";
 import { AdditionalContacts } from "./additional-contacts";
 import { ManagerPicker } from "./manager-picker";
+import { CalendarPicker } from "./calendar-picker";
+import { EntityPicker } from "./entity-picker";
+import { EmployeeCalendarPreview } from "./employee-calendar";
+import { ChangeHistory } from "./change-history";
+import { EmployeeCalendarHistory } from "./employee-calendar-history";
 import { PositionPicker } from "./position-picker";
-import type { Department } from "./department-reference";
-import { changeFieldLabels } from "./field-labels";
+import { DepartmentPicker } from "./department-picker";
+import { formatChangeValue } from "./field-labels";
 import { Icon } from "@/components/ui/icon";
 import { api, ApiError } from "@/lib/api";
-import type { Actor, AuditEvent, Employee } from "@/lib/contracts";
+import type { Actor, Employee } from "@/lib/contracts";
 export function Profile({
   employee: initialEmployee,
   actor,
@@ -27,37 +33,38 @@ export function Profile({
   const [e, setCurrentEmployee] = useState(initialEmployee);
   const [rehireDirty, setRehireDirty] = useState(false),
     [rehireBusy, setRehireBusy] = useState(false);
-  const [employmentHistory, setEmploymentHistory] = useState<
-    OnboardingCompletion[]
-  >([]);
-  const [history, setHistory] = useState<AuditEvent[]>([]),
-    [error, setError] = useState(""),
-    [loading, setLoading] = useState(true);
+  const [employmentRetry, setEmploymentRetry] = useState(0);
+  const [employmentResult, setEmploymentResult] = useState<{
+    key: string;
+    value?: OnboardingCompletion[];
+    error?: string;
+  }>();
+  const employmentKey = JSON.stringify([e.id, e.version, employmentRetry]);
+  const employmentCurrent =
+    employmentResult?.key === employmentKey ? employmentResult : undefined;
+  const employmentHistory = employmentCurrent?.value ?? [];
   useEffect(() => {
-    const controller = new AbortController();
-    Promise.all([
-      api<AuditEvent[]>(`/api/v1/employees/${e.id}/history`, {
-        signal: controller.signal,
-      }),
-      api<OnboardingCompletion[]>(
-        `/api/v1/hiring/requests/employees/${e.id}/employment-history`,
-        { signal: controller.signal },
-      ),
-    ])
-      .then(([changes, employment]) => {
-        if (!controller.signal.aborted) {
-          setHistory(changes);
-          setEmploymentHistory(employment);
-        }
+    const c = new AbortController();
+    api<OnboardingCompletion[]>(
+      `/api/v1/hiring/requests/employees/${e.id}/employment-history`,
+      { signal: AbortSignal.any([c.signal, AbortSignal.timeout(10000)]) },
+    )
+      .then((value) => {
+        if (!c.signal.aborted)
+          setEmploymentResult({ key: employmentKey, value });
       })
-      .catch((err) => {
-        if (!controller.signal.aborted) setError(err.message);
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setLoading(false);
+      .catch((err: unknown) => {
+        if (!c.signal.aborted)
+          setEmploymentResult({
+            key: employmentKey,
+            error:
+              err instanceof Error
+                ? err.message
+                : "Employment history unavailable.",
+          });
       });
-    return () => controller.abort();
-  }, [e.id]);
+    return () => c.abort();
+  }, [e.id, employmentKey]);
   return (
     <Modal
       title="Employee profile"
@@ -101,11 +108,27 @@ export function Profile({
                 ? "Restricted"
                 : e.legalName || "Not recorded",
             ],
+            [
+              "Recorded birth date",
+              e.birthDate === null
+                ? "Restricted"
+                : e.birthDate
+                  ? formatDate(e.birthDate)
+                  : "Not recorded",
+            ],
             ["Work email", e.email],
+            [
+              "Personal email",
+              e.personalEmail === null
+                ? "Restricted"
+                : e.personalEmail || "Not provided",
+            ],
             ["Contact number", e.phone],
             [
               "Home address",
-              e.address === null ? "Restricted" : e.address || "Not provided",
+              e.address === null
+                ? "Restricted"
+                : formatChangeValue("address", e.address) || "Not provided",
             ],
             [
               "Emergency contact name",
@@ -127,6 +150,13 @@ export function Profile({
             ],
             ["Department", e.department],
             ["Primary position", e.positionCode || "Unassigned"],
+            ["Company calendar", e.calendarCode || "Unassigned"],
+            [
+              "Declared employing entity",
+              e.legalEntityCode === null
+                ? "Restricted"
+                : e.legalEntityCode || "Unassigned",
+            ],
             ["Location", e.location],
             ["Employment start", formatDate(e.startDate)],
             ["Reporting manager", e.managerId ?? "No reporting manager"],
@@ -137,6 +167,12 @@ export function Profile({
             </div>
           ))}
         </dl>
+        <EmployeeCalendarHistory employeeId={e.id} version={e.version} />
+        <EmployeeCalendarPreview
+          employeeId={e.id}
+          calendarCode={e.calendarCode}
+          version={e.version}
+        />
         {actor.role === "HR" && (
           <RehirePanel
             employeeId={e.id}
@@ -151,6 +187,16 @@ export function Profile({
           />
         )}
         {(actor.role === "HR" || actor.employeeId === e.id) && (
+          <PostalAddressPanel
+            employeeId={e.id}
+            onRecorded={async () => {
+              const next = await api<Employee>(`/api/v1/employees/${e.id}`);
+              setCurrentEmployee(next);
+              await onRecorded(next);
+            }}
+          />
+        )}
+        {(actor.role === "HR" || actor.employeeId === e.id) && (
           <AdditionalContacts
             employeeId={e.id}
             actor={actor}
@@ -161,58 +207,24 @@ export function Profile({
             }}
           />
         )}
-        <div className="section-heading">
-          <h3>Change history</h3>
-          <span>Recorded in UTC</span>
-        </div>
-        {loading ? (
-          <p className="muted" role="status">
-            Loading history…
-          </p>
-        ) : error ? (
-          <p className="error" role="alert">
-            {error}
-          </p>
-        ) : history.length ? (
-          history.map((h, i) => (
-            <article className="history-event" key={i}>
-              <span className="timeline-dot" />
-              <div>
-                <strong>
-                  {changeFieldLabels[h.field] ?? h.field} change ·{" "}
-                  {h.action.toLowerCase()}
-                </strong>
-                <p>
-                  {h.oldValue ||
-                    (h.field === "positionCode"
-                      ? "Unassigned"
-                      : "Not provided")}{" "}
-                  →{" "}
-                  {h.newValue ||
-                    (h.field === "positionCode" ? "Unassigned" : "Removed")}
-                </p>
-                <p>{h.reason}</p>
-                <small>
-                  {h.actor} · Recorded {new Date(h.recordedAt).toISOString()} ·
-                  Effective {formatDate(h.effectiveDate)}
-                </small>
-              </div>
-            </article>
-          ))
-        ) : (
-          <div className="quiet-note">
-            <Icon name="shield" />
-            <p>
-              No changes recorded yet. Approved changes and their reasons will
-              appear here.
-            </p>
-          </div>
-        )}
+        <ChangeHistory employeeId={e.id} version={e.version} actor={actor} />
         <div className="section-heading">
           <h3>Employment history</h3>
           <span>Effective dates and UTC recording times</span>
         </div>
-        {employmentHistory.length ? (
+        {!employmentCurrent ? (
+          <p role="status">Loading employment history…</p>
+        ) : employmentCurrent.error ? (
+          <p role="alert">
+            {employmentCurrent.error}
+            <button
+              type="button"
+              onClick={() => setEmploymentRetry((n) => n + 1)}
+            >
+              Retry employment history
+            </button>
+          </p>
+        ) : employmentHistory.length ? (
           employmentHistory.map((item) => (
             <article className="history-event" key={item.hireId}>
               <span className="timeline-dot" />
@@ -267,11 +279,14 @@ export function ChangeForm({
   }, [error]);
   const [removeValue, setRemoveValue] = useState(false);
   const removable = [
+    "personalEmail",
     "address",
     "emergencyContactName",
     "emergencyContactRelationship",
     "emergencyContactPhone",
     "positionCode",
+    "calendarCode",
+    "legalEntityCode",
   ].includes(field);
   const dirty =
     removeValue ||
@@ -295,28 +310,6 @@ export function ChangeForm({
     )
       onClose();
   };
-  const [departments, setDepartments] = useState<Department[]>([]);
-  const [departmentError, setDepartmentError] = useState("");
-  useEffect(() => {
-    if (field !== "department") return;
-    const controller = new AbortController();
-    api<Department[]>("/api/v1/organisation/departments", {
-      signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]),
-    })
-      .then((items) => {
-        if (!controller.signal.aborted) {
-          setDepartments(items);
-          setDepartmentError("");
-        }
-      })
-      .catch((err: unknown) => {
-        if (!controller.signal.aborted)
-          setDepartmentError(
-            err instanceof Error ? err.message : "Unable to load departments.",
-          );
-      });
-    return () => controller.abort();
-  }, [field]);
   const canPrivate = actor.role === "HR" || actor.employeeId === employee.id;
   const canEmployment =
     actor.role === "HR" ||
@@ -427,6 +420,8 @@ export function ChangeForm({
               <>
                 <option value="name">Employee display name</option>
                 <option value="legalName">Recorded legal name</option>
+                <option value="birthDate">Recorded birth date</option>
+                <option value="personalEmail">Personal email</option>
                 <option value="address">Home address</option>
                 <option value="emergencyContactName">
                   Emergency contact name
@@ -436,6 +431,16 @@ export function ChangeForm({
                 </option>
                 <option value="emergencyContactPhone">
                   Emergency contact phone
+                </option>
+              </>
+            )}
+            {actor.role === "HR" && (
+              <>
+                <option value="calendarCode">
+                  Company calendar assignment
+                </option>
+                <option value="legalEntityCode">
+                  Declared employing entity
                 </option>
               </>
             )}
@@ -462,10 +467,22 @@ export function ChangeForm({
         <div className="current-value">
           Current value{" "}
           <strong>
-            {employee[field as keyof Employee] ||
-              (field === "positionCode" ? "Unassigned" : "Not provided")}
+            {(field === "address"
+              ? formatChangeValue(field, employee.address)
+              : employee[field as keyof Employee]) ||
+              (["positionCode", "calendarCode", "legalEntityCode"].includes(
+                field,
+              )
+                ? "Unassigned"
+                : "Not provided")}
           </strong>
         </div>
+        {field === "address" && (
+          <p className="form-intro">
+            This form accepts a free-text replacement. For separate postal
+            fields, use the Postal address section in the profile.
+          </p>
+        )}
         {removable && (
           <label className="removal-choice">
             <input
@@ -473,17 +490,59 @@ export function ChangeForm({
               checked={removeValue}
               onChange={(event) => setRemoveValue(event.target.checked)}
             />
-            {field === "positionCode"
-              ? "Unassign the current position"
-              : "Remove the current value"}
+            {field === "legalEntityCode"
+              ? "Unassign the current declared entity"
+              : field === "calendarCode"
+                ? "Unassign the current calendar"
+                : field === "positionCode"
+                  ? "Unassign the current position"
+                  : "Remove the current value"}
           </label>
         )}
         {removeValue && (
           <p className="form-intro">
             This field will become{" "}
-            {field === "positionCode" ? "Unassigned" : "Not provided"} after
-            approval on the effective date. Its earlier values remain in
+            {["positionCode", "calendarCode", "legalEntityCode"].includes(field)
+              ? "Unassigned"
+              : "Not provided"}{" "}
+            after approval on the effective date. Its earlier values remain in
             authorised audit history.
+          </p>
+        )}
+        {field === "legalEntityCode" && (
+          <p className="form-intro">
+            Another HR employee must approve this declared reference for this
+            employment episode. Only HR and the employee can inspect this field.
+            Pending or approved retirement blocks assignment; approved use
+            permanently blocks new retirement, even after unassignment. Supplied
+            country/currency/time-zone metadata is unverified. No contract,
+            payroll, tax, payment or statutory rule is activated.
+          </p>
+        )}
+        {field === "calendarCode" && (
+          <p className="form-intro">
+            HR proposes a company reference for this employment episode; another
+            HR employee must approve. The calendar policy version is captured on
+            submission and checked again at approval. Approved use permanently
+            freezes amendments and retirement, including after unassignment.
+            Preview classification does not activate attendance, leave
+            entitlements or payroll.
+          </p>
+        )}
+        {field === "personalEmail" && (
+          <p className="form-intro">
+            This records supplied private contact data after independent HR
+            approval. It does not verify ownership, send email or change your
+            work email, sign-in or account recovery. Use an ASCII address of at
+            most 120 characters with a multi-label domain.
+          </p>
+        )}
+        {field === "birthDate" && (
+          <p className="form-intro">
+            This records a supplied birth date after independent HR approval. It
+            does not verify identity or determine age eligibility, benefits or
+            payroll. Earlier values remain in authorised history; ordinary
+            clearing is unavailable.
           </p>
         )}
         {field === "name" && (
@@ -493,7 +552,23 @@ export function ChangeForm({
             separate.
           </p>
         )}
-        {field === "managerId" ? (
+        {field === "legalEntityCode" ? (
+          <EntityPicker
+            value={value}
+            onChange={setValue}
+            disabled={removeValue || busy}
+            id={`${formId}-newValue`}
+            error={fieldErrors.newValue}
+          />
+        ) : field === "calendarCode" ? (
+          <CalendarPicker
+            value={value}
+            onChange={setValue}
+            disabled={removeValue || busy}
+            id={`${formId}-newValue`}
+            error={fieldErrors.newValue}
+          />
+        ) : field === "managerId" ? (
           <ManagerPicker
             value={value}
             onChange={setValue}
@@ -509,52 +584,36 @@ export function ChangeForm({
             id={`${formId}-newValue`}
             error={fieldErrors.newValue}
           />
+        ) : field === "department" ? (
+          <DepartmentPicker
+            value={value}
+            onChange={setValue}
+            label="New value"
+            id={`${formId}-newValue`}
+            error={fieldErrors.newValue}
+            disabled={busy}
+          />
         ) : (
           <label>
             New value {!removeValue && <span>*</span>}
-            {field === "department" ? (
-              <select
-                required
-                id={`${formId}-newValue`}
-                aria-invalid={!!fieldErrors.newValue}
-                aria-describedby={
-                  fieldErrors.newValue ? `${formId}-newValue-error` : undefined
-                }
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-              >
-                <option value="">Choose a configured department</option>
-                {departments.map((d) => (
-                  <option key={d.code} value={d.name}>
-                    {d.name} · {d.costCentre} · from{" "}
-                    {formatDate(d.effectiveFrom)}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                required={!removeValue}
-                disabled={removeValue}
-                maxLength={120}
-                id={`${formId}-newValue`}
-                aria-invalid={!!fieldErrors.newValue}
-                aria-describedby={
-                  fieldErrors.newValue ? `${formId}-newValue-error` : undefined
-                }
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                placeholder={
-                  field === "phone" || field === "emergencyContactPhone"
-                    ? "+44 7700 900123"
-                    : "Enter the proposed value"
-                }
-              />
-            )}
-            {field === "department" && departmentError && (
-              <span role="alert" className="error">
-                {departmentError} Close and reopen this form to retry.
-              </span>
-            )}
+            <input
+              type={field === "birthDate" ? "date" : "text"}
+              required={!removeValue}
+              disabled={removeValue}
+              maxLength={120}
+              id={`${formId}-newValue`}
+              aria-invalid={!!fieldErrors.newValue}
+              aria-describedby={
+                fieldErrors.newValue ? `${formId}-newValue-error` : undefined
+              }
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder={
+                field === "phone" || field === "emergencyContactPhone"
+                  ? "+44 7700 900123"
+                  : "Enter the proposed value"
+              }
+            />
             {fieldErrors.newValue && (
               <span id={`${formId}-newValue-error`} className="error">
                 {fieldErrors.newValue}

@@ -1,0 +1,80 @@
+
+Running 128 tests using 1 worker
+
+(node:19032) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19032) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 tests/additional-contacts.spec.ts:37:5 › private additional contacts recover an uncertain submission, receive independent HR review and render on mobile (6.1s)
+  ✓    2 tests/additional-contacts.spec.ts:294:5 › contact APIs enforce scopes, bounds, stable replay and one concurrent future approval (602ms)
+  ✓    3 tests/benefit-selections.spec.ts:51:5 › employee submits dependant selection; independent HR review queues one payroll handoff (2.5s)
+  ✓    4 tests/benefit-selections.spec.ts:125:5 › selection API contracts, privacy, duplicate recovery and competing decisions (768ms)
+  ✓    5 tests/benefit-withdrawal.spec.ts:53:5 › employee withdraws a pending benefit with preserved errors, uncertain-response replay and a fresh selection (2.1s)
+  ✓    6 tests/benefit-withdrawal.spec.ts:189:5 › benefit withdrawal APIs deny altered ownership, validate versions and arbitrate concurrent HR review (657ms)
+  ✓    7 tests/benefits.spec.ts:24:5 › HR configures a demonstration benefit; employee sees own eligibility and exact contribution (2.4s)
+  ✓    8 tests/benefits.spec.ts:94:5 › benefit API denies configuration/history to employees and isolates tenant catalogue (406ms)
+  ✓    9 tests/birth-date.spec.ts:35:5 › employee records a private birth date with independent HR approval and mobile profile; display identity is unchanged (3.7s)
+  ✓   10 tests/birth-date.spec.ts:157:5 › birth-date APIs enforce private requests, history, search and exact concurrent approval with no field clearing (704ms)
+  ✓   11 tests/calendar-amendments.spec.ts:56:5 › HR amends future company policy with impact review, preserved errors, uncertain-response replay and historical/mobile context (2.5s)
+  ✓   12 tests/calendar-amendments.spec.ts:211:5 › amendment APIs enforce role/tenant policy, exact versions, conflicting replay and a concurrent winner without early policy application (766ms)
+  ✓   13 tests/calendar-retirement.spec.ts:64:5 › HR retires dated calendar with read recovery, impact confirmation, uncertain-response replay and preserved earlier mobile preview (2.7s)
+  ✓   14 tests/calendar-retirement.spec.ts:272:5 › retirement APIs enforce exact version/tenant scope, stable replay, amendment interlock and immediate versus scheduled availability (792ms)
+  ✓   15 tests/company-calendars.spec.ts:48:5 › HR records a calendar with preserved validation, lost-response replay, private provenance and mobile authoritative date preview (2.5s)
+  ✓   16 tests/company-calendars.spec.ts:184:5 › calendar APIs enforce HR/tenant scope, date policy, stable and conflicting replay, and concurrent unique creation (725ms)
+  ✓   17 tests/company-calendars.spec.ts:315:5 › calendar list recovers focused reads, pages retained data and cancels stale filter responses (1.5s)
+  ✓   18 tests/contact-inbox.spec.ts:27:5 › independent HR discovers contact request in Approvals, recovers queue error and approves on mobile (2.5s)
+  ✓   19 tests/contact-inbox.spec.ts:165:5 › contact queue API enforces server-owned scope, independent authors and bounded contracts (578ms)
+  ✓   20 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (469ms)
+  ✓   21 tests/contracts.spec.ts:123:5 › employee audit page contract rejects malformed cursors, IDs, options and extra private properties (5ms)
+  ✓   22 tests/contracts.spec.ts:157:5 › calendar history contract rejects private fields, malformed provenance and unbounded pages (5ms)
+  ✓   23 tests/contracts.spec.ts:190:5 › contract validator rejects incorrect types, formats and unexpected private fields (9ms)
+  ✘   24 tests/department-directory.spec.ts:16:5 › department directory resolves unseen parents, pages reference branches and recovers stale/mobile reads (6.5s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/department-directory.spec.ts:16:5 › department directory resolves unseen parents, pages reference branches and recovers stale/mobile reads 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByRole('region', { name: 'Department directory', exact: true }).getByRole('status')
+    Expected substring: [32m"11 department · Page 1"[39m
+    Received string:    [31m"11 department[7ms[27m · Page 1[7m · Evaluated 19 Oct 2026 (UTC)[27m"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('region', { name: 'Department directory', exact: true }).getByRole('status')[22m
+    [2m    2 × locator resolved to <p role="status">Loading department directory…</p>[22m
+    [2m      - unexpected value "Loading department directory…"[22m
+    [2m    7 × locator resolved to <p role="status">…</p>[22m
+    [2m      - unexpected value "11 departments · Page 1 · Evaluated 19 Oct 2026 (UTC)"[22m
+
+
+      114 |     })
+      115 |     .click();
+    > 116 |   await expect(directory.getByRole("status")).toContainText(
+          |                                               ^
+      117 |     "11 department · Page 1",
+      118 |   );
+      119 |   await directory
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/department-directory.spec.ts:116:47
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/department-directory-depar-47925-recovers-stale-mobile-reads/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/department-directory-depar-47925-recovers-stale-mobile-reads/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/department-directory-depar-47925-recovers-stale-mobile-reads/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/department-directory-depar-47925-recovers-stale-mobile-reads/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/department-directory.spec.ts:16:5 › department directory resolves unseen parents, pages reference branches and recovers stale/mobile reads 
+  104 did not run
+  23 passed (46.1s)
+  1 error was not a part of any test, see above for details

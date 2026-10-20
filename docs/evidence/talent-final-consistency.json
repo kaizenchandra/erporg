@@ -1,0 +1,21 @@
+{
+  "result": "PASSED",
+  "sourceErp": {
+    "ids": 45,
+    "criteria": 436
+  },
+  "timesheet": {
+    "ids": 60,
+    "behaviours": 203
+  },
+  "payrollAccounting": {
+    "ids": 90,
+    "behaviours": 409
+  },
+  "talent": {
+    "ids": 7,
+    "checks": 49
+  },
+  "evidenceAssertions": "Final tests, artefacts and executed recovery/API controls matched",
+  "productionReady": false
+}

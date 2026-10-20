@@ -1,0 +1,50 @@
+
+Running 6 tests using 1 worker
+
+(node:6657) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6657) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/benefit-decision-version.spec.ts:4:5 › fractional benefit decision is rejected by the real API and the preserved form recovers with an exact version (1.7s)
+  ✘  2 tests/position-directory.spec.ts:90:5 › server-dated current and planned positions paginate, refresh and include a real created reference (3.3s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/position-directory.spec.ts:90:5 › server-dated current and planned positions paginate, refresh and include a real created reference 
+
+    Error: locator.scrollIntoViewIfNeeded: Error: strict mode violation: getByRole('region', { name: 'Position catalogue', exact: true }).locator('article').filter({ hasText: 'BI-4CF8C846-UI' }) resolved to 2 elements:
+        1) <article class="position-card">…</article> aka getByText('BI-4CF8C846 Long planned position with a detailed synthetic enterprise titleBI-')
+        2) <article class="history-event">…</article> aka getByRole('article').filter({ hasText: 'BI-4CF8C846-UI · CreatedSynthetic BI planned position through the actual' })
+
+    Call log:
+    [2m  - waiting for getByRole('region', { name: 'Position catalogue', exact: true }).locator('article').filter({ hasText: 'BI-4CF8C846-UI' })[22m
+
+
+      221 |     .locator("article")
+      222 |     .filter({ hasText: `${prefix}-UI` })
+    > 223 |     .scrollIntoViewIfNeeded();
+          |      ^
+      224 |   await page.screenshot({
+      225 |     path: "docs/evidence/position-directory-long-mobile.png",
+      226 |   });
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/position-directory.spec.ts:223:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/position-directory-server--0df32-de-a-real-created-reference/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/position-directory-server--0df32-de-a-real-created-reference/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/position-directory-server--0df32-de-a-real-created-reference/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/position-directory-server--0df32-de-a-real-created-reference/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/position-directory.spec.ts:90:5 › server-dated current and planned positions paginate, refresh and include a real created reference 
+  4 did not run
+  1 passed (6.6s)
+  1 error was not a part of any test, see above for details

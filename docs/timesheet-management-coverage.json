@@ -1,0 +1,474 @@
+{
+  "baseline": "Historical TSM decomposition; authoritative detailed FE/BE baseline now supplied: docs/timesheet-requirements.json",
+  "sourceRequirementInventoryUnchanged": {
+    "HR": 6,
+    "TS": 4,
+    "DS": 2,
+    "PY": 9,
+    "TM": 7,
+    "ERP": 7,
+    "SH": 10
+  },
+  "productionReady": false,
+  "rows": [
+    {
+      "id": "TSM-01",
+      "rolesAndWorkflow": "Worker period navigation",
+      "screenApiUseCase": "My timesheets/editor; GET/POST sheets; save",
+      "dataAndIntegration": "Sheet/week",
+      "frontendStatus": "Existing",
+      "backendStatus": "Existing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Save/reload seven distinct dates and exact minutes; navigate weekly periods",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-02",
+      "rolesAndWorkflow": "HR period governance",
+      "screenApiUseCase": "Reporting periods; GET periods/{week}, POST periods; configurePeriod",
+      "dataAndIntegration": "Immutable time_period revisions",
+      "frontendStatus": "New",
+      "backendStatus": "New",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Non-HR403; stale409; preserve revisions; deadline/closure/hour limits enforced; reopen by revision",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-03",
+      "rolesAndWorkflow": "Worker draft/header",
+      "screenApiUseCase": "Editor; save",
+      "dataAndIntegration": "Sheet/Entry/current workforce port",
+      "frontendStatus": "Existing",
+      "backendStatus": "Existing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Validate owner, active employment episode, current dates, reason, zone and unique week",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-04",
+      "rolesAndWorkflow": "Worker assignments",
+      "screenApiUseCase": "Assignment selector; assignment eligibility use case not implemented",
+      "dataAndIntegration": "Worker/job/project/task/cost-centre/work-order references",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Effective-dated assignment catalogue, authoritative references and entitlement contract needed; planned Phase3 with ERP6 contracts",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-05",
+      "rolesAndWorkflow": "Worker categories",
+      "screenApiUseCase": "Category selector/configuration not implemented",
+      "dataAndIntegration": "Versioned time category/rule",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Configurable regular/overtime/absence categories; no statutory threshold invented",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-06",
+      "rolesAndWorkflow": "Worker entries",
+      "screenApiUseCase": "Seven-day editor; save",
+      "dataAndIntegration": "Daily date/minutes/code",
+      "frontendStatus": "Existing",
+      "backendStatus": "Partial",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Exact whole minutes, nonnegative, max24h/day, unique dates; multiple split entries/category/assignment per day missing",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-07",
+      "rolesAndWorkflow": "Worker interval validation",
+      "screenApiUseCase": "Attendance/correction; punches/corrections",
+      "dataAndIntegration": "Shift",
+      "frontendStatus": "Existing",
+      "backendStatus": "Existing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "No overlap/duplicate open, explicit break between separate shifts, overnight elapsed duration, offset-valid DST gaps/folds, microsecond precision",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-08",
+      "rolesAndWorkflow": "Policy administrator",
+      "screenApiUseCase": "Period controls",
+      "dataAndIntegration": "Period/current configured limits",
+      "frontendStatus": "New",
+      "backendStatus": "Partial",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Daily/weekly maximums enforced; statutory overtime premiums and required paid/unpaid break classification missing",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-09",
+      "rolesAndWorkflow": "Worker absence/holiday validation",
+      "screenApiUseCase": "Editor validation not connected",
+      "dataAndIntegration": "Published calendar and future absence ports",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Holiday working permission and approved-absence conflicts need explicit policy and absence capability; preserve calendar ownership",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-10",
+      "rolesAndWorkflow": "Worker submit",
+      "screenApiUseCase": "Detail; actions SUBMIT",
+      "dataAndIntegration": "Sheet, audit, receipt",
+      "frontendStatus": "Existing",
+      "backendStatus": "Existing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Nonempty current-episode draft freezes on submission; invalid data actionable; retries stable",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-11",
+      "rolesAndWorkflow": "Manager review",
+      "screenApiUseCase": "Team approvals/details; actions APPROVE/REJECT",
+      "dataAndIntegration": "Current workforce scope, immutable allocations",
+      "frontendStatus": "Existing",
+      "backendStatus": "Existing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Tenant/current reporting scope, no self/contributor review, reason/version, posted total reconciles",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-12",
+      "rolesAndWorkflow": "Manager returns; worker corrects",
+      "screenApiUseCase": "Details/editor; RETURN, save, SUBMIT",
+      "dataAndIntegration": "RETURNED\u2192CORRECTED\u2192SUBMITTED snapshots",
+      "frontendStatus": "New",
+      "backendStatus": "New",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Reason mandatory, unchanged direct resubmission denied, audit retains reviewer reason and all corrections",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-13",
+      "rolesAndWorkflow": "Worker recall",
+      "screenApiUseCase": "Detail; RECALL",
+      "dataAndIntegration": "SUBMITTED\u2192DRAFT; period recall permission",
+      "frontendStatus": "New",
+      "backendStatus": "New",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Owner-only pending recall; old manager decision conflicts; approved recall denied; idempotent retry",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-14",
+      "rolesAndWorkflow": "Admin reopen",
+      "screenApiUseCase": "Reporting periods; configurePeriod",
+      "dataAndIntegration": "Immutable period controls",
+      "frontendStatus": "New",
+      "backendStatus": "Partial",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Reopen period with reason/history; approved-sheet reopening intentionally unavailable until adjustments exist",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-15",
+      "rolesAndWorkflow": "Manager routing",
+      "screenApiUseCase": "Current direct-report queue; workforce.scope",
+      "dataAndIntegration": "Core HR published contract",
+      "frontendStatus": "Existing",
+      "backendStatus": "Partial",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Current manager or independent HR review works; configurable multi-step routing and escalation absent",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-16",
+      "rolesAndWorkflow": "Authorised delegate",
+      "screenApiUseCase": "Delegation admin/review not implemented",
+      "dataAndIntegration": "Effective-dated delegation/limits",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Explicit grant, expiry, scope, revocation and prevention of self-review needed",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-17",
+      "rolesAndWorkflow": "Manager bulk review",
+      "screenApiUseCase": "Current-page selection; selected-actions; decideSelected",
+      "dataAndIntegration": "Batch fingerprint plus per-sheet receipts in transaction",
+      "frontendStatus": "New",
+      "backendStatus": "New",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "1\u201320 distinct checked records; permission/revision for all; failure rolls back all; retries/reordered selection no duplicate allocations",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-18",
+      "rolesAndWorkflow": "Worker/reviewer comments",
+      "screenApiUseCase": "Required submit/decision/correction reasons",
+      "dataAndIntegration": "Immutable time audit and sheet comment",
+      "frontendStatus": "Existing",
+      "backendStatus": "Partial",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Transition comments retained; arbitrary threaded correspondence/editing not implemented",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-19",
+      "rolesAndWorkflow": "Worker/reviewer attachments",
+      "screenApiUseCase": "Attachment upload/download missing",
+      "dataAndIntegration": "Private object-storage/scanning ports and scoped metadata",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Type/size/scan controls, private retrieval, assignment/record permissions and retention; employee-document ACL is not enough",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-20",
+      "rolesAndWorkflow": "Worker status/history",
+      "screenApiUseCase": "My sheets/details/Time history; history API",
+      "dataAndIntegration": "Immutable audit before/after/actor/reason/time/correlation",
+      "frontendStatus": "Existing",
+      "backendStatus": "Existing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Paginated authorised history, returned/corrected statuses, preserved historical time and controls",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-21",
+      "rolesAndWorkflow": "Worker/reviewer notifications",
+      "screenApiUseCase": "In-app delivery/outcomes not connected",
+      "dataAndIntegration": "Business events/outbox/notification consumer",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Only committed changes notify; reminders, overdue jobs, delivery failure/retry and duplicate prevention missing",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-22",
+      "rolesAndWorkflow": "Team exceptions/dashboard",
+      "screenApiUseCase": "Team approvals/status filter",
+      "dataAndIntegration": "Scoped sheet pages",
+      "frontendStatus": "Existing",
+      "backendStatus": "Partial",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Real pending/rejected/returned lists; expected-vs-missing worker submissions, SLA/deadline exceptions and aggregate dashboard missing",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-23",
+      "rolesAndWorkflow": "Authorised reports/exports",
+      "screenApiUseCase": "Reports/export missing",
+      "dataAndIntegration": "Bounded report job and scoped projection",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Filter, total, drill-down and CSV/export authorised server-side; prevent CSV formula injection and oversized synchronous work",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-24",
+      "rolesAndWorkflow": "Payroll operator",
+      "screenApiUseCase": "Processing status not implemented",
+      "dataAndIntegration": "Payroll published consumer/ack",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        4
+      ],
+      "acceptanceAndDependency": "Approved time handoff, exact period/rule snapshots, acknowledgement/reconciliation; original TS-02-B02 remains Phase4",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-25",
+      "rolesAndWorkflow": "Costing operator",
+      "screenApiUseCase": "Approved detail/ledger",
+      "dataAndIntegration": "time_costing_entry",
+      "frontendStatus": "Existing",
+      "backendStatus": "Existing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Actual labour-minute allocations commit once, sum exactly; no monetary costing claim",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-26",
+      "rolesAndWorkflow": "Supplier/worker/buyer",
+      "screenApiUseCase": "Supplier access/work-order selector missing",
+      "dataAndIntegration": "Supplier organisation membership/assignment system of record",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        6
+      ],
+      "acceptanceAndDependency": "Fieldglass-oriented contingent eligibility, supplier scoped proxy access and worker mapping; independent of employee payroll",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-27",
+      "rolesAndWorkflow": "Supplier/billing operator",
+      "screenApiUseCase": "Billing status/reconciliation missing",
+      "dataAndIntegration": "Rates, invoice/billing consumer, acknowledgement",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        6
+      ],
+      "acceptanceAndDependency": "Billable vs payable status separate from approval; currency/rates snapshots and no duplicate invoice lines; Phase6 dependency",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-28",
+      "rolesAndWorkflow": "Payroll/billing correction admin",
+      "screenApiUseCase": "Adjustment editor/review missing",
+      "dataAndIntegration": "Linked reversal/delta ledger and consumers",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        4,
+        6
+      ],
+      "acceptanceAndDependency": "Approved/processed corrections use separately approved adjustments with source links, not history mutation",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-29",
+      "rolesAndWorkflow": "Integration operator",
+      "screenApiUseCase": "Integration monitoring/replay missing",
+      "dataAndIntegration": "Persistent delivery/outbox/receipt/reconciliation",
+      "frontendStatus": "Missing",
+      "backendStatus": "Missing",
+      "phase": [
+        3,
+        7
+      ],
+      "acceptanceAndDependency": "Failed attempts visible, bounded retries/backoff, authorised replay, ack validation and idempotent consumer; no fake external endpoints",
+      "verification": "Not executed: behaviour not implemented"
+    },
+    {
+      "id": "TSM-30",
+      "rolesAndWorkflow": "All roles boundary enforcement",
+      "screenApiUseCase": "Every timekeeping API",
+      "dataAndIntegration": "Server identity/session, tenant scope, contributor provenance",
+      "frontendStatus": "Existing",
+      "backendStatus": "Existing",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Anonymous401; cross-tenant/owner403; no client tenant authority; field-limited workforce DTO; expiry/CSRF inherited",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-31",
+      "rolesAndWorkflow": "Workers/reviewers/admin concurrency",
+      "screenApiUseCase": "Every command/editor",
+      "dataAndIntegration": "Exact revisions/advisory locks/receipts/database guards",
+      "frontendStatus": "Existing+New",
+      "backendStatus": "Existing+New",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Duplicate/conflicting keys, stale edits, concurrent recall/approve, atomic bulk rollback and restart persistence",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-32",
+      "rolesAndWorkflow": "Mobile/keyboard users",
+      "screenApiUseCase": "Shell/editor/periods/bulk/detail",
+      "dataAndIntegration": "Shared accessible primitives, cancellable reads",
+      "frontendStatus": "Existing+New",
+      "backendStatus": "Existing+New",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Loading/empty/error/preserved input/focused alerts/permission-denial/unsaved changes; critical mobile/axe/manual review scoped to executed evidence",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-33",
+      "rolesAndWorkflow": "Integration identity/worker/calendars",
+      "screenApiUseCase": "Existing OIDC and Core HR scope, calendar not yet consumed",
+      "dataAndIntegration": "Published workforce port",
+      "frontendStatus": "Existing",
+      "backendStatus": "Partial",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Current workforce access real; assignment/calendar/absence/provider identifier mapping incomplete",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-34",
+      "rolesAndWorkflow": "Release/operations",
+      "screenApiUseCase": "Runbooks, migrations, evidence",
+      "dataAndIntegration": "PostgreSQL and private storage",
+      "frontendStatus": "Existing",
+      "backendStatus": "Partial",
+      "phase": [
+        3,
+        7
+      ],
+      "acceptanceAndDependency": "Build/lint/type/regressions and retained-data migration checked per increment; security/load/restore/real-provider readiness not implied",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    },
+    {
+      "id": "TSM-35",
+      "rolesAndWorkflow": "Worker dashboard",
+      "screenApiUseCase": "Time workspace and own sheet list",
+      "dataAndIntegration": "Current owned sheets, period controls",
+      "frontendStatus": "Existing",
+      "backendStatus": "Partial",
+      "phase": [
+        3
+      ],
+      "acceptanceAndDependency": "Real statuses/hours and individual period controls visible; consolidated deadline/exception/assignment dashboard still missing",
+      "verification": "Local implemented portions verified in BM; Partial behaviours remain incomplete; see docs/verification.md"
+    }
+  ],
+  "verificationEvidence": "docs/verification.md"
+}

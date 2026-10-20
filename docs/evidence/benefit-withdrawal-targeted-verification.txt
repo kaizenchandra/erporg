@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:5155) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:5155) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/benefit-withdrawal.spec.ts:53:5 › employee withdraws a pending benefit with preserved errors, uncertain-response replay and a fresh selection (3.7s)
+  ✓  2 tests/benefit-withdrawal.spec.ts:186:5 › benefit withdrawal APIs deny altered ownership, validate versions and arbitrate concurrent HR review (1.4s)
+
+  2 passed (6.6s)

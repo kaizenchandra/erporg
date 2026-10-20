@@ -1,0 +1,65 @@
+
+Running 5 tests using 1 worker
+
+(node:41618) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:41618) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/benefit-history-resilience.spec.ts:42:5 › benefit history loads on demand and recovers without hiding plans or resetting filters (2.1s)
+  ✓  2 tests/benefit-history-resilience.spec.ts:102:5 › benefit history remains usable during a catalogue failure and handles an empty journal separately (1.4s)
+  ✘  3 tests/benefit-history-resilience.spec.ts:139:5 › closing benefit history discards a pending read; reopening and role changes clear obsolete history (30.3s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/benefit-history-resilience.spec.ts:139:5 › closing benefit history discards a pending read; reopening and role changes clear obsolete history 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByLabel('Workspace account')[22m
+    [2m    - locator resolved to <select>…</select>[22m
+    [2m  - attempting select option action[22m
+    [2m    2 × waiting for element to be visible and enabled[22m
+    [2m      - did not find some options[22m
+    [2m    - retrying select option action[22m
+    [2m    - waiting 20ms[22m
+    [2m    2 × waiting for element to be visible and enabled[22m
+    [2m      - did not find some options[22m
+    [2m    - retrying select option action[22m
+    [2m      - waiting 100ms[22m
+    [2m    55 × waiting for element to be visible and enabled[22m
+    [2m       - did not find some options[22m
+    [2m     - retrying select option action[22m
+    [2m       - waiting 500ms[22m
+
+
+       7 | async function openBenefits(page: Page, user = "amelia") {
+       8 |   await page.goto("/");
+    >  9 |   await page.getByLabel("Workspace account").selectOption(user);
+         |                                              ^
+      10 |   await page
+      11 |     .getByRole("button", { name: "Enter workspace", exact: true })
+      12 |     .click();
+        at openBenefits (/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/benefit-history-resilience.spec.ts:9:46)
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/benefit-history-resilience.spec.ts:187:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/benefit-history-resilience-4eb79-nges-clear-obsolete-history/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/benefit-history-resilience-4eb79-nges-clear-obsolete-history/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/benefit-history-resilience-4eb79-nges-clear-obsolete-history/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/benefit-history-resilience-4eb79-nges-clear-obsolete-history/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/benefit-history-resilience.spec.ts:139:5 › closing benefit history discards a pending read; reopening and role changes clear obsolete history 
+  2 did not run
+  2 passed (47.4s)
+  1 error was not a part of any test, see above for details

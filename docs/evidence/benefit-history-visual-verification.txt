@@ -1,0 +1,2 @@
+BD visual review, 2026-10-20
+Inspected final Chrome 390x844 screenshot benefit-history-mobile.png with an actual newly created synthetic plan and retained audit event. History disclaimer, separate recording/effective dates, long Unicode reason and expanded correlation disclosure remain within the viewport; no clipped controls or horizontal overflow seen. Automated mobile axe/overflow and keyboard retry/refresh passed in the five-test focused suite. This is scoped visual/automated evidence, not full WCAG 2.2 AA or assistive-technology verification.

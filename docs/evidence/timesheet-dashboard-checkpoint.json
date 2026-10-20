@@ -1,0 +1,43 @@
+{
+  "checkpoint": "BN",
+  "sourceRequirementCount": 45,
+  "sourceCriteriaCount": 436,
+  "timesheetFrontendCount": 28,
+  "timesheetBackendCount": 32,
+  "timesheetAcceptanceCount": 203,
+  "java": {
+    "passed": 30,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "TimekeepingWorkflowTest, TimePolicyTest, TimeIdentityRaceTest, TimeReportCsvTest, TimeReportLimitTest, ArchitectureTest; not full repository suite"
+  },
+  "browser": {
+    "passed": 3,
+    "failed": 0,
+    "scope": "tests/timesheet-report-copy.spec.ts against final packaged API and built frontend; scoped mobile axe, not WCAG certification; cancellation preserves unsaved copy form and copy-in-flight locks panel dismissal",
+    "evidence": "docs/evidence/timesheet-dashboard-browser-final-v2.txt"
+  },
+  "migration": "V75 applied to retained atlas_acceptance on startup and fresh PostgreSQL test schema; additive index only",
+  "productionReady": false,
+  "nextFeedback": "Current request final review: no new qualifying Next.js issue candidate. Prior request draft remains historical and was not reopened.",
+  "artifactsSha256": {
+    "backend/target/atlas-api-0.1.0.jar": "5dad66cdbb00c8291bcf56d00d69851fc260138f78527dc2c5883b714dbcb368",
+    "package-lock.json": "6952088e06803b8ebc8b438ff7d65ec8b88fe9d7eacb40c25fc8c07151b90322",
+    "backend/src/main/resources/db/migration/V75__time_report_range_index.sql": "6b91ff3abc3f6aa85d6e87ed15faddfcb5bcb89a7ebe8be72b38cd4b00b63f06"
+  },
+  "nextBuildId": "EgGvnikU30LrySefQf0zK",
+  "notReexecuted": [
+    "Entire Java/browser regression suite",
+    "Load/security scans",
+    "Restore drill",
+    "Live OIDC/provider integrations"
+  ],
+  "frontendEvidence": {
+    "typecheck": "timesheet-dashboard-typecheck-final-v2.txt",
+    "lint": "timesheet-dashboard-lint-fixed.txt",
+    "format": "timesheet-dashboard-format-final-v2.txt",
+    "build": "timesheet-dashboard-build-final-v2.txt"
+  },
+  "initialLintFinding": "Render-time clock call moved to lazy state initializer; final lint passed with zero warnings.",
+  "visualReview": "Report and dashboard mobile screenshots opened and visually inspected; scoped axe only, no full WCAG claim."
+}

@@ -1,0 +1,791 @@
+{
+  "baseline": "Original Phase 5 TM-01\u2013TM-07, preserving every existing talent criterion",
+  "requirements": 7,
+  "criteria": 49,
+  "rows": [
+    {
+      "id": "TM-01",
+      "name": "Recruitment",
+      "roles": "HR recruiter and independent HR reviewer",
+      "phase": 5,
+      "workflow": "Recruitment \u2192 requisition approval \u2192 candidate interviews/offers \u2192 accepted application \u2192 independently approved Core HR hire",
+      "screen": "Talent / Recruitment",
+      "api": "/api/v1/talent/requisitions",
+      "application": "RecruitingWorkflows / existing HiringUseCases",
+      "domain": "Requisition, Candidate, existing Core HR HireRequest",
+      "dataAndIntegrations": "tal_requisition, tal_audit, tal_command; Core HR owns hire and employee persistence",
+      "frontendStatus": "implemented and browser-verified bounded workflow; see limitations",
+      "backendStatus": "implemented with actual PostgreSQL, domain and architecture verification",
+      "acceptance": [
+        {
+          "id": "TM-01-F01",
+          "sourceBehaviour": "Create requisitions",
+          "check": "Given an authorised recruiter, manager and valid scoped records, create requisitions through the recruitment workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-01-F02",
+          "sourceBehaviour": "Review candidates",
+          "check": "Given an authorised recruiter, manager and valid scoped records, review candidates through the recruitment workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-01-F03",
+          "sourceBehaviour": "Manage interviews",
+          "check": "Given an authorised recruiter, manager and valid scoped records, manage interviews through the recruitment workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-01-F04",
+          "sourceBehaviour": "Manage offers",
+          "check": "Given an authorised recruiter, manager and valid scoped records, manage offers through the recruitment workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-01-B01",
+          "sourceBehaviour": "Route hiring approvals",
+          "check": "Given an authorised recruiter, manager and valid scoped records, route hiring approvals through the recruitment workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-01-B02",
+          "sourceBehaviour": "Track application stages",
+          "check": "Given an authorised recruiter, manager and valid scoped records, track application stages through the recruitment workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-01-D01",
+          "sourceBehaviour": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "check": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-01-D02",
+          "sourceBehaviour": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "check": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        }
+      ],
+      "limitations": "Manual internal candidate entry. External career site, candidate portal, e-signature and vendor ATS connection are not implemented.",
+      "status": "partial: bounded workflows implemented; phase exit not signed off"
+    },
+    {
+      "id": "TM-02",
+      "name": "Onboarding",
+      "roles": "New employee and HR joining coordinators",
+      "phase": 5,
+      "workflow": "Onboarding \u2192 joining form \u2192 assigned prerequisite tasks \u2192 reviewed hire employment activation",
+      "screen": "Talent / Onboarding",
+      "api": "/api/v1/talent/onboarding",
+      "application": "RecruitingWorkflows / Core HR completeOnboarding",
+      "domain": "Onboarding, Task; Core HR employment status",
+      "dataAndIntegrations": "tal_onboarding; existing Core HR onboarding completion and employee history",
+      "frontendStatus": "implemented and browser-verified bounded workflow; see limitations",
+      "backendStatus": "implemented with actual PostgreSQL, domain and architecture verification",
+      "acceptance": [
+        {
+          "id": "TM-02-F01",
+          "sourceBehaviour": "Complete new-hire forms",
+          "check": "Given an authorised new hire, HR and valid scoped records, complete new-hire forms through the onboarding workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "partial: HR-assisted joining form verified; employee form access requires separately provisioned identity and is not browser-verified for a new hire",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-02-F02",
+          "sourceBehaviour": "Complete assigned joining tasks",
+          "check": "Given an authorised new hire, HR and valid scoped records, complete assigned joining tasks through the onboarding workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-02-B01",
+          "sourceBehaviour": "Create employee records",
+          "check": "Given an authorised new hire, HR and valid scoped records, create employee records through the onboarding workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-02-B02",
+          "sourceBehaviour": "Coordinate task dependencies",
+          "check": "Given an authorised new hire, HR and valid scoped records, coordinate task dependencies through the onboarding workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-02-D01",
+          "sourceBehaviour": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "check": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-02-D02",
+          "sourceBehaviour": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "check": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        }
+      ],
+      "limitations": "Joining forms are bounded free-text acknowledgements; task assignees are the employee or HR coordinators. No identity provisioning, existing-hire plan import or external background check.",
+      "status": "partial: bounded workflows implemented; phase exit not signed off"
+    },
+    {
+      "id": "TM-03",
+      "name": "Performance",
+      "roles": "Employee, current direct manager, HR",
+      "phase": 5,
+      "workflow": "Performance \u2192 configured date/rating cycle \u2192 goals/feedback \u2192 self review \u2192 return/correction \u2192 manager rating",
+      "screen": "Talent / Performance",
+      "api": "/api/v1/talent/reviews",
+      "application": "DevelopmentWorkflows",
+      "domain": "Review, Goal",
+      "dataAndIntegrations": "tal_review, tal_audit, tal_command",
+      "frontendStatus": "implemented and browser-verified bounded workflow; see limitations",
+      "backendStatus": "implemented with actual PostgreSQL, domain and architecture verification",
+      "acceptance": [
+        {
+          "id": "TM-03-F01",
+          "sourceBehaviour": "Set goals",
+          "check": "Given an authorised employee, manager and valid scoped records, set goals through the performance workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-03-F02",
+          "sourceBehaviour": "Submit feedback",
+          "check": "Given an authorised employee, manager and valid scoped records, submit feedback through the performance workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-03-F03",
+          "sourceBehaviour": "Complete reviews",
+          "check": "Given an authorised employee, manager and valid scoped records, complete reviews through the performance workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-03-B01",
+          "sourceBehaviour": "Configure review cycles",
+          "check": "Given an authorised employee, manager and valid scoped records, configure review cycles through the performance workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-03-B02",
+          "sourceBehaviour": "Apply rating rules",
+          "check": "Given an authorised employee, manager and valid scoped records, apply rating rules through the performance workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-03-B03",
+          "sourceBehaviour": "Execute approval workflows",
+          "check": "Given an authorised employee, manager and valid scoped records, execute approval workflows through the performance workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-03-D01",
+          "sourceBehaviour": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "check": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-03-D02",
+          "sourceBehaviour": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "check": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        }
+      ],
+      "limitations": "Per-review cycle configuration and one independent manager/HR review. Shared calibration cycles, configurable multistage delegation and peer feedback campaigns remain broader work.",
+      "status": "partial: bounded workflows implemented; phase exit not signed off"
+    },
+    {
+      "id": "TM-04",
+      "name": "Learning",
+      "roles": "Employee, current direct manager, HR course administrator",
+      "phase": 5,
+      "workflow": "Course catalogue \u2192 role-eligible assignment \u2192 completion evidence \u2192 retained completion and expiry",
+      "screen": "Talent / Learning",
+      "api": "/api/v1/talent/courses and /learning",
+      "application": "DevelopmentWorkflows / published Core HR role eligibility",
+      "domain": "Course, Enrollment",
+      "dataAndIntegrations": "tal_course, tal_enrollment",
+      "frontendStatus": "implemented and browser-verified bounded workflow; see limitations",
+      "backendStatus": "implemented with actual PostgreSQL, domain and architecture verification",
+      "acceptance": [
+        {
+          "id": "TM-04-F01",
+          "sourceBehaviour": "Find courses",
+          "check": "Given an authorised employee, learning admin and valid scoped records, find courses through the learning workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-04-F02",
+          "sourceBehaviour": "View assigned training",
+          "check": "Given an authorised employee, learning admin and valid scoped records, view assigned training through the learning workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-04-F03",
+          "sourceBehaviour": "View completion records",
+          "check": "Given an authorised employee, learning admin and valid scoped records, view completion records through the learning workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-04-B01",
+          "sourceBehaviour": "Assign learning by role",
+          "check": "Given an authorised employee, learning admin and valid scoped records, assign learning by role through the learning workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-04-B02",
+          "sourceBehaviour": "Track completions",
+          "check": "Given an authorised employee, learning admin and valid scoped records, track completions through the learning workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-04-B03",
+          "sourceBehaviour": "Track expirations",
+          "check": "Given an authorised employee, learning admin and valid scoped records, track expirations through the learning workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-04-D01",
+          "sourceBehaviour": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "check": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-04-D02",
+          "sourceBehaviour": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "check": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        }
+      ],
+      "limitations": "Self-attested completion, not external course certification. Automatic renewal, external LMS/SCORM delivery and unbounded assignment campaigns are not implemented.",
+      "status": "partial: bounded workflows implemented; phase exit not signed off"
+    },
+    {
+      "id": "TM-05",
+      "name": "Compensation planning",
+      "roles": "HR compensation planner and independent HR approver; payroll intake reviewer",
+      "phase": 5,
+      "workflow": "Compensation \u2192 salary/bonus proposals \u2192 budget control \u2192 independent approval \u2192 durable payroll-owned RECEIVED intake",
+      "screen": "Talent / Compensation planning",
+      "api": "/api/v1/talent/compensation; /api/v1/payroll/talent-inputs",
+      "application": "PlanningWorkflows / Payroll TalentIntakeUseCases",
+      "domain": "Compensation, Proposal; Payroll TalentIntake",
+      "dataAndIntegrations": "tal_compensation; pay_talent_intake owned by Payroll",
+      "frontendStatus": "implemented and browser-verified bounded workflow; see limitations",
+      "backendStatus": "implemented with actual PostgreSQL, domain and architecture verification",
+      "acceptance": [
+        {
+          "id": "TM-05-F01",
+          "sourceBehaviour": "Propose salaries within displayed budgets",
+          "check": "Given an authorised manager, compensation admin and valid scoped records, propose salaries within displayed budgets through the compensation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-05-F02",
+          "sourceBehaviour": "Propose bonuses within displayed budgets",
+          "check": "Given an authorised manager, compensation admin and valid scoped records, propose bonuses within displayed budgets through the compensation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-05-B01",
+          "sourceBehaviour": "Validate eligibility",
+          "check": "Given an authorised manager, compensation admin and valid scoped records, validate eligibility through the compensation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "partial: current worker/date, unique employee and bounded currency checks; full business eligibility policy remains unconfigured",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-05-B02",
+          "sourceBehaviour": "Validate budgets",
+          "check": "Given an authorised manager, compensation admin and valid scoped records, validate budgets through the compensation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-05-B03",
+          "sourceBehaviour": "Transfer approved changes to payroll",
+          "check": "Given an authorised manager, compensation admin and valid scoped records, transfer approved changes to payroll through the compensation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "partial: approved snapshot received once in payroll-owned intake; consumption by effective compensation/gross-to-net remains unimplemented",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-05-D01",
+          "sourceBehaviour": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "check": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-05-D02",
+          "sourceBehaviour": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "check": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        }
+      ],
+      "limitations": "Current salary is an entered snapshot, not synchronized effective compensation. Payroll receipt is not consumed by demonstration gross-to-net. Full eligibility policy, compensation synchronization, downstream application and corrections remain open.",
+      "status": "partial: bounded workflows implemented; phase exit not signed off"
+    },
+    {
+      "id": "TM-06",
+      "name": "Succession",
+      "roles": "HR talent administrator",
+      "phase": 5,
+      "workflow": "Succession \u2192 confidential talent profiles \u2192 nominate successors \u2192 revise readiness assessment \u2192 inspect history",
+      "screen": "Talent / Succession",
+      "api": "/api/v1/talent/succession",
+      "application": "PlanningWorkflows",
+      "domain": "Succession, Nominee",
+      "dataAndIntegrations": "tal_succession, tal_audit, tal_command",
+      "frontendStatus": "implemented and browser-verified bounded workflow; see limitations",
+      "backendStatus": "implemented with actual PostgreSQL, domain and architecture verification",
+      "acceptance": [
+        {
+          "id": "TM-06-F01",
+          "sourceBehaviour": "Review talent profiles",
+          "check": "Given an authorised talent admin and valid scoped records, review talent profiles through the succession workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-06-F02",
+          "sourceBehaviour": "Nominate successors",
+          "check": "Given an authorised talent admin and valid scoped records, nominate successors through the succession workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-06-B01",
+          "sourceBehaviour": "Maintain succession plans",
+          "check": "Given an authorised talent admin and valid scoped records, maintain succession plans through the succession workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-06-B02",
+          "sourceBehaviour": "Maintain readiness assessments",
+          "check": "Given an authorised talent admin and valid scoped records, maintain readiness assessments through the succession workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-06-D01",
+          "sourceBehaviour": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "check": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-06-D02",
+          "sourceBehaviour": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "check": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        }
+      ],
+      "limitations": "Position/role is a planning label; no appointment, automatic promotion, predictive ranking or standardized skills catalogue.",
+      "status": "partial: bounded workflows implemented; phase exit not signed off"
+    },
+    {
+      "id": "TM-07",
+      "name": "Workforce planning",
+      "roles": "HR workforce planner",
+      "phase": 5,
+      "workflow": "Workforce planning \u2192 select actual current workers \u2192 baseline/proposed headcount and annual-cost assumptions \u2192 persisted comparison",
+      "screen": "Talent / Workforce planning",
+      "api": "/api/v1/talent/scenarios",
+      "application": "PlanningWorkflows / TalentPolicy.scenario",
+      "domain": "Scenario, CostLine, worker ID snapshot",
+      "dataAndIntegrations": "tal_scenario, tal_audit, tal_command",
+      "frontendStatus": "implemented and browser-verified bounded workflow; see limitations",
+      "backendStatus": "implemented with actual PostgreSQL, domain and architecture verification",
+      "acceptance": [
+        {
+          "id": "TM-07-F01",
+          "sourceBehaviour": "Compare headcount scenarios",
+          "check": "Given an authorised workforce planner and valid scoped records, compare headcount scenarios through the workforce workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-07-F02",
+          "sourceBehaviour": "Compare workforce-cost scenarios",
+          "check": "Given an authorised workforce planner and valid scoped records, compare workforce-cost scenarios through the workforce workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-07-B01",
+          "sourceBehaviour": "Aggregate workforce data",
+          "check": "Given an authorised workforce planner and valid scoped records, aggregate workforce data through the workforce workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "partial: selected current-worker ID/count snapshot; cost dimensions and annual unit costs are entered planning assumptions, not actual salary aggregation",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-07-B02",
+          "sourceBehaviour": "Calculate scenario costs",
+          "check": "Given an authorised workforce planner and valid scoped records, calculate scenario costs through the workforce workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-07-D01",
+          "sourceBehaviour": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "check": "Tenant/record/field permissions enforced on direct API calls, including altered identifiers; no private data in errors.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        },
+        {
+          "id": "TM-07-D02",
+          "sourceBehaviour": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "check": "Mutations retain actor, UTC recording instant, business effective date where applicable, reason and correlation; safe duplicate/concurrent command outcome.",
+          "implementation": "implemented bounded workflow; see limitations",
+          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "tests": [
+            "TalentWorkflowTest",
+            "TalentPolicyTest",
+            "ArchitectureTest",
+            "tests/talent.spec.ts"
+          ]
+        }
+      ],
+      "limitations": "Up to 200 selected workers and 50 dimensions; entered annual unit costs and one currency. No actual salary aggregation, FX, forecasting, scenario consolidation or production capacity signoff.",
+      "status": "partial: bounded workflows implemented; phase exit not signed off"
+    }
+  ],
+  "productionReady": false,
+  "sharedRequirements": {
+    "SH-01": "Existing current identity, tenant, owner and manager policy; explicit HR-only compensation/succession",
+    "SH-02": "Independent requisition, hire, review and compensation decisions; shared inbox delegation not extended",
+    "SH-03": "Committed workflow status and histories; scheduled reminders/delivery processing remain unimplemented for talent",
+    "SH-04": "Bounded talent registers and persisted scenario comparison; exports/reporting suite remain open",
+    "SH-05": "Atomic actor/time/reason/correlation and before/after history with database retention guards",
+    "SH-06": "Per-review rating/date and course-role/validity configuration; enterprise policies remain open",
+    "SH-08": "Real in-process Core HR hire/activation and durable payroll receipt; no vendor connection",
+    "SH-09": "Explicit planning currency and UTC dates; translations/country policy remain open",
+    "SH-10": "Restricted confidential access; deletion/legal-hold/retention configuration remains release work"
+  },
+  "verification": {
+    "javaTests": 477,
+    "browserTests": 5,
+    "localRestore": {
+      "tables": 102,
+      "views": 15
+    },
+    "evidence": "verification.md"
+  }
+}

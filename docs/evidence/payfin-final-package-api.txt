@@ -1,0 +1,91 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-21T01:34:33.606+05:30  INFO 71972 --- [atlas-api] [           main] com.atlas.AtlasApplication               : Starting AtlasApplication v0.1.0 using Java 21.0.12.1 with PID 71972 (/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-21T01:34:33.608+05:30  INFO 71972 --- [atlas-api] [           main] com.atlas.AtlasApplication               : The following 2 profiles are active: "local", "acceptance"
+2026-10-21T01:34:34.820+05:30  INFO 71972 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-10-21T01:34:34.834+05:30  INFO 71972 --- [atlas-api] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-21T01:34:34.834+05:30  INFO 71972 --- [atlas-api] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-21T01:34:34.860+05:30  INFO 71972 --- [atlas-api] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1207 ms
+2026-10-21T01:34:35.282+05:30  INFO 71972 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-21T01:34:35.422+05:30  INFO 71972 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6ebbc06
+2026-10-21T01:34:35.425+05:30  INFO 71972 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-21T01:34:35.443+05:30  INFO 71972 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_payfin_browser_20261021c (PostgreSQL 18.6)
+2026-10-21T01:34:35.562+05:30  INFO 71972 --- [atlas-api] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 79 migrations (execution time 00:00.067s)
+2026-10-21T01:34:35.578+05:30  INFO 71972 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_payfin_browser_20261021c": 78
+2026-10-21T01:34:35.583+05:30  INFO 71972 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Schema "atlas_payfin_browser_20261021c" is up to date. No migration necessary.
+2026-10-21T01:34:36.443+05:30  INFO 71972 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-21T01:34:36.962+05:30  INFO 71972 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-21T01:34:37.006+05:30  INFO 71972 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-10-21T01:34:37.011+05:30  INFO 71972 --- [atlas-api] [           main] com.atlas.AtlasApplication               : Started AtlasApplication in 3.8 seconds (process running for 4.138)
+2026-10-21T01:35:00.983+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-21T01:35:00.984+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-21T01:35:00.985+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-10-21T01:35:01.056+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=c7aa3e17-0ba8-4fe9-8617-8aa236435028 status=200 duration_ms=69
+2026-10-21T01:35:01.296+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=bdbfd063-3e20-48ee-bb41-1717071eede1 status=204 duration_ms=233
+2026-10-21T01:35:01.304+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=78fdc841-37c0-4658-b410-ee9d7c807b72 status=200 duration_ms=4
+2026-10-21T01:35:01.389+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=c0a391b5-5c11-4c89-b6ba-58ce900ac4d4 status=204 duration_ms=82
+2026-10-21T01:35:01.399+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=379d7a5a-1074-4059-8b6b-9ad80757b18f status=200 duration_ms=6
+2026-10-21T01:35:01.488+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=2059a1b8-fefc-4c3b-a242-357b2acf7206 status=204 duration_ms=85
+2026-10-21T01:35:01.497+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=a93f84d7-825c-4ffc-a8d0-70ff35273f01 status=200 duration_ms=5
+2026-10-21T01:35:01.581+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=6ef3ff7b-5689-4654-bcd8-225b6113f281 status=204 duration_ms=81
+2026-10-21T01:35:01.746+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=ffb8d6dd-6c22-4c04-b2ba-5e91ca868439 status=200 duration_ms=161
+2026-10-21T01:35:01.810+05:30  INFO 71972 --- [atlas-api] [.1-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=d885d52e-f98b-442f-907c-580154183c83 status=200 duration_ms=61
+2026-10-21T01:35:01.852+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=ac8dee92-bcaf-466c-a737-894acb18c73f status=403 duration_ms=39
+2026-10-21T01:35:01.911+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=d8672a35-e6de-46d2-a4c3-6ba62e545a56 status=403 duration_ms=57
+2026-10-21T01:35:01.971+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=d7d66fb0-cfda-4155-a963-8392a7b70082 status=200 duration_ms=59
+2026-10-21T01:35:02.010+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=bbdfe533-2668-4e2c-8933-3b60616f12c6 status=403 duration_ms=35
+2026-10-21T01:38:58.265+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=87051072-c11a-4f62-958b-2e375fa5c8d8 status=200 duration_ms=60
+2026-10-21T01:38:58.613+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=4062873b-6faf-46b8-8180-c4f28bac9f76 status=401 duration_ms=410
+2026-10-21T01:39:01.245+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=44c76303-471d-4085-be7f-2cacdb53a806 status=200 duration_ms=29
+2026-10-21T01:39:01.391+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=be0a011a-b246-42e0-a5d0-91b064e258fa status=204 duration_ms=135
+2026-10-21T01:39:01.438+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=b2f1a4be-0536-4df2-b173-0e0dd3a4748f status=200 duration_ms=41
+2026-10-21T01:39:01.586+05:30  INFO 71972 --- [atlas-api] [.1-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=200f42dd-04f1-4328-8c9f-83b0a11e8ccb status=200 duration_ms=133
+2026-10-21T01:39:01.595+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=e6615b2c-44f5-4c9f-8dfe-2794d2688939 status=200 duration_ms=141
+2026-10-21T01:39:01.601+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=61d5a9d1-797a-4696-a79b-293a261be4ed status=200 duration_ms=143
+2026-10-21T01:39:01.606+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=71701c0e-8c34-4c0b-aaa5-6bbba3ab8d37 status=200 duration_ms=147
+2026-10-21T01:39:01.822+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=f0423ae8-9640-4207-b087-2eeed0280851 status=200 duration_ms=45
+2026-10-21T01:39:03.352+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=8de72381-3a2a-47cd-ab14-5d574a039c20 status=200 duration_ms=101
+2026-10-21T01:39:04.000+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=da8b41ec-b572-41bb-9cd1-f3658fff5cee status=200 duration_ms=128
+2026-10-21T01:39:04.017+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=5eb99f46-8b30-4e1e-8be4-e4dc4f290976 status=200 duration_ms=145
+2026-10-21T01:39:04.113+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=ad449bf0-a3af-43a3-8f08-c9e991adc3ee status=200 duration_ms=101
+2026-10-21T01:39:07.748+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=64d53737-1531-41db-b917-d8a075ceafa1 status=200 duration_ms=87
+2026-10-21T01:39:07.793+05:30  INFO 71972 --- [atlas-api] [.1-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=e7d55373-b1be-4b69-89a3-72551c3a5bec status=200 duration_ms=132
+2026-10-21T01:39:07.814+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=60f6b736-b37a-4db0-9844-16944797e0fa status=200 duration_ms=46
+2026-10-21T01:39:09.218+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=04116ff6-846b-41de-9d3a-085cf3ab2095 status=200 duration_ms=249
+2026-10-21T01:39:09.223+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=e4aea01d-02a0-49e0-9127-b26601d24e36 status=200 duration_ms=247
+2026-10-21T01:39:15.415+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=c5b733d0-7149-4184-af36-84afbb4896e1 status=200 duration_ms=453
+2026-10-21T01:39:15.618+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=2ebd1361-19a7-47b2-ba2e-e7f0fb188661 status=200 duration_ms=654
+2026-10-21T01:39:15.764+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=cde885fb-0297-484c-baa3-f8c834055e03 status=200 duration_ms=319
+2026-10-21T01:39:18.233+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=b2077d6d-30c2-4776-9b01-47d60a0cd85c status=200 duration_ms=192
+2026-10-21T01:39:21.935+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=1e744c4c-708f-46b3-b83d-1c7f86a51f17 status=200 duration_ms=673
+2026-10-21T01:39:22.772+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=eb5355c7-524a-46d6-bbf8-1a58a9b1b43b status=200 duration_ms=33
+2026-10-21T01:39:23.228+05:30  INFO 71972 --- [atlas-api] [.1-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=a28fcaad-6852-49ac-8c8e-61847277f3f3 status=200 duration_ms=448
+2026-10-21T01:39:39.513+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=a4bbc9f3-e9e3-4116-9573-36fd494e7707 status=200 duration_ms=114
+2026-10-21T01:39:39.541+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=f8fbb237-90a0-455d-aee6-96cbe9be9b9f status=200 duration_ms=141
+2026-10-21T01:39:43.082+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=9602852e-064c-463b-a4f6-dbf620f1cb54 status=200 duration_ms=150
+2026-10-21T01:39:49.329+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=a538dff6-302e-4881-8c66-60b718c9cf39 status=200 duration_ms=313
+2026-10-21T01:39:49.328+05:30  INFO 71972 --- [atlas-api] [0.1-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=b062769b-99c1-4ac0-9b0f-443c5a5d3c3b status=200 duration_ms=311
+Exception in thread "SpringApplicationShutdownHook" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.apache.commons.logging.impl.Slf4jLogFactory$Slf4jLocationAwareLog.log(Slf4jLogFactory.java:126)
+	at org.apache.commons.logging.impl.Slf4jLogFactory$Slf4jLocationAwareLog.warn(Slf4jLogFactory.java:146)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1202)
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:176)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1153)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:147)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:116)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 13 more

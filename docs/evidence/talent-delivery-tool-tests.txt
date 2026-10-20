@@ -1,0 +1,10 @@
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.129s
+
+OK
+{"recordedAt": "2026-10-20T21:18:54.909438+00:00", "lockSha256": "6952088e06803b8ebc8b438ff7d65ec8b88fe9d7eacb40c25fc8c07151b90322", "reports": {"all": {"info": 0, "low": 0, "moderate": 0, "high": 0, "critical": 0, "total": 0}, "runtime": {"info": 0, "low": 0, "moderate": 0, "high": 0, "critical": 0, "total": 0}}, "unavailableScopes": [], "gate": "PASSED", "scope": "npm dependency advisories only; not a production release decision"}
+{"recordedAt": "2026-10-20T21:18:54.911916+00:00", "lockSha256": "6952088e06803b8ebc8b438ff7d65ec8b88fe9d7eacb40c25fc8c07151b90322", "reports": {"all": {"info": 0, "low": 0, "moderate": 0, "high": 5, "critical": 0, "total": 5}, "runtime": {"info": 0, "low": 0, "moderate": 0, "high": 0, "critical": 0, "total": 0}}, "unavailableScopes": [], "gate": "BLOCKED", "scope": "npm dependency advisories only; not a production release decision"}
+{"recordedAt": "2026-10-20T21:18:54.913878+00:00", "lockSha256": "6952088e06803b8ebc8b438ff7d65ec8b88fe9d7eacb40c25fc8c07151b90322", "reports": {}, "unavailableScopes": ["all", "runtime"], "gate": "ERROR", "scope": "npm dependency advisories only; not a production release decision"}
+{"status": "FAILED", "targetDatabase": "atlas_restore_657cce66cb554e65", "totalSeconds": 0.0, "scope": "local synthetic PostgreSQL logical restore; not production RPO/RTO"}
+{"status": "FAILED", "targetDatabase": "atlas_restore_6f8006737f3043ee", "totalSeconds": 0.0, "scope": "local synthetic PostgreSQL logical restore; not production RPO/RTO"}

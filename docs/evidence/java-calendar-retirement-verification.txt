@@ -1,0 +1,8 @@
+{
+  "tests": 346.0,
+  "failures": 0.0,
+  "errors": 0.0,
+  "skipped": 0.0,
+  "time": 35.708000000000006
+}
+Maven spotless:apply verify: BUILD SUCCESS, 51.941s. Actual PostgreSQL 18.6, domain/architecture negative fixtures, retirement invariants/stable replay/immutable guards/unsupported writer isolation included.

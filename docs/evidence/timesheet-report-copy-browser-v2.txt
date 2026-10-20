@@ -1,0 +1,40 @@
+
+Running 2 tests using 1 worker
+
+(node:61564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/timesheet-report-copy.spec.ts:49:5 › worker copies an owned week, reloads it, submits and manager reports approved allocated minutes (3.2s)
+  ✘  2 tests/timesheet-report-copy.spec.ts:263:5 › report contract rejects unauthorised workers and invalid ranges; export requires CSRF (272ms)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/timesheet-report-copy.spec.ts:263:5 › report contract rejects unauthorised workers and invalid ranges; export requires CSRF 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m422[39m
+    Received: [31m400[39m
+
+      287 |         })
+      288 |       ).status(),
+    > 289 |     ).toBe(422);
+          |       ^
+      290 |     expect(
+      291 |       (await worker.post("/api/v1/time/reports/export", { data: q })).status(),
+      292 |     ).toBe(403);
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/timesheet-report-copy.spec.ts:289:7
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/timesheet-report-copy-repo-5065f-ranges-export-requires-CSRF/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/timesheet-report-copy-repo-5065f-ranges-export-requires-CSRF/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/timesheet-report-copy.spec.ts:263:5 › report contract rejects unauthorised workers and invalid ranges; export requires CSRF 
+  1 passed (4.7s)
+  1 error was not a part of any test, see above for details

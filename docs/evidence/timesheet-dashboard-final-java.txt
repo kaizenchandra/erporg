@@ -1,0 +1,185 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24159 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] ------------------------< com.atlas:atlas-api >-------------------------
+[INFO] Building atlas-api 0.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] Loaded 24159 auto-discovered prefixes for remote repository maven-central (prefixes-maven-central.txt)
+[WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+[INFO] Loaded 7 auto-discovered prefixes for remote repository shibboleth-repo (prefixes-shibboleth-repo.txt)
+[INFO] Loaded 24159 auto-discovered prefixes for remote repository maven_central (prefixes-maven_central.txt)
+[INFO] 
+[INFO] --- spotless:3.0.0:apply (default-cli) @ atlas-api ---
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/TimekeepingWorkflowTest.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/timekeeping/adapter/in/web/TimeController.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/timekeeping/application/model/TimeModels.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/timekeeping/application/usecase/TimeService.java
+[INFO] Spotless.Java is keeping 441 files clean - 4 were changed to be clean, 1 were already clean, 436 were skipped because caching determined they were already clean
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ atlas-api ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] Copying 75 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ atlas-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 353 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ atlas-api ---
+[INFO] skip non existing resourceDirectory /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ atlas-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 88 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Some input files use or override a deprecated API.
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ atlas-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.atlas.TimeReportCsvTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s -- in com.atlas.TimeReportCsvTest
+[INFO] Running com.atlas.TimekeepingWorkflowTest
+00:29:11.221 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.TimekeepingWorkflowTest]: TimekeepingWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+00:29:11.297 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.TimekeepingWorkflowTest
+00:29:11.327 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.TimekeepingWorkflowTest]: TimekeepingWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+00:29:11.328 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.TimekeepingWorkflowTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-21T00:29:11.485+05:30  INFO 62285 --- [atlas-api] [           main] com.atlas.TimekeepingWorkflowTest        : Starting TimekeepingWorkflowTest using Java 21.0.12.1 with PID 62285 (started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-21T00:29:11.486+05:30  INFO 62285 --- [atlas-api] [           main] com.atlas.TimekeepingWorkflowTest        : The following 1 profile is active: "local"
+2026-10-21T00:29:12.143+05:30  INFO 62285 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-21T00:29:12.225+05:30  INFO 62285 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@75add13c
+2026-10-21T00:29:12.225+05:30  INFO 62285 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-21T00:29:12.238+05:30  INFO 62285 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_time_d0850d5df71a (PostgreSQL 18.6)
+2026-10-21T00:29:12.280+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.database.base.Schema   : Creating schema "atlas_time_d0850d5df71a" ...
+2026-10-21T00:29:12.287+05:30  INFO 62285 --- [atlas-api] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "atlas_time_d0850d5df71a"."flyway_schema_history" ...
+2026-10-21T00:29:12.352+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_time_d0850d5df71a": null
+2026-10-21T00:29:12.358+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "1 - core hr"
+2026-10-21T00:29:12.395+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "2 - synthetic workspace"
+2026-10-21T00:29:12.409+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "3 - oidc subjects"
+2026-10-21T00:29:12.416+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "4 - jdbc sessions"
+2026-10-21T00:29:12.430+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "5 - private contact details"
+2026-10-21T00:29:12.441+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "6 - department reference"
+2026-10-21T00:29:12.457+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "7 - department seed audit"
+2026-10-21T00:29:12.466+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "8 - hiring workflow"
+2026-10-21T00:29:12.486+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "9 - second hr reviewer"
+2026-10-21T00:29:12.493+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "10 - onboarding completion"
+2026-10-21T00:29:12.506+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "11 - hire tenant integrity"
+2026-10-21T00:29:12.516+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "12 - position catalogue"
+2026-10-21T00:29:12.532+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "13 - position assignment"
+2026-10-21T00:29:12.544+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "14 - position assignment integrity"
+2026-10-21T00:29:12.553+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "15 - reporting changes"
+2026-10-21T00:29:12.566+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "16 - employee display name"
+2026-10-21T00:29:12.575+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "17 - request withdrawal"
+2026-10-21T00:29:12.593+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "18 - benefits catalogue"
+2026-10-21T00:29:12.608+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "19 - benefit rule snapshot"
+2026-10-21T00:29:12.616+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "20 - benefit selections"
+2026-10-21T00:29:12.641+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "21 - benefit selection integrity"
+2026-10-21T00:29:12.653+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "22 - private employee documents"
+2026-10-21T00:29:12.674+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "23 - document scan retry"
+2026-10-21T00:29:12.688+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "24 - immutable document versions"
+2026-10-21T00:29:12.702+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "25 - document templates and completeness"
+2026-10-21T00:29:12.719+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "26 - document template revisions and corrections"
+2026-10-21T00:29:12.743+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "27 - document retention and legal holds"
+2026-10-21T00:29:12.758+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "28 - independent hold release subject"
+2026-10-21T00:29:12.765+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "29 - resignation workflow"
+2026-10-21T00:29:12.789+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "30 - resignation audit reconciliation"
+2026-10-21T00:29:12.798+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "31 - exit task coordination"
+2026-10-21T00:29:12.821+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "32 - exit task management"
+2026-10-21T00:29:12.840+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "33 - effective employment end"
+2026-10-21T00:29:12.865+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "34 - employment end withdrawal"
+2026-10-21T00:29:12.886+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "35 - employment end reschedule"
+2026-10-21T00:29:12.916+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "36 - current end handoff identity"
+2026-10-21T00:29:12.926+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "37 - rehire onboarding episode"
+2026-10-21T00:29:12.957+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "38 - reviewed rehire activation"
+2026-10-21T00:29:13.023+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "39 - revoke fresh rehire access"
+2026-10-21T00:29:13.042+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "40 - revoked identity hold"
+2026-10-21T00:29:13.056+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "41 - reviewed identity replacement"
+2026-10-21T00:29:13.095+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "42 - pending resignation withdrawal"
+2026-10-21T00:29:13.123+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "43 - original case episode ownership"
+2026-10-21T00:29:13.143+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "44 - compatible original episode writers"
+2026-10-21T00:29:13.153+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "45 - episode local status projection"
+2026-10-21T00:29:13.163+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "46 - access grant episode ownership"
+2026-10-21T00:29:13.185+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "47 - current episode task assignees"
+2026-10-21T00:29:13.198+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "48 - private recorded legal name"
+2026-10-21T00:29:13.209+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "49 - additional emergency contacts"
+2026-10-21T00:29:13.235+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "50 - pending benefit withdrawal"
+2026-10-21T00:29:13.243+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "51 - structured private postal address"
+2026-10-21T00:29:13.258+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "52 - declared legal entity references"
+2026-10-21T00:29:13.278+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "53 - reviewed legal entity retirement"
+2026-10-21T00:29:13.305+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "54 - private recorded birth date"
+2026-10-21T00:29:13.319+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "55 - schema local birth date guard"
+2026-10-21T00:29:13.328+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "56 - company work calendars"
+2026-10-21T00:29:13.346+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "57 - dated company calendar amendments"
+2026-10-21T00:29:13.364+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "58 - calendar revision guard result"
+2026-10-21T00:29:13.372+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "59 - company calendar retirement"
+2026-10-21T00:29:13.391+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "60 - private personal email"
+2026-10-21T00:29:13.404+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "61 - approved employee calendar assignment"
+2026-10-21T00:29:13.436+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "62 - approved employee entity assignment"
+2026-10-21T00:29:13.459+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "63 - capture entity requester employee"
+2026-10-21T00:29:13.474+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "64 - protect entity request provenance"
+2026-10-21T00:29:13.484+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "65 - employee audit keyset index"
+2026-10-21T00:29:13.493+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "66 - department parent correction"
+2026-10-21T00:29:13.511+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "67 - department parent business order"
+2026-10-21T00:29:13.520+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "68 - schema scoped department hierarchy lock"
+2026-10-21T00:29:13.529+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "69 - department parent truncate protection"
+2026-10-21T00:29:13.538+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "70 - attendance timesheets"
+2026-10-21T00:29:13.568+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "71 - timekeeping provenance and dates"
+2026-10-21T00:29:13.579+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "72 - timesheet return and recall"
+2026-10-21T00:29:13.594+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "73 - timesheet period controls"
+2026-10-21T00:29:13.611+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "74 - timesheet bulk receipts"
+2026-10-21T00:29:13.623+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_time_d0850d5df71a" to version "75 - time report range index"
+2026-10-21T00:29:13.636+05:30  INFO 62285 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 75 migrations to schema "atlas_time_d0850d5df71a", now at version v75 (execution time 00:00.685s)
+2026-10-21T00:29:14.387+05:30  INFO 62285 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-21T00:29:14.812+05:30  INFO 62285 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-21T00:29:14.845+05:30  INFO 62285 --- [atlas-api] [           main] com.atlas.TimekeepingWorkflowTest        : Started TimekeepingWorkflowTest in 3.476 seconds (process running for 4.001)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/private/tmp/atlas-m2/net/bytebuddy/byte-buddy-agent/1.17.8/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+2026-10-21T00:29:18.824+05:30  INFO 62285 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-10-21T00:29:18.827+05:30  INFO 62285 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.653 s -- in com.atlas.TimekeepingWorkflowTest
+[INFO] Running com.atlas.TimePolicyTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.atlas.TimePolicyTest
+[INFO] Running com.atlas.ArchitectureTest
+2026-10-21T00:29:18.857+05:30  INFO 62285 --- [atlas-api] [           main] com.tngtech.archunit.core.PluginLoader   : Detected Java version 21.0.12.1
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.118 s -- in com.atlas.ArchitectureTest
+[INFO] Running com.atlas.TimeReportLimitTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in com.atlas.TimeReportLimitTest
+[INFO] Running com.atlas.TimeIdentityRaceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in com.atlas.TimeIdentityRaceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 30, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ atlas-api ---
+[INFO] Building jar: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar
+[INFO] 
+[INFO] --- spring-boot:4.0.8:repackage (repackage) @ atlas-api ---
+[INFO] Loaded 50 auto-discovered prefixes for remote repository ow2-snapshot (prefixes-ow2-snapshot.txt)
+[INFO] Replacing main artifact /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  15.918 s
+[INFO] Finished at: 2026-10-21T00:29:20+05:30
+[INFO] ------------------------------------------------------------------------

@@ -2,7 +2,8 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { api, ApiError } from "@/lib/api";
 import type { Actor } from "@/lib/contracts";
-import type { Department } from "./department-reference";
+import { ReferenceHistory } from "./reference-history";
+import { DepartmentPicker } from "./department-picker";
 import { Modal, formatDate } from "@/components/ui/primitives";
 export type Position = {
   code: string;
@@ -10,32 +11,32 @@ export type Position = {
   departmentCode: string;
   effectiveFrom: string;
 };
-type PositionPage = {
-  items: Position[];
+export type PositionDirectoryPage = {
+  items: (Position & {
+    departmentName: string;
+    timing: "CURRENT" | "PLANNED";
+  })[];
   total: number;
   page: number;
   size: number;
-};
-type PositionAudit = {
-  code: string;
-  actor: string;
-  reason: string;
-  recordedAt: string;
-  effectiveFrom: string;
-  correlationId: string;
+  evaluatedOn: string;
 };
 export function PositionCatalogue({ actor }: { actor: Actor }) {
   const [loaded, setLoaded] = useState<{
     key: string;
-    data?: PositionPage;
+    data?: PositionDirectoryPage;
     error?: string;
   }>();
-  const [departments, setDepartments] = useState<Department[]>([]);
-  const [history, setHistory] = useState<PositionAudit[]>([]);
   const [search, setSearch] = useState("");
   const [department, setDepartment] = useState("");
   const [page, setPage] = useState(0);
   const [direction, setDirection] = useState("asc");
+  const [timing, setTiming] = useState("ALL");
+  const [size, setSize] = useState("8");
+  const [creationRevision, setCreationRevision] = useState(0);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const errorSummary = useRef<HTMLDivElement>(null);
+  const focusAfterLoad = useRef(false);
   const [revision, setRevision] = useState(0);
   const [creating, setCreating] = useState(false);
 
@@ -44,7 +45,8 @@ export function PositionCatalogue({ actor }: { actor: Actor }) {
     search,
     departmentCode: department,
     page: String(page),
-    size: "8",
+    size,
+    timing,
     direction,
   }).toString();
   const queryKey = JSON.stringify([
@@ -53,6 +55,7 @@ export function PositionCatalogue({ actor }: { actor: Actor }) {
     actor.subject,
     actor.tenant,
     actor.role,
+    actor.employeeId,
   ]);
   const current = loaded?.key === queryKey ? loaded : undefined;
   const result = current?.data;
@@ -63,22 +66,13 @@ export function PositionCatalogue({ actor }: { actor: Actor }) {
     const options = {
       signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]),
     };
-    Promise.all([
-      api<PositionPage>(`/api/v1/organisation/positions?${query}`, options),
-      api<Department[]>("/api/v1/organisation/departments", options),
-      actor.role === "HR"
-        ? api<PositionAudit[]>(
-            "/api/v1/organisation/positions/history",
-            options,
-          )
-        : Promise.resolve([]),
-    ])
-      .then(([rows, refs, audit]) => {
-        if (!controller.signal.aborted) {
+    api<PositionDirectoryPage>(
+      `/api/v1/organisation/position-directory?${query}`,
+      options,
+    )
+      .then((rows) => {
+        if (!controller.signal.aborted)
           setLoaded({ key: queryKey, data: rows });
-          setDepartments(refs);
-          setHistory(audit);
-        }
       })
       .catch((err: unknown) => {
         if (!controller.signal.aborted)
@@ -90,10 +84,30 @@ export function PositionCatalogue({ actor }: { actor: Actor }) {
       });
     return () => controller.abort();
   }, [query, queryKey, actor.role]);
+  useEffect(() => {
+    if (current?.error) {
+      focusAfterLoad.current = false;
+      errorSummary.current?.focus();
+    } else if (current?.data && focusAfterLoad.current) {
+      focusAfterLoad.current = false;
+      heading.current?.focus();
+    }
+  }, [current]);
+  const reset = () => {
+    focusAfterLoad.current = false;
+    setPage(0);
+  };
+  const refresh = () => {
+    focusAfterLoad.current = true;
+    setPage(0);
+    setRevision((n) => n + 1);
+  };
   return (
     <section className="department-reference" aria-label="Position catalogue">
       <div className="section-heading">
-        <h3>Position catalogue</h3>
+        <h3 ref={heading} tabIndex={-1}>
+          Position catalogue
+        </h3>
         {actor.role === "HR" && (
           <button className="button primary" onClick={() => setCreating(true)}>
             Create position
@@ -102,8 +116,10 @@ export function PositionCatalogue({ actor }: { actor: Actor }) {
       </div>
       <p className="muted">
         Positions define roles within departments. Creating a position does not
-        assign an employee or change reporting lines. Department choices show up
-        to 1,000 references.
+        assign an employee or change reporting lines. Search department
+        references by name or code; choices are paginated. Current and planned
+        labels use the server’s UTC evaluation date. These are reference
+        positions, not vacancies or employee counts.
       </p>
       {notice && <p role="status">{notice}</p>}
       <div className="position-filters">
@@ -114,50 +130,72 @@ export function PositionCatalogue({ actor }: { actor: Actor }) {
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
-              setPage(0);
+              reset();
             }}
             placeholder="Title or code"
           />
         </label>
-        <label>
-          Position department
-          <select
-            value={department}
-            onChange={(e) => {
-              setDepartment(e.target.value);
-              setPage(0);
-            }}
-          >
-            <option value="">All departments</option>
-            {departments.map((d) => (
-              <option key={d.code} value={d.code}>
-                {d.name}
-              </option>
-            ))}
-          </select>
-        </label>
+        <DepartmentPicker
+          label="Position department"
+          value={department}
+          onChange={(value) => {
+            setDepartment(value);
+            reset();
+          }}
+          valueKind="code"
+          required={false}
+          emptyLabel="All departments"
+        />
         <label>
           Position title order
           <select
             value={direction}
             onChange={(e) => {
               setDirection(e.target.value);
-              setPage(0);
+              reset();
             }}
           >
             <option value="asc">A to Z</option>
             <option value="desc">Z to A</option>
           </select>
         </label>
+        <label>
+          Position timing
+          <select
+            value={timing}
+            onChange={(e) => {
+              setTiming(e.target.value);
+              reset();
+            }}
+          >
+            <option value="ALL">Current and planned</option>
+            <option value="CURRENT">Current</option>
+            <option value="PLANNED">Planned</option>
+          </select>
+        </label>
+        <label>
+          Positions per page
+          <select
+            value={size}
+            onChange={(e) => {
+              setSize(e.target.value);
+              reset();
+            }}
+          >
+            <option value="8">8</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </label>
+        <button type="button" className="button secondary" onClick={refresh}>
+          Refresh positions
+        </button>
       </div>
       {loading ? (
         <p role="status">Loading positions…</p>
       ) : error ? (
-        <div className="error" role="alert">
-          {error}{" "}
-          <button onClick={() => setRevision((n) => n + 1)}>
-            Retry positions
-          </button>
+        <div className="error" role="alert" ref={errorSummary} tabIndex={-1}>
+          {error} <button onClick={refresh}>Retry positions</button>
         </div>
       ) : (
         <>
@@ -174,35 +212,43 @@ export function PositionCatalogue({ actor }: { actor: Actor }) {
                 <article className="position-card" key={p.code}>
                   <h4>{p.title}</h4>
                   <p>
-                    {p.code} ·{" "}
-                    {departments.find((d) => d.code === p.departmentCode)
-                      ?.name ?? p.departmentCode}
+                    {p.code} · {p.departmentName} ({p.departmentCode})
                   </p>
                   <p>
-                    {p.effectiveFrom > new Date().toISOString().slice(0, 10)
-                      ? "Planned"
-                      : "Effective"}{" "}
-                    · {formatDate(p.effectiveFrom)}
+                    {p.timing === "PLANNED" ? "Planned" : "Effective"} ·{" "}
+                    {formatDate(p.effectiveFrom)}
                   </p>
                 </article>
               ))}
             </div>
           )}
           <div className="position-pagination">
-            <span>
-              {result?.total ?? 0} matching positions · Page {page + 1}
+            <span role="status">
+              {result?.items.length ? page * Number(size) + 1 : 0}–
+              {result?.items.length
+                ? page * Number(size) + result.items.length
+                : 0}{" "}
+              of {result?.total ?? 0} matching positions · Page {page + 1} of{" "}
+              {Math.max(1, Math.ceil((result?.total ?? 0) / Number(size)))} ·
+              Evaluated {result?.evaluatedOn} (UTC)
             </span>
             <button
               className="button secondary"
               disabled={page === 0}
-              onClick={() => setPage((n) => n - 1)}
+              onClick={() => {
+                focusAfterLoad.current = true;
+                setPage((n) => n - 1);
+              }}
             >
               Previous positions
             </button>
             <button
               className="button secondary"
-              disabled={(page + 1) * 8 >= (result?.total ?? 0)}
-              onClick={() => setPage((n) => n + 1)}
+              disabled={(page + 1) * Number(size) >= (result?.total ?? 0)}
+              onClick={() => {
+                focusAfterLoad.current = true;
+                setPage((n) => n + 1);
+              }}
             >
               Next positions
             </button>
@@ -210,35 +256,19 @@ export function PositionCatalogue({ actor }: { actor: Actor }) {
         </>
       )}
       {actor.role === "HR" && (
-        <details>
-          <summary>Position configuration history (latest 100)</summary>
-          {history.length ? (
-            history.map((h) => (
-              <article className="history-event" key={h.code}>
-                <div>
-                  <strong>{h.code} · Created</strong>
-                  <p>{h.reason}</p>
-                  <small>
-                    {h.actor} · {new Date(h.recordedAt).toISOString()} ·
-                    Effective {formatDate(h.effectiveFrom)}
-                  </small>
-                </div>
-              </article>
-            ))
-          ) : (
-            <p>No position changes recorded.</p>
-          )}
-        </details>
+        <ReferenceHistory
+          key={`position-history:${actor.tenant}:${actor.subject}:${actor.role}:${creationRevision}`}
+          kind="POSITION"
+        />
       )}
       {creating && (
         <CreatePositionForm
-          departments={departments}
           onClose={() => setCreating(false)}
           onSaved={() => {
             setCreating(false);
             setNotice("Position created and audit recorded.");
-            setPage(0);
-            setRevision((n) => n + 1);
+            setCreationRevision((n) => n + 1);
+            refresh();
           }}
         />
       )}
@@ -246,11 +276,9 @@ export function PositionCatalogue({ actor }: { actor: Actor }) {
   );
 }
 function CreatePositionForm({
-  departments,
   onClose,
   onSaved,
 }: {
-  departments: Department[];
   onClose: () => void;
   onSaved: () => void;
 }) {
@@ -386,23 +414,16 @@ function CreatePositionForm({
           />
           {fieldError("title")}
         </label>
-        <label>
-          Department for position <span>*</span>
-          <select
-            required
-            {...fieldProps("departmentCode")}
-            value={departmentCode}
-            onChange={(e) => setDepartment(e.target.value)}
-          >
-            <option value="">Choose a department</option>
-            {departments.map((d) => (
-              <option key={d.code} value={d.code}>
-                {d.name} · from {formatDate(d.effectiveFrom)}
-              </option>
-            ))}
-          </select>
-          {fieldError("departmentCode")}
-        </label>
+        <DepartmentPicker
+          label="Department for position"
+          reviewed={false}
+          id={`${formId}-departmentCode`}
+          value={departmentCode}
+          onChange={setDepartment}
+          error={fieldErrors.departmentCode}
+          valueKind="code"
+          disabled={busy}
+        />
         <label>
           Position start date <span>*</span>
           <input

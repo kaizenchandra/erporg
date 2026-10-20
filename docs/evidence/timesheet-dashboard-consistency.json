@@ -1,0 +1,11 @@
+{
+  "result": "PASSED",
+  "originalIds": 45,
+  "originalCriteria": 436,
+  "detailedFrontendIds": 28,
+  "detailedBackendIds": 32,
+  "detailedCriteria": 203,
+  "targetedJavaPassed": 30,
+  "targetedBrowserPassed": 3,
+  "productionReady": false
+}

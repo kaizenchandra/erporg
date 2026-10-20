@@ -1,0 +1,11 @@
+{
+  "result": "PASSED_WITH_AUDIT_APPEND",
+  "schema": "atlas_payfin_browser_20261021c",
+  "fromVersion": 78,
+  "toVersion": 79,
+  "unchangedFullTables": 8,
+  "allPriorAuditRowsPreserved": 6,
+  "additionalAuditedRetrievals": 1,
+  "additionalAction": "PAYSLIP_READ",
+  "scope": "Snapshots bracketed an additional legitimate document retrieval; not a claim that all nine table hashes matched. No financial records or audit events deleted."
+}

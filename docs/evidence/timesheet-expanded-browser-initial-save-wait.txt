@@ -1,0 +1,57 @@
+
+Running 2 tests using 1 worker
+
+(node:46450) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46450) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/timesheet-management.spec.ts:100:5 › returned hours are corrected in the editor, resubmitted and independently approved (30.2s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/timesheet-management.spec.ts:100:5 › returned hours are corrected in the editor, resubmitted and independently approved 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Open timesheet for 2024-12-23 · E003', exact: true })[22m
+    [2m    - locator resolved to <button class="button secondary">Open timesheet for 2024-12-23 · E003</button>[22m
+    [2m  - attempting click action[22m
+    [2m    - waiting for element to be visible, enabled and stable[22m
+    [2m    - element is visible, enabled and stable[22m
+    [2m    - scrolling into view if needed[22m
+    [2m    - done scrolling[22m
+    [2m    - <dialog open="" aria-busy="true" class="dialog wide" aria-labelledby="_r_2_">…</dialog> intercepts pointer events[22m
+    [2m  - retrying click action[22m
+    [2m    - waiting for element to be visible, enabled and stable[22m
+    [2m  - element was detached from the DOM, retrying[22m
+
+
+      177 |         exact: true,
+      178 |       })
+    > 179 |       .click();
+          |        ^
+      180 |     await page
+      181 |       .getByRole("textbox", { name: /^Timesheet comment/ })
+      182 |       .fill("Corrected as requested");
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/timesheet-management.spec.ts:179:8
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/timesheet-management-retur-a322a--and-independently-approved/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/timesheet-management-retur-a322a--and-independently-approved/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/timesheet-management-retur-a322a--and-independently-approved/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/timesheet-management-retur-a322a--and-independently-approved/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/timesheet-management.spec.ts:100:5 › returned hours are corrected in the editor, resubmitted and independently approved 
+  1 did not run
+  1 error was not a part of any test, see above for details

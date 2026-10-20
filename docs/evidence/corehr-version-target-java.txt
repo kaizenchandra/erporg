@@ -1,0 +1,256 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24151 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] ------------------------< com.atlas:atlas-api >-------------------------
+[INFO] Building atlas-api 0.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] Loaded 24151 auto-discovered prefixes for remote repository maven-central (prefixes-maven-central.txt)
+[WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+[INFO] Loaded 7 auto-discovered prefixes for remote repository shibboleth-repo (prefixes-shibboleth-repo.txt)
+[INFO] Loaded 24151 auto-discovered prefixes for remote repository maven_central (prefixes-maven_central.txt)
+[INFO] 
+[INFO] --- spotless:3.0.0:apply (default-cli) @ atlas-api ---
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/CoreHrCommandVersionHttpTest.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/corehr/adapter/in/web/PostalAddressInput.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/corehr/adapter/in/web/EmployeeChangeInput.java
+[INFO] clean file: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/main/java/com/atlas/modules/corehr/adapter/in/web/PeopleController.java
+[INFO] Spotless.Java is keeping 419 files clean - 4 were changed to be clean, 4 were already clean, 411 were skipped because caching determined they were already clean
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ atlas-api ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] Copying 69 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ atlas-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 337 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ atlas-api ---
+[INFO] skip non existing resourceDirectory /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ atlas-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 82 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Some input files use or override a deprecated API.
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ atlas-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.atlas.CoreHrCommandVersionHttpTest
+18:40:26.416 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.CoreHrCommandVersionHttpTest]: CoreHrCommandVersionHttpTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:40:26.496 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.CoreHrCommandVersionHttpTest
+18:40:26.530 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.CoreHrCommandVersionHttpTest]: CoreHrCommandVersionHttpTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:40:26.531 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.CoreHrCommandVersionHttpTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-20T18:40:26.762+05:30  INFO 23312 --- [atlas-api] [           main] com.atlas.CoreHrCommandVersionHttpTest   : Starting CoreHrCommandVersionHttpTest using Java 21.0.12.1 with PID 23312 (started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-20T18:40:26.763+05:30  INFO 23312 --- [atlas-api] [           main] com.atlas.CoreHrCommandVersionHttpTest   : The following 1 profile is active: "local"
+2026-10-20T18:40:27.336+05:30  INFO 23312 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-10-20T18:40:27.343+05:30  INFO 23312 --- [atlas-api] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-20T18:40:27.343+05:30  INFO 23312 --- [atlas-api] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-20T18:40:27.359+05:30  INFO 23312 --- [atlas-api] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 588 ms
+2026-10-20T18:40:27.548+05:30  INFO 23312 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-20T18:40:27.632+05:30  INFO 23312 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@45295cfd
+2026-10-20T18:40:27.633+05:30  INFO 23312 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-20T18:40:27.645+05:30  INFO 23312 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_bk_http_a31c13eb60fd (PostgreSQL 18.6)
+2026-10-20T18:40:27.690+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.database.base.Schema   : Creating schema "atlas_bk_http_a31c13eb60fd" ...
+2026-10-20T18:40:27.697+05:30  INFO 23312 --- [atlas-api] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "atlas_bk_http_a31c13eb60fd"."flyway_schema_history" ...
+2026-10-20T18:40:27.772+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_bk_http_a31c13eb60fd": null
+2026-10-20T18:40:27.780+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "1 - core hr"
+2026-10-20T18:40:27.819+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "2 - synthetic workspace"
+2026-10-20T18:40:27.833+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "3 - oidc subjects"
+2026-10-20T18:40:27.842+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "4 - jdbc sessions"
+2026-10-20T18:40:27.855+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "5 - private contact details"
+2026-10-20T18:40:27.866+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "6 - department reference"
+2026-10-20T18:40:27.880+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "7 - department seed audit"
+2026-10-20T18:40:27.890+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "8 - hiring workflow"
+2026-10-20T18:40:27.907+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "9 - second hr reviewer"
+2026-10-20T18:40:27.916+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "10 - onboarding completion"
+2026-10-20T18:40:27.930+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "11 - hire tenant integrity"
+2026-10-20T18:40:27.942+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "12 - position catalogue"
+2026-10-20T18:40:27.957+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "13 - position assignment"
+2026-10-20T18:40:27.984+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "14 - position assignment integrity"
+2026-10-20T18:40:28.000+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "15 - reporting changes"
+2026-10-20T18:40:28.018+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "16 - employee display name"
+2026-10-20T18:40:28.029+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "17 - request withdrawal"
+2026-10-20T18:40:28.043+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "18 - benefits catalogue"
+2026-10-20T18:40:28.061+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "19 - benefit rule snapshot"
+2026-10-20T18:40:28.069+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "20 - benefit selections"
+2026-10-20T18:40:28.091+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "21 - benefit selection integrity"
+2026-10-20T18:40:28.108+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "22 - private employee documents"
+2026-10-20T18:40:28.131+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "23 - document scan retry"
+2026-10-20T18:40:28.146+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "24 - immutable document versions"
+2026-10-20T18:40:28.161+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "25 - document templates and completeness"
+2026-10-20T18:40:28.179+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "26 - document template revisions and corrections"
+2026-10-20T18:40:28.202+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "27 - document retention and legal holds"
+2026-10-20T18:40:28.216+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "28 - independent hold release subject"
+2026-10-20T18:40:28.224+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "29 - resignation workflow"
+2026-10-20T18:40:28.253+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "30 - resignation audit reconciliation"
+2026-10-20T18:40:28.266+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "31 - exit task coordination"
+2026-10-20T18:40:28.289+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "32 - exit task management"
+2026-10-20T18:40:28.315+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "33 - effective employment end"
+2026-10-20T18:40:28.341+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "34 - employment end withdrawal"
+2026-10-20T18:40:28.374+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "35 - employment end reschedule"
+2026-10-20T18:40:28.401+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "36 - current end handoff identity"
+2026-10-20T18:40:28.413+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "37 - rehire onboarding episode"
+2026-10-20T18:40:28.443+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "38 - reviewed rehire activation"
+2026-10-20T18:40:28.475+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "39 - revoke fresh rehire access"
+2026-10-20T18:40:28.490+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "40 - revoked identity hold"
+2026-10-20T18:40:28.499+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "41 - reviewed identity replacement"
+2026-10-20T18:40:28.533+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "42 - pending resignation withdrawal"
+2026-10-20T18:40:28.551+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "43 - original case episode ownership"
+2026-10-20T18:40:28.566+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "44 - compatible original episode writers"
+2026-10-20T18:40:28.575+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "45 - episode local status projection"
+2026-10-20T18:40:28.584+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "46 - access grant episode ownership"
+2026-10-20T18:40:28.600+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "47 - current episode task assignees"
+2026-10-20T18:40:28.609+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "48 - private recorded legal name"
+2026-10-20T18:40:28.624+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "49 - additional emergency contacts"
+2026-10-20T18:40:28.648+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "50 - pending benefit withdrawal"
+2026-10-20T18:40:28.657+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "51 - structured private postal address"
+2026-10-20T18:40:28.673+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "52 - declared legal entity references"
+2026-10-20T18:40:28.688+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "53 - reviewed legal entity retirement"
+2026-10-20T18:40:28.711+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "54 - private recorded birth date"
+2026-10-20T18:40:28.720+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "55 - schema local birth date guard"
+2026-10-20T18:40:28.729+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "56 - company work calendars"
+2026-10-20T18:40:28.752+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "57 - dated company calendar amendments"
+2026-10-20T18:40:28.766+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "58 - calendar revision guard result"
+2026-10-20T18:40:28.772+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "59 - company calendar retirement"
+2026-10-20T18:40:28.789+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "60 - private personal email"
+2026-10-20T18:40:28.801+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "61 - approved employee calendar assignment"
+2026-10-20T18:40:28.821+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "62 - approved employee entity assignment"
+2026-10-20T18:40:28.841+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "63 - capture entity requester employee"
+2026-10-20T18:40:28.852+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "64 - protect entity request provenance"
+2026-10-20T18:40:28.859+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "65 - employee audit keyset index"
+2026-10-20T18:40:28.865+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "66 - department parent correction"
+2026-10-20T18:40:28.878+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "67 - department parent business order"
+2026-10-20T18:40:28.886+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "68 - schema scoped department hierarchy lock"
+2026-10-20T18:40:28.897+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_a31c13eb60fd" to version "69 - department parent truncate protection"
+2026-10-20T18:40:28.908+05:30  INFO 23312 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 69 migrations to schema "atlas_bk_http_a31c13eb60fd", now at version v69 (execution time 00:00.577s)
+2026-10-20T18:40:29.528+05:30  INFO 23312 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-20T18:40:29.919+05:30  INFO 23312 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-20T18:40:29.960+05:30  INFO 23312 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 59642 (http) with context path '/'
+2026-10-20T18:40:29.966+05:30  INFO 23312 --- [atlas-api] [           main] com.atlas.CoreHrCommandVersionHttpTest   : Started CoreHrCommandVersionHttpTest in 3.324 seconds (process running for 3.889)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/private/tmp/atlas-m2/net/bytebuddy/byte-buddy-agent/1.17.8/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+2026-10-20T18:40:30.950+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-20T18:40:30.950+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-20T18:40:30.951+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-10-20T18:40:31.008+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=5a9bf745-dd3e-4668-8da6-b92ef95a0a0b status=200 duration_ms=55
+2026-10-20T18:40:31.227+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=20fa3765-3438-46f4-8544-0a735eab3dda status=204 duration_ms=199
+2026-10-20T18:40:31.257+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=c38d8e5a-cdd0-48ee-ac8a-80843056a931 status=200 duration_ms=15
+2026-10-20T18:40:31.328+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=4e840b86-f2a1-4036-8de0-c5f89177e3ab status=400 duration_ms=68
+2026-10-20T18:40:31.347+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=248aafd8-4426-4188-896e-671237cf52a7 status=200 duration_ms=11
+2026-10-20T18:40:31.366+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=454a5649-5889-4610-b3bb-aca5a5d3e23e status=400 duration_ms=16
+2026-10-20T18:40:31.378+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=ffd6916b-8f65-4638-b1fe-5e78088a41db status=200 duration_ms=8
+2026-10-20T18:40:31.394+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=d32e0eff-eef5-40f9-b94c-edac694ed36f status=400 duration_ms=13
+2026-10-20T18:40:31.406+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=d81ba8db-35db-45aa-b1e1-63f1f41d3fff status=200 duration_ms=7
+2026-10-20T18:40:31.434+05:30  INFO 23312 --- [atlas-api] [-auto-1-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=5c077c0f-f854-423e-a8e2-ca1bca765365 status=400 duration_ms=26
+2026-10-20T18:40:31.451+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=58d16a02-9085-4365-a0d0-21616da24121 status=200 duration_ms=9
+2026-10-20T18:40:31.468+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=750488e6-e93a-4e3e-8316-1be7b18b91fa status=400 duration_ms=14
+2026-10-20T18:40:31.480+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=22ad60ac-5237-4a57-8997-40756f4ca2c3 status=200 duration_ms=8
+2026-10-20T18:40:31.498+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=5af067ef-30e1-4326-be61-9f5a745bd730 status=400 duration_ms=15
+2026-10-20T18:40:31.508+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=d9cb8072-1f51-4b2a-b9d0-8b5d133fe9d7 status=200 duration_ms=6
+2026-10-20T18:40:31.522+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=6aa8fb08-00a8-451a-80c2-7adbf3204ba4 status=400 duration_ms=11
+2026-10-20T18:40:31.537+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=d45afdbe-d0d0-4817-b568-5fd2c9f781cc status=200 duration_ms=11
+2026-10-20T18:40:31.551+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=4d1c2fc3-37ff-4c09-8a99-54de2db9533e status=400 duration_ms=11
+2026-10-20T18:40:31.565+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=427c18dd-6a47-41e4-a510-c2d296f0fcc9 status=200 duration_ms=8
+2026-10-20T18:40:31.582+05:30  INFO 23312 --- [atlas-api] [-auto-1-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=46890fc1-b014-4520-b8a4-ced70499b3ad status=400 duration_ms=13
+2026-10-20T18:40:31.594+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=d100fde1-8274-4f7a-8a5a-d45ec17ce929 status=200 duration_ms=3
+2026-10-20T18:40:31.672+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=b8cfd213-dabb-4100-a482-156fa570e478 status=204 duration_ms=76
+2026-10-20T18:40:31.683+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=9d84e9b4-e1d7-4960-9153-adcf2e4a2519 status=200 duration_ms=8
+2026-10-20T18:40:31.695+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=cf795482-23e4-4081-b636-0eeb60a71535 status=403 duration_ms=10
+2026-10-20T18:40:31.700+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=8046c210-59b3-4550-a1f0-4c0d574d4d3c status=200 duration_ms=3
+2026-10-20T18:40:31.777+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=d8235481-7cda-466c-88a8-27b748a98cb2 status=204 duration_ms=75
+2026-10-20T18:40:31.784+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=5b14263c-ed3f-458c-9c96-bacc623223e2 status=200 duration_ms=6
+2026-10-20T18:40:31.797+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=28a25698-d820-4f94-a557-50036d074862 status=403 duration_ms=10
+2026-10-20T18:40:31.806+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=632d46d3-0edc-492f-8c46-619ecc9eb6d5 status=200 duration_ms=5
+2026-10-20T18:40:31.831+05:30  INFO 23312 --- [atlas-api] [-auto-1-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=a4a2f241-68f8-44e8-9cf2-a7a5b05b04d7 status=200 duration_ms=22
+2026-10-20T18:40:31.841+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=a6b52d68-2f7a-4b46-a1f5-c2a9d83d89ff status=200 duration_ms=6
+2026-10-20T18:40:31.864+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=ffd995ab-4889-4c1c-a708-6b3c27c60db1 status=200 duration_ms=21
+2026-10-20T18:40:31.893+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=4fa8bc2e-e0f9-4d88-805d-2acf6d18422d status=200 duration_ms=5
+2026-10-20T18:40:31.974+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=b83ca6dc-cedd-4915-8f47-4c5f5d958d3e status=204 duration_ms=77
+2026-10-20T18:40:31.984+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=654610ab-a9d8-4f28-882f-d0423e731cfb status=200 duration_ms=7
+2026-10-20T18:40:32.003+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=ab3e52c5-dc57-4ff3-873a-0874ac8fbe77 status=400 duration_ms=16
+2026-10-20T18:40:32.018+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=81aee44e-8f79-413b-a1bd-1ee4e112dcb7 status=200 duration_ms=8
+2026-10-20T18:40:32.031+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=ff0abf8d-34f1-4d27-94bb-0724217739a9 status=400 duration_ms=11
+2026-10-20T18:40:32.040+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=acd54556-8e7f-4e5a-a747-a21cf074f7c3 status=200 duration_ms=5
+2026-10-20T18:40:32.052+05:30  INFO 23312 --- [atlas-api] [-auto-1-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=950234cf-83e5-43bc-b95b-8ad2befcd631 status=400 duration_ms=10
+2026-10-20T18:40:32.063+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=63954b23-6f32-44b4-961a-24a6d3d14bf0 status=200 duration_ms=6
+2026-10-20T18:40:32.074+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=a9cc8fc6-a17b-4124-bd21-5824108b12c2 status=400 duration_ms=9
+2026-10-20T18:40:32.082+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=fdd16c91-4889-4669-881d-30496c5c17b9 status=200 duration_ms=5
+2026-10-20T18:40:32.093+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=cb142f35-8b7f-4ae5-b7d5-b6903bd59d4e status=400 duration_ms=9
+2026-10-20T18:40:32.104+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=3d4bb7ab-79ee-4354-885a-c2c8260f3e3c status=200 duration_ms=7
+2026-10-20T18:40:32.116+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=ac8aefb2-8035-4743-a181-f660287a1b9b status=400 duration_ms=10
+2026-10-20T18:40:32.126+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=94c71461-bbaa-4d62-a100-f796544dd353 status=200 duration_ms=6
+2026-10-20T18:40:32.137+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=c0501a56-7461-48c4-9a1d-4a1f93786d05 status=400 duration_ms=9
+2026-10-20T18:40:32.146+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=f5c1cc64-11e7-4a22-bebd-fd17e917512d status=200 duration_ms=5
+2026-10-20T18:40:32.156+05:30  INFO 23312 --- [atlas-api] [-auto-1-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=8331bd91-1b56-4acf-9dad-b2a87de72456 status=400 duration_ms=8
+2026-10-20T18:40:32.169+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=67984e89-2751-4319-80f0-52660f52c553 status=200 duration_ms=7
+2026-10-20T18:40:32.181+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=96f00ec0-444b-47a5-8974-dfbd5ae3297a status=400 duration_ms=10
+2026-10-20T18:40:32.190+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=1b8dff4b-a543-472d-b1f9-c8ad429635e8 status=200 duration_ms=5
+2026-10-20T18:40:32.221+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=9713047d-ee2d-4c85-aa09-1f31da3cc098 status=200 duration_ms=29
+2026-10-20T18:40:32.231+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=ac25f704-828d-4543-91e0-f9beb9ec50e7 status=200 duration_ms=6
+2026-10-20T18:40:32.251+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=50aec036-4a23-4624-86a4-b71c5921ad19 status=200 duration_ms=17
+2026-10-20T18:40:32.258+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=197d92ec-9194-45a5-9f7f-1d80ec4753e9 status=200 duration_ms=5
+2026-10-20T18:40:32.336+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=c7654f3e-c301-45f3-b3e5-d8c24a6c3500 status=204 duration_ms=76
+2026-10-20T18:40:32.343+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=eadccc07-2440-4b64-aff7-9db16a7ee8a9 status=200 duration_ms=6
+2026-10-20T18:40:32.356+05:30  INFO 23312 --- [atlas-api] [-auto-1-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=2ccaafff-812b-4c8f-9379-0435d809a712 status=403 duration_ms=11
+2026-10-20T18:40:32.360+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=229be4dd-bc6c-4558-917d-76bc2f03d71b status=200 duration_ms=2
+2026-10-20T18:40:32.445+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=f8d6b37b-69ed-4f7e-ae8f-3f5285414842 status=204 duration_ms=82
+2026-10-20T18:40:32.455+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=1661f609-a6b5-42cf-b696-41fd9328b8eb status=200 duration_ms=8
+2026-10-20T18:40:32.478+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=f2399b81-a8e3-40cf-a1e9-9a3a74f4542e status=403 duration_ms=21
+2026-10-20T18:40:32.503+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=c688f836-de5b-4e90-a749-b3d9f9b9bfa3 status=200 duration_ms=8
+2026-10-20T18:40:32.590+05:30  INFO 23312 --- [atlas-api] [-auto-1-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=a314563e-ffcc-44de-888d-3761b9cc7e0f status=204 duration_ms=84
+2026-10-20T18:40:32.600+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=96818c79-2479-455b-b1db-77a9ac1eef70 status=200 duration_ms=6
+2026-10-20T18:40:32.613+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=042b24de-d76c-49bf-8867-d781f78cda40 status=400 duration_ms=11
+2026-10-20T18:40:32.630+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=fb93a118-09e7-4adb-9051-22ab30b7caca status=200 duration_ms=10
+2026-10-20T18:40:32.647+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=0aeb810c-f779-4977-838b-f90d4fe82406 status=400 duration_ms=15
+2026-10-20T18:40:32.665+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=d16a9593-884a-4f7a-8a08-e0ae830ba9f2 status=200 duration_ms=10
+2026-10-20T18:40:32.680+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=a04fe5f0-f100-433b-ae31-f445ed586ae1 status=400 duration_ms=13
+2026-10-20T18:40:32.696+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=e23bb368-8d97-411e-b113-332667270781 status=200 duration_ms=7
+2026-10-20T18:40:32.709+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=4ea3d6a5-7339-4cc0-b59a-deedb335d055 status=400 duration_ms=10
+2026-10-20T18:40:32.721+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=5998eb56-3eae-4426-b273-8481663c013c status=200 duration_ms=6
+2026-10-20T18:40:32.751+05:30  INFO 23312 --- [atlas-api] [-auto-1-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=094a573c-9d32-4f51-9486-90936607c3b8 status=400 duration_ms=27
+2026-10-20T18:40:32.762+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=323f340e-2ad1-4137-b2c3-5767c8806ecf status=200 duration_ms=7
+2026-10-20T18:40:32.774+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=8be34bcf-8705-4e9c-94c0-e1b8bf03239c status=400 duration_ms=11
+2026-10-20T18:40:32.794+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=7d52b091-668d-4f1b-9c8c-ed183f3065e8 status=200 duration_ms=12
+2026-10-20T18:40:32.809+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=13dae47a-e4f6-4750-84ce-d9c04b040236 status=400 duration_ms=13
+2026-10-20T18:40:32.819+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=9850745e-5b5e-4ab0-9b3c-f32934506505 status=200 duration_ms=5
+2026-10-20T18:40:32.830+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=afe5634f-a982-4aea-9f60-40c7b377a3ed status=400 duration_ms=10
+2026-10-20T18:40:32.842+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=b21e824f-9869-4554-ace9-92a9dcf2a581 status=200 duration_ms=8
+2026-10-20T18:40:32.855+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=5e808153-92e1-4b0f-9554-957e512c8fef status=400 duration_ms=11
+2026-10-20T18:40:32.866+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=4cfba835-cb84-41a7-83f4-3308e8160d01 status=200 duration_ms=6
+2026-10-20T18:40:32.884+05:30  INFO 23312 --- [atlas-api] [-auto-1-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=087c16d5-94cb-4f5f-a95c-9bc83e88fce3 status=200 duration_ms=16
+2026-10-20T18:40:32.898+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=86e38aa2-48de-4da5-b342-4985442802ab status=200 duration_ms=9
+2026-10-20T18:40:32.914+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=e6b0ea0a-6a8b-481f-a25b-5a58234155b5 status=200 duration_ms=14
+2026-10-20T18:40:32.925+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=14187f2d-a053-499f-93d5-c54200554058 status=200 duration_ms=6
+2026-10-20T18:40:32.943+05:30  INFO 23312 --- [atlas-api] [o-auto-1-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=f21448fe-ffc4-4f17-8b13-d39c116e4518 status=409 duration_ms=17
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.593 s -- in com.atlas.CoreHrCommandVersionHttpTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  15.183 s
+[INFO] Finished at: 2026-10-20T18:40:35+05:30
+[INFO] ------------------------------------------------------------------------

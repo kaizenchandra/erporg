@@ -1,0 +1,98 @@
+
+Running 120 tests using 1 worker
+
+(node:86859) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86859) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 tests/additional-contacts.spec.ts:37:5 › private additional contacts recover an uncertain submission, receive independent HR review and render on mobile (5.7s)
+  ✓    2 tests/additional-contacts.spec.ts:283:5 › contact APIs enforce scopes, bounds, stable replay and one concurrent future approval (595ms)
+  ✓    3 tests/benefit-selections.spec.ts:51:5 › employee submits dependant selection; independent HR review queues one payroll handoff (2.5s)
+  ✓    4 tests/benefit-selections.spec.ts:125:5 › selection API contracts, privacy, duplicate recovery and competing decisions (755ms)
+  ✓    5 tests/benefit-withdrawal.spec.ts:53:5 › employee withdraws a pending benefit with preserved errors, uncertain-response replay and a fresh selection (2.1s)
+  ✓    6 tests/benefit-withdrawal.spec.ts:189:5 › benefit withdrawal APIs deny altered ownership, validate versions and arbitrate concurrent HR review (617ms)
+  ✓    7 tests/benefits.spec.ts:24:5 › HR configures a demonstration benefit; employee sees own eligibility and exact contribution (2.4s)
+  ✓    8 tests/benefits.spec.ts:94:5 › benefit API denies configuration/history to employees and isolates tenant catalogue (427ms)
+  ✓    9 tests/birth-date.spec.ts:35:5 › employee records a private birth date with independent HR approval and mobile profile; display identity is unchanged (3.7s)
+  ✓   10 tests/birth-date.spec.ts:157:5 › birth-date APIs enforce private requests, history, search and exact concurrent approval with no field clearing (772ms)
+  ✓   11 tests/calendar-amendments.spec.ts:56:5 › HR amends future company policy with impact review, preserved errors, uncertain-response replay and historical/mobile context (2.6s)
+  ✓   12 tests/calendar-amendments.spec.ts:211:5 › amendment APIs enforce role/tenant policy, exact versions, conflicting replay and a concurrent winner without early policy application (763ms)
+  ✓   13 tests/calendar-retirement.spec.ts:64:5 › HR retires dated calendar with read recovery, impact confirmation, uncertain-response replay and preserved earlier mobile preview (2.5s)
+  ✓   14 tests/calendar-retirement.spec.ts:272:5 › retirement APIs enforce exact version/tenant scope, stable replay, amendment interlock and immediate versus scheduled availability (783ms)
+  ✓   15 tests/company-calendars.spec.ts:48:5 › HR records a calendar with preserved validation, lost-response replay, private provenance and mobile authoritative date preview (2.5s)
+  ✓   16 tests/company-calendars.spec.ts:184:5 › calendar APIs enforce HR/tenant scope, date policy, stable and conflicting replay, and concurrent unique creation (734ms)
+  ✓   17 tests/company-calendars.spec.ts:315:5 › calendar list recovers focused reads, pages retained data and cancels stale filter responses (1.6s)
+  ✓   18 tests/contact-inbox.spec.ts:27:5 › independent HR discovers contact request in Approvals, recovers queue error and approves on mobile (2.4s)
+  ✓   19 tests/contact-inbox.spec.ts:165:5 › contact queue API enforces server-owned scope, independent authors and bounded contracts (548ms)
+  ✓   20 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (486ms)
+  ✓   21 tests/contracts.spec.ts:119:5 › calendar history contract rejects private fields, malformed provenance and unbounded pages (6ms)
+  ✓   22 tests/contracts.spec.ts:152:5 › contract validator rejects incorrect types, formats and unexpected private fields (10ms)
+  ✓   23 tests/departments.spec.ts:16:5 › HR configures a department; manager transfers an employee; HR approves the real reference (3.1s)
+  ✓   24 tests/display-name.spec.ts:68:5 › employee requests display name, HR approves and effective profile/search/session name persist (3.3s)
+  ✓   25 tests/display-name.spec.ts:163:5 › name API denies manager edits/review and self review; concurrent approvals have one winner (579ms)
+  ✓   26 tests/document-maintenance.spec.ts:88:5 › HR revises template, corrects evidence and retires without deleting history (3.1s)
+  ✓   27 tests/document-maintenance.spec.ts:185:5 › maintenance APIs enforce ordinals, scopes, replay and concurrent single winners (914ms)
+  ✓   28 tests/document-retention.spec.ts:67:5 › HR records explicit retention and hold; independent HR releases with private audit (3.0s)
+  ✓   29 tests/document-retention.spec.ts:167:5 › governance API denies private access and self release, preserves replay and one concurrent winner (837ms)
+  ✓   30 tests/document-retry.spec.ts:75:5 › HR rescans quarantined stored document after real outage; original history remains (13.2s)
+  ✓   31 tests/document-retry.spec.ts:130:5 › retry API denies ordinary roles and fractional versions; concurrent retries commit one result; malware stays blocked (11.8s)
+  ✓   32 tests/document-templates.spec.ts:57:5 › HR creates required text template; employee classifies document and sees completeness and audit (3.2s)
+  ✓   33 tests/document-templates.spec.ts:175:5 › template API isolates configuration/evidence, handles concurrent links and latest blocked version (715ms)
+  ✓   34 tests/document-versions.spec.ts:47:5 › employee uploads scanned replacement, sees immutable versions and explicitly downloads historical file (2.1s)
+  ✓   35 tests/document-versions.spec.ts:110:5 › version API isolates records, rejects fractional/stale branches and preserves one concurrent winner and malware history (687ms)
+  ✓   36 tests/documents.spec.ts:25:5 › private upload scan download and accessible document error recovery (1.8s)
+  ✓   37 tests/documents.spec.ts:88:5 › real scanning rejects EICAR and APIs isolate document records with replay and concurrent upload (562ms)
+  ✓   38 tests/employee-calendar.spec.ts:67:5 › HR assignment is independently reviewed then self previews a dated policy with focused recovery and mobile scope (5.5s)
+  ✓   39 tests/employee-calendar.spec.ts:343:5 › assignment APIs enforce HR-only commands, policy snapshots, unassignment, replay and concurrent policy arbitration (915ms)
+  ✓   40 tests/entity-assignment.spec.ts:66:5 › HR declared entity proposal has independent impact review, private profile and explicit unassignment (5.3s)
+  ✓   41 tests/entity-assignment.spec.ts:315:5 › entity APIs enforce privacy, repeatability and one-winner retirement arbitration (884ms)
+  ✘   42 tests/legal-entities.spec.ts:27:5 › HR records an unverified legal-entity reference with validation, lost-response recovery, immutable audit and mobile catalogue (5.8s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/legal-entities.spec.ts:27:5 › HR records an unverified legal-entity reference with validation, lost-response recovery, immutable audit and mobile catalogue 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByRole('region', { name: 'Legal-entity references' })
+    Expected substring: [32m"No legal-entity references recorded."[39m
+    Received string:    [31m"Legal-entity referencesHR configurationDeclared, unverified company references. HR can propose employee assignments for independent review. Assignment does not verify registration or activate contract, statutory, tax or payroll rules.Entity code or nameSearch referencesReference availabilityAll referencesAvailable by today (UTC)PlannedRetiredCreate legal-entity referenceDeclared synthetic company 李 Declared synthetic company 李 Declared synthetic company 李AY-API · Unverified referenceCountry / regionGBReference currencyGBPReference time zoneEurope/LondonAvailable from (UTC calendar)19 Oct 2026Manage retirement · AY-APICreation auditRecorded by amelia · 10/19/2026, 10:35:31 PMSupplied reference; not verified registrationCorrelation: cfc65f37-7ffa-404d-a005-bb03db86cb67Initial creation snapshot; no previous value or later amendment.Declared synthetic company 李 Declared synthetic company 李 Declared synthetic company 李AY-PENDING · Unverified referenceCountry / regionGBReference currencyGBPReference time zoneEurope/LondonAvailable from (UTC calendar)19 Oct 2026Retirement scheduled · 23 Oct 2026Manage retirement · AY-PENDINGCreation auditRecorded by amelia · 10/19/2026, 10:35:31 PMSupplied reference; not verified registrationCorrelation: 2d97ba3d-58af-4dbc-8ad0-df2722753e94Initial creation snapshot; no previous value or later amendment.Declared synthetic company 李 Declared synthetic company 李 Declared synthetic company 李AY-RACE · Unverified referenceCountry / regionGBReference currencyGBPReference time zoneEurope/LondonAvailable from (UTC calendar)19 Oct 2026Manage retirement · AY-RACECreation auditRecorded by amelia · 10/19/2026, 10:35:31 PMSupplied reference; not verified registrationCorrelation: b11519c8-443a-4cf1-896d-edd8a454cb3cInitial creation snapshot; no previous value or later amendment.Declared synthetic company 李 Declared synthetic company 李 Declared synthetic company 李AY-UI · Unverified referenceCountry / regionGBReference currencyGBPReference time zoneEurope/LondonAvailable from (UTC calendar)19 Oct 2026Manage retirement · AY-UICreation auditRecorded by amelia · 10/19/2026, 10:35:26 PMSupplied reference; not verified registrationCorrelation: d4a259dd-6f48-43e0-878e-d702a34f2bf1Initial creation snapshot; no previous value or later amendment.4 references · page 1 · ordered by code. No bulk action applies.Previous referencesNext references"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('region', { name: 'Legal-entity references' })[22m
+    [2m    2 × locator resolved to <section aria-label="Legal-entity references" class="department-reference legal-entity-settings">…</section>[22m
+    [2m      - unexpected value "Legal-entity referencesHR configurationDeclared, unverified company references. HR can propose employee assignments for independent review. Assignment does not verify registration or activate contract, statutory, tax or payroll rules.Entity code or nameSearch referencesReference availabilityAll referencesAvailable by today (UTC)PlannedRetiredLoading legal-entity references…"[22m
+    [2m    7 × locator resolved to <section aria-label="Legal-entity references" class="department-reference legal-entity-settings">…</section>[22m
+    [2m      - unexpected value "Legal-entity referencesHR configurationDeclared, unverified company references. HR can propose employee assignments for independent review. Assignment does not verify registration or activate contract, statutory, tax or payroll rules.Entity code or nameSearch referencesReference availabilityAll referencesAvailable by today (UTC)PlannedRetiredCreate legal-entity referenceDeclared synthetic company 李 Declared synthetic company 李 Declared synthetic company 李AY-API · Unverified referenceCountry / regionGBReference currencyGBPReference time zoneEurope/LondonAvailable from (UTC calendar)19 Oct 2026Manage retirement · AY-APICreation auditRecorded by amelia · 10/19/2026, 10:35:31 PMSupplied reference; not verified registrationCorrelation: cfc65f37-7ffa-404d-a005-bb03db86cb67Initial creation snapshot; no previous value or later amendment.Declared synthetic company 李 Declared synthetic company 李 Declared synthetic company 李AY-PENDING · Unverified referenceCountry / regionGBReference currencyGBPReference time zoneEurope/LondonAvailable from (UTC calendar)19 Oct 2026Retirement scheduled · 23 Oct 2026Manage retirement · AY-PENDINGCreation auditRecorded by amelia · 10/19/2026, 10:35:31 PMSupplied reference; not verified registrationCorrelation: 2d97ba3d-58af-4dbc-8ad0-df2722753e94Initial creation snapshot; no previous value or later amendment.Declared synthetic company 李 Declared synthetic company 李 Declared synthetic company 李AY-RACE · Unverified referenceCountry / regionGBReference currencyGBPReference time zoneEurope/LondonAvailable from (UTC calendar)19 Oct 2026Manage retirement · AY-RACECreation auditRecorded by amelia · 10/19/2026, 10:35:31 PMSupplied reference; not verified registrationCorrelation: b11519c8-443a-4cf1-896d-edd8a454cb3cInitial creation snapshot; no previous value or later amendment.Declared synthetic company 李 Declared synthetic company 李 Declared synthetic company 李AY-UI · Unverified referenceCountry / regionGBReference currencyGBPReference time zoneEurope/LondonAvailable from (UTC calendar)19 Oct 2026Manage retirement · AY-UICreation auditRecorded by amelia · 10/19/2026, 10:35:26 PMSupplied reference; not verified registrationCorrelation: d4a259dd-6f48-43e0-878e-d702a34f2bf1Initial creation snapshot; no previous value or later amendment.4 references · page 1 · ordered by code. No bulk action applies.Previous referencesNext references"[22m
+
+
+      53 |     .click();
+      54 |   const section = page.getByRole("region", { name: "Legal-entity references" });
+    > 55 |   await expect(section).toContainText("No legal-entity references recorded.");
+         |                         ^
+      56 |   await page
+      57 |     .getByRole("button", { name: "Create legal-entity reference", exact: true })
+      58 |     .click();
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/legal-entities.spec.ts:55:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/legal-entities-HR-records--50a2d--audit-and-mobile-catalogue/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/legal-entities-HR-records--50a2d--audit-and-mobile-catalogue/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/legal-entities-HR-records--50a2d--audit-and-mobile-catalogue/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/legal-entities-HR-records--50a2d--audit-and-mobile-catalogue/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/legal-entities.spec.ts:27:5 › HR records an unverified legal-entity reference with validation, lost-response recovery, immutable audit and mobile catalogue 
+  78 did not run
+  41 passed (1.7m)
+  1 error was not a part of any test, see above for details

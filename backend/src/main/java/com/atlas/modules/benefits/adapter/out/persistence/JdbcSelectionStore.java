@@ -7,7 +7,8 @@ import java.time.*;
 import java.util.*;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
-public final class JdbcSelectionStore implements SelectionStore {
+public final class JdbcSelectionStore
+    implements SelectionStore, com.atlas.modules.benefits.application.port.out.SelectionInboxStore {
   private final JdbcClient db;
 
   public JdbcSelectionStore(JdbcClient db) {
@@ -204,5 +205,41 @@ public final class JdbcSelectionStore implements SelectionStore {
         count.query(Long.class).single(),
         page,
         size);
+  }
+
+  public SelectionPage inbox(SelectionInboxScope scope, SelectionInboxQuery q) {
+    String condition = "tenant=:tenant and (:status='ALL' or status=:status)";
+    if (scope.ownEmployeeId() != null) condition += " and employee_id=:owner";
+    if (scope.excludedEmployeeId() != null) condition += " and employee_id<>:excludedEmployee";
+    if (scope.excludedSubject() != null) condition += " and requested_by<>:excludedSubject";
+    long total =
+        inboxParameters(
+                db.sql("select count(*) from benefit_selection where " + condition), scope, q)
+            .query(Long.class)
+            .single();
+    var ids =
+        inboxParameters(
+                db.sql(
+                    "select id from benefit_selection where "
+                        + condition
+                        + " order by recorded_at desc,id desc limit :size offset :offset"),
+                scope,
+                q)
+            .param("size", q.size())
+            .param("offset", (long) q.page() * q.size())
+            .query(String.class)
+            .list();
+    return new SelectionPage(
+        ids.stream().map(id -> view(scope.tenant(), id)).toList(), total, q.page(), q.size());
+  }
+
+  private JdbcClient.StatementSpec inboxParameters(
+      JdbcClient.StatementSpec sql, SelectionInboxScope scope, SelectionInboxQuery q) {
+    sql.param("tenant", scope.tenant()).param("status", q.status());
+    if (scope.ownEmployeeId() != null) sql.param("owner", scope.ownEmployeeId());
+    if (scope.excludedEmployeeId() != null)
+      sql.param("excludedEmployee", scope.excludedEmployeeId());
+    if (scope.excludedSubject() != null) sql.param("excludedSubject", scope.excludedSubject());
+    return sql;
   }
 }

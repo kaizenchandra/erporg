@@ -1,0 +1,35 @@
+{
+  "recordedAt": "2026-10-20T17:08:17.671131+00:00",
+  "status": "FAILED",
+  "scope": "local synthetic restored API; excludes production infrastructure and IdP recovery",
+  "targetDatabase": "atlas_restore_0ae580286b8e46d2",
+  "readinessSeconds": 47.072,
+  "flywayStartupValidation": true,
+  "legalNamePrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager"
+    ],
+    "scope": "private profile and history on actual restored API; no names in report"
+  },
+  "additionalContactPrivacy": {
+    "status": "PASSED",
+    "roles": [
+      "HR",
+      "self",
+      "manager",
+      "outsider"
+    ],
+    "scope": "private current and future-approved snapshots/history on actual restored API; no contact values in report"
+  },
+  "birthDateHistoryWindow": {
+    "limit": 100,
+    "sourceFieldRowsInWindow": 0,
+    "retainedSourceFieldRows": 10,
+    "scope": "deprecated legacy latest-100 window before field filtering; complete page API checks are reported separately when enabled"
+  },
+  "error": "Restored effective unassignment must be unavailable, not a nonworking date",
+  "totalSeconds": 487.996
+}

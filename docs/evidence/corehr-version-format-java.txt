@@ -1,0 +1,17 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24151 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] ------------------------< com.atlas:atlas-api >-------------------------
+[INFO] Building atlas-api 0.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- spotless:3.0.0:check (default-cli) @ atlas-api ---
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] Spotless.Java is keeping 419 files clean - 0 needs changes to be clean, 0 were already clean, 419 were skipped because caching determined they were already clean
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.251 s
+[INFO] Finished at: 2026-10-20T18:46:48+05:30
+[INFO] ------------------------------------------------------------------------

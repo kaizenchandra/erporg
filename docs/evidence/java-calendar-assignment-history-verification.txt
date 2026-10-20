@@ -1,0 +1,527 @@
+Executed: Java21 Maven verify; local PostgreSQL18.6 atlas_test; versioned schema V61.
+Initial sandbox run could not connect to local database (SocketException: Operation not permitted). Repeated with local network permission; BUILD SUCCESS.
+Command: JAVA_HOME=<JDK21> mvn -f backend/pom.xml -Dmaven.repo.local=/private/tmp/atlas-m2 verify
+Includes forbidden-domain/persistence/cross-module negative architecture fixtures.
+{
+  "totals": {
+    "tests": 366.0,
+    "failures": 0.0,
+    "errors": 0.0,
+    "skipped": 0.0,
+    "time": 53.207
+  },
+  "suites": [
+    {
+      "name": "com.atlas.AdditionalContactInboxTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.1"
+    },
+    {
+      "name": "com.atlas.AdditionalContactsDomainTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "com.atlas.AdditionalContactsWorkflowTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.228"
+    },
+    {
+      "name": "com.atlas.ArchitectureTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.988"
+    },
+    {
+      "name": "com.atlas.BenefitSelectionWorkflowTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.253"
+    },
+    {
+      "name": "com.atlas.BenefitWithdrawalWorkflowTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.129"
+    },
+    {
+      "name": "com.atlas.BenefitsDomainTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "com.atlas.BenefitsWorkflowTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.12"
+    },
+    {
+      "name": "com.atlas.BirthDateTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "com.atlas.BirthDateWorkflowTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.221"
+    },
+    {
+      "name": "com.atlas.CalendarAmendmentWorkflowTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.606"
+    },
+    {
+      "name": "com.atlas.CalendarAssignmentTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "com.atlas.CalendarAssignmentWorkflowTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.57"
+    },
+    {
+      "name": "com.atlas.CalendarRetirementTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.004"
+    },
+    {
+      "name": "com.atlas.CalendarRetirementWorkflowTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.216"
+    },
+    {
+      "name": "com.atlas.CalendarRevisionTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "com.atlas.CalendarWorkflowTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.343"
+    },
+    {
+      "name": "com.atlas.CaseEpisodeDomainTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "com.atlas.DisplayNameWorkflowTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.106"
+    },
+    {
+      "name": "com.atlas.DocumentMaintenanceWorkflowTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "4.212"
+    },
+    {
+      "name": "com.atlas.DocumentRetentionWorkflowTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.374"
+    },
+    {
+      "name": "com.atlas.DocumentRetryWorkflowTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.23"
+    },
+    {
+      "name": "com.atlas.DocumentTemplateWorkflowTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.313"
+    },
+    {
+      "name": "com.atlas.DocumentVersionWorkflowTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.268"
+    },
+    {
+      "name": "com.atlas.DocumentsWorkflowTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.351"
+    },
+    {
+      "name": "com.atlas.DomainTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.003"
+    },
+    {
+      "name": "com.atlas.EmploymentAccessHttpTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "2.638"
+    },
+    {
+      "name": "com.atlas.EmploymentEndWorkflowTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.294"
+    },
+    {
+      "name": "com.atlas.EndRescheduleAccessHttpTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.03"
+    },
+    {
+      "name": "com.atlas.EndRescheduleWorkflowTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.612"
+    },
+    {
+      "name": "com.atlas.EndWithdrawalAccessHttpTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "5.347"
+    },
+    {
+      "name": "com.atlas.EndWithdrawalWorkflowTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.184"
+    },
+    {
+      "name": "com.atlas.EpisodeStatusProjectionTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.022"
+    },
+    {
+      "name": "com.atlas.ExitTaskManagementWorkflowTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.548"
+    },
+    {
+      "name": "com.atlas.ExitTaskWorkflowTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.829"
+    },
+    {
+      "name": "com.atlas.HiringWorkflowTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.061"
+    },
+    {
+      "name": "com.atlas.IdentityReplacementDomainTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "com.atlas.LegalEntityDomainTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.004"
+    },
+    {
+      "name": "com.atlas.LegalEntityRetirementTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "com.atlas.LegalEntityRetirementWorkflowTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.218"
+    },
+    {
+      "name": "com.atlas.LegalEntityWorkflowTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.312"
+    },
+    {
+      "name": "com.atlas.LegalNameDomainTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    {
+      "name": "com.atlas.LegalNameWorkflowTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.067"
+    },
+    {
+      "name": "com.atlas.OnboardingWorkflowTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.07"
+    },
+    {
+      "name": "com.atlas.OrganisationChartWorkflowTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.248"
+    },
+    {
+      "name": "com.atlas.OrganisationWorkflowTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.057"
+    },
+    {
+      "name": "com.atlas.PersonalEmailTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "com.atlas.PersonalEmailWorkflowTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.188"
+    },
+    {
+      "name": "com.atlas.PositionAssignmentWorkflowTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.278"
+    },
+    {
+      "name": "com.atlas.PositionWorkflowTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.053"
+    },
+    {
+      "name": "com.atlas.PostalAddressTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.003"
+    },
+    {
+      "name": "com.atlas.PostalAddressWorkflowTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.157"
+    },
+    {
+      "name": "com.atlas.PostgresWorkflowTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.246"
+    },
+    {
+      "name": "com.atlas.RehireAccessDomainTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.0"
+    },
+    {
+      "name": "com.atlas.RehireAccessHttpTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.994"
+    },
+    {
+      "name": "com.atlas.RehireActivationAccessHttpTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.605"
+    },
+    {
+      "name": "com.atlas.RehireActivationWorkflowTest",
+      "tests": "24",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "2.352"
+    },
+    {
+      "name": "com.atlas.RehireWorkflowTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.62"
+    },
+    {
+      "name": "com.atlas.ReportingWorkflowTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "11.921"
+    },
+    {
+      "name": "com.atlas.RequestGuardTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.003"
+    },
+    {
+      "name": "com.atlas.ResignationWithdrawalDomainTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.001"
+    },
+    {
+      "name": "com.atlas.ResignationWorkflowTest",
+      "tests": "17",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.436"
+    },
+    {
+      "name": "com.atlas.WithdrawalWorkflowTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.158"
+    },
+    {
+      "name": "com.atlas.WorkCalendarTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    }
+  ]
+}

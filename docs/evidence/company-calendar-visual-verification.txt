@@ -1,0 +1,14 @@
+Final 390×844 company-calendar-mobile.png inspected: retained policy, closure list, local-date preview result and creation provenance fit the scrollable contextual panel. Valid preview/mobile and invalid form axe checks passed; dirty-close cancellation, focused errors, Escape return and no document overflow verified. Separate read-only maximum text fixture (120-character name, 30-character code and 500-character audit text) passed with dialog scroll width no greater than client width; no database mutation. Not full manual WCAG/assistive-technology evidence.
+
+Running 1 test using 1 worker
+
+[1A[2K(node:26183) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:26183) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/1] tests/zz-company-calendar-layout.spec.ts:2:5 › maximum-length calendar presentation stays readable within the mobile dialog
+[1A[2K  1 passed (2.9s)

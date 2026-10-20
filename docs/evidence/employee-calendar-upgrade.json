@@ -1,0 +1,11 @@
+{
+  "status": "PASSED",
+  "fromVersion": 60,
+  "toVersion": 61,
+  "unchangedBusinessTableDigests": 69,
+  "newTableRows": {
+    "hr_calendar_request_policy": 0,
+    "hr_calendar_assignment": 0
+  },
+  "scope": "Captured before browser writes; additive episode-owned assignment/request-policy ledgers and schema-local integrity/freeze guards. No backfill or source-row rewrite. Decision status now precedes approved version insertion within the same bounded atomic transaction."
+}

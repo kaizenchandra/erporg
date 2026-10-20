@@ -13,7 +13,10 @@ export function Organisation({
   return (
     <section className="org-view">
       <OrganisationChart actor={actor} onOpen={onOpen} />
-      <DepartmentReference actor={actor} />
+      <DepartmentReference
+        key={`${actor.subject}:${actor.tenant}:${actor.role}`}
+        actor={actor}
+      />
       <PositionCatalogue actor={actor} />
     </section>
   );

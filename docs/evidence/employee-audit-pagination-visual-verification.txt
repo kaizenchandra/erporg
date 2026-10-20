@@ -1,0 +1,12 @@
+
+Running 1 test using 1 worker
+
+(node:8214) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8214) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/zzzzzzzzzzzzz-audit-history.spec.ts:192:5 › profile history recovers independently, filters older events and cancels stale pages with accessible mobile controls (2.9s)
+
+  1 passed (4.1s)
+
+Manual image inspection: employee-audit-pagination-mobile.png shows the profile drawer's history heading, four persistently labelled stacked controls and scoped count/event start at 390×844. employee-audit-pagination-event-mobile.png shows a complete 480-character Unicode reason wrapping within the drawer, UTC/effective metadata, trace disclosure and following events. No horizontal clipping or overlap in the inspected event/control content. The sticky profile header remains visible. Only screenshot scroll framing changed after the full suite; no product behaviour changed. The read-only UI/axe/focus/overflow check passed again on the same built frontend/API. This is scoped visual evidence, not full WCAG/manual assistive conformance.

@@ -1,0 +1,57 @@
+
+Running 5 tests using 1 worker
+
+(node:81227) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:81227) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/talent.spec.ts:130:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks (4.3s)
+  ✓  2 tests/talent.spec.ts:248:5 › performance UI saves employee goals, manager feedback, return, correction and final rating (3.4s)
+  ✓  3 tests/talent.spec.ts:320:5 › learning UI persists eligible assignment and completion with expiry (1.7s)
+  ✘  4 tests/talent.spec.ts:352:5 › compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted (940ms)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/talent.spec.ts:352:5 › compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByRole('alert')
+    Expected substring: [32m"budget"[39m
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <div role="alert" tabindex="-1" class="error time-error">…</div> aka getByText('Review the highlighted fields')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('alert')[22m
+
+
+      368 |   await p.getByLabel("Effective date", { exact: false }).fill(today);
+      369 |   await submit(p, "Save compensation plan");
+    > 370 |   await expect(p.getByRole("alert")).toContainText("budget");
+          |                                      ^
+      371 |   await expect(p.getByLabel("Proposed annual salary")).toHaveValue("11000.00");
+      372 |   await p.getByLabel("Planning budget").fill("1500.25");
+      373 |   await submit(p, "Save compensation plan");
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/talent.spec.ts:370:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/talent.spec.ts:352:5 › compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted 
+  1 did not run
+  3 passed (12.6s)
+  1 error was not a part of any test, see above for details

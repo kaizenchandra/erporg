@@ -1,0 +1,186 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24151 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] ------------------------< com.atlas:atlas-api >-------------------------
+[INFO] Building atlas-api 0.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] Loaded 24151 auto-discovered prefixes for remote repository maven-central (prefixes-maven-central.txt)
+[WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+[INFO] Loaded 7 auto-discovered prefixes for remote repository shibboleth-repo (prefixes-shibboleth-repo.txt)
+[INFO] Loaded 24151 auto-discovered prefixes for remote repository maven_central (prefixes-maven_central.txt)
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ atlas-api ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] Copying 69 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ atlas-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ atlas-api ---
+[INFO] skip non existing resourceDirectory /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ atlas-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 82 source files with javac [debug parameters release 21] to target/test-classes
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Some input files use or override a deprecated API.
+[INFO] /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/src/test/java/com/atlas/BenefitDecisionVersionHttpTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ atlas-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.atlas.CoreHrCommandVersionHttpTest
+18:39:30.017 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.CoreHrCommandVersionHttpTest]: CoreHrCommandVersionHttpTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:39:30.091 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.CoreHrCommandVersionHttpTest
+18:39:30.120 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.CoreHrCommandVersionHttpTest]: CoreHrCommandVersionHttpTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:39:30.121 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.CoreHrCommandVersionHttpTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-20T18:39:30.349+05:30  INFO 23131 --- [atlas-api] [           main] com.atlas.CoreHrCommandVersionHttpTest   : Starting CoreHrCommandVersionHttpTest using Java 21.0.12.1 with PID 23131 (started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-20T18:39:30.350+05:30  INFO 23131 --- [atlas-api] [           main] com.atlas.CoreHrCommandVersionHttpTest   : The following 1 profile is active: "local"
+2026-10-20T18:39:30.945+05:30  INFO 23131 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-10-20T18:39:30.953+05:30  INFO 23131 --- [atlas-api] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-20T18:39:30.953+05:30  INFO 23131 --- [atlas-api] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-20T18:39:30.969+05:30  INFO 23131 --- [atlas-api] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 610 ms
+2026-10-20T18:39:31.162+05:30  INFO 23131 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-20T18:39:31.260+05:30  INFO 23131 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@f453129
+2026-10-20T18:39:31.260+05:30  INFO 23131 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-20T18:39:31.283+05:30  INFO 23131 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_bk_http_3d2ee8ebcc41 (PostgreSQL 18.6)
+2026-10-20T18:39:31.329+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.database.base.Schema   : Creating schema "atlas_bk_http_3d2ee8ebcc41" ...
+2026-10-20T18:39:31.339+05:30  INFO 23131 --- [atlas-api] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "atlas_bk_http_3d2ee8ebcc41"."flyway_schema_history" ...
+2026-10-20T18:39:31.401+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_bk_http_3d2ee8ebcc41": null
+2026-10-20T18:39:31.406+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "1 - core hr"
+2026-10-20T18:39:31.471+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "2 - synthetic workspace"
+2026-10-20T18:39:31.485+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "3 - oidc subjects"
+2026-10-20T18:39:31.494+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "4 - jdbc sessions"
+2026-10-20T18:39:31.510+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "5 - private contact details"
+2026-10-20T18:39:31.522+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "6 - department reference"
+2026-10-20T18:39:31.542+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "7 - department seed audit"
+2026-10-20T18:39:31.550+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "8 - hiring workflow"
+2026-10-20T18:39:31.577+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "9 - second hr reviewer"
+2026-10-20T18:39:31.584+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "10 - onboarding completion"
+2026-10-20T18:39:31.602+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "11 - hire tenant integrity"
+2026-10-20T18:39:31.616+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "12 - position catalogue"
+2026-10-20T18:39:31.645+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "13 - position assignment"
+2026-10-20T18:39:31.665+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "14 - position assignment integrity"
+2026-10-20T18:39:31.677+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "15 - reporting changes"
+2026-10-20T18:39:31.693+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "16 - employee display name"
+2026-10-20T18:39:31.702+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "17 - request withdrawal"
+2026-10-20T18:39:31.721+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "18 - benefits catalogue"
+2026-10-20T18:39:31.740+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "19 - benefit rule snapshot"
+2026-10-20T18:39:31.748+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "20 - benefit selections"
+2026-10-20T18:39:31.790+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "21 - benefit selection integrity"
+2026-10-20T18:39:31.808+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "22 - private employee documents"
+2026-10-20T18:39:31.832+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "23 - document scan retry"
+2026-10-20T18:39:31.845+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "24 - immutable document versions"
+2026-10-20T18:39:31.860+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "25 - document templates and completeness"
+2026-10-20T18:39:31.882+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "26 - document template revisions and corrections"
+2026-10-20T18:39:31.907+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "27 - document retention and legal holds"
+2026-10-20T18:39:31.922+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "28 - independent hold release subject"
+2026-10-20T18:39:31.931+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "29 - resignation workflow"
+2026-10-20T18:39:31.958+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "30 - resignation audit reconciliation"
+2026-10-20T18:39:31.966+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "31 - exit task coordination"
+2026-10-20T18:39:31.996+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "32 - exit task management"
+2026-10-20T18:39:32.014+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "33 - effective employment end"
+2026-10-20T18:39:32.038+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "34 - employment end withdrawal"
+2026-10-20T18:39:32.064+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "35 - employment end reschedule"
+2026-10-20T18:39:32.092+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "36 - current end handoff identity"
+2026-10-20T18:39:32.103+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "37 - rehire onboarding episode"
+2026-10-20T18:39:32.135+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "38 - reviewed rehire activation"
+2026-10-20T18:39:32.166+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "39 - revoke fresh rehire access"
+2026-10-20T18:39:32.181+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "40 - revoked identity hold"
+2026-10-20T18:39:32.191+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "41 - reviewed identity replacement"
+2026-10-20T18:39:32.224+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "42 - pending resignation withdrawal"
+2026-10-20T18:39:32.241+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "43 - original case episode ownership"
+2026-10-20T18:39:32.256+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "44 - compatible original episode writers"
+2026-10-20T18:39:32.266+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "45 - episode local status projection"
+2026-10-20T18:39:32.277+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "46 - access grant episode ownership"
+2026-10-20T18:39:32.292+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "47 - current episode task assignees"
+2026-10-20T18:39:32.300+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "48 - private recorded legal name"
+2026-10-20T18:39:32.310+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "49 - additional emergency contacts"
+2026-10-20T18:39:32.331+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "50 - pending benefit withdrawal"
+2026-10-20T18:39:32.338+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "51 - structured private postal address"
+2026-10-20T18:39:32.349+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "52 - declared legal entity references"
+2026-10-20T18:39:32.358+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "53 - reviewed legal entity retirement"
+2026-10-20T18:39:32.374+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "54 - private recorded birth date"
+2026-10-20T18:39:32.383+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "55 - schema local birth date guard"
+2026-10-20T18:39:32.393+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "56 - company work calendars"
+2026-10-20T18:39:32.411+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "57 - dated company calendar amendments"
+2026-10-20T18:39:32.422+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "58 - calendar revision guard result"
+2026-10-20T18:39:32.429+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "59 - company calendar retirement"
+2026-10-20T18:39:32.441+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "60 - private personal email"
+2026-10-20T18:39:32.451+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "61 - approved employee calendar assignment"
+2026-10-20T18:39:32.471+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "62 - approved employee entity assignment"
+2026-10-20T18:39:32.488+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "63 - capture entity requester employee"
+2026-10-20T18:39:32.500+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "64 - protect entity request provenance"
+2026-10-20T18:39:32.506+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "65 - employee audit keyset index"
+2026-10-20T18:39:32.512+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "66 - department parent correction"
+2026-10-20T18:39:32.524+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "67 - department parent business order"
+2026-10-20T18:39:32.530+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "68 - schema scoped department hierarchy lock"
+2026-10-20T18:39:32.536+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_bk_http_3d2ee8ebcc41" to version "69 - department parent truncate protection"
+2026-10-20T18:39:32.544+05:30  INFO 23131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 69 migrations to schema "atlas_bk_http_3d2ee8ebcc41", now at version v69 (execution time 00:00.627s)
+2026-10-20T18:39:33.107+05:30  INFO 23131 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-20T18:39:33.381+05:30  INFO 23131 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-20T18:39:33.410+05:30  INFO 23131 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 59562 (http) with context path '/'
+2026-10-20T18:39:33.414+05:30  INFO 23131 --- [atlas-api] [           main] com.atlas.CoreHrCommandVersionHttpTest   : Started CoreHrCommandVersionHttpTest in 3.186 seconds (process running for 3.78)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/private/tmp/atlas-m2/net/bytebuddy/byte-buddy-agent/1.17.8/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+2026-10-20T18:39:33.845+05:30  INFO 23131 --- [atlas-api] [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-20T18:39:33.845+05:30  INFO 23131 --- [atlas-api] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-20T18:39:33.846+05:30  INFO 23131 --- [atlas-api] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-10-20T18:39:33.890+05:30  INFO 23131 --- [atlas-api] [o-auto-1-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=ba91211b-747d-455b-8f95-28e18dfe0165 status=200 duration_ms=43
+2026-10-20T18:39:34.091+05:30  INFO 23131 --- [atlas-api] [o-auto-1-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=1fd7cf95-6d89-46a0-ae13-f396f49bc1f7 status=204 duration_ms=186
+2026-10-20T18:39:34.106+05:30  INFO 23131 --- [atlas-api] [o-auto-1-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=e3f73135-57e9-4d19-962c-b84c6b4e8fc1 status=200 duration_ms=7
+2026-10-20T18:39:34.153+05:30  INFO 23131 --- [atlas-api] [o-auto-1-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=9c61725d-03ca-444f-8113-a4420e3c0d80 status=400 duration_ms=45
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 4.202 s <<< FAILURE! -- in com.atlas.CoreHrCommandVersionHttpTest
+[ERROR] com.atlas.CoreHrCommandVersionHttpTest.employeeChangeRejectsFractionsWithoutMutationThenAcceptsExactReplay -- Time elapsed: 0.715 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: {"status":400,"correlationId":"9c61725d-03ca-444f-8113-a4420e3c0d80","detail":"A valid employee identifier and version are required."} ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:69)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:41)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:228)
+	at com.atlas.CoreHrCommandVersionHttpTest.invalids(CoreHrCommandVersionHttpTest.java:84)
+	at com.atlas.CoreHrCommandVersionHttpTest.employeeChangeRejectsFractionsWithoutMutationThenAcceptsExactReplay(CoreHrCommandVersionHttpTest.java:92)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   CoreHrCommandVersionHttpTest.employeeChangeRejectsFractionsWithoutMutationThenAcceptsExactReplay:92->invalids:84 {"status":400,"correlationId":"9c61725d-03ca-444f-8113-a4420e3c0d80","detail":"A valid employee identifier and version are required."} ==> expected: <true> but was: <false>
+[INFO] 
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  11.985 s
+[INFO] Finished at: 2026-10-20T18:39:36+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.6:test (default-test) on project atlas-api: There are test failures.
+[ERROR] 
+[ERROR] See /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

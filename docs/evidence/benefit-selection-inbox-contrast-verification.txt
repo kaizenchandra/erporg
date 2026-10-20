@@ -1,0 +1,490 @@
+
+Running 3 tests using 1 worker
+
+(node:56997) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56997) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/benefit-selection-inbox.spec.ts:47:5 › employee submission is independently approved through the scoped benefit inbox and retained in own tracking (4.9s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/benefit-selection-inbox.spec.ts:47:5 › employee submission is independently approved through the scoped benefit inbox and retained in own tracking 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -   1[39m
+    [31m+ Received  + 443[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",[39m
+    [31m+     "help": "Elements must meet minimum color contrast ratio thresholds",[39m
+    [31m+     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",[39m
+    [31m+     "id": "color-contrast",[39m
+    [31m+     "impact": "serious",[39m
+    [31m+     "nodes": Array [[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(5) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(5) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(6) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(6) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(7) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(7) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(8) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(8) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(9) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(9) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(10) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(10) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(11) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(11) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(12) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(12) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(13) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(13) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(14) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(14) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(15) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(15) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article:nth-child(16) > .badge.pending",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge pending\"><span></span>PENDING</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article:nth-child(16) > .badge.pending",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+     ],[39m
+    [31m+     "tags": Array [[39m
+    [31m+       "cat.color",[39m
+    [31m+       "wcag2aa",[39m
+    [31m+       "wcag143",[39m
+    [31m+       "TTv5",[39m
+    [31m+       "TT13.c",[39m
+    [31m+       "EN-301-549",[39m
+    [31m+       "EN-9.1.4.3",[39m
+    [31m+       "ACT",[39m
+    [31m+       "RGAAv4",[39m
+    [31m+       "RGAA-3.2.1",[39m
+    [31m+     ],[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      206 |         .analyze()
+      207 |     ).violations,
+    > 208 |   ).toEqual([]);
+          |     ^
+      209 |   expect(
+      210 |     await page.evaluate(
+      211 |       () => document.documentElement.scrollWidth <= innerWidth,
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/benefit-selection-inbox.spec.ts:208:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/benefit-selection-inbox-em-23eb9-nd-retained-in-own-tracking/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/benefit-selection-inbox-em-23eb9-nd-retained-in-own-tracking/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/benefit-selection-inbox-em-23eb9-nd-retained-in-own-tracking/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/benefit-selection-inbox-em-23eb9-nd-retained-in-own-tracking/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/benefit-selection-inbox.spec.ts:47:5 › employee submission is independently approved through the scoped benefit inbox and retained in own tracking 
+  2 did not run
+  1 error was not a part of any test, see above for details

@@ -1,0 +1,12 @@
+
+Running 3 tests using 1 worker
+
+(node:70562) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:70562) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/payroll-accounting.spec.ts:191:5 › approved time becomes a finalized payslip and a separately approved, posted and reconciled journal (7.9s)
+  ✓  2 tests/payroll-accounting.spec.ts:342:5 › manual journal is returned, corrected, independently posted and reversed without editing posted history (6.1s)
+  ✓  3 tests/payroll-accounting.spec.ts:437:5 › entity grants, payroll ownership, CSRF and period closure are enforced by real APIs and UI (2.1s)
+
+  3 passed (18.5s)

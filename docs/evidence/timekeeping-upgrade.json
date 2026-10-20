@@ -1,0 +1,15 @@
+{
+  "status": "PASSED",
+  "fromSchemaVersion": 69,
+  "schemaVersion": 70,
+  "unchangedBusinessTables": 74,
+  "unchangedViews": 15,
+  "newTables": [
+    "time_shift",
+    "time_sheet",
+    "time_costing_entry",
+    "time_command",
+    "time_audit"
+  ],
+  "note": "Complete retained hashes match. An initial empty-new-table assertion was invalid because new attendance commands had already been exercised against the running synthetic API; records retained."
+}

@@ -22,6 +22,10 @@ export type Employee = {
   startDate: string;
   positionCode: string;
   legalName: string | null;
+  birthDate: string | null;
+  personalEmail: string | null;
+  calendarCode: string;
+  legalEntityCode: string | null;
   version: number;
 };
 export type ChangeRequest = {

@@ -1,0 +1,47 @@
+
+Running 2 tests using 1 worker
+
+(node:13347) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13347) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/department-directory.spec.ts:16:5 › department directory resolves unseen parents, pages reference branches and recovers stale/mobile reads (30.3s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/department-directory.spec.ts:16:5 › department directory resolves unseen parents, pages reference branches and recovers stale/mobile reads 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('region', { name: 'Department directory', exact: true }).getByLabel('Department timing', { exact: true })[22m
+
+
+      100 |   await directory
+      101 |     .getByLabel("Department timing", { exact: true })
+    > 102 |     .selectOption("PLANNED");
+          |      ^
+      103 |   await expect(directory).toContainText("BA directory child 11");
+      104 |   await expect(directory.getByRole("status")).toContainText("1 departments");
+      105 |   await directory
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/department-directory.spec.ts:102:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/department-directory-depar-47925-recovers-stale-mobile-reads/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/department-directory-depar-47925-recovers-stale-mobile-reads/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/department-directory-depar-47925-recovers-stale-mobile-reads/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/department-directory-depar-47925-recovers-stale-mobile-reads/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/department-directory.spec.ts:16:5 › department directory resolves unseen parents, pages reference branches and recovers stale/mobile reads 
+  1 did not run
+  1 error was not a part of any test, see above for details

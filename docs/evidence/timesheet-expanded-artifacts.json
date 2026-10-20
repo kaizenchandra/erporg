@@ -1,0 +1,11 @@
+{
+  "scope": "Local verified artefacts, not an SBOM or production release",
+  "frontendBuildId": "gfcSeFToyJIFcpXVFem3D",
+  "sha256": {
+    "backend/target/atlas-api-0.1.0.jar": "e95e203926201713bd2c71655c32b77686de5ea5e9dacf5f19d90561b460f87c",
+    "package-lock.json": "6952088e06803b8ebc8b438ff7d65ec8b88fe9d7eacb40c25fc8c07151b90322",
+    "backend/src/main/resources/db/migration/V72__timesheet_return_and_recall.sql": "0fee24af98a2d340b2669a0c3fdfdaf204a458c69552e63ddbc312bc29cae879",
+    "backend/src/main/resources/db/migration/V73__timesheet_period_controls.sql": "ca30d7e79d4404cd1a4ed7b6964ef26cf5950555b7d6b654d841a176facc53d5",
+    "backend/src/main/resources/db/migration/V74__timesheet_bulk_receipts.sql": "b82750b9034442dae718f2536b9e6f096ab6e700d5abbcc6436beb3167c6622c"
+  }
+}

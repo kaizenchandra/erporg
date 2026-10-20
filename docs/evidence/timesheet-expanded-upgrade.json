@@ -1,0 +1,8 @@
+{
+  "status": "PASSED",
+  "retainedBusinessTables": 79,
+  "retainedViews": 15,
+  "changedTables": [],
+  "changedViews": [],
+  "scope": "V71 to V74 local synthetic data; hashes exclude Flyway history; new tables verified by integration tests"
+}

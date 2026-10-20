@@ -1,0 +1,630 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-20T18:44:11.305+05:30  INFO 24131 --- [atlas-api] [           main] com.atlas.AtlasApplication               : Starting AtlasApplication v0.1.0 using Java 21.0.12.1 with PID 24131 (/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-20T18:44:11.306+05:30  INFO 24131 --- [atlas-api] [           main] com.atlas.AtlasApplication               : The following 2 profiles are active: "local", "acceptance"
+2026-10-20T18:44:12.121+05:30  INFO 24131 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-10-20T18:44:12.129+05:30  INFO 24131 --- [atlas-api] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-20T18:44:12.129+05:30  INFO 24131 --- [atlas-api] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-20T18:44:12.143+05:30  INFO 24131 --- [atlas-api] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 813 ms
+2026-10-20T18:44:12.442+05:30  INFO 24131 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-20T18:44:12.562+05:30  INFO 24131 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5f2b9da8
+2026-10-20T18:44:12.563+05:30  INFO 24131 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-20T18:44:12.577+05:30  INFO 24131 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_acceptance (PostgreSQL 18.6)
+2026-10-20T18:44:12.654+05:30  INFO 24131 --- [atlas-api] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 70 migrations (execution time 00:00.061s)
+2026-10-20T18:44:12.690+05:30  INFO 24131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_acceptance": 69
+2026-10-20T18:44:12.692+05:30  INFO 24131 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Schema "atlas_acceptance" is up to date. No migration necessary.
+2026-10-20T18:44:13.346+05:30  INFO 24131 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-20T18:44:13.694+05:30  INFO 24131 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-20T18:44:13.731+05:30  INFO 24131 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-10-20T18:44:13.736+05:30  INFO 24131 --- [atlas-api] [           main] com.atlas.AtlasApplication               : Started AtlasApplication in 2.673 seconds (process running for 2.947)
+2026-10-20T18:44:21.750+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-20T18:44:21.751+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-20T18:44:21.754+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2026-10-20T18:44:21.817+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=0d1f0380-cec5-467c-9b52-1577e4709237 status=200 duration_ms=60
+2026-10-20T18:44:21.829+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=eeb5e835-dae9-4af9-922b-3aab046ff7a1 status=401 duration_ms=72
+2026-10-20T18:44:22.871+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=dc0aaf69-a699-428d-8a5a-c1d36a86cc8f status=200 duration_ms=26
+2026-10-20T18:44:23.127+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=7271f4ed-f7a8-4a7d-89ca-61b2abcf58bd status=204 duration_ms=250
+2026-10-20T18:44:23.174+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=d2213a8b-415c-47d3-a8fd-40cea93ea182 status=200 duration_ms=42
+2026-10-20T18:44:23.235+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=6d047348-a574-40ff-a1e8-f7641f1dde86 status=200 duration_ms=55
+2026-10-20T18:44:23.241+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=7f91aae8-cf60-4a95-91c1-56bf8e3519b3 status=200 duration_ms=59
+2026-10-20T18:44:23.243+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=81420f6d-f232-416a-8dcb-caec0c54502b status=200 duration_ms=61
+2026-10-20T18:44:23.265+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=bede1f6e-6664-44b2-930f-0f34005cee86 status=200 duration_ms=85
+2026-10-20T18:44:23.484+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=f36150cb-751a-4726-8bb4-5bd52c53123b status=200 duration_ms=49
+2026-10-20T18:44:31.893+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=2e86326b-732e-4ebc-a2a7-ceb7db1e2f53 status=200 duration_ms=1
+2026-10-20T18:44:31.908+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=6ad8b817-6fd3-4c25-9582-e7b5ae368623 status=401 duration_ms=16
+2026-10-20T18:44:31.967+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=c65a3555-b1e8-4ffc-9697-a98df5582e70 status=200 duration_ms=7
+2026-10-20T18:44:32.074+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=b8f3b65d-eb92-4b48-a7e0-e0c40c56885c status=204 duration_ms=79
+2026-10-20T18:44:32.086+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=3042b8e3-c637-41b5-b39e-bd339fbea702 status=200 duration_ms=10
+2026-10-20T18:44:32.106+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=d27c3917-2e9c-43de-a1db-8ad4dc206f95 status=200 duration_ms=17
+2026-10-20T18:44:32.108+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=a10ad516-6b71-4fe5-8c10-89af1a4ebcff status=200 duration_ms=18
+2026-10-20T18:44:32.110+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=00eb97cc-b9ae-4859-88c8-802e80a99a57 status=200 duration_ms=20
+2026-10-20T18:44:32.121+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=b36fea7d-6a9c-4707-aeb6-4670d546f73e status=200 duration_ms=32
+2026-10-20T18:44:32.322+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=a9ebcec0-e3a8-4346-9d12-014e92211411 status=200 duration_ms=43
+2026-10-20T18:44:32.381+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=50602338-d359-495c-b603-c1a8436abd4c status=200 duration_ms=34
+2026-10-20T18:44:32.495+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=dd595035-a7f3-4d9c-afe3-acc6718aedd9 status=200 duration_ms=69
+2026-10-20T18:44:32.501+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=55e0339f-7b9e-4287-81c9-a7fc35cc5092 status=200 duration_ms=65
+2026-10-20T18:44:32.519+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=a9e298bd-ea84-465d-9d88-00fa5127a409 status=200 duration_ms=92
+2026-10-20T18:44:32.533+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=6a314952-00fe-4cd9-b0c0-607d1a6ea0ea status=200 duration_ms=107
+2026-10-20T18:44:32.580+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=85c77d17-2006-4fc2-9853-93cc5766dc8d status=200 duration_ms=44
+2026-10-20T18:44:32.597+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=6b84bbc7-ff21-475e-a139-16195d1eb109 status=200 duration_ms=17
+2026-10-20T18:44:32.649+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=887db1d6-a4d1-469b-b881-133297cf2b2b status=400 duration_ms=46
+2026-10-20T18:44:32.685+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=613188b3-15bc-40e9-bd34-599e4dcbfe37 status=200 duration_ms=18
+2026-10-20T18:44:32.709+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=1c2c5832-e9af-42fb-b053-3af8930724ea status=200 duration_ms=20
+2026-10-20T18:44:32.776+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=21418d1a-fef3-42d4-944d-c1e8a20cab5d status=200 duration_ms=33
+2026-10-20T18:44:32.791+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=d1670fb9-de95-4d32-a01a-b2a7f99a333b status=200 duration_ms=12
+2026-10-20T18:44:32.815+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=bfb339c4-dcdf-4cdb-b98a-b0d24723311a status=200 duration_ms=20
+2026-10-20T18:44:32.817+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=42fb6f52-6acd-4eb6-995d-ffab0b958c50 status=200 duration_ms=23
+2026-10-20T18:44:32.819+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=92a4480d-8408-4968-8ec1-f139c695bb7a status=200 duration_ms=24
+2026-10-20T18:44:32.824+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=9b843cab-6cfe-4918-924e-9b6e1f1e0279 status=200 duration_ms=29
+2026-10-20T18:44:32.864+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=98a1c28c-47d2-4fc6-8a8f-924fc9ccf8fa status=204 duration_ms=7
+2026-10-20T18:44:32.996+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=a2253987-85b3-4a72-94e5-9ec38e524c77 status=200 duration_ms=1
+2026-10-20T18:44:33.002+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=8e2d2b39-5a43-49c2-8613-fa8c81862273 status=401 duration_ms=7
+2026-10-20T18:44:33.048+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=9cfb617f-7d64-4631-956f-40ccead78a04 status=200 duration_ms=5
+2026-10-20T18:44:33.117+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=68394684-f8e6-42ff-be3c-f01c6621a301 status=200 duration_ms=23
+2026-10-20T18:44:33.119+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=4d0aad40-d6f8-4656-83ad-3417edf26f19 status=200 duration_ms=24
+2026-10-20T18:44:33.133+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=f403b2d4-0c38-44cc-aadc-dba854430bac status=204 duration_ms=77
+2026-10-20T18:44:33.148+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=96c028f3-0d14-4608-8504-e3c95b71475c status=200 duration_ms=13
+2026-10-20T18:44:33.166+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=999f9dd6-82fb-40f5-a931-77a3e4c79fc1 status=200 duration_ms=16
+2026-10-20T18:44:33.168+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=1a01077d-3130-4b47-af7c-9f2148d5dbc6 status=200 duration_ms=17
+2026-10-20T18:44:33.175+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=39d51b5b-4c12-4b40-8cf9-3d97b1c0fd92 status=200 duration_ms=24
+2026-10-20T18:44:33.183+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=2c066eb6-add6-47bc-abf6-82b5920eb2db status=200 duration_ms=33
+2026-10-20T18:44:33.388+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=33e2490e-b353-4638-98b3-a921d7dfb4b3 status=200 duration_ms=48
+2026-10-20T18:44:33.452+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=9aa11301-b5b1-4f1a-8e50-ee6f966f05de status=200 duration_ms=25
+2026-10-20T18:44:33.611+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=820212f4-cdc0-4ff2-a009-b2a9d1072aed status=200 duration_ms=17
+2026-10-20T18:44:33.671+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=cbc9fb8f-d544-4ebb-b0c2-ef50abbe42c3 status=200 duration_ms=57
+2026-10-20T18:44:33.687+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=e3ec8395-3c8d-473b-b381-a48b1018ff23 status=200 duration_ms=13
+2026-10-20T18:44:33.692+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=62369be6-ac34-4b22-813b-1de81936e13c status=200 duration_ms=16
+2026-10-20T18:44:33.712+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=e6bf1686-fcd6-4be4-b472-3c8021697097 status=200 duration_ms=22
+2026-10-20T18:44:33.713+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=df6d72d0-96fe-4b02-ba60-b39b9f4d024a status=200 duration_ms=24
+2026-10-20T18:44:33.723+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=f0709105-442d-4edc-b0df-e01a2a6e8632 status=200 duration_ms=14
+2026-10-20T18:44:33.731+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=c41e8e55-51ff-434a-a940-e79743a81514 status=200 duration_ms=41
+2026-10-20T18:44:33.738+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=1a402fb8-f943-4e86-99b1-2cf75a728468 status=200 duration_ms=47
+2026-10-20T18:44:33.750+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=cd04567f-3c17-4547-8e5e-991ce6a6d84a status=200 duration_ms=23
+2026-10-20T18:44:33.757+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=c0a8128b-08fa-4dff-8918-a55051a7c31f status=200 duration_ms=14
+2026-10-20T18:44:36.271+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=98a57faa-837f-4097-99c5-ba1a8b768b70 status=200 duration_ms=37
+2026-10-20T18:44:36.274+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=5dfea6f3-4c6b-440f-adcf-f04b2205352a status=200 duration_ms=40
+2026-10-20T18:44:37.041+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=3c0fb911-d64e-4ecd-9cd5-e6bc62f91130 status=200 duration_ms=32
+2026-10-20T18:44:37.042+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=c9d11d4d-f0de-4b97-be08-255b77b1f3ab status=200 duration_ms=33
+2026-10-20T18:44:38.387+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=dcf2b374-2750-4bfb-8a06-820412529620 status=200 duration_ms=80
+2026-10-20T18:44:38.389+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=58cd9d1c-cd2f-4057-baa4-643cc6ced0c2 status=200 duration_ms=79
+2026-10-20T18:44:41.197+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=886a937e-cb06-4621-a9df-f0601358aa0f status=200 duration_ms=49
+2026-10-20T18:44:48.917+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=d04a495a-6eb0-48d7-91c0-fa9ec64d6fa7 status=200 duration_ms=83
+2026-10-20T18:44:50.722+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=c1a25309-7285-4639-9161-6e75fc3cf081 status=200 duration_ms=53
+2026-10-20T18:44:52.679+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=be73fcdf-822e-4f9d-a6db-91b65512a245 status=200 duration_ms=38
+2026-10-20T18:45:02.494+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=4bba8f42-a0b6-4305-80cb-25b3ae939892 status=200 duration_ms=35
+2026-10-20T18:45:03.887+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=3d036a67-0f59-4ea0-bc85-2be9ca3565ec status=200 duration_ms=11
+2026-10-20T18:45:03.971+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=de29b8e1-1fa5-43dd-93e5-90f159ba05da status=204 duration_ms=79
+2026-10-20T18:45:03.993+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=d593ea2e-d041-4f6d-b5b0-2d99d7acffd8 status=200 duration_ms=16
+2026-10-20T18:45:04.004+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=e2b2ad49-c5da-4141-a269-78b08709cd56 status=200 duration_ms=7
+2026-10-20T18:45:04.097+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=ddbce2bd-6b43-491d-b942-b7d2788361ad status=204 duration_ms=89
+2026-10-20T18:45:04.117+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=4b191963-d1b6-48c3-aed8-e788795014ee status=200 duration_ms=15
+2026-10-20T18:45:04.135+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=d0522edb-2578-48f4-a926-dadcd208f40a status=200 duration_ms=15
+2026-10-20T18:45:04.183+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=ddc65c18-5220-4a72-ab65-b6fe71948f0f status=200 duration_ms=13
+2026-10-20T18:45:04.212+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=4413f135-e403-4cd5-8a25-de65977d5169 status=200 duration_ms=18
+2026-10-20T18:45:04.264+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=4741a379-e70f-4730-94e4-eeb1e72cef6b status=200 duration_ms=37
+2026-10-20T18:45:04.302+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=f378dee6-3fc1-4953-a4ec-bb568b0098de status=200 duration_ms=23
+2026-10-20T18:45:04.329+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=1acc40b7-c0b4-4fb1-90b2-757b98034134 status=200 duration_ms=18
+2026-10-20T18:45:04.353+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=a91d6dd5-554e-4f0d-81cf-4530ae20ab10 status=200 duration_ms=13
+2026-10-20T18:45:04.389+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=5837dc2b-5bf3-4c7c-aa7b-b07df2d5ee71 status=200 duration_ms=24
+2026-10-20T18:45:04.410+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=df9f998d-d7a5-4732-af35-6eb8ae53b7f1 status=200 duration_ms=12
+2026-10-20T18:45:04.443+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=2e53e9b5-53ee-49a1-8417-e50099c2864c status=200 duration_ms=23
+2026-10-20T18:45:04.469+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=db690074-ac3a-478a-97c5-f63b0c2ef1f1 status=200 duration_ms=17
+2026-10-20T18:45:04.497+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=baec92dd-4dc9-46b6-acf4-dc3cba873b57 status=200 duration_ms=19
+2026-10-20T18:45:04.531+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=64e875ec-85ee-4e45-afae-0c1dceb7b578 status=200 duration_ms=24
+2026-10-20T18:45:04.555+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=23abfe00-768f-487b-8bf4-481f2e5dca3c status=200 duration_ms=13
+2026-10-20T18:45:04.578+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=91320b7d-50d8-4b1b-aab0-3178400871e3 status=200 duration_ms=19
+2026-10-20T18:45:04.602+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=753c714f-ad95-4f57-8abb-8bd201532f44 status=200 duration_ms=16
+2026-10-20T18:45:04.623+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=22800cee-29ed-4cbc-9068-9695bc0e877f status=400 duration_ms=11
+2026-10-20T18:45:04.645+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=d565ec3c-3732-49e4-a358-b2e9986af435 status=409 duration_ms=14
+2026-10-20T18:45:04.668+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=1a22d223-563a-4ac4-a912-50435f994ba0 status=200 duration_ms=16
+2026-10-20T18:45:04.690+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=dd945a39-997a-4335-a85b-232986ac8f00 status=200 duration_ms=13
+2026-10-20T18:45:05.435+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=737fc5de-daf3-4e4c-9cd8-52e929288143 status=200 duration_ms=1
+2026-10-20T18:45:05.447+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=101e0f7e-589a-4e34-b308-019be1f922c7 status=401 duration_ms=13
+2026-10-20T18:45:05.519+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=ddcade54-12f0-44cf-bf9d-e9f623b7879d status=200 duration_ms=5
+2026-10-20T18:45:05.626+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=8d9e92d6-b31e-4745-baac-3700a202ee7d status=204 duration_ms=81
+2026-10-20T18:45:05.645+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=1507b5e5-fc0f-4f03-8b9a-2d21770834da status=200 duration_ms=16
+2026-10-20T18:45:05.665+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=1793bb62-1f35-4361-b8a6-8ad10055648a status=200 duration_ms=18
+2026-10-20T18:45:05.667+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=85c57780-3612-4f3a-b34b-894e8415f068 status=200 duration_ms=20
+2026-10-20T18:45:05.670+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=85f0ce49-bbbf-475e-abda-7f9498fac5b1 status=200 duration_ms=23
+2026-10-20T18:45:05.671+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=542ee502-1819-4acf-acc7-aa51f4939689 status=200 duration_ms=24
+2026-10-20T18:45:05.857+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=1bed3aaf-0e8c-4ad8-a943-3fb883c3294b status=200 duration_ms=29
+2026-10-20T18:45:05.906+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=f10577b0-cf55-4f9c-8c27-3953c22fa110 status=200 duration_ms=26
+2026-10-20T18:45:05.977+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=66c6bf86-87a4-4b24-ad87-dc1547a151e4 status=200 duration_ms=37
+2026-10-20T18:45:05.980+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=efa84f1c-d779-4b0b-9c92-a44281651b1f status=200 duration_ms=40
+2026-10-20T18:45:05.980+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=91c1cfbc-4237-4e0d-90e5-5ba5205b008b status=200 duration_ms=40
+2026-10-20T18:45:05.982+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=2ef71081-7a1e-48cf-bea6-3416a0ed22bc status=200 duration_ms=34
+2026-10-20T18:45:06.093+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=a0d92606-c44e-4d6c-a83f-138796023519 status=200 duration_ms=14
+2026-10-20T18:45:06.118+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=01e58038-3dba-46eb-8595-2b9b17f090d2 status=400 duration_ms=19
+2026-10-20T18:45:06.154+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=5b7b58f7-1bdd-450b-9701-0c6e2e2209b1 status=200 duration_ms=21
+2026-10-20T18:45:06.180+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=ff048ef0-336f-475e-86ef-c257aae00442 status=200 duration_ms=23
+2026-10-20T18:45:06.181+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=cecffc03-26fa-4a50-b206-8f07d37246e9 status=200 duration_ms=15
+2026-10-20T18:45:06.183+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=8956d96d-f799-4b32-8946-879521bf7d19 status=200 duration_ms=17
+2026-10-20T18:45:06.228+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=b7f7bcc9-da4f-426d-9f93-5c2feed482a5 status=200 duration_ms=17
+2026-10-20T18:45:06.242+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=d7e70702-473f-41b6-83c8-45568609950a status=200 duration_ms=12
+2026-10-20T18:45:06.259+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=a4024e7a-798b-4eff-aa77-392d7a6ccd21 status=200 duration_ms=14
+2026-10-20T18:45:06.261+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=a3142a15-5888-480a-b12e-553505807247 status=200 duration_ms=16
+2026-10-20T18:45:06.263+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=4a2e56a5-27f5-4d69-b31e-3b97046dc2bd status=200 duration_ms=18
+2026-10-20T18:45:06.266+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=4cb6201f-9785-4cbb-a32b-83f404062f2e status=200 duration_ms=21
+2026-10-20T18:45:06.335+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=0f5ba895-6bac-4517-8f51-58e011968d05 status=204 duration_ms=6
+2026-10-20T18:45:06.466+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=5710ef98-9ca9-4d1f-9f00-81b4ca197a22 status=200 duration_ms=1
+2026-10-20T18:45:06.474+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=4fbf0925-b2d0-45ca-b248-b5916635cbf2 status=401 duration_ms=9
+2026-10-20T18:45:06.539+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=c89a1369-0c01-4397-93cd-2a58369d7f3c status=200 duration_ms=9
+2026-10-20T18:45:06.652+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=71ee13c3-87b1-4980-a02f-8a7883ca37d5 status=204 duration_ms=109
+2026-10-20T18:45:06.675+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=bdffac36-4941-4984-b0f8-ca8a4bcaabb6 status=200 duration_ms=19
+2026-10-20T18:45:06.713+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=93e138ee-a8d6-46ed-8f0f-13b2d5f22f2c status=200 duration_ms=34
+2026-10-20T18:45:06.717+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=997f4402-625e-41f3-ba84-ef367fa23286 status=200 duration_ms=38
+2026-10-20T18:45:06.734+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=117b6dbc-20e1-4b18-b0ff-af29f1495e37 status=200 duration_ms=54
+2026-10-20T18:45:06.751+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=ff1878d0-fb15-46b2-b69f-91707571689c status=200 duration_ms=72
+2026-10-20T18:45:06.959+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=d142ca24-4de5-422e-8c87-58b182aef0ed status=200 duration_ms=52
+2026-10-20T18:45:06.963+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=7df7fabd-fea2-40d1-828c-75b43a109216 status=200 duration_ms=29
+2026-10-20T18:45:07.107+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=83420c76-02fb-4edf-9a06-918ae679c577 status=200 duration_ms=11
+2026-10-20T18:45:07.152+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=19c4734f-133f-4251-a232-f5f2ef8dc6dd status=200 duration_ms=42
+2026-10-20T18:45:07.167+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=c587928c-f880-4974-b4df-8fca618d4390 status=200 duration_ms=12
+2026-10-20T18:45:07.169+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=ae4ab5a7-19dd-499a-9a19-38434fd72075 status=200 duration_ms=11
+2026-10-20T18:45:07.185+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=50f35e02-afda-4be2-b4b6-ee3fe881e96c status=200 duration_ms=16
+2026-10-20T18:45:07.187+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=817c1a49-5d3c-41b5-9cba-399698ac3c8a status=200 duration_ms=17
+2026-10-20T18:45:07.198+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=7651dd50-8690-4770-a6a7-a56c6a2d4398 status=200 duration_ms=28
+2026-10-20T18:45:07.213+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=173f3eff-2b6e-49c6-80e9-0a0e61c8a931 status=200 duration_ms=44
+2026-10-20T18:45:07.241+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=66302582-58d6-47ee-bff0-09d48f81c377 status=200 duration_ms=29
+2026-10-20T18:45:07.244+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=56bd16f2-2cc5-4184-b08c-ce6791a285be status=200 duration_ms=25
+2026-10-20T18:45:07.345+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=ca93a8c7-c794-4808-a118-ee15fdf82664 status=200 duration_ms=63
+2026-10-20T18:45:07.360+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=a03a5acb-0906-40be-90a9-1a321e6c757f status=200 duration_ms=75
+2026-10-20T18:45:11.737+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=98defe9a-bfbf-4c9c-b2cf-8e094e00f2ab status=200 duration_ms=44
+2026-10-20T18:45:21.714+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=a99d02d7-2a3f-4448-9eab-9c30a63b25f6 status=200 duration_ms=29
+2026-10-20T18:45:24.566+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=0610e819-752f-49b8-bcf0-22d7222badc3 status=200 duration_ms=45
+2026-10-20T18:45:25.907+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=9a1a5d18-3f38-46ce-ae89-79dfaa9b616d status=200 duration_ms=54
+2026-10-20T18:45:28.592+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=45080482-1c34-4723-beaa-f516dc848511 status=200 duration_ms=77
+2026-10-20T18:45:33.817+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=9d7b868a-e4e6-45dd-8c40-4b71de1b7232 status=200 duration_ms=47
+2026-10-20T18:45:35.649+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=0f46b1b1-4a8f-4f13-bc0c-408c3355024b status=200 duration_ms=54
+2026-10-20T18:46:47.664+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=d1654cf9-1eac-4f4f-8884-261d87e47076 status=200 duration_ms=4
+2026-10-20T18:46:47.692+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=3b5936ec-d39e-4441-91fe-e34a07768198 status=200 duration_ms=36
+2026-10-20T18:46:47.723+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=5cbe174a-71f6-4ac8-843f-bd5c93bd19ca status=200 duration_ms=28
+2026-10-20T18:46:47.725+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=41fd6851-d07a-4006-b721-98dbaa67f7a5 status=200 duration_ms=30
+2026-10-20T18:46:47.726+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=992aa672-4618-4f35-9f79-b2f440a1e208 status=200 duration_ms=31
+2026-10-20T18:46:47.739+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=72d36192-ff44-4bad-af7f-888c600ee128 status=200 duration_ms=44
+2026-10-20T18:46:47.946+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=29aa5ff8-b97d-436b-bab2-97fbfbe0a568 status=200 duration_ms=48
+2026-10-20T18:48:18.959+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=90f7f82d-5155-4782-8e07-500d3baa8923 status=200 duration_ms=3
+2026-10-20T18:48:18.978+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=86052129-d9bc-4c84-a830-7b4883f6c159 status=200 duration_ms=25
+2026-10-20T18:48:19.011+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=bf99ea20-cd40-41c1-8ebd-df714d97d41a status=200 duration_ms=29
+2026-10-20T18:48:19.013+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=94bf05bd-ab0e-465e-be8d-a396ffd184ac status=200 duration_ms=30
+2026-10-20T18:48:19.016+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=d0926255-c414-4a5a-b7fb-9e2bdd72d5aa status=200 duration_ms=33
+2026-10-20T18:48:19.038+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=64b97376-d2b9-4bfe-82a3-00c77b0e5141 status=200 duration_ms=56
+2026-10-20T18:48:19.266+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=b70885b8-46eb-4793-afa9-1a871b967a7b status=200 duration_ms=68
+2026-10-20T18:48:21.702+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=0c6f611e-b2f6-4dc5-b476-1a6878de022b status=200 duration_ms=2
+2026-10-20T18:48:21.731+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=a7e7b3d1-9e78-4bfb-8c93-b3fb69e5e3b4 status=200 duration_ms=31
+2026-10-20T18:48:21.764+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=8bb98c63-63dc-4413-b8a2-d54d6ee360cb status=200 duration_ms=29
+2026-10-20T18:48:21.766+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=04714e95-91d1-4d45-9871-e28ba1fff39f status=200 duration_ms=28
+2026-10-20T18:48:21.774+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=28bba218-bc39-4d39-afea-318af121fdcb status=200 duration_ms=37
+2026-10-20T18:48:21.796+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=f744eb08-654e-4a42-8dc1-b141716c11bf status=200 duration_ms=61
+2026-10-20T18:48:21.991+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=b5611d78-5fa8-46a5-8de9-6447959dac8a status=200 duration_ms=38
+2026-10-20T18:57:49.898+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=70e6dabe-ec57-4d6f-b24f-ddddff41b8c5 status=200 duration_ms=4
+2026-10-20T18:57:49.934+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=598ea5f0-09c6-4364-bbe7-996b32cdf8ed status=200 duration_ms=41
+2026-10-20T18:57:49.969+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=0ef22726-5f2b-44bc-8806-b05be3c7b5b3 status=200 duration_ms=31
+2026-10-20T18:57:49.985+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=9f7c093c-5e2c-4a8d-af6d-4e6773365470 status=200 duration_ms=44
+2026-10-20T18:57:49.986+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=248c00e6-d560-4d1f-bd2e-f0b57400e631 status=200 duration_ms=46
+2026-10-20T18:57:49.997+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=47a62329-371d-420d-83cb-3b2efaa84feb status=200 duration_ms=59
+2026-10-20T18:57:50.191+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=c8ddab02-02ee-4540-8303-15b592900e49 status=200 duration_ms=29
+2026-10-20T18:57:52.489+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=80189ad1-9e6d-4771-a3f4-30b00cb37f3b status=500 duration_ms=37
+2026-10-20T18:57:52.491+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=069bd9a8-ae7d-4e6e-9616-d4b593a925fa status=500 duration_ms=41
+Exception in thread "http-nio-8080-exec-8" Exception in thread "http-nio-8080-exec-10" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:57:56.083+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=9d2bf56c-4a01-43b6-9e4d-f50f371cbce3 status=500 duration_ms=25
+Exception in thread "http-nio-8080-exec-9" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:00.213+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=ec18fdac-343e-421b-b9e1-6ffd23887d02 status=200 duration_ms=41
+2026-10-20T18:59:00.240+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=8f098675-8ae3-480c-b598-8f50e8c84828 status=500 duration_ms=19
+Exception in thread "http-nio-8080-exec-7" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:19.811+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=6953de72-db5c-46bb-adfc-0dfc1f01756e status=500 duration_ms=42
+Exception in thread "http-nio-8080-exec-1" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:21.770+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=871fbb72-a6df-4f71-a7b7-fb44e306e58a status=500 duration_ms=47
+Exception in thread "http-nio-8080-exec-5" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:23.298+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=06d7e5bd-e1c1-492f-b027-21299a68fe3f status=500 duration_ms=53
+Exception in thread "http-nio-8080-exec-4" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:31.011+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=ccdb4062-9a41-4681-a3ff-b68d679fb44f status=500 duration_ms=22
+Exception in thread "http-nio-8080-exec-2" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:31.851+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-11] com.atlas.configuration.RequestGuard     : request_completed correlation=888ee681-127c-4777-ac4d-840ed7787c8c status=500 duration_ms=24
+Exception in thread "http-nio-8080-exec-11" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:33.670+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-13] com.atlas.configuration.RequestGuard     : request_completed correlation=45eacf06-bbb3-40fd-95e9-5aae71204714 status=500 duration_ms=34
+Exception in thread "http-nio-8080-exec-13" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:33.672+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-12] com.atlas.configuration.RequestGuard     : request_completed correlation=fb6a470f-ae90-46d2-8659-ff3ef8984a3b status=500 duration_ms=37
+Exception in thread "http-nio-8080-exec-12" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:34.893+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=28e7ac49-24f4-4870-95b5-3e84a156f074 status=500 duration_ms=20
+Exception in thread "http-nio-8080-exec-6" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:34.895+05:30  INFO 24131 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=6978a537-67ba-47bb-83b7-f6b95e188a92 status=500 duration_ms=23
+Exception in thread "http-nio-8080-exec-3" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:35.936+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-15] com.atlas.configuration.RequestGuard     : request_completed correlation=6b70a65d-606a-4ced-9573-2ac551804df4 status=500 duration_ms=16
+Exception in thread "http-nio-8080-exec-15" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:35.938+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-14] com.atlas.configuration.RequestGuard     : request_completed correlation=6f62c1cf-4315-4af7-b316-f786127cb456 status=500 duration_ms=18
+Exception in thread "http-nio-8080-exec-14" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:39.011+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-16] com.atlas.configuration.RequestGuard     : request_completed correlation=d1b26522-6fb6-4527-a703-25439923c357 status=500 duration_ms=17
+Exception in thread "http-nio-8080-exec-16" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:39.419+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-17] com.atlas.configuration.RequestGuard     : request_completed correlation=d208a2b7-beac-4e40-a732-70bc0524e4f7 status=500 duration_ms=17
+Exception in thread "http-nio-8080-exec-17" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:40.573+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-18] com.atlas.configuration.RequestGuard     : request_completed correlation=82c71e37-adeb-45df-a93a-8c054065117d status=500 duration_ms=16
+Exception in thread "http-nio-8080-exec-18" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+2026-10-20T18:59:42.223+05:30  INFO 24131 --- [atlas-api] [io-8080-exec-19] com.atlas.configuration.RequestGuard     : request_completed correlation=018b3725-af86-4467-b55e-ae5370a51faa status=500 duration_ms=23
+Exception in thread "http-nio-8080-exec-19" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.slf4j.bridge.SLF4JBridgeHandler.callLocationAwareLogger(SLF4JBridgeHandler.java:232)
+	at org.slf4j.bridge.SLF4JBridgeHandler.publish(SLF4JBridgeHandler.java:313)
+	at java.logging/java.util.logging.Logger.log(Logger.java:983)
+	at java.logging/java.util.logging.Logger.doLog(Logger.java:1010)
+	at java.logging/java.util.logging.Logger.logp(Logger.java:1287)
+	at org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:170)
+	at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2054)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 17 more
+Exception in thread "SpringApplicationShutdownHook" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.apache.commons.logging.impl.Slf4jLogFactory$Slf4jLocationAwareLog.log(Slf4jLogFactory.java:126)
+	at org.apache.commons.logging.impl.Slf4jLogFactory$Slf4jLocationAwareLog.warn(Slf4jLogFactory.java:146)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1202)
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:176)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1153)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:147)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:116)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 13 more

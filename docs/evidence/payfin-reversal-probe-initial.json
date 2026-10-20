@@ -1,0 +1,8 @@
+{
+  "result": "INITIAL_PROBE_FAILED",
+  "scope": "Rollback-safe synthetic insert probe; no financial mutation persisted",
+  "classifiedCause": "Financial guard resolved fin_ledger through the caller schema rather than its owned schema",
+  "missingOwnedLedgerRelation": true,
+  "syntaxError": false,
+  "resolution": "V80 binds financial guard search_path to its owned schema and pg_catalog; final probe must be reexecuted"
+}

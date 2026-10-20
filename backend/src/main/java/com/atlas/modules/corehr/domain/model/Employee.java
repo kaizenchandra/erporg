@@ -19,6 +19,10 @@ public record Employee(
     LocalDate startDate,
     String positionCode,
     String legalName,
+    String birthDate,
+    String personalEmail,
+    String calendarCode,
+    String legalEntityCode,
     long version) {
   public void ensurePositionEffectiveDate(LocalDate date) {
     if (date.isBefore(startDate))
@@ -52,6 +56,10 @@ public record Employee(
         startDate,
         positionCode,
         legalName,
+        birthDate,
+        personalEmail,
+        calendarCode,
+        legalEntityCode,
         version + 1);
   }
 
@@ -71,6 +79,10 @@ public record Employee(
         "Onboarding",
         details.managerId(),
         details.startDate(),
+        "",
+        "",
+        "",
+        "",
         "",
         "",
         0);

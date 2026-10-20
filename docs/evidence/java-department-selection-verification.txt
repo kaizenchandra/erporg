@@ -1,0 +1,20 @@
+Executed Java/PostgreSQL totals: {"tests": 389.0, "failures": 0.0, "errors": 0.0, "skipped": 0.0, "time": 50.334}
+
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 389, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ atlas-api ---
+[INFO] Building jar: /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar
+[INFO] 
+[INFO] --- spring-boot:4.0.8:repackage (repackage) @ atlas-api ---
+[INFO] Loaded 50 auto-discovered prefixes for remote repository ow2-snapshot (prefixes-ow2-snapshot.txt)
+[INFO] Replacing main artifact /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:08 min
+[INFO] Finished at: 2026-10-20T01:42:07+05:30
+[INFO] ------------------------------------------------------------------------

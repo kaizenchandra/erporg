@@ -1,0 +1,10 @@
+
+Running 1 test using 1 worker
+
+(node:4715) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4715) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/benefit-decision-version.spec.ts:4:5 › fractional benefit decision is rejected by the real API and the preserved form recovers with an exact version (2.2s)
+
+  1 passed (3.5s)

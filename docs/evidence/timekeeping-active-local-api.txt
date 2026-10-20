@@ -1,0 +1,66 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-20T19:29:07.377+05:30  INFO 33639 --- [atlas-api] [           main] com.atlas.AtlasApplication               : Starting AtlasApplication v0.1.0 using Java 21.0.12.1 with PID 33639 (/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend/target/atlas-api-0.1.0.jar started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-20T19:29:07.378+05:30  INFO 33639 --- [atlas-api] [           main] com.atlas.AtlasApplication               : The following 2 profiles are active: "local", "acceptance"
+2026-10-20T19:29:08.092+05:30  INFO 33639 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-10-20T19:29:08.099+05:30  INFO 33639 --- [atlas-api] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-20T19:29:08.099+05:30  INFO 33639 --- [atlas-api] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-20T19:29:08.113+05:30  INFO 33639 --- [atlas-api] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 708 ms
+2026-10-20T19:29:08.332+05:30  INFO 33639 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-20T19:29:08.437+05:30  INFO 33639 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1d444652
+2026-10-20T19:29:08.438+05:30  INFO 33639 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-20T19:29:08.454+05:30  INFO 33639 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_acceptance (PostgreSQL 18.6)
+2026-10-20T19:29:08.499+05:30  INFO 33639 --- [atlas-api] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 72 migrations (execution time 00:00.029s)
+2026-10-20T19:29:08.521+05:30  INFO 33639 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_acceptance": 71
+2026-10-20T19:29:08.523+05:30  INFO 33639 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Schema "atlas_acceptance" is up to date. No migration necessary.
+2026-10-20T19:29:09.098+05:30  INFO 33639 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-20T19:29:09.418+05:30  INFO 33639 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-20T19:29:09.446+05:30  INFO 33639 --- [atlas-api] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-10-20T19:29:09.452+05:30  INFO 33639 --- [atlas-api] [           main] com.atlas.AtlasApplication               : Started AtlasApplication in 2.298 seconds (process running for 2.544)
+2026-10-20T21:49:26.980+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-20T21:49:26.981+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-20T21:49:26.983+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-10-20T21:49:27.060+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=3e17921d-2902-467a-ac62-aa4972cf18ec status=401 duration_ms=75
+2026-10-20T21:49:27.066+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=fde37ed9-82f3-401d-b2b0-04524255bfde status=200 duration_ms=80
+2026-10-20T21:49:28.211+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=54116205-d09f-4a06-885f-90ff6057b30f status=200 duration_ms=46
+2026-10-20T21:49:28.548+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=d0540222-774d-4100-9702-da91d6b5c90d status=204 duration_ms=329
+2026-10-20T21:49:28.591+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=2d6378dd-6b3c-4692-8cac-3c9d742a6e24 status=200 duration_ms=36
+2026-10-20T21:49:28.635+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=69480f78-24df-46bd-b149-84343bccf523 status=200 duration_ms=39
+2026-10-20T21:49:28.655+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=ed616cf3-e079-4ade-999b-a75b4a0ae5ce status=200 duration_ms=58
+2026-10-20T21:49:28.672+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=5ee4741c-5eed-4fc5-9d2a-ad260d9d6021 status=200 duration_ms=75
+2026-10-20T21:49:28.692+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=580bbbcf-b1c9-4599-a4b8-a0ef780a6a9f status=200 duration_ms=96
+2026-10-20T21:49:28.905+05:30  INFO 33639 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=4d0e585d-b223-47cf-9669-089cd41db664 status=200 duration_ms=46
+2026-10-20T21:49:29.336+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-1] com.atlas.configuration.RequestGuard     : request_completed correlation=c8f8dc32-4c68-4bda-8c11-738c1240ed55 status=200 duration_ms=62
+2026-10-20T21:49:29.338+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-2] com.atlas.configuration.RequestGuard     : request_completed correlation=79d2843b-1298-4a48-9065-a12c2727c466 status=200 duration_ms=66
+2026-10-20T21:49:35.086+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-3] com.atlas.configuration.RequestGuard     : request_completed correlation=04578fd0-4d0f-4658-a2e1-df2c03abd500 status=200 duration_ms=77
+2026-10-20T21:49:37.506+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-4] com.atlas.configuration.RequestGuard     : request_completed correlation=3ad34ce3-3b72-47c5-8945-4e571e62b194 status=200 duration_ms=64
+2026-10-20T21:49:39.869+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-5] com.atlas.configuration.RequestGuard     : request_completed correlation=142a909e-6ddf-445c-9f22-9c63daf35cbf status=200 duration_ms=45
+2026-10-20T21:49:41.455+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-7] com.atlas.configuration.RequestGuard     : request_completed correlation=e2245c41-a4dc-4564-808e-21480146f01d status=200 duration_ms=78
+2026-10-20T21:49:42.587+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-9] com.atlas.configuration.RequestGuard     : request_completed correlation=8ed8fe89-947e-4fe9-b507-c8e459a2d72d status=200 duration_ms=78
+2026-10-20T21:49:42.589+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-8] com.atlas.configuration.RequestGuard     : request_completed correlation=f7fbff79-21f6-42a7-afd6-6c2dc16e51ae status=200 duration_ms=88
+2026-10-20T21:49:43.766+05:30  INFO 33639 --- [atlas-api] [io-8080-exec-10] com.atlas.configuration.RequestGuard     : request_completed correlation=6e82279e-2bdd-4248-a00c-666fb94a9f49 status=200 duration_ms=47
+2026-10-20T21:49:43.773+05:30  INFO 33639 --- [atlas-api] [nio-8080-exec-6] com.atlas.configuration.RequestGuard     : request_completed correlation=730fbe42-e0f7-48b5-ada7-6ec31754ad92 status=200 duration_ms=56
+Exception in thread "SpringApplicationShutdownHook" java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy
+	at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+	at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:429)
+	at ch.qos.logback.classic.Logger.filterAndLog_0_Or3Plus(Logger.java:388)
+	at ch.qos.logback.classic.Logger.log(Logger.java:805)
+	at org.apache.commons.logging.impl.Slf4jLogFactory$Slf4jLocationAwareLog.log(Slf4jLogFactory.java:126)
+	at org.apache.commons.logging.impl.Slf4jLogFactory$Slf4jLocationAwareLog.warn(Slf4jLogFactory.java:146)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1202)
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:176)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1153)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:147)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:116)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassNotFoundException: ch.qos.logback.classic.spi.ThrowableProxy
+	... 13 more

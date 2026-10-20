@@ -1,0 +1,144 @@
+
+Running 5 tests using 1 worker
+
+(node:81368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:81368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/talent.spec.ts:132:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks (5.6s)
+  ✓  2 tests/talent.spec.ts:250:5 › performance UI saves employee goals, manager feedback, return, correction and final rating (4.2s)
+  ✓  3 tests/talent.spec.ts:322:5 › learning UI persists eligible assignment and completion with expiry (2.0s)
+  ✘  4 tests/talent.spec.ts:354:5 › compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted (3.0s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/talent.spec.ts:354:5 › compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 93[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",[39m
+    [31m+     "help": "Elements must meet minimum color contrast ratio thresholds",[39m
+    [31m+     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",[39m
+    [31m+     "id": "color-contrast",[39m
+    [31m+     "impact": "serious",[39m
+    [31m+     "nodes": Array [[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge saved\"><span></span>SAVED</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "section[aria-label=\"Talent record detail\"] > .badge.saved",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge saved\"><span></span>SAVED</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "section[aria-label=\"Talent record detail\"] > .badge.saved",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       Object {[39m
+    [31m+         "all": Array [],[39m
+    [31m+         "any": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "data": Object {[39m
+    [31m+               "bgColor": "#eef3f5",[39m
+    [31m+               "contrastRatio": 4.07,[39m
+    [31m+               "expectedContrastRatio": "4.5:1",[39m
+    [31m+               "fgColor": "#637985",[39m
+    [31m+               "fontSize": "6.8pt (9px)",[39m
+    [31m+               "fontWeight": "normal",[39m
+    [31m+               "messageKey": null,[39m
+    [31m+             },[39m
+    [31m+             "id": "color-contrast",[39m
+    [31m+             "impact": "serious",[39m
+    [31m+             "message": "Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+             "relatedNodes": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "html": "<span class=\"badge saved\"><span></span>SAVED</span>",[39m
+    [31m+                 "target": Array [[39m
+    [31m+                   "article > .badge.saved",[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+         "failureSummary": "Fix any of the following:[39m
+    [31m+   Element has insufficient color contrast of 4.07 (foreground color: #637985, background color: #eef3f5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1",[39m
+    [31m+         "html": "<span class=\"badge saved\"><span></span>SAVED</span>",[39m
+    [31m+         "impact": "serious",[39m
+    [31m+         "none": Array [],[39m
+    [31m+         "target": Array [[39m
+    [31m+           "article > .badge.saved",[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+     ],[39m
+    [31m+     "tags": Array [[39m
+    [31m+       "cat.color",[39m
+    [31m+       "wcag2aa",[39m
+    [31m+       "wcag143",[39m
+    [31m+       "TTv5",[39m
+    [31m+       "TT13.c",[39m
+    [31m+       "EN-301-549",[39m
+    [31m+       "EN-9.1.4.3",[39m
+    [31m+       "ACT",[39m
+    [31m+       "RGAAv4",[39m
+    [31m+       "RGAA-3.2.1",[39m
+    [31m+     ],[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      451 |       ["serious", "critical"].includes(v.impact ?? ""),
+      452 |     ),
+    > 453 |   ).toEqual([]);
+          |     ^
+      454 |   await p.screenshot({
+      455 |     path: "docs/evidence/talent-scenario-mobile.png",
+      456 |     fullPage: true,
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/talent.spec.ts:453:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/talent-compensation-budget-50110-e-and-planning-is-persisted/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/talent.spec.ts:354:5 › compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted 
+  1 did not run
+  3 passed (17.6s)
+  1 error was not a part of any test, see above for details

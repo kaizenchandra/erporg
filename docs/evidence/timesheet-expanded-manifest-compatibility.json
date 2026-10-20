@@ -1,0 +1,12 @@
+{
+  "status": "PASSED",
+  "comparison": "Old per-table SQL method vs new one-transaction batch on actual employee/policy/bulk records",
+  "comparedTables": [
+    "hr_employee",
+    "time_period",
+    "time_batch_command"
+  ],
+  "businessValuesLogged": false,
+  "fullManifestTables": 82,
+  "projectionViews": 15
+}

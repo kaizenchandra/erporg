@@ -1,0 +1,8 @@
+usage: timekeeping_recovery_drill.py [-h] [--prefix PREFIX]
+
+Repeat the isolated local synthetic drill; existing evidence/databases are
+never replaced.
+
+options:
+  -h, --help       show this help message and exit
+  --prefix PREFIX  New evidence path prefix; both output files must not exist

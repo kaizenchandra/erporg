@@ -1,0 +1,15 @@
+{
+  "status": "PASSED",
+  "sourceRequirements": 45,
+  "sourceCriteria": 436,
+  "supplementalRows": 35,
+  "javaTests": 441,
+  "uniqueBrowserPassed": 156,
+  "browserSkipped": 1,
+  "browserScope": "All unique cases covered across stopped full run, corrected management rerun and remaining-case continuation; not a single green full-suite invocation",
+  "restoreTables": 82,
+  "restoreViews": 15,
+  "replayedPeriodCommands": 2,
+  "replayedBatches": 2,
+  "productionRelease": "NOT READY"
+}

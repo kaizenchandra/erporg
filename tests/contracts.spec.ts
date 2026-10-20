@@ -40,6 +40,14 @@ test("live read and command responses conform to OpenAPI JSON schemas", async ()
       ["/api/v1/employees/E003", "/api/v1/employees/{id}"],
       ["/api/v1/employees/E003/history", "/api/v1/employees/{id}/history"],
       ["/api/v1/notifications", "/api/v1/notifications"],
+      [
+        "/api/v1/employees/E003/change-history",
+        "/api/v1/employees/{id}/change-history",
+      ],
+      [
+        "/api/v1/employees/E003/calendar-history",
+        "/api/v1/employees/{id}/calendar-history",
+      ],
     ]) {
       const response = await hr.client.get(path);
       expect(response.status()).toBe(200);
@@ -112,6 +120,73 @@ test("live read and command responses conform to OpenAPI JSON schemas", async ()
   }
 });
 
+test("employee audit page contract rejects malformed cursors, IDs, options and extra private properties", () => {
+  const validate = schemaValidator("EmployeeChangeHistoryPage");
+  const item = {
+    id: "9007199254740993",
+    action: "APPROVED",
+    field: "phone",
+    oldValue: "12345678",
+    newValue: "12345679",
+    reason: "Synthetic",
+    actor: "synthetic",
+    recordedAt: "2026-10-19T12:00:00.123456Z",
+    correlationId: "synthetic-trace",
+    effectiveDate: "2026-10-19",
+  };
+  const page = {
+    items: [item],
+    total: 1,
+    size: 10,
+    order: "desc",
+    fields: ["phone"],
+    nextCursor: null,
+  };
+  expect(validate(page)).toBe(true);
+  for (const bad of [
+    { ...page, items: [{ ...item, id: 9007199254740992 }] },
+    { ...page, items: [{ ...item, bankAccount: "must not leak" }] },
+    { ...page, nextCursor: "not a cursor" },
+    { ...page, size: 51 },
+    { ...page, fields: ["notAField"] },
+    { ...page, items: Array(51).fill(item) },
+  ])
+    expect(validate(bad)).toBe(false);
+});
+
+test("calendar history contract rejects private fields, malformed provenance and unbounded pages", () => {
+  const validate = schemaValidator("EmployeeCalendarHistory");
+  const item = {
+    versionId: "synthetic-version",
+    episodeStart: "2026-01-01",
+    effectiveDate: "2026-10-19",
+    recordedAt: "2026-10-19T12:00:00Z",
+    calendarCode: "REF",
+    calendarName: "Company reference",
+    timeZone: "Europe/London",
+  };
+  const history = {
+    employeeId: "E003",
+    asOf: "2026-10-19",
+    currentEpisodeStart: "2026-01-01",
+    items: [item],
+    total: 1,
+    page: 0,
+    size: 8,
+  };
+  expect(validate(history)).toBe(true);
+  for (const bad of [
+    { ...history, items: [{ ...item, reason: "Private" }] },
+    { ...history, items: [{ ...item, requestedBy: "Private" }] },
+    { ...history, items: [{ ...item, episodeStart: "2026-02-30" }] },
+    { ...history, items: [{ ...item, recordedAt: "2026-10-19" }] },
+    { ...history, items: Array(51).fill(item) },
+    { ...history, size: 51 },
+    { ...history, page: 0.5 },
+  ])
+    expect(validate(bad)).toBe(false);
+});
+
 test("contract validator rejects incorrect types, formats and unexpected private fields", () => {
   const validate = schemaValidator("Employee");
   const employee = {
@@ -131,12 +206,18 @@ test("contract validator rejects incorrect types, formats and unexpected private
     startDate: "2026-10-14",
     positionCode: "",
     legalName: "",
+    birthDate: "",
+    personalEmail: "",
+    calendarCode: "",
+    legalEntityCode: "",
     version: 0,
   };
   expect(validate(employee)).toBe(true);
   for (const altered of [
     { ...employee, version: "0" },
     { ...employee, legalName: 42 },
+    { ...employee, birthDate: "2023-02-29" },
+    { ...employee, birthDate: "2000-01-01T00:00:00Z" },
     { ...employee, startDate: "2026-02-30" },
     { ...employee, bankAccount: "must-not-leak" },
   ])

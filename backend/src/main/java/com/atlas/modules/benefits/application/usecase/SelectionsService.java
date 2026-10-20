@@ -71,6 +71,43 @@ public final class SelectionsService implements SelectionsUseCases {
         });
   }
 
+  public SelectionView withdraw(
+      String subject, String id, WithdrawSelection c, String correlation) {
+    return tx.run(
+        () -> {
+          var actor = workforce.self(subject);
+          var selection = store.locked(actor.tenant(), id).orElseThrow(AccessDenied::new);
+          if (!selection.employeeId().equals(actor.employeeId())
+              || !selection.requestedBy().equals(actor.subject())) throw new AccessDenied();
+          text(c.reason(), "reason", 1, 500);
+          key(c.idempotencyKey());
+          long expected;
+          try {
+            if (c.version() == null || c.version().signum() < 0) throw new ArithmeticException();
+            expected = c.version().longValueExact();
+          } catch (ArithmeticException e) {
+            throw new InputValidation(
+                Map.of("version", "An exact nonnegative selection version is required."));
+          }
+          if (c.idempotencyKey().equals(selection.decisionKey())) {
+            if (!"WITHDRAWN".equals(selection.status())
+                || !actor.subject().equals(selection.decidedBy())
+                || !c.reason().trim().equals(selection.decisionReason())
+                || expected != selection.version() - 1)
+              throw new CommandConflict("Withdrawal key was used for different input.");
+            return selection;
+          }
+          SelectionPolicy.withdraw(selection.status(), selection.version(), expected);
+          return store.decision(
+              actor.tenant(),
+              id,
+              actor.subject(),
+              new DecideSelection(expected, "WITHDRAWN", c.reason().trim(), c.idempotencyKey()),
+              clock.instant(),
+              correlation);
+        });
+  }
+
   public SelectionPage list(String subject, int page, int size) {
     var actor = workforce.self(subject);
     if (page < 0 || page > 100000 || size < 1 || size > 100)
@@ -80,14 +117,16 @@ public final class SelectionsService implements SelectionsUseCases {
   }
 
   public SelectionView decide(String subject, String id, DecideSelection c, String correlation) {
-    var actor = workforce.self(subject);
-    if (!actor.role().equals("HR")) throw new AccessDenied();
-    text(c.reason(), "reason", 1, 500);
-    key(c.idempotencyKey());
     return tx.run(
         () -> {
+          var actor = workforce.self(subject);
+          if (!actor.role().equals("HR")) throw new AccessDenied();
+          text(c.reason(), "reason", 1, 500);
+          key(c.idempotencyKey());
           var p = store.locked(actor.tenant(), id).orElseThrow(AccessDenied::new);
-          if (p.employeeId().equals(actor.employeeId())) throw new AccessDenied();
+          if (!SelectionPolicy.independent(
+              actor.employeeId(), actor.subject(), p.employeeId(), p.requestedBy()))
+            throw new AccessDenied();
           if (c.idempotencyKey().equals(p.decisionKey())) {
             if (!actor.subject().equals(p.decidedBy())
                 || !Objects.equals(c.outcome(), p.status())

@@ -4,6 +4,7 @@ import com.atlas.modules.corehr.application.model.CreateDepartment;
 import com.atlas.modules.corehr.application.model.CreatePosition;
 import com.atlas.modules.corehr.application.model.DepartmentAudit;
 import com.atlas.modules.corehr.application.model.PositionAudit;
+import com.atlas.modules.corehr.application.model.PositionListing;
 import com.atlas.modules.corehr.application.model.PositionPage;
 import com.atlas.modules.corehr.application.model.PositionQuery;
 import com.atlas.modules.corehr.application.port.out.OrganisationStore;
@@ -16,10 +17,18 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 public final class JdbcOrganisationStore implements OrganisationStore {
   private final JdbcClient db;
   private static final String SELECT =
-      "select code,name,parent_code,cost_centre,effective_from from hr_department where tenant=:tenant";
+      "select code,name,hr_department_parent(tenant,code,(current_timestamp at time zone 'UTC')::date) parent_code,cost_centre,effective_from from hr_department where tenant=:tenant";
 
   public JdbcOrganisationStore(JdbcClient db) {
     this.db = db;
+  }
+
+  public void lockHierarchy(String tenant) {
+    db.sql(
+            "select pg_advisory_xact_lock(hashtextextended(current_schema()||'/department-hierarchy/'||:tenant,0))")
+        .param("tenant", tenant)
+        .query((r, n) -> 0)
+        .single();
   }
 
   public PositionPage positions(String tenant, PositionQuery query) {
@@ -34,7 +43,7 @@ public final class JdbcOrganisationStore implements OrganisationStore {
             .single();
     var items =
         db.sql(
-                "select code,title,department_code,effective_from"
+                "select code,title,department_code,(select d.name from hr_department d where d.tenant=hr_position.tenant and d.code=hr_position.department_code) department_name,effective_from"
                     + where
                     + " order by title "
                     + query.direction()
@@ -44,7 +53,7 @@ public final class JdbcOrganisationStore implements OrganisationStore {
             .param("search", query.search())
             .param("size", query.size())
             .param("offset", (long) query.page() * query.size())
-            .query(Position.class)
+            .query(PositionListing.class)
             .list();
     return new PositionPage(items, total, query.page(), query.size());
   }

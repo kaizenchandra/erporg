@@ -288,6 +288,23 @@ class PostgresWorkflowTest {
     jdbc.update(
         "update hr_employee set address='Old address', emergency_contact_name='Old contact', emergency_contact_relationship='Sibling', emergency_contact_phone='+1 202 555 9000' where tenant=? and id='E003'",
         self().tenant());
+    var email =
+        people.submit(
+            self(),
+            new Submit(
+                "E003",
+                "personalEmail",
+                "old-personal@example.test",
+                LocalDate.now(ZoneOffset.UTC),
+                "Synthetic removable contact fixture",
+                people.profile(self(), "E003").version(),
+                UUID.randomUUID().toString()),
+            "removal-email-fixture");
+    people.decide(
+        hr(),
+        email.id(),
+        new Decide("APPROVED", "Independent synthetic fixture review"),
+        "removal-email-approved");
     for (String field : ChangeRequest.REMOVABLE_PRIVATE_FIELDS) {
       var before = people.profile(self(), "E003");
       var command =

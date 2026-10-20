@@ -1,0 +1,42 @@
+
+Running 5 tests using 1 worker
+
+(node:81971) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:81971) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/talent.spec.ts:132:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks (5.1s)
+  ✓  2 tests/talent.spec.ts:250:5 › performance UI saves employee goals, manager feedback, return, correction and final rating (3.7s)
+  ✓  3 tests/talent.spec.ts:322:5 › learning UI persists eligible assignment and completion with expiry (1.9s)
+  ✓  4 tests/talent.spec.ts:354:5 › compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted (3.1s)
+  ✘  5 tests/talent.spec.ts:474:5 › real HTTP enforces tenant, record, role, CSRF, locking and exact revisions (490ms)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/talent.spec.ts:474:5 › real HTTP enforces tenant, record, role, CSRF, locking and exact revisions 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m422[39m
+    Received: [31m400[39m
+
+      557 |     },
+      558 |   );
+    > 559 |   expect(r2.status()).toBe(422);
+          |                       ^
+      560 | });
+      561 |
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/talent.spec.ts:559:23
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/talent-real-HTTP-enforces--cbdd3-locking-and-exact-revisions/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/talent-real-HTTP-enforces--cbdd3-locking-and-exact-revisions/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/talent.spec.ts:474:5 › real HTTP enforces tenant, record, role, CSRF, locking and exact revisions 
+  4 passed (17.0s)
+  1 error was not a part of any test, see above for details

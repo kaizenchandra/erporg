@@ -1,0 +1,52 @@
+
+Running 2 tests using 1 worker
+
+(node:45978) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45978) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/timesheet-management.spec.ts:99:5 › returned hours are corrected in the editor, resubmitted and independently approved (7.2s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/timesheet-management.spec.ts:99:5 › returned hours are corrected in the editor, resubmitted and independently approved 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Timesheet returned.', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Timesheet returned.', { exact: true })[22m
+
+
+      128 |     await expect(
+      129 |       page.getByText("Timesheet returned.", { exact: true }),
+    > 130 |     ).toBeVisible();
+          |       ^
+      131 |     await page.getByRole("button", { name: "Sign out", exact: true }).click();
+      132 |     await signIn(page, "sophia");
+      133 |     await page
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/timesheet-management.spec.ts:130:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/timesheet-management-retur-a322a--and-independently-approved/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/timesheet-management-retur-a322a--and-independently-approved/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/timesheet-management-retur-a322a--and-independently-approved/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/timesheet-management-retur-a322a--and-independently-approved/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/timesheet-management.spec.ts:99:5 › returned hours are corrected in the editor, resubmitted and independently approved 
+  1 did not run
+  1 error was not a part of any test, see above for details

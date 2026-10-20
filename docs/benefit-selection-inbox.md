@@ -1,0 +1,12 @@
+# Phase 2 increment BG: benefit selection approval inbox
+
+Prerequisites: real benefit selection submission, independent HR decisions, immutable audits and pending payroll handoffs. Scope HR-06, SH-01, SH-02 and SH-05; no new contribution, provider, payment or payroll policy.
+
+Acceptance before implementation:
+
+1. Add GET `/api/v1/benefits/selection-inbox`: scope OWN/REVIEW, status PENDING/APPROVED/REJECTED/WITHDRAWN/ALL, page0–100000, size1–50. OWN uses current employee identity; REVIEW is HR-only, excludes target employee and requester subject before count/row/dependant/audit retrieval. Current tenant/role/context must be resolved server-side in one bounded10s read-only repeatable snapshot. Reject forged hints and invalid queries. Stable `(recorded_at,id)` descending order; offset pages may shift under concurrent writes. No total-cap/truncated queue.
+2. Approvals gains Benefit selections category for all roles, with role-appropriate scope, status/size controls, counts, pages/refresh, loading/empty/error/retry, focused keyboard navigation and abort/reset on identity/category change. Show plan/code, employee, reason, effective date, contribution, dependants, rule/audit context and pending payroll status. No bulk action or changed navigation badge meaning.
+3. Reuse the existing decision form/use case. Only independent HR reviews pending entries; exact version, idempotency, current access and independent subject/employee rules remain authoritative. Resolve decision actor inside the transaction. Approval creates the existing unique pending deduction; rejection creates none; refresh removes completed items from pending scope and retains terminal history. Preserve input/error/unsaved/conflict recovery. Existing Benefits-tab flows remain compatible.
+4. Verify domain independence, actual PostgreSQL scopes/counts/paging beyond one page, aliases/requester reassignment/role change, negative bounds and decision/handoff/audit reconciliation. Browser actual employee request → independent HR approval through Approvals → own tracking, plus API contracts, denial, filtering, cancellation and mobile axe/keyboard/visual checks. Execute full regressions, strict build and isolated recovered queue comparison with owned SQL and current identities.
+
+All45 source IDs remain tracked with UI/backend/criterion status. No parent requirement completion. Delegation/advanced approval stages, notification expansion, approved benefit changes, country/company/provider/payroll policy and later phases remain in scope.

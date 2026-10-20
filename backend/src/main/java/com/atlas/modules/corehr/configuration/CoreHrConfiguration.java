@@ -299,6 +299,51 @@ public class CoreHrConfiguration {
   }
 
   @Bean
+  com.atlas.modules.corehr.api.TimeWorkforceAccess timeWorkforceAccess(PeopleUseCases people) {
+    return new com.atlas.modules.corehr.api.TimeWorkforceAccess() {
+      public Context self(String subject) {
+        return employee(subject, people.actor(subject).employeeId());
+      }
+
+      public Context employee(String subject, String id) {
+        var actor = people.actor(subject);
+        var employee = people.profile(actor, id);
+        return new Context(
+            actor.subject(),
+            actor.tenant(),
+            employee.id(),
+            actor.role(),
+            employee.status(),
+            employee.startDate());
+      }
+
+      public Scope scope(String subject) {
+        var actor = people.actor(subject);
+        var context = self(subject);
+        if (actor.hr()) return new Scope(context, java.util.List.of(), true);
+        if (!actor.role().equals("MANAGER")) return new Scope(context, java.util.List.of(), false);
+        var ids = new java.util.ArrayList<String>();
+        for (int page = 0; ; page++) {
+          var result =
+              people.directory(
+                  actor,
+                  new com.atlas.modules.corehr.application.model.DirectoryQuery(
+                      "", "", "", page, 100, "asc"));
+          if (result.total() > 10000)
+            throw new com.atlas.shared.domain.CommandConflict(
+                "Time review scope exceeds10000 employees; refine the workforce policy before review.");
+          result.items().stream()
+              .map(com.atlas.modules.corehr.domain.model.Employee::id)
+              .filter(id -> !id.equals(actor.employeeId()))
+              .forEach(ids::add);
+          if ((long) (page + 1) * 100 >= result.total()) break;
+        }
+        return new Scope(context, ids, false);
+      }
+    };
+  }
+
+  @Bean
   com.atlas.modules.corehr.api.WorkforceAccess workforceAccess(PeopleUseCases people) {
     return new com.atlas.modules.corehr.api.WorkforceAccess() {
       public String sessionEpoch(String subject) {

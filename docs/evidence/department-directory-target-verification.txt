@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:13702) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13702) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/department-directory.spec.ts:16:5 › department directory resolves unseen parents, pages reference branches and recovers stale/mobile reads (4.1s)
+  ✓  2 tests/department-directory.spec.ts:236:5 › department directory contracts enforce bounds, tenant identity and literal filtering (2.5s)
+
+  2 passed (8.2s)

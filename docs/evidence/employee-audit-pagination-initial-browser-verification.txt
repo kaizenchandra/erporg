@@ -1,0 +1,51 @@
+
+Running 5 tests using 1 worker
+
+(node:1151) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1151) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/contracts.spec.ts:25:5 › live read and command responses conform to OpenAPI JSON schemas (1.0s)
+  ✓  2 tests/contracts.spec.ts:123:5 › calendar history contract rejects private fields, malformed provenance and unbounded pages (5ms)
+  ✓  3 tests/contracts.spec.ts:156:5 › contract validator rejects incorrect types, formats and unexpected private fields (10ms)
+  ✓  4 tests/zzzzzzzzzzzzz-audit-history.spec.ts:32:5 › audit API reaches old private events beyond100, scopes totals and cursors, and isolates a higher-ID write (1.2s)
+  ✘  5 tests/zzzzzzzzzzzzz-audit-history.spec.ts:192:5 › profile history recovers independently, filters older events and cancels stale pages with accessible mobile controls (30.2s)
+[31mTesting stopped early after 1 maximum allowed failures.[39m
+
+
+  1) tests/zzzzzzzzzzzzz-audit-history.spec.ts:192:5 › profile history recovers independently, filters older events and cancels stale pages with accessible mobile controls 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('region', { name: 'Employee change history', exact: true }).getByLabel('History field', { exact: true })[22m
+
+
+      254 |   await panel
+      255 |     .getByLabel("History field", { exact: true })
+    > 256 |     .selectOption("birthDate");
+          |      ^
+      257 |   await expect(panel.locator(".history-event").first()).toContainText(
+      258 |     "Recorded birth date change",
+      259 |   );
+        at /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/tests/zzzzzzzzzzzzz-audit-history.spec.ts:256:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/zzzzzzzzzzzzz-audit-histor-a5073--accessible-mobile-controls/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/zzzzzzzzzzzzz-audit-histor-a5073--accessible-mobile-controls/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/zzzzzzzzzzzzz-audit-histor-a5073--accessible-mobile-controls/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/zzzzzzzzzzzzz-audit-histor-a5073--accessible-mobile-controls/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/zzzzzzzzzzzzz-audit-history.spec.ts:192:5 › profile history recovers independently, filters older events and cancels stale pages with accessible mobile controls 
+  4 passed (49.6s)
+  1 error was not a part of any test, see above for details

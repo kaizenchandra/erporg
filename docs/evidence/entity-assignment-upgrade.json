@@ -1,0 +1,13 @@
+{
+  "status": "PASSED",
+  "fromVersion": 61,
+  "toVersion": 64,
+  "unchangedBusinessTableDigests": 71,
+  "unchangedProjectionDigests": 15,
+  "newTableRows": {
+    "hr_legal_entity_assignment": 0,
+    "hr_entity_request_origin": 0
+  },
+  "historicalBackfill": false,
+  "scope": "retained synthetic data compared before browser writes; additive immutable assignment/original-requester snapshots and guards; no inferred country/identity/employee assignment"
+}

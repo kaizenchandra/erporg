@@ -68,6 +68,101 @@ class ArchitectureTest {
               "com.atlas.modules.corehr.configuration..",
               "com.atlas.modules.benefits..");
 
+  static final ArchRule TIME_BOUNDARY =
+      noClasses()
+          .that()
+          .resideInAPackage("com.atlas.modules.timekeeping..")
+          .should()
+          .dependOnClassesThat()
+          .resideInAnyPackage(
+              "com.atlas.modules.corehr.domain..",
+              "com.atlas.modules.corehr.application..",
+              "com.atlas.modules.corehr.adapter..",
+              "com.atlas.modules.corehr.configuration..",
+              "com.atlas.modules.benefits..",
+              "com.atlas.modules.documents..");
+
+  static final ArchRule FINANCE_BOUNDARY =
+      noClasses()
+          .that()
+          .resideInAPackage("com.atlas.modules.finance..")
+          .should()
+          .dependOnClassesThat()
+          .resideInAnyPackage(
+              "com.atlas.modules.corehr.domain..",
+              "com.atlas.modules.corehr.application..",
+              "com.atlas.modules.corehr.adapter..",
+              "com.atlas.modules.corehr.configuration..",
+              "com.atlas.modules.payroll..",
+              "com.atlas.modules.timekeeping..",
+              "com.atlas.modules.benefits..",
+              "com.atlas.modules.documents..");
+  static final ArchRule PAYROLL_BOUNDARY =
+      noClasses()
+          .that()
+          .resideInAPackage("com.atlas.modules.payroll..")
+          .should()
+          .dependOnClassesThat()
+          .resideInAnyPackage(
+              "com.atlas.modules.corehr.domain..",
+              "com.atlas.modules.corehr.application..",
+              "com.atlas.modules.corehr.adapter..",
+              "com.atlas.modules.corehr.configuration..",
+              "com.atlas.modules.finance.domain..",
+              "com.atlas.modules.finance.application..",
+              "com.atlas.modules.finance.adapter..",
+              "com.atlas.modules.finance.configuration..",
+              "com.atlas.modules.timekeeping.domain..",
+              "com.atlas.modules.timekeeping.application..",
+              "com.atlas.modules.timekeeping.adapter..",
+              "com.atlas.modules.timekeeping.configuration..",
+              "com.atlas.modules.benefits..",
+              "com.atlas.modules.documents..");
+
+  static final ArchRule TALENT_BOUNDARY =
+      noClasses()
+          .that()
+          .resideInAPackage("com.atlas.modules.talent..")
+          .should()
+          .dependOnClassesThat()
+          .resideInAnyPackage(
+              "com.atlas.modules.corehr.domain..",
+              "com.atlas.modules.corehr.application..",
+              "com.atlas.modules.corehr.adapter..",
+              "com.atlas.modules.corehr.configuration..",
+              "com.atlas.modules.payroll.domain..",
+              "com.atlas.modules.payroll.application..",
+              "com.atlas.modules.payroll.adapter..",
+              "com.atlas.modules.payroll.configuration..",
+              "com.atlas.modules.finance..",
+              "com.atlas.modules.timekeeping..",
+              "com.atlas.modules.benefits..",
+              "com.atlas.modules.documents..");
+
+  @Test
+  void talentCannotBypassPublishedWorkforceContracts() {
+    var bad =
+        new ClassFileImporter()
+            .importClasses(com.atlas.modules.talent.archfixture.BadHiringAccess.class);
+    assertThrows(AssertionError.class, () -> TALENT_BOUNDARY.check(bad));
+  }
+
+  @Test
+  void payrollCannotBypassFinanceContracts() {
+    var bad =
+        new ClassFileImporter()
+            .importClasses(com.atlas.modules.payroll.archfixture.BadFinanceAccess.class);
+    assertThrows(AssertionError.class, () -> PAYROLL_BOUNDARY.check(bad));
+  }
+
+  @Test
+  void timekeepingForbiddenDependencyFails() {
+    var invalid =
+        new ClassFileImporter()
+            .importClasses(com.atlas.modules.timekeeping.archfixture.BadWorkforceAccess.class);
+    assertThrows(AssertionError.class, () -> TIME_BOUNDARY.check(invalid));
+  }
+
   @Test
   void documentsForbiddenInternalDependencyFails() {
     var invalid =
@@ -83,6 +178,31 @@ class ArchitectureTest {
             .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
             .importPackages("com.atlas");
     DOMAIN.check(classes);
+    TALENT_BOUNDARY.check(classes);
+    noClasses()
+        .that()
+        .resideInAnyPackage(
+            "com.atlas.modules.corehr..",
+            "com.atlas.modules.payroll..",
+            "com.atlas.modules.finance..",
+            "com.atlas.modules.timekeeping..")
+        .should()
+        .dependOnClassesThat()
+        .resideInAPackage("com.atlas.modules.talent..")
+        .check(classes);
+    FINANCE_BOUNDARY.check(classes);
+    PAYROLL_BOUNDARY.check(classes);
+    TIME_BOUNDARY.check(classes);
+    noClasses()
+        .that()
+        .resideInAnyPackage(
+            "com.atlas.modules.corehr..",
+            "com.atlas.modules.benefits..",
+            "com.atlas.modules.documents..")
+        .should()
+        .dependOnClassesThat()
+        .resideInAPackage("com.atlas.modules.timekeeping..")
+        .check(classes);
     DOCUMENTS_BOUNDARY.check(classes);
     noClasses()
         .that()

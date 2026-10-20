@@ -1,0 +1,8 @@
+{
+  "status": "PASSED",
+  "fromVersion": 59,
+  "toVersion": 60,
+  "unchangedBusinessTableDigests": 69,
+  "personalEmailVersionsAfterMigration": 0,
+  "scope": "All 69 pre-existing business tables compared before browser mutations. No table/column additions, data backfill, inferred address, employee rewrite or identity/provider action. Expanded field vocabulary and schema-local validation guards."
+}

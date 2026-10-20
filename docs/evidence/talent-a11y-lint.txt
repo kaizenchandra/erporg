@@ -1,0 +1,11 @@
+
+> erporg@0.1.0 lint
+> eslint --max-warnings=0
+
+
+/Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/features/talent/workspace.tsx
+  338:6  warning  React Hook useEffect has a missing dependency: 'r?.data'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+✖ 1 problem (0 errors, 1 warning)
+
+ESLint found too many warnings (maximum: 0).

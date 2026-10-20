@@ -1,0 +1,9 @@
+# Phase 2 BK — exact Core HR command revisions
+
+Prerequisites: BJ V69, existing authenticated Core HR submission, structured postal-address and approved onboarding workflows. Source IDs HR-01, HR-03, HR-05 and SH-01/02/05 remain partial. This increment addresses transport correctness, not additional employment policy.
+
+Before implementation, verify that JSON fractional revisions cannot be silently truncated by HTTP binding for employee changes, postal-address submissions or onboarding completion. Preserve the application contracts and framework-free core. Inbound adapter inputs retain decimal precision and convert only exact nonnegative signed-64-bit values. Integral decimal/exponent forms remain valid; null, missing, fractional, negative and overflowing values fail with a version field error. Application access, stale-version, idempotency, audit and independent-approval policies remain authoritative.
+
+Acceptance: exercise all three routes through real authenticated HTTP and PostgreSQL; invalid revisions leave employee, request, effective history, audit, notification and handoff state unchanged. Valid exact commands still work; duplicate/replay and stale commands retain their existing outcomes. Verify role/tenant denial with valid revisions. A real browser form must preserve its draft after an actual API rejection of a tampered fractional revision and recover through exact submission and approval. Run the Java suite, focused browser workflow and frontend static checks. Preserve failed baseline evidence. No schema or dependency change is planned; prior full-browser and restore evidence must be labelled as prior rather than rerun.
+
+Exit: update traceability and checkpoint with executed evidence and explicit remaining gaps. Production remains NOT READY. Future hierarchy scheduling/governance, benefits policy/consumers and all later delivery phases remain in scope.

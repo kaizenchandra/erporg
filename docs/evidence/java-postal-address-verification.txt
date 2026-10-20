@@ -1,0 +1,4 @@
+Final local Java 21 / PostgreSQL 18.6 regression
+Command: JAVA_HOME=<Java21> mvn -f backend/pom.xml -Dmaven.repo.local=/private/tmp/atlas-m2 spotless:check test -q
+{'tests': 289.0, 'failures': 0.0, 'errors': 0.0, 'skipped': 0.0, 'time': 62.255}
+Includes domain, architecture/negative dependency fixtures, PostgreSQL workflow/constraint/preflight and authorization tests. No payroll/production completion implied.

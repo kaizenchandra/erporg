@@ -13,12 +13,15 @@ public final class BenefitsService implements BenefitsUseCases {
   private final PlanStore store;
   private final WorkforcePort workforce;
   private final UnitOfWork tx;
+  private final UnitOfWork reads;
   private final Clock clock;
 
-  public BenefitsService(PlanStore store, WorkforcePort workforce, UnitOfWork tx, Clock clock) {
+  public BenefitsService(
+      PlanStore store, WorkforcePort workforce, UnitOfWork tx, UnitOfWork reads, Clock clock) {
     this.store = store;
     this.workforce = workforce;
     this.tx = tx;
+    this.reads = reads;
     this.clock = clock;
   }
 
@@ -39,31 +42,21 @@ public final class BenefitsService implements BenefitsUseCases {
   }
 
   public PlanPage plans(String subject, PlanQuery q) {
-    var c = workforce.self(subject);
-    var evaluatedOn = LocalDate.now(clock);
-    var all = store.plans(c.tenant(), 1001);
-    if (all.size() > 1000)
-      throw new CommandConflict(
-          "Plan catalogue exceeds 1000 references; contact benefits operations.");
-    var order = Comparator.comparing(PlanView::name);
-    if (q.direction().equals("desc")) order = order.reversed();
-    var rows =
-        all.stream()
-            .map(p -> view(p, c, evaluatedOn))
-            .filter(
-                p ->
-                    (p.code() + " " + p.name())
-                        .toLowerCase(Locale.ROOT)
-                        .contains(q.search().toLowerCase(Locale.ROOT)))
-            .filter(p -> q.eligibility().equals("ALL") || p.eligible())
-            .sorted(order.thenComparing(PlanView::code))
-            .toList();
-    return new PlanPage(
-        rows.stream().skip((long) q.page() * q.size()).limit(q.size()).toList(),
-        rows.size(),
-        q.page(),
-        q.size(),
-        evaluatedOn);
+    return reads.run(
+        () -> {
+          var c = workforce.self(subject);
+          var evaluatedOn = LocalDate.ofInstant(clock.instant(), ZoneOffset.UTC);
+          var window =
+              com.atlas.modules.benefits.domain.model.EligibilityWindow.forEmployment(
+                  c.employmentStatus(), c.employmentStart(), evaluatedOn);
+          var result = store.plans(c.tenant(), q, window);
+          return new PlanPage(
+              result.items().stream().map(p -> view(p, c, evaluatedOn)).toList(),
+              result.total(),
+              q.page(),
+              q.size(),
+              evaluatedOn);
+        });
   }
 
   public List<PlanAudit> history(String subject) {

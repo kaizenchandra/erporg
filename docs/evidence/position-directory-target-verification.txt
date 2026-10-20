@@ -1,0 +1,15 @@
+
+Running 6 tests using 1 worker
+
+(node:6751) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6751) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/benefit-decision-version.spec.ts:4:5 › fractional benefit decision is rejected by the real API and the preserved form recovers with an exact version (1.6s)
+  ✓  2 tests/position-directory.spec.ts:90:5 › server-dated current and planned positions paginate, refresh and include a real created reference (3.2s)
+  ✓  3 tests/position-directory.spec.ts:229:5 › position directory API validates timing, contracts and bounds while ignoring forged tenant hints (889ms)
+  ✓  4 tests/position-directory.spec.ts:330:5 › position directory isolates retry, stale responses, empty filters and history state (1.4s)
+  ✓  5 tests/positions.spec.ts:24:5 › HR creates a position with recoverable validation; employee browses scoped catalogue (3.1s)
+  ✓  6 tests/positions.spec.ts:118:5 › position API validates dates and roles, isolates tenants, replays and bounds server pages (554ms)
+
+  6 passed (12.0s)
