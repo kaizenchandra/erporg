@@ -5,6 +5,18 @@ import java.time.*;
 import java.util.*;
 
 public final class TalentCommands {
+  public record Delegate(
+      String kind,
+      String recordId,
+      java.math.BigDecimal version,
+      String delegateEmployee,
+      java.time.LocalDate from,
+      java.time.LocalDate through,
+      String reason,
+      String idempotencyKey) {}
+
+  public record RevokeDelegation(String reason, String idempotencyKey) {}
+
   private TalentCommands() {}
 
   public record RequisitionInput(

@@ -1,5 +1,5 @@
 {
-  "baseline": "Original Phase 5 TM-01\u2013TM-07, preserving every existing talent criterion",
+  "baseline": "Original Phase 5 TM-01–TM-07, preserving every existing talent criterion",
   "requirements": 7,
   "criteria": 49,
   "rows": [
@@ -8,7 +8,7 @@
       "name": "Recruitment",
       "roles": "HR recruiter and independent HR reviewer",
       "phase": 5,
-      "workflow": "Recruitment \u2192 requisition approval \u2192 candidate interviews/offers \u2192 accepted application \u2192 independently approved Core HR hire",
+      "workflow": "Recruitment → requisition approval → candidate interviews/offers → accepted application → independently approved Core HR hire",
       "screen": "Talent / Recruitment",
       "api": "/api/v1/talent/requisitions",
       "application": "RecruitingWorkflows / existing HiringUseCases",
@@ -130,12 +130,12 @@
       "name": "Onboarding",
       "roles": "New employee and HR joining coordinators",
       "phase": 5,
-      "workflow": "Onboarding \u2192 joining form \u2192 assigned prerequisite tasks \u2192 reviewed hire employment activation",
+      "workflow": "Onboarding → joining form → assigned prerequisite tasks → reviewed hire employment activation → independently reviewed issuer/subject binding → actual new-hire OIDC self-service",
       "screen": "Talent / Onboarding",
-      "api": "/api/v1/talent/onboarding",
+      "api": "/api/v1/talent/onboarding; /api/v1/initial-identities/employees/{employee}; /api/v1/initial-identities/{id}/review",
       "application": "RecruitingWorkflows / Core HR completeOnboarding",
       "domain": "Onboarding, Task; Core HR employment status",
-      "dataAndIntegrations": "tal_onboarding; existing Core HR onboarding completion and employee history",
+      "dataAndIntegrations": "tal_onboarding; existing Core HR onboarding completion and employee history; Core HR owns immutable hr_initial_identity_request/decision; existing maintained OIDC provider owns accounts",
       "frontendStatus": "implemented and browser-verified bounded workflow; see limitations",
       "backendStatus": "implemented with actual PostgreSQL, domain and architecture verification",
       "acceptance": [
@@ -143,13 +143,15 @@
           "id": "TM-02-F01",
           "sourceBehaviour": "Complete new-hire forms",
           "check": "Given an authorised new hire, HR and valid scoped records, complete new-hire forms through the onboarding workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-          "implementation": "partial: HR-assisted joining form verified; employee form access requires separately provisioned identity and is not browser-verified for a new hire",
-          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "implementation": "implemented: new-hire own joining form through independently reviewed exact issuer/subject binding; HR-assisted form retained",
+          "verification": "passed: actual local Keycloak authorization-code login as the newly created employee, own form save/reload, forbidden HR access, provider logout; PostgreSQL issuer/start-date/independence/replay/concurrency tests",
           "tests": [
             "TalentWorkflowTest",
             "TalentPolicyTest",
             "ArchitectureTest",
-            "tests/talent.spec.ts"
+            "tests/talent.spec.ts",
+            "InitialIdentityWorkflowTest",
+            "tests/talent-newhire.spec.ts"
           ]
         },
         {
@@ -218,7 +220,7 @@
           ]
         }
       ],
-      "limitations": "Joining forms are bounded free-text acknowledgements; task assignees are the employee or HR coordinators. No identity provisioning, existing-hire plan import or external background check.",
+      "limitations": "Bounded free-text joining acknowledgements and employee/HR tasks. Exact subject binding and actual local provider login/self-service/logout are verified. Production provider account provisioning and identity-proofing remain external deployment duties; no automatic credentials or privilege elevation. Existing-hire plan imports/background checks are not implemented.",
       "status": "partial: bounded workflows implemented; phase exit not signed off"
     },
     {
@@ -226,7 +228,7 @@
       "name": "Performance",
       "roles": "Employee, current direct manager, HR",
       "phase": 5,
-      "workflow": "Performance \u2192 configured date/rating cycle \u2192 goals/feedback \u2192 self review \u2192 return/correction \u2192 manager rating",
+      "workflow": "Performance → configured date/rating cycle → goals/feedback → self review → return/correction → manager rating",
       "screen": "Talent / Performance",
       "api": "/api/v1/talent/reviews",
       "application": "DevelopmentWorkflows",
@@ -348,7 +350,7 @@
       "name": "Learning",
       "roles": "Employee, current direct manager, HR course administrator",
       "phase": 5,
-      "workflow": "Course catalogue \u2192 role-eligible assignment \u2192 completion evidence \u2192 retained completion and expiry",
+      "workflow": "Course catalogue → role-eligible assignment → completion evidence → retained completion and expiry",
       "screen": "Talent / Learning",
       "api": "/api/v1/talent/courses and /learning",
       "application": "DevelopmentWorkflows / published Core HR role eligibility",
@@ -470,12 +472,12 @@
       "name": "Compensation planning",
       "roles": "HR compensation planner and independent HR approver; payroll intake reviewer",
       "phase": 5,
-      "workflow": "Compensation \u2192 salary/bonus proposals \u2192 budget control \u2192 independent approval \u2192 durable payroll-owned RECEIVED intake",
+      "workflow": "Compensation → independently approved payroll baseline → authoritative effective salary/bonus proposals → budget/independence controls → atomic effective payroll inputs → daily calculation snapshot → finalized payslip → balanced finance handoff",
       "screen": "Talent / Compensation planning",
-      "api": "/api/v1/talent/compensation; /api/v1/payroll/talent-inputs",
+      "api": "/api/v1/talent/compensation; /api/v1/payroll/talent-inputs; /api/v1/payroll/compensation/*; /api/v1/payroll/compensation-runs",
       "application": "PlanningWorkflows / Payroll TalentIntakeUseCases",
       "domain": "Compensation, Proposal; Payroll TalentIntake",
-      "dataAndIntegrations": "tal_compensation; pay_talent_intake owned by Payroll",
+      "dataAndIntegrations": "tal_compensation; pay_talent_intake owned by Payroll; payroll-owned pay_comp_setup/decision, pay_comp_salary, pay_comp_run, pay_comp_bonus_use",
       "frontendStatus": "implemented and browser-verified bounded workflow; see limitations",
       "backendStatus": "implemented with actual PostgreSQL, domain and architecture verification",
       "acceptance": [
@@ -509,7 +511,7 @@
           "id": "TM-05-B01",
           "sourceBehaviour": "Validate eligibility",
           "check": "Given an authorised manager, compensation admin and valid scoped records, validate eligibility through the compensation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-          "implementation": "partial: current worker/date, unique employee and bounded currency checks; full business eligibility policy remains unconfigured",
+          "implementation": "implemented baseline/episode/currency/date/salary-version checks and revalidation at approval; configured campaigns/country statutory eligibility remain outside demonstration scope",
           "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
           "tests": [
             "TalentWorkflowTest",
@@ -535,13 +537,16 @@
           "id": "TM-05-B03",
           "sourceBehaviour": "Transfer approved changes to payroll",
           "check": "Given an authorised manager, compensation admin and valid scoped records, transfer approved changes to payroll through the compensation workflow; verify persisted outcome or authorised view. Reject invalid and unauthorised input without mutation; preserve entered values and provide recovery.",
-          "implementation": "partial: approved snapshot received once in payroll-owned intake; consumption by effective compensation/gross-to-net remains unimplemented",
-          "verification": "verified bounded workflow: TalentWorkflowTest, TalentPolicyTest and tests/talent.spec.ts; source scope limitations remain explicit",
+          "implementation": "implemented demonstration vertical: approved intake atomically creates effective salary and once-only bonus inputs; real payroll calculation consumes immutable per-day salary/rule and bonus snapshots",
+          "verification": "passed: PostgreSQL/Java and connected browser salary→bonus→556.17 gross/555.71 net→independent finalization→released payslip→balanced finance draft. Payment remains NOT_CONFIGURED.",
           "tests": [
             "TalentWorkflowTest",
             "TalentPolicyTest",
             "ArchitectureTest",
-            "tests/talent.spec.ts"
+            "tests/talent.spec.ts",
+            "AuthoritativeCompensationWorkflowTest",
+            "CompensationCalculationTest",
+            "tests/talent-compensation.spec.ts"
           ]
         },
         {
@@ -571,7 +576,7 @@
           ]
         }
       ],
-      "limitations": "Current salary is an entered snapshot, not synchronized effective compensation. Payroll receipt is not consumed by demonstration gross-to-net. Full eligibility policy, compensation synchronization, downstream application and corrections remain open.",
+      "limitations": "Annual salary and explicit independently approved paid-hours basis; no default legal working hours. Planning supports USD/EUR/GBP/INR, existing demonstration payroll ledger supports USD. Backdated or already-calculated changes are blocked pending controlled retro/correction workflows. Statutory rules, policy-specific eligibility campaigns, banking and production provider readiness remain open. RECEIVED historical intakes require explicit reconciliation; they are not silently rewritten or described as paid.",
       "status": "partial: bounded workflows implemented; phase exit not signed off"
     },
     {
@@ -579,7 +584,7 @@
       "name": "Succession",
       "roles": "HR talent administrator",
       "phase": 5,
-      "workflow": "Succession \u2192 confidential talent profiles \u2192 nominate successors \u2192 revise readiness assessment \u2192 inspect history",
+      "workflow": "Succession → confidential talent profiles → nominate successors → revise readiness assessment → inspect history",
       "screen": "Talent / Succession",
       "api": "/api/v1/talent/succession",
       "application": "PlanningWorkflows",
@@ -675,7 +680,7 @@
       "name": "Workforce planning",
       "roles": "HR workforce planner",
       "phase": 5,
-      "workflow": "Workforce planning \u2192 select actual current workers \u2192 baseline/proposed headcount and annual-cost assumptions \u2192 persisted comparison",
+      "workflow": "Workforce planning → select actual current workers → baseline/proposed headcount and annual-cost assumptions → persisted comparison",
       "screen": "Talent / Workforce planning",
       "api": "/api/v1/talent/scenarios",
       "application": "PlanningWorkflows / TalentPolicy.scenario",
@@ -769,15 +774,15 @@
   ],
   "productionReady": false,
   "sharedRequirements": {
-    "SH-01": "Existing current identity, tenant, owner and manager policy; explicit HR-only compensation/succession",
-    "SH-02": "Independent requisition, hire, review and compensation decisions; shared inbox delegation not extended",
-    "SH-03": "Committed workflow status and histories; scheduled reminders/delivery processing remain unimplemented for talent",
-    "SH-04": "Bounded talent registers and persisted scenario comparison; exports/reporting suite remain open",
+    "SH-01": "Current role/tenant/employee policy plus exact issuer-bound reviewed new-hire mapping and start-date gate; actual local new-hire OIDC and privileged MFA browser verification passed",
+    "SH-02": "Current independent talent approval inbox and bounded HR responsibility delegation/recall/history implemented; database/architecture tests passed, latest UI browser verification pending. Delegation does not grant permissions or override self-approval.",
+    "SH-03": "Committed in-app workflow notices with unique event/recipient and current scope recheck passed PostgreSQL and browser tests. Scheduled overdue/reminder jobs remain open; no external email delivery asserted.",
+    "SH-04": "Authorized audited current-page CSV export (up to 10 rows), current scope, safe quoting and drill-down verified. All-filtered batch exports and enterprise reporting suite remain open.",
     "SH-05": "Atomic actor/time/reason/correlation and before/after history with database retention guards",
-    "SH-06": "Per-review rating/date and course-role/validity configuration; enterprise policies remain open",
-    "SH-08": "Real in-process Core HR hire/activation and durable payroll receipt; no vendor connection",
+    "SH-06": "Review/course policies plus independently reviewed payroll annual salary/paid-hours basis and explicit approval responsibility windows; enterprise/country policies remain open",
+    "SH-08": "Actual transactional Core HR hire/activation, reviewed new-hire binding, effective payroll salary/bonus consumption and balanced finance draft; legacy intake reconciliation exposed. Production vendor/bank interfaces not connected.",
     "SH-09": "Explicit planning currency and UTC dates; translations/country policy remain open",
-    "SH-10": "Restricted confidential access; deletion/legal-hold/retention configuration remains release work"
+    "SH-10": "Current access/audit controls. Required business input requested: approved candidate/review/learning/succession retention periods, jurisdictions and legal-hold rules before automatic erasure. No generic financial-history deletion."
   },
   "verification": {
     "javaTests": 477,
@@ -786,6 +791,7 @@
       "tables": 102,
       "views": 15
     },
-    "evidence": "verification.md"
+    "evidence": "verification.md",
+    "closureEvidence": "phase5-closure.md; evidence/talent-newhire-{binding,oidc}-browser.txt; evidence/talent-authoritative-browser.txt; evidence/talent-closure-regression-browser.txt; evidence/talent-approvals-java.txt"
   }
 }

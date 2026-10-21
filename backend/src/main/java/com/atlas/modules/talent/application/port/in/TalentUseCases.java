@@ -5,6 +5,21 @@ import com.atlas.modules.talent.domain.model.TalentModels.*;
 import java.util.List;
 
 public interface TalentUseCases {
+  List<ResponsibilityHistory> delegationHistory(String subject, String kind, String id, int page);
+
+  List<ApprovalTask> approvalInbox(String subject, int page);
+
+  List<String> approvalDelegates(String subject);
+
+  Delegation delegate(String subject, Delegate command, String correlation);
+
+  DelegationRevocation revokeDelegation(
+      String subject, String id, RevokeDelegation command, String correlation);
+
+  List<Notice> notices(String subject, int page);
+
+  Export export(String subject, String kind, String employee, int page, String correlation);
+
   Context context(String subject, String search, int page);
 
   Object page(String subject, String kind, String employee, int page);

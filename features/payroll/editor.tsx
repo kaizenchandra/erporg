@@ -24,6 +24,9 @@ export function PayrollEditor({
   onClose: () => void;
   onSaved: () => void;
 }) {
+  const [authoritative, setAuthoritative] = useState(
+    run?.ruleVersion.startsWith("DEMO-COMPENSATION") ?? true,
+  );
   const c = useFinancialCommand(),
     [dirty, setDirty] = useState(false),
     [source, setSource] = useState(run?.source.id ?? ""),
@@ -61,17 +64,22 @@ export function PayrollEditor({
         onChange={() => setDirty(true)}
         onSubmit={async (e) => {
           e.preventDefault();
-          const r = await c.run<Run>("/api/v1/payroll/runs", {
-            id: run?.id ?? null,
-            version: run?.version ?? 0,
-            entity,
-            sheetId: source,
-            costCentre: cost,
-            postingDate: date,
-            hourlyRate: rate,
-            deduction,
-            reason,
-          });
+          const r = await c.run<Run>(
+            authoritative
+              ? "/api/v1/payroll/compensation-runs"
+              : "/api/v1/payroll/runs",
+            {
+              id: run?.id ?? null,
+              version: run?.version ?? 0,
+              entity,
+              sheetId: source,
+              costCentre: cost,
+              postingDate: date,
+              hourlyRate: authoritative ? null : rate,
+              deduction,
+              reason,
+            },
+          );
           if (r) {
             setDirty(false);
             onSaved();
@@ -85,6 +93,33 @@ export function PayrollEditor({
           proration, overtime premium or benefit deduction is calculated. This
           calculation cannot release money.
         </p>
+        <label>
+          Calculation source
+          <select
+            value={authoritative ? "COMPENSATION" : "HOURLY"}
+            disabled={!!run}
+            onChange={(e) =>
+              setAuthoritative(e.target.value === "COMPENSATION")
+            }
+          >
+            <option value="COMPENSATION">
+              Authoritative compensation and approved bonus inputs
+            </option>
+            <option value="HOURLY">Entered hourly demonstration rule</option>
+          </select>
+        </label>
+        {authoritative && (
+          <p>
+            Each worked date uses its effective approved annual salary divided
+            by its reviewed annual paid-hours basis (hourly rate: half-even to 4
+            decimals). Period base pay rounds half-even to 2 decimals, plus
+            unconsumed approved bonuses effective by this week end. This is an
+            explicit demonstration conversion, not a statutory salaried-payroll
+            proration policy. Salary and bonus inputs are frozen with this
+            calculation; bonuses are reserved to exactly one run. A returned run
+            retains that snapshot.
+          </p>
+        )}
         <FinancialError message={c.error} fields={c.fields} />
         {!run && (
           <details>
@@ -151,15 +186,17 @@ export function PayrollEditor({
               onChange={(e) => setDate(e.target.value)}
             />
           </label>
-          <label>
-            Hourly rate (USD) *
-            <input
-              inputMode="decimal"
-              required
-              value={rate}
-              onChange={(e) => setRate(e.target.value)}
-            />
-          </label>
+          {!authoritative && (
+            <label>
+              Hourly rate (USD) *
+              <input
+                inputMode="decimal"
+                required
+                value={rate}
+                onChange={(e) => setRate(e.target.value)}
+              />
+            </label>
+          )}
           <label>
             Voluntary deduction (USD) *
             <input

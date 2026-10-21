@@ -45,7 +45,7 @@ public final class JdbcTalentIntakeStore implements Store {
 
   public List<Intake> pending(String t, int page) {
     return db.sql(
-            "select snapshot::text from pay_talent_intake where tenant=:t order by (snapshot->>'recordedAt')::timestamptz,id limit 20 offset :p")
+            "select jsonb_set(snapshot,'{status}',to_jsonb(case when not exists(select 1 from jsonb_array_elements(snapshot->'awards') a where not exists(select 1 from pay_comp_salary s where s.tenant=pay_talent_intake.tenant and s.source_id=pay_talent_intake.source_id and s.employee_id=a->>'employeeId')) then 'APPLIED'::text else 'RECEIVED'::text end))::text from pay_talent_intake where tenant=:t order by (snapshot->>'recordedAt')::timestamptz,id limit 20 offset :p")
         .param("t", t)
         .param("p", page * 20)
         .query((r, n) -> json.readValue(r.getString(1), Intake.class))

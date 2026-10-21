@@ -1,5 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { TalentNotices, TalentExport } from "./controls";
+import { TalentReminders } from "./reminders";
+import { TalentApprovals, ResponsibilityHistory } from "./approvals";
 import type { Actor } from "@/lib/contracts";
 import { FinancialError } from "@/features/finance/shared";
 import { Badge } from "@/components/ui/primitives";
@@ -94,6 +97,30 @@ export function TalentWorkspace({ actor }: { actor: Actor }) {
           external LMS service is connected.
         </small>
       </div>
+      {actor.role === "HR" && <TalentReminders revision={revision} />}
+      {actor.role !== "EMPLOYEE" && (
+        <TalentApprovals
+          actor={actor}
+          revision={revision}
+          onOpen={(k, id) =>
+            navigate(() => {
+              setKind(k);
+              setSelected(id);
+              setCreating(false);
+            })
+          }
+        />
+      )}
+      <TalentNotices
+        revision={revision}
+        onOpen={(k, id) =>
+          navigate(() => {
+            setKind(k);
+            setSelected(id);
+            setCreating(false);
+          })
+        }
+      />
       <nav className="people-tabs" aria-label="Talent views">
         {tabs.map((k) => (
           <button
@@ -115,6 +142,7 @@ export function TalentWorkspace({ actor }: { actor: Actor }) {
         ))}
       </nav>
       {notice && <p role="status">{notice}</p>}
+      <TalentExport kind={kind} employee={scope} page={page} />
       <div className="time-toolbar">
         <button
           className="button secondary"
@@ -408,6 +436,9 @@ function Detail({
               />
             ) : (
               <ScenarioDetail r={r.data as Scenario} />
+            )}
+            {["reviews", "requisitions", "compensation"].includes(kind) && (
+              <ResponsibilityHistory kind={kind} id={id} revision={revision} />
             )}
             <History kind={kind} id={id} revision={revision} />
           </>

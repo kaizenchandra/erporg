@@ -1,0 +1,352 @@
+03:26:05.249 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.AuthoritativeCompensationWorkflowTest]: AuthoritativeCompensationWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+03:26:05.371 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.AuthoritativeCompensationWorkflowTest
+03:26:05.414 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.atlas.AuthoritativeCompensationWorkflowTest]: AuthoritativeCompensationWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+03:26:05.416 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.AuthoritativeCompensationWorkflowTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-21T03:26:05.626+05:30  INFO 88186 --- [atlas-api] [           main] .a.AuthoritativeCompensationWorkflowTest : Starting AuthoritativeCompensationWorkflowTest using Java 21.0.12.1 with PID 88186 (started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-21T03:26:05.626+05:30  INFO 88186 --- [atlas-api] [           main] .a.AuthoritativeCompensationWorkflowTest : The following 1 profile is active: "local"
+2026-10-21T03:26:06.798+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-21T03:26:06.933+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3eb0fd88
+2026-10-21T03:26:06.934+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-21T03:26:06.968+05:30  INFO 88186 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_compensation_6031b6924bde (PostgreSQL 18.6)
+2026-10-21T03:26:07.022+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.database.base.Schema   : Creating schema "atlas_compensation_6031b6924bde" ...
+2026-10-21T03:26:07.029+05:30  INFO 88186 --- [atlas-api] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "atlas_compensation_6031b6924bde"."flyway_schema_history" ...
+2026-10-21T03:26:07.112+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_compensation_6031b6924bde": null
+2026-10-21T03:26:07.135+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "1 - core hr"
+2026-10-21T03:26:07.271+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "2 - synthetic workspace"
+2026-10-21T03:26:07.302+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "3 - oidc subjects"
+2026-10-21T03:26:07.316+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "4 - jdbc sessions"
+2026-10-21T03:26:07.347+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "5 - private contact details"
+2026-10-21T03:26:07.385+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "6 - department reference"
+2026-10-21T03:26:07.415+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "7 - department seed audit"
+2026-10-21T03:26:07.427+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "8 - hiring workflow"
+2026-10-21T03:26:07.456+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "9 - second hr reviewer"
+2026-10-21T03:26:07.468+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "10 - onboarding completion"
+2026-10-21T03:26:07.489+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "11 - hire tenant integrity"
+2026-10-21T03:26:07.511+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "12 - position catalogue"
+2026-10-21T03:26:07.537+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "13 - position assignment"
+2026-10-21T03:26:07.562+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "14 - position assignment integrity"
+2026-10-21T03:26:07.580+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "15 - reporting changes"
+2026-10-21T03:26:07.617+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "16 - employee display name"
+2026-10-21T03:26:07.638+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "17 - request withdrawal"
+2026-10-21T03:26:07.672+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "18 - benefits catalogue"
+2026-10-21T03:26:07.695+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "19 - benefit rule snapshot"
+2026-10-21T03:26:07.705+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "20 - benefit selections"
+2026-10-21T03:26:07.755+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "21 - benefit selection integrity"
+2026-10-21T03:26:07.774+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "22 - private employee documents"
+2026-10-21T03:26:07.807+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "23 - document scan retry"
+2026-10-21T03:26:07.835+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "24 - immutable document versions"
+2026-10-21T03:26:07.865+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "25 - document templates and completeness"
+2026-10-21T03:26:07.904+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "26 - document template revisions and corrections"
+2026-10-21T03:26:07.954+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "27 - document retention and legal holds"
+2026-10-21T03:26:07.981+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "28 - independent hold release subject"
+2026-10-21T03:26:08.001+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "29 - resignation workflow"
+2026-10-21T03:26:08.046+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "30 - resignation audit reconciliation"
+2026-10-21T03:26:08.064+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "31 - exit task coordination"
+2026-10-21T03:26:08.101+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "32 - exit task management"
+2026-10-21T03:26:08.134+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "33 - effective employment end"
+2026-10-21T03:26:08.183+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "34 - employment end withdrawal"
+2026-10-21T03:26:08.225+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "35 - employment end reschedule"
+2026-10-21T03:26:08.273+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "36 - current end handoff identity"
+2026-10-21T03:26:08.290+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "37 - rehire onboarding episode"
+2026-10-21T03:26:08.333+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "38 - reviewed rehire activation"
+2026-10-21T03:26:08.380+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "39 - revoke fresh rehire access"
+2026-10-21T03:26:08.411+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "40 - revoked identity hold"
+2026-10-21T03:26:08.435+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "41 - reviewed identity replacement"
+2026-10-21T03:26:08.498+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "42 - pending resignation withdrawal"
+2026-10-21T03:26:08.534+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "43 - original case episode ownership"
+2026-10-21T03:26:08.560+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "44 - compatible original episode writers"
+2026-10-21T03:26:08.578+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "45 - episode local status projection"
+2026-10-21T03:26:08.588+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "46 - access grant episode ownership"
+2026-10-21T03:26:08.617+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "47 - current episode task assignees"
+2026-10-21T03:26:08.629+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "48 - private recorded legal name"
+2026-10-21T03:26:08.646+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "49 - additional emergency contacts"
+2026-10-21T03:26:08.700+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "50 - pending benefit withdrawal"
+2026-10-21T03:26:08.719+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "51 - structured private postal address"
+2026-10-21T03:26:08.755+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "52 - declared legal entity references"
+2026-10-21T03:26:08.780+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "53 - reviewed legal entity retirement"
+2026-10-21T03:26:08.810+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "54 - private recorded birth date"
+2026-10-21T03:26:08.831+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "55 - schema local birth date guard"
+2026-10-21T03:26:08.848+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "56 - company work calendars"
+2026-10-21T03:26:08.868+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "57 - dated company calendar amendments"
+2026-10-21T03:26:08.900+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "58 - calendar revision guard result"
+2026-10-21T03:26:08.908+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "59 - company calendar retirement"
+2026-10-21T03:26:08.933+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "60 - private personal email"
+2026-10-21T03:26:08.961+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "61 - approved employee calendar assignment"
+2026-10-21T03:26:09.020+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "62 - approved employee entity assignment"
+2026-10-21T03:26:09.060+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "63 - capture entity requester employee"
+2026-10-21T03:26:09.086+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "64 - protect entity request provenance"
+2026-10-21T03:26:09.099+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "65 - employee audit keyset index"
+2026-10-21T03:26:09.109+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "66 - department parent correction"
+2026-10-21T03:26:09.133+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "67 - department parent business order"
+2026-10-21T03:26:09.146+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "68 - schema scoped department hierarchy lock"
+2026-10-21T03:26:09.161+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "69 - department parent truncate protection"
+2026-10-21T03:26:09.176+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "70 - attendance timesheets"
+2026-10-21T03:26:09.206+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "71 - timekeeping provenance and dates"
+2026-10-21T03:26:09.220+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "72 - timesheet return and recall"
+2026-10-21T03:26:09.231+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "73 - timesheet period controls"
+2026-10-21T03:26:09.254+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "74 - timesheet bulk receipts"
+2026-10-21T03:26:09.272+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "75 - time report range index"
+2026-10-21T03:26:09.295+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "76 - payroll finance foundation"
+2026-10-21T03:26:09.373+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "77 - local financial grants"
+2026-10-21T03:26:09.389+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "78 - financial result provenance"
+2026-10-21T03:26:09.404+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "79 - owned journal reversal sources"
+2026-10-21T03:26:09.417+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "80 - schema bound financial guards"
+2026-10-21T03:26:09.430+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "81 - talent workflows"
+2026-10-21T03:26:09.472+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "82 - payroll talent intake"
+2026-10-21T03:26:09.485+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "83 - succession assessment revisions"
+2026-10-21T03:26:09.496+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "84 - reviewed initial identity"
+2026-10-21T03:26:09.520+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "85 - authoritative compensation"
+2026-10-21T03:26:09.567+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_compensation_6031b6924bde" to version "86 - talent committed notices exports"
+2026-10-21T03:26:09.594+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 86 migrations to schema "atlas_compensation_6031b6924bde", now at version v86 (execution time 00:01.394s)
+2026-10-21T03:26:10.619+05:30  INFO 88186 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-21T03:26:11.444+05:30  INFO 88186 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-21T03:26:11.485+05:30  INFO 88186 --- [atlas-api] [           main] .a.AuthoritativeCompensationWorkflowTest : Started AuthoritativeCompensationWorkflowTest in 6.036 seconds (process running for 6.991)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/private/tmp/atlas-m2/net/bytebuddy/byte-buddy-agent/1.17.8/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+2026-10-21T03:26:13.923+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-10-21T03:26:13.925+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-10-21T03:26:13.936+05:30  INFO 88186 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.InitialIdentityWorkflowTest]: InitialIdentityWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-21T03:26:13.936+05:30  INFO 88186 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.InitialIdentityWorkflowTest
+2026-10-21T03:26:13.937+05:30  INFO 88186 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.InitialIdentityWorkflowTest]: InitialIdentityWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-21T03:26:13.937+05:30  INFO 88186 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.InitialIdentityWorkflowTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-21T03:26:13.958+05:30  INFO 88186 --- [atlas-api] [           main] com.atlas.InitialIdentityWorkflowTest    : Starting InitialIdentityWorkflowTest using Java 21.0.12.1 with PID 88186 (started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-21T03:26:13.958+05:30  INFO 88186 --- [atlas-api] [           main] com.atlas.InitialIdentityWorkflowTest    : The following 1 profile is active: "local"
+2026-10-21T03:26:14.173+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-10-21T03:26:14.187+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@676c3745
+2026-10-21T03:26:14.188+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-10-21T03:26:14.191+05:30  INFO 88186 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_initial_identity_fd1535e954 (PostgreSQL 18.6)
+2026-10-21T03:26:14.223+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.database.base.Schema   : Creating schema "atlas_initial_identity_fd1535e954" ...
+2026-10-21T03:26:14.227+05:30  INFO 88186 --- [atlas-api] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "atlas_initial_identity_fd1535e954"."flyway_schema_history" ...
+2026-10-21T03:26:14.293+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_initial_identity_fd1535e954": null
+2026-10-21T03:26:14.296+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "1 - core hr"
+2026-10-21T03:26:14.361+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "2 - synthetic workspace"
+2026-10-21T03:26:14.392+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "3 - oidc subjects"
+2026-10-21T03:26:14.399+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "4 - jdbc sessions"
+2026-10-21T03:26:14.410+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "5 - private contact details"
+2026-10-21T03:26:14.441+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "6 - department reference"
+2026-10-21T03:26:14.462+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "7 - department seed audit"
+2026-10-21T03:26:14.480+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "8 - hiring workflow"
+2026-10-21T03:26:14.504+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "9 - second hr reviewer"
+2026-10-21T03:26:14.516+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "10 - onboarding completion"
+2026-10-21T03:26:14.528+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "11 - hire tenant integrity"
+2026-10-21T03:26:14.537+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "12 - position catalogue"
+2026-10-21T03:26:14.549+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "13 - position assignment"
+2026-10-21T03:26:14.566+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "14 - position assignment integrity"
+2026-10-21T03:26:14.575+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "15 - reporting changes"
+2026-10-21T03:26:14.598+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "16 - employee display name"
+2026-10-21T03:26:14.619+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "17 - request withdrawal"
+2026-10-21T03:26:14.654+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "18 - benefits catalogue"
+2026-10-21T03:26:14.686+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "19 - benefit rule snapshot"
+2026-10-21T03:26:14.700+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "20 - benefit selections"
+2026-10-21T03:26:14.769+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "21 - benefit selection integrity"
+2026-10-21T03:26:14.793+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "22 - private employee documents"
+2026-10-21T03:26:14.822+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "23 - document scan retry"
+2026-10-21T03:26:14.837+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "24 - immutable document versions"
+2026-10-21T03:26:14.866+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "25 - document templates and completeness"
+2026-10-21T03:26:14.898+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "26 - document template revisions and corrections"
+2026-10-21T03:26:14.946+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "27 - document retention and legal holds"
+2026-10-21T03:26:14.982+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "28 - independent hold release subject"
+2026-10-21T03:26:15.008+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "29 - resignation workflow"
+2026-10-21T03:26:15.054+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "30 - resignation audit reconciliation"
+2026-10-21T03:26:15.069+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "31 - exit task coordination"
+2026-10-21T03:26:15.102+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "32 - exit task management"
+2026-10-21T03:26:15.131+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "33 - effective employment end"
+2026-10-21T03:26:15.163+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "34 - employment end withdrawal"
+2026-10-21T03:26:15.224+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "35 - employment end reschedule"
+2026-10-21T03:26:15.280+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "36 - current end handoff identity"
+2026-10-21T03:26:15.314+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "37 - rehire onboarding episode"
+2026-10-21T03:26:15.374+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "38 - reviewed rehire activation"
+2026-10-21T03:26:15.432+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "39 - revoke fresh rehire access"
+2026-10-21T03:26:15.458+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "40 - revoked identity hold"
+2026-10-21T03:26:15.468+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "41 - reviewed identity replacement"
+2026-10-21T03:26:15.525+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "42 - pending resignation withdrawal"
+2026-10-21T03:26:15.558+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "43 - original case episode ownership"
+2026-10-21T03:26:15.595+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "44 - compatible original episode writers"
+2026-10-21T03:26:15.615+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "45 - episode local status projection"
+2026-10-21T03:26:15.633+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "46 - access grant episode ownership"
+2026-10-21T03:26:15.654+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "47 - current episode task assignees"
+2026-10-21T03:26:15.664+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "48 - private recorded legal name"
+2026-10-21T03:26:15.674+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "49 - additional emergency contacts"
+2026-10-21T03:26:15.718+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "50 - pending benefit withdrawal"
+2026-10-21T03:26:15.736+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "51 - structured private postal address"
+2026-10-21T03:26:15.748+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "52 - declared legal entity references"
+2026-10-21T03:26:15.772+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "53 - reviewed legal entity retirement"
+2026-10-21T03:26:15.793+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "54 - private recorded birth date"
+2026-10-21T03:26:15.804+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "55 - schema local birth date guard"
+2026-10-21T03:26:15.812+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "56 - company work calendars"
+2026-10-21T03:26:15.830+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "57 - dated company calendar amendments"
+2026-10-21T03:26:15.849+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "58 - calendar revision guard result"
+2026-10-21T03:26:15.862+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "59 - company calendar retirement"
+2026-10-21T03:26:15.905+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "60 - private personal email"
+2026-10-21T03:26:15.927+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "61 - approved employee calendar assignment"
+2026-10-21T03:26:15.972+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "62 - approved employee entity assignment"
+2026-10-21T03:26:16.010+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "63 - capture entity requester employee"
+2026-10-21T03:26:16.032+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "64 - protect entity request provenance"
+2026-10-21T03:26:16.046+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "65 - employee audit keyset index"
+2026-10-21T03:26:16.061+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "66 - department parent correction"
+2026-10-21T03:26:16.076+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "67 - department parent business order"
+2026-10-21T03:26:16.088+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "68 - schema scoped department hierarchy lock"
+2026-10-21T03:26:16.101+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "69 - department parent truncate protection"
+2026-10-21T03:26:16.109+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "70 - attendance timesheets"
+2026-10-21T03:26:16.146+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "71 - timekeeping provenance and dates"
+2026-10-21T03:26:16.160+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "72 - timesheet return and recall"
+2026-10-21T03:26:16.171+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "73 - timesheet period controls"
+2026-10-21T03:26:16.188+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "74 - timesheet bulk receipts"
+2026-10-21T03:26:16.201+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "75 - time report range index"
+2026-10-21T03:26:16.214+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "76 - payroll finance foundation"
+2026-10-21T03:26:16.286+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "77 - local financial grants"
+2026-10-21T03:26:16.298+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "78 - financial result provenance"
+2026-10-21T03:26:16.311+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "79 - owned journal reversal sources"
+2026-10-21T03:26:16.319+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "80 - schema bound financial guards"
+2026-10-21T03:26:16.328+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "81 - talent workflows"
+2026-10-21T03:26:16.379+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "82 - payroll talent intake"
+2026-10-21T03:26:16.387+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "83 - succession assessment revisions"
+2026-10-21T03:26:16.394+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "84 - reviewed initial identity"
+2026-10-21T03:26:16.419+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "85 - authoritative compensation"
+2026-10-21T03:26:16.447+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_initial_identity_fd1535e954" to version "86 - talent committed notices exports"
+2026-10-21T03:26:16.459+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 86 migrations to schema "atlas_initial_identity_fd1535e954", now at version v86 (execution time 00:01.143s)
+2026-10-21T03:26:17.014+05:30  INFO 88186 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-21T03:26:17.096+05:30  INFO 88186 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-21T03:26:17.118+05:30  INFO 88186 --- [atlas-api] [           main] com.atlas.InitialIdentityWorkflowTest    : Started InitialIdentityWorkflowTest in 3.178 seconds (process running for 12.624)
+2026-10-21T03:26:17.642+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2026-10-21T03:26:17.656+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2026-10-21T03:26:17.665+05:30  INFO 88186 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.TalentWorkflowTest]: TalentWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-21T03:26:17.666+05:30  INFO 88186 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.TalentWorkflowTest
+2026-10-21T03:26:17.666+05:30  INFO 88186 --- [atlas-api] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.atlas.TalentWorkflowTest]: TalentWorkflowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-21T03:26:17.666+05:30  INFO 88186 --- [atlas-api] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.atlas.AtlasApplication for test class com.atlas.TalentWorkflowTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-10-21T03:26:17.683+05:30  INFO 88186 --- [atlas-api] [           main] com.atlas.TalentWorkflowTest             : Starting TalentWorkflowTest using Java 21.0.12.1 with PID 88186 (started by mwgbh in /Volumes/KaizenChandra/Workspace/04-Development/Codex/erporg/backend)
+2026-10-21T03:26:17.684+05:30  INFO 88186 --- [atlas-api] [           main] com.atlas.TalentWorkflowTest             : The following 1 profile is active: "local"
+2026-10-21T03:26:17.869+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2026-10-21T03:26:17.880+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection org.postgresql.jdbc.PgConnection@5e4a9c16
+2026-10-21T03:26:17.881+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2026-10-21T03:26:17.883+05:30  INFO 88186 --- [atlas-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5438/atlas?currentSchema=atlas_talent_43877a264a21 (PostgreSQL 18.6)
+2026-10-21T03:26:17.900+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.database.base.Schema   : Creating schema "atlas_talent_43877a264a21" ...
+2026-10-21T03:26:17.904+05:30  INFO 88186 --- [atlas-api] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "atlas_talent_43877a264a21"."flyway_schema_history" ...
+2026-10-21T03:26:17.968+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "atlas_talent_43877a264a21": null
+2026-10-21T03:26:17.971+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "1 - core hr"
+2026-10-21T03:26:18.015+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "2 - synthetic workspace"
+2026-10-21T03:26:18.043+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "3 - oidc subjects"
+2026-10-21T03:26:18.059+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "4 - jdbc sessions"
+2026-10-21T03:26:18.086+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "5 - private contact details"
+2026-10-21T03:26:18.096+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "6 - department reference"
+2026-10-21T03:26:18.121+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "7 - department seed audit"
+2026-10-21T03:26:18.141+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "8 - hiring workflow"
+2026-10-21T03:26:18.182+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "9 - second hr reviewer"
+2026-10-21T03:26:18.200+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "10 - onboarding completion"
+2026-10-21T03:26:18.216+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "11 - hire tenant integrity"
+2026-10-21T03:26:18.232+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "12 - position catalogue"
+2026-10-21T03:26:18.244+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "13 - position assignment"
+2026-10-21T03:26:18.258+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "14 - position assignment integrity"
+2026-10-21T03:26:18.266+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "15 - reporting changes"
+2026-10-21T03:26:18.278+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "16 - employee display name"
+2026-10-21T03:26:18.288+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "17 - request withdrawal"
+2026-10-21T03:26:18.305+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "18 - benefits catalogue"
+2026-10-21T03:26:18.324+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "19 - benefit rule snapshot"
+2026-10-21T03:26:18.331+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "20 - benefit selections"
+2026-10-21T03:26:18.360+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "21 - benefit selection integrity"
+2026-10-21T03:26:18.375+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "22 - private employee documents"
+2026-10-21T03:26:18.409+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "23 - document scan retry"
+2026-10-21T03:26:18.426+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "24 - immutable document versions"
+2026-10-21T03:26:18.449+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "25 - document templates and completeness"
+2026-10-21T03:26:18.462+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "26 - document template revisions and corrections"
+2026-10-21T03:26:18.509+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "27 - document retention and legal holds"
+2026-10-21T03:26:18.536+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "28 - independent hold release subject"
+2026-10-21T03:26:18.549+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "29 - resignation workflow"
+2026-10-21T03:26:18.590+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "30 - resignation audit reconciliation"
+2026-10-21T03:26:18.602+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "31 - exit task coordination"
+2026-10-21T03:26:18.630+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "32 - exit task management"
+2026-10-21T03:26:18.656+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "33 - effective employment end"
+2026-10-21T03:26:18.682+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "34 - employment end withdrawal"
+2026-10-21T03:26:18.715+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "35 - employment end reschedule"
+2026-10-21T03:26:18.766+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "36 - current end handoff identity"
+2026-10-21T03:26:18.791+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "37 - rehire onboarding episode"
+2026-10-21T03:26:18.841+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "38 - reviewed rehire activation"
+2026-10-21T03:26:18.888+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "39 - revoke fresh rehire access"
+2026-10-21T03:26:18.909+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "40 - revoked identity hold"
+2026-10-21T03:26:18.950+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "41 - reviewed identity replacement"
+2026-10-21T03:26:18.994+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "42 - pending resignation withdrawal"
+2026-10-21T03:26:19.023+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "43 - original case episode ownership"
+2026-10-21T03:26:19.052+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "44 - compatible original episode writers"
+2026-10-21T03:26:19.069+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "45 - episode local status projection"
+2026-10-21T03:26:19.089+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "46 - access grant episode ownership"
+2026-10-21T03:26:19.134+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "47 - current episode task assignees"
+2026-10-21T03:26:19.153+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "48 - private recorded legal name"
+2026-10-21T03:26:19.170+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "49 - additional emergency contacts"
+2026-10-21T03:26:19.216+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "50 - pending benefit withdrawal"
+2026-10-21T03:26:19.233+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "51 - structured private postal address"
+2026-10-21T03:26:19.258+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "52 - declared legal entity references"
+2026-10-21T03:26:19.275+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "53 - reviewed legal entity retirement"
+2026-10-21T03:26:19.305+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "54 - private recorded birth date"
+2026-10-21T03:26:19.325+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "55 - schema local birth date guard"
+2026-10-21T03:26:19.333+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "56 - company work calendars"
+2026-10-21T03:26:19.355+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "57 - dated company calendar amendments"
+2026-10-21T03:26:19.369+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "58 - calendar revision guard result"
+2026-10-21T03:26:19.378+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "59 - company calendar retirement"
+2026-10-21T03:26:19.393+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "60 - private personal email"
+2026-10-21T03:26:19.407+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "61 - approved employee calendar assignment"
+2026-10-21T03:26:19.442+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "62 - approved employee entity assignment"
+2026-10-21T03:26:19.484+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "63 - capture entity requester employee"
+2026-10-21T03:26:19.507+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "64 - protect entity request provenance"
+2026-10-21T03:26:19.520+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "65 - employee audit keyset index"
+2026-10-21T03:26:19.532+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "66 - department parent correction"
+2026-10-21T03:26:19.551+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "67 - department parent business order"
+2026-10-21T03:26:19.560+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "68 - schema scoped department hierarchy lock"
+2026-10-21T03:26:19.569+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "69 - department parent truncate protection"
+2026-10-21T03:26:19.592+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "70 - attendance timesheets"
+2026-10-21T03:26:19.656+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "71 - timekeeping provenance and dates"
+2026-10-21T03:26:19.672+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "72 - timesheet return and recall"
+2026-10-21T03:26:19.685+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "73 - timesheet period controls"
+2026-10-21T03:26:19.700+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "74 - timesheet bulk receipts"
+2026-10-21T03:26:19.714+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "75 - time report range index"
+2026-10-21T03:26:19.729+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "76 - payroll finance foundation"
+2026-10-21T03:26:19.822+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "77 - local financial grants"
+2026-10-21T03:26:19.836+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "78 - financial result provenance"
+2026-10-21T03:26:19.855+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "79 - owned journal reversal sources"
+2026-10-21T03:26:19.876+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "80 - schema bound financial guards"
+2026-10-21T03:26:19.889+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "81 - talent workflows"
+2026-10-21T03:26:19.935+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "82 - payroll talent intake"
+2026-10-21T03:26:19.954+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "83 - succession assessment revisions"
+2026-10-21T03:26:19.967+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "84 - reviewed initial identity"
+2026-10-21T03:26:19.992+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "85 - authoritative compensation"
+2026-10-21T03:26:20.026+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "atlas_talent_43877a264a21" to version "86 - talent committed notices exports"
+2026-10-21T03:26:20.047+05:30  INFO 88186 --- [atlas-api] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 86 migrations to schema "atlas_talent_43877a264a21", now at version v86 (execution time 00:01.094s)
+2026-10-21T03:26:20.589+05:30  INFO 88186 --- [atlas-api] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name users
+2026-10-21T03:26:20.642+05:30  INFO 88186 --- [atlas-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-10-21T03:26:20.647+05:30  INFO 88186 --- [atlas-api] [           main] com.atlas.TalentWorkflowTest             : Started TalentWorkflowTest in 2.978 seconds (process running for 16.154)
+2026-10-21T03:26:21.457+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2026-10-21T03:26:21.457+05:30  INFO 88186 --- [atlas-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2026-10-21T03:26:21.479+05:30  INFO 88186 --- [atlas-api] [           main] com.tngtech.archunit.core.PluginLoader   : Detected Java version 21.0.12.1

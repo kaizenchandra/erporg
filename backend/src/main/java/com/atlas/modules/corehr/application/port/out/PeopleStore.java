@@ -13,6 +13,8 @@ import java.time.*;
 import java.util.*;
 
 public interface PeopleStore {
+  List<String> hrNotificationRecipients(String tenant, LocalDate date);
+
   Optional<String> entityRequesterEmployee(String tenant, String requestId);
 
   void lockLegalEntities(String tenant);

@@ -13,7 +13,79 @@ public final class TalentPorts {
   }
 
   public interface Store {
+    Optional<com.atlas.modules.talent.application.model.ReminderModels.Policy> reminderPolicy(
+        String tenant);
+
+    Optional<com.atlas.modules.talent.application.model.ReminderModels.State> reminderState(
+        String tenant);
+
+    void reminderPolicy(
+        String tenant, com.atlas.modules.talent.application.model.ReminderModels.Policy policy);
+
+    void reminderState(
+        String tenant, com.atlas.modules.talent.application.model.ReminderModels.State state);
+
+    Optional<com.atlas.modules.talent.application.model.ReminderModels.Due> reminderDue(
+        java.time.Instant now);
+
+    List<com.atlas.modules.talent.application.model.ReminderModels.Source> reminderSources(
+        String tenant, java.time.Instant cutoff, java.time.LocalDate day);
+
+    void reminderRun(
+        String tenant, com.atlas.modules.talent.application.model.ReminderModels.Run run);
+
+    void reminderItem(
+        String tenant, com.atlas.modules.talent.application.model.ReminderModels.Item item);
+
+    void reminderNotice(String tenant, Notice notice, java.time.LocalDate day, String runId);
+
+    List<com.atlas.modules.talent.application.model.ReminderModels.Run> reminderRuns(
+        String tenant, int page);
+
+    List<com.atlas.modules.talent.application.model.ReminderModels.Item> reminderItems(
+        String tenant, String runId);
+
     void lock(String tenant);
+
+    List<ResponsibilityHistory> delegationHistory(
+        String tenant, String kind, String recordId, int page);
+
+    boolean delegationOverlap(
+        String tenant,
+        String kind,
+        String recordId,
+        long version,
+        java.time.LocalDate from,
+        java.time.LocalDate through);
+
+    List<Pending> approvalCandidates(String tenant, int page);
+
+    Optional<Delegation> delegationReplay(String tenant, String actor, String key);
+
+    Optional<Delegation> delegation(String tenant, String id);
+
+    Optional<Delegation> activeDelegation(
+        String tenant, String kind, String recordId, long version, java.time.LocalDate date);
+
+    void delegate(String tenant, Delegation delegation);
+
+    Optional<DelegationRevocation> revocation(String tenant, String id);
+
+    void revokeDelegation(String tenant, DelegationRevocation revocation);
+
+    void notice(String tenant, Notice notice);
+
+    List<Notice> notices(String tenant, String employee, int page);
+
+    void exportReceipt(
+        String tenant,
+        String actor,
+        String employee,
+        String kind,
+        int page,
+        int rows,
+        String correlation,
+        java.time.Instant now);
 
     boolean enrolled(String tenant, String course, String employee);
 
@@ -41,6 +113,8 @@ public final class TalentPorts {
   public interface Environment {
     Actor self(String subject);
 
+    List<String> hrReviewers(String subject);
+
     boolean hasRole(String subject, String employee, String role);
 
     Worker worker(String subject, String employee);
@@ -65,6 +139,9 @@ public final class TalentPorts {
 
     void completeOnboarding(
         String subject, String hireId, long version, String reason, String key, String correlation);
+
+    java.math.BigDecimal currentSalary(
+        String subject, String employee, java.time.LocalDate date, String currency);
 
     String compensationIntake(String subject, Compensation plan, String reason, String correlation);
   }

@@ -24,6 +24,12 @@ public class SecurityConfiguration {
       jakarta.servlet.http.HttpServletResponse response)
       throws java.io.IOException {
     try {
+      workforce.verifyIssuer(
+          auth.getName(),
+          auth.getPrincipal()
+                  instanceof org.springframework.security.oauth2.core.oidc.user.OidcUser oidc
+              ? oidc.getIssuer().toString()
+              : "");
       var epoch = workforce.sessionEpoch(auth.getName());
       request.getSession(true).setAttribute(EmploymentAccessFilter.EPOCH_ATTRIBUTE, epoch);
       return true;

@@ -13,6 +13,17 @@ public final class TalentPayrollController {
     this.p = p;
   }
 
+  public record Synchronize(String reason) {}
+
+  @PostMapping("/{source}/synchronize")
+  Object synchronize(
+      Principal a,
+      @PathVariable String source,
+      @RequestBody Synchronize c,
+      @RequestAttribute("correlationId") String corr) {
+    return p.synchronize(a.getName(), source, c.reason(), corr);
+  }
+
   @GetMapping
   Object pending(Principal a, @RequestParam(defaultValue = "0") int page) {
     return p.pending(a.getName(), page);

@@ -9,10 +9,19 @@ import com.atlas.modules.talent.domain.model.TalentModels.Compensation;
 public final class CoreHrTalentEnvironment implements Environment {
   private final TalentWorkforceAccess w;
   private final TalentIntakeAccess payroll;
+  private final com.atlas.modules.payroll.api.CompensationAccess compensation;
 
-  public CoreHrTalentEnvironment(TalentWorkforceAccess w, TalentIntakeAccess p) {
+  public CoreHrTalentEnvironment(
+      TalentWorkforceAccess w,
+      TalentIntakeAccess p,
+      com.atlas.modules.payroll.api.CompensationAccess c) {
     this.w = w;
     payroll = p;
+    compensation = c;
+  }
+
+  public java.util.List<String> hrReviewers(String s) {
+    return w.hrReviewers(s);
   }
 
   public boolean hasRole(String s, String e, String r) {
@@ -72,6 +81,16 @@ public final class CoreHrTalentEnvironment implements Environment {
   public void completeOnboarding(
       String s, String id, long v, String reason, String key, String corr) {
     w.completeOnboarding(s, id, v, reason, key, corr);
+  }
+
+  public java.math.BigDecimal currentSalary(
+      String s, String employee, java.time.LocalDate date, String currency) {
+    var c = compensation.salary(s, employee, date);
+    if (!c.currency().equals(currency))
+      throw new com.atlas.shared.domain.InputValidation(
+          java.util.Map.of(
+              "currency", "Proposal currency differs from authoritative payroll compensation."));
+    return c.annualSalary();
   }
 
   public String compensationIntake(String s, Compensation p, String reason, String corr) {

@@ -13,12 +13,19 @@ public final class TalentIntakeService implements TalentIntakeUseCases {
   private final IdentityAccess env;
   private final Transactions tx;
   private final Clock clock;
+  private final com.atlas.modules.payroll.application.port.in.CompensationUseCases compensation;
 
-  public TalentIntakeService(Store db, IdentityAccess env, Transactions tx, Clock clock) {
+  public TalentIntakeService(
+      Store db,
+      IdentityAccess env,
+      Transactions tx,
+      Clock clock,
+      com.atlas.modules.payroll.application.port.in.CompensationUseCases compensation) {
     this.db = db;
     this.env = env;
     this.tx = tx;
     this.clock = clock;
+    this.compensation = compensation;
   }
 
   private Identity hr(String s) {
@@ -87,7 +94,28 @@ public final class TalentIntakeService implements TalentIntakeUseCases {
                   s,
                   clock.instant());
           db.insert(a.tenant(), i, reason, corr);
+          compensation.apply(s, i, reason, corr);
           return i.id();
+        });
+  }
+
+  public Intake synchronize(String s, String source, String reason, String corr) {
+    return tx.run(
+        () -> {
+          var a = hr(s);
+          if (reason == null || reason.isBlank() || reason.length() > 500)
+            throw new InputValidation(Map.of("reason", "Supply 1–500 characters."));
+          db.lock(a.tenant(), source);
+          var i = db.find(a.tenant(), source).orElseThrow(AccessDenied::new);
+          compensation.apply(s, i, reason, corr);
+          return new Intake(
+              i.id(),
+              i.sourceId(),
+              i.currency(),
+              i.awards(),
+              "APPLIED",
+              i.receivedBy(),
+              i.recordedAt());
         });
   }
 

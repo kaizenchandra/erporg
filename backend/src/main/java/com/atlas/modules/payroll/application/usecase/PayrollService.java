@@ -15,14 +15,21 @@ public final class PayrollService implements PayrollUseCases {
   private final Environment env;
   private final Transactions reads, writes;
   private final Clock clock;
+  private final com.atlas.modules.payroll.application.port.in.CompensationUseCases compensation;
 
   public PayrollService(
-      Store store, Environment env, Transactions reads, Transactions writes, Clock clock) {
+      Store store,
+      Environment env,
+      Transactions reads,
+      Transactions writes,
+      Clock clock,
+      com.atlas.modules.payroll.application.port.in.CompensationUseCases compensation) {
     this.store = store;
     this.env = env;
     this.reads = reads;
     this.writes = writes;
     this.clock = clock;
+    this.compensation = compensation;
   }
 
   private Instant now() {
@@ -136,12 +143,20 @@ public final class PayrollService implements PayrollUseCases {
   }
 
   public Run prepare(String subject, Prepare c, String correlation) {
+    return prepare(subject, c, correlation, false);
+  }
+
+  public Run prepareCompensation(String subject, Prepare c, String correlation) {
+    return prepare(subject, c, correlation, true);
+  }
+
+  private Run prepare(String subject, Prepare c, String correlation, boolean authoritative) {
     return writes.run(
         () -> {
           var a = locked(subject, c.entity(), "PAYROLL_PREPARE");
           var reason = text(c.reason(), "reason", 500);
           var v = version(c.version());
-          var fingerprint = fp(c);
+          var fingerprint = authoritative ? fp(List.of(true, c)) : fp(c);
           var replay = replay(a, c.idempotencyKey(), fingerprint);
           if (replay != null) return replay;
           var ledger = env.ledger(subject, c.entity());
@@ -176,8 +191,7 @@ public final class PayrollService implements PayrollUseCases {
                               && !d.date().isAfter(c.postingDate())),
               "source",
               "Worked dates must belong to the effective entity and not follow posting date.");
-          var calculation =
-              PayrollCalculation.calculate(source.totalMinutes(), c.hourlyRate(), c.deduction());
+
           Run old = null;
           if (c.id() != null && !c.id().isBlank()) {
             old = store.run(a.tenant(), c.id()).orElseThrow(AccessDenied::new);
@@ -197,9 +211,38 @@ public final class PayrollService implements PayrollUseCases {
               throw new CommandConflict(
                   "Approved time already belongs to a payroll run; use that run's controlled correction workflow.");
           }
+          var runId = old == null ? UUID.randomUUID().toString() : old.id();
+          if (old != null
+              && authoritative
+                  != old.ruleVersion()
+                      .equals(com.atlas.modules.payroll.domain.model.CompensationCalculation.RULE))
+            throw new CommandConflict("Retain the calculation mode of the original run.");
+          var captured =
+              authoritative
+                  ? compensation.capture(
+                      subject,
+                      runId,
+                      c.entity(),
+                      ledger.currency(),
+                      source,
+                      c.postingDate(),
+                      reason,
+                      correlation)
+                  : null;
+          var rate = captured == null ? c.hourlyRate() : captured.hourlyRate();
+          var calculation =
+              PayrollCalculation.calculate(source.totalMinutes(), rate, c.deduction());
+          var gross = captured == null ? calculation.gross() : captured.gross();
+          var net = gross.subtract(calculation.deduction());
+          var exceptions =
+              captured == null
+                  ? calculation.exceptions()
+                  : net.signum() <= 0
+                      ? List.of("Net pay must be positive before submission.")
+                      : List.<String>of();
           var r =
               new Run(
-                  old == null ? UUID.randomUUID().toString() : old.id(),
+                  runId,
                   c.entity(),
                   source.employeeId(),
                   source.episodeStart(),
@@ -207,12 +250,12 @@ public final class PayrollService implements PayrollUseCases {
                   ledger.currency(),
                   c.costCentre(),
                   c.postingDate(),
-                  c.hourlyRate(),
-                  calculation.gross(),
+                  rate,
+                  gross,
                   calculation.deduction(),
-                  calculation.net(),
-                  PayrollCalculation.RULE,
-                  calculation.exceptions(),
+                  net,
+                  captured == null ? PayrollCalculation.RULE : captured.ruleVersion(),
+                  exceptions,
                   "CALCULATED",
                   old == null ? 0 : v + 1,
                   old == null ? a.subject() : old.preparedBy(),
@@ -343,8 +386,10 @@ public final class PayrollService implements PayrollUseCases {
                   + r.currency()
                   + "\nApproved minutes "
                   + r.source().totalMinutes()
-                  + "\nEntered hourly rate "
+                  + "\nHourly rate (weighted for compensation rule; see immutable calculation snapshot) "
                   + r.hourlyRate().toPlainString()
+                  + "\nCompensation snapshot: "
+                  + (r.ruleVersion().equals(PayrollCalculation.RULE) ? "Not applicable" : r.id())
                   + "\nGross "
                   + r.gross().toPlainString()
                   + "\nVoluntary deduction "

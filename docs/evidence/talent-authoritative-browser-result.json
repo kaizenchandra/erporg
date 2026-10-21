@@ -1,0 +1,14 @@
+{
+  "employeeId": "E002",
+  "sourceId": "39a4bcb6-1030-4d0a-bafb-5d4f9b4e77c6",
+  "planId": "9735fd88-377a-4ee5-8deb-b8a5473c91a5",
+  "runId": "1ee981fd-6b57-443c-bae7-b9cd086d015a",
+  "gross": "556.17",
+  "net": "555.71",
+  "journalId": "69948f3b-c54d-4a3e-966e-bdb3cde87fdb",
+  "journalStatus": "DRAFT",
+  "paymentStatus": "NOT_CONFIGURED",
+  "statutoryProcessing": "NOT_CONFIGURED",
+  "realPayrollConsumption": true,
+  "developmentOnly": true
+}

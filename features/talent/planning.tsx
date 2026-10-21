@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { CompensationSource, ProposalRow } from "./compensation-source";
 import type {
   Context,
   Compensation,
@@ -28,58 +29,47 @@ export function CompensationEditor({
 }) {
   const [rows, setRows] = useState(1);
   return (
-    <TalentForm
-      url="/api/v1/talent/compensation"
-      onSaved={onSaved}
-      label="Save compensation plan"
-      build={(f) => ({
-        title: value(f, "title"),
-        currency: value(f, "currency"),
-        budget: value(f, "budget"),
-        proposals: Array.from({ length: rows }, (_, i) => ({
-          employeeId: value(f, `employeeId${i}`),
-          currentSalary: value(f, `currentSalary${i}`),
-          proposedSalary: value(f, `proposedSalary${i}`),
-          bonus: value(f, `bonus${i}`),
-          effectiveDate: value(f, `effectiveDate${i}`),
-        })),
-        reason: value(f, "reason"),
-      })}
-    >
-      <Field name="title" label="Compensation plan name" />
-      <Currency />
-      <Field name="budget" label="Planning budget" />
-      <p>
-        Budget usage is annual salary increase plus one-time bonus. Current
-        salaries are entered snapshots; validate them against your approved
-        compensation source. No exchange-rate conversion.
-      </p>
-      {Array.from({ length: rows }, (_, i) => (
-        <fieldset key={i}>
-          <legend>Proposal {i + 1}</legend>
-          <WorkerField
-            workers={context.workers.items}
-            name={`employeeId${i}`}
-          />
-          <Field name={`currentSalary${i}`} label="Current annual salary" />
-          <Field name={`proposedSalary${i}`} label="Proposed annual salary" />
-          <Field name={`bonus${i}`} label="One-time bonus" value="0.00" />
-          <Field
-            name={`effectiveDate${i}`}
-            label="Effective date"
-            type="date"
-          />
-        </fieldset>
-      ))}
-      <button
-        type="button"
-        className="button secondary"
-        disabled={rows >= 50}
-        onClick={() => setRows((n) => n + 1)}
+    <>
+      <CompensationSource context={context} />
+      <TalentForm
+        url="/api/v1/talent/compensation"
+        onSaved={onSaved}
+        label="Save compensation plan"
+        build={(f) => ({
+          title: value(f, "title"),
+          currency: value(f, "currency"),
+          budget: value(f, "budget"),
+          proposals: Array.from({ length: rows }, (_, i) => ({
+            employeeId: value(f, `employeeId${i}`),
+            currentSalary: null,
+            proposedSalary: value(f, `proposedSalary${i}`),
+            bonus: value(f, `bonus${i}`),
+            effectiveDate: value(f, `effectiveDate${i}`),
+          })),
+          reason: value(f, "reason"),
+        })}
       >
-        Add proposal
-      </button>
-    </TalentForm>
+        <Field name="title" label="Compensation plan name" />
+        <Currency />
+        <Field name="budget" label="Planning budget" />
+        <p>
+          Budget usage is annual salary increase plus one-time bonus. Current
+          salaries come from independently approved payroll compensation. No
+          exchange-rate conversion.
+        </p>
+        {Array.from({ length: rows }, (_, i) => (
+          <ProposalRow key={i} context={context} index={i} />
+        ))}
+        <button
+          type="button"
+          className="button secondary"
+          disabled={rows >= 50}
+          onClick={() => setRows((n) => n + 1)}
+        >
+          Add proposal
+        </button>
+      </TalentForm>
+    </>
   );
 }
 export function CompensationDetail({
@@ -120,9 +110,10 @@ export function CompensationDetail({
       />
       {r.payrollIntakeId && (
         <p role="status">
-          Payroll intake {r.payrollIntakeId}: RECEIVED. This is a durable
-          handoff awaiting payroll consumption, not calculated or paid
-          compensation.
+          Payroll intake {r.payrollIntakeId}. See its reconciliation status
+          below. APPLIED means effective salary and bonus inputs are available
+          to the authoritative Payroll calculation; it does not mean paid or
+          posted.
         </p>
       )}
     </>
@@ -345,16 +336,18 @@ export function ScenarioDetail({ r }: { r: Scenario }) {
 }
 export function PayrollIntakes({ revision }: { revision: number }) {
   const [page, setPage] = useState(0);
+  const [localRevision, refresh] = useState(0);
   const list = useTalentRead<Intake[]>(
     `/api/v1/payroll/talent-inputs?page=${page}`,
-    revision,
+    revision + localRevision,
   );
   return (
     <section className="time-panel">
       <h3>Payroll compensation intake</h3>
       <p>
-        Payroll-owned receipts awaiting calculation support. RECEIVED does not
-        mean applied, paid or posted.
+        Payroll-owned source receipts. APPLIED means salary/bonus inputs were
+        synchronized. Payroll calculation, payment and accounting have separate
+        outcomes. RECEIVED requires reconciliation.
       </p>
       {!list ? (
         <p role="status">Loading intake…</p>
@@ -364,10 +357,26 @@ export function PayrollIntakes({ revision }: { revision: number }) {
         <>
           {!list.data?.length && <p>No approved compensation receipts.</p>}
           {list.data?.map((i) => (
-            <p key={i.id}>
-              {i.sourceId} · {i.currency} · {i.awards.length} awards ·{" "}
-              {i.status}
-            </p>
+            <article key={i.id}>
+              <p>
+                {i.sourceId} · {i.currency} · {i.awards.length} awards ·{" "}
+                {i.status}
+              </p>
+              {i.status === "RECEIVED" && (
+                <TalentForm
+                  url={`/api/v1/payroll/talent-inputs/${i.sourceId}/synchronize`}
+                  label="Reconcile approved compensation intake"
+                  onSaved={() => refresh((n) => n + 1)}
+                  build={(f) => ({ reason: value(f, "reason") })}
+                >
+                  <p>
+                    Previously received inputs must match an approved baseline.
+                    Backdated changes requiring payroll corrections are blocked
+                    with recovery guidance.
+                  </p>
+                </TalentForm>
+              )}
+            </article>
           ))}
           <div className="time-pager">
             <button disabled={page === 0} onClick={() => setPage((n) => n - 1)}>

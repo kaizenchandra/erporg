@@ -5,6 +5,48 @@ import java.time.*;
 import java.util.List;
 
 public final class TalentModels {
+  public record ResponsibilityHistory(Delegation delegation, DelegationRevocation revocation) {}
+
+  public record Pending(String kind, String id) {}
+
+  public record Delegation(
+      String id,
+      String kind,
+      String recordId,
+      long recordVersion,
+      String originalEmployee,
+      String delegateEmployee,
+      java.time.LocalDate from,
+      java.time.LocalDate through,
+      String actor,
+      String reason,
+      String commandKey,
+      java.time.Instant recordedAt,
+      String correlationId) {}
+
+  public record DelegationRevocation(
+      String delegationId,
+      String actor,
+      String actorEmployee,
+      String reason,
+      String commandKey,
+      java.time.Instant recordedAt,
+      String correlationId) {}
+
+  public record ApprovalTask(
+      String kind, String id, String title, long version, Delegation delegation) {}
+
+  public record Notice(
+      String id,
+      String eventId,
+      String kind,
+      String recordId,
+      String employeeId,
+      String status,
+      java.time.Instant recordedAt) {}
+
+  public record Export(String filename, String content) {}
+
   private TalentModels() {}
 
   public record Stamp(

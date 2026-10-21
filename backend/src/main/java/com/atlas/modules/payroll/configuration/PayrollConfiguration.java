@@ -26,7 +26,8 @@ public class PayrollConfiguration {
       PayrollFinanceAccess f,
       ApprovedTimeAccess t,
       PayrollJournalAccess j,
-      Clock clock) {
+      Clock clock,
+      com.atlas.modules.payroll.application.port.in.CompensationUseCases compensation) {
     var read = new TransactionTemplate(manager);
     read.setReadOnly(true);
     read.setIsolationLevel(TransactionDefinition.ISOLATION_REPEATABLE_READ);
@@ -38,7 +39,8 @@ public class PayrollConfiguration {
         new LocalPayrollEnvironment(w, r, f, t, j),
         boundary(read),
         boundary(write),
-        clock);
+        clock,
+        compensation);
   }
 
   private Transactions boundary(TransactionTemplate t) {

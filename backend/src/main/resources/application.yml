@@ -35,3 +35,8 @@ management:
     health:
       probes:
         enabled: true
+atlas:
+  talent:
+    reminders:
+      scheduler-enabled: ${ATLAS_TALENT_REMINDERS_ENABLED:false}
+      poll-ms: ${ATLAS_TALENT_REMINDERS_POLL_MS:60000}

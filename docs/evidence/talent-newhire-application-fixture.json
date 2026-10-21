@@ -1,0 +1,9 @@
+{
+  "developmentOnly": true,
+  "issuer": "http://127.0.0.1:8088/realms/atlas",
+  "username": "talent-joiner-f3e36d9bb3f3",
+  "subject": "e6443d73-4e26-4431-8b34-3896ddb5a88a",
+  "employee": "E-6d7685ca-e35d-4cf4-b483-5a54b23ed9c7",
+  "joiningId": "5c6f32d7-2c8c-46ce-a629-d59e5b13b419",
+  "bindingApproved": true
+}

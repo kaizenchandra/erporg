@@ -354,6 +354,36 @@ test("learning UI persists eligible assignment and completion with expiry", asyn
 test("compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted", async ({
   browser,
 }) => {
+  const sourceState = (await (
+    await hr.get("/api/v1/payroll/compensation/employees/E003")
+  ).json()) as { salaries: { annualSalary: string }[] };
+  if (!sourceState.salaries.length) {
+    const baseline = await post<{ id: string }>(
+      hr,
+      "/api/v1/payroll/compensation/baselines",
+      {
+        employeeId: "E003",
+        currency: "USD",
+        annualSalary: "10000.00",
+        annualHours: "2000.00",
+        effectiveDate: today,
+        reason: "Synthetic independently established compensation baseline",
+      },
+    );
+    await post(
+      reviewer,
+      `/api/v1/payroll/compensation/baselines/${baseline.id}/decisions`,
+      { action: "APPROVE", reason: "Independent source verification" },
+    );
+  }
+  const effective = (await (
+    await hr.get(
+      `/api/v1/payroll/compensation/employees/E003/salary?date=${today}`,
+    )
+  ).json()) as { annualSalary: string };
+  const minor =
+    BigInt(effective.annualSalary.replace(".", "")) + BigInt(100000);
+  const proposedSalary = `${minor / BigInt(100)}.${String(minor % BigInt(100)).padStart(2, "0")}`;
   const a = await browser.newContext();
   const p = await a.newPage();
   await signIn(p, "amelia");
@@ -364,15 +394,18 @@ test("compensation budget errors preserve forms, independent approval reaches pa
   await p.getByLabel("Compensation plan name").fill(`Growth awards ${suffix}`);
   await p.getByLabel("Planning budget").fill("100.00");
   await p.getByLabel("Worker", { exact: false }).last().selectOption("E003");
-  await p.getByLabel("Current annual salary").fill("10000.00");
-  await p.getByLabel("Proposed annual salary").fill("11000.00");
+  await p.getByLabel("Proposed annual salary").fill(proposedSalary);
   await p.getByLabel("One-time bonus").fill("500.25");
-  await p.getByLabel("Effective date", { exact: false }).fill(today);
+  await p
+    .getByRole("textbox", { name: "Effective date *", exact: true })
+    .fill(today);
   await submit(p, "Save compensation plan");
   await expect(
     p.getByRole("region", { name: "Talent workspace" }).getByRole("alert"),
   ).toContainText("budget");
-  await expect(p.getByLabel("Proposed annual salary")).toHaveValue("11000.00");
+  await expect(p.getByLabel("Proposed annual salary")).toHaveValue(
+    proposedSalary,
+  );
   await expect(
     p.getByLabel("Planning budget", { exact: false }),
   ).toHaveAttribute("aria-invalid", "true");
@@ -409,7 +442,7 @@ test("compensation budget errors preserve forms, independent approval reaches pa
     },
   );
   await p.getByRole("button", { name: "Refresh talent" }).click();
-  await expect(detail(p).getByRole("status")).toContainText("RECEIVED");
+  await expect(detail(p).getByRole("status")).toContainText("APPLIED");
   expect(
     (await (await hr.get("/api/v1/payroll/talent-inputs")).json()).some(
       (i: { sourceId: string }) => i.sourceId === plan.meta.id,

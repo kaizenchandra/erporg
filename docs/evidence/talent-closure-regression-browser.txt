@@ -1,0 +1,14 @@
+
+Running 5 tests using 1 worker
+
+(node:90996) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:90996) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/talent.spec.ts:132:5 › recruitment UI converts a reviewed candidate into one employee and completes dependent joining tasks (4.9s)
+  ✓  2 tests/talent.spec.ts:250:5 › performance UI saves employee goals, manager feedback, return, correction and final rating (3.3s)
+  ✓  3 tests/talent.spec.ts:322:5 › learning UI persists eligible assignment and completion with expiry (1.5s)
+  ✓  4 tests/talent.spec.ts:354:5 › compensation budget errors preserve forms, independent approval reaches payroll intake, and planning is persisted (3.0s)
+  ✓  5 tests/talent.spec.ts:528:5 › real HTTP enforces tenant, record, role, CSRF, locking and exact revisions (345ms)
+
+  5 passed (15.6s)

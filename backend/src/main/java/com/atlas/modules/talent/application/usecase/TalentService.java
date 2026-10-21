@@ -16,12 +16,36 @@ public final class TalentService extends TalentSupport implements TalentUseCases
   private final RecruitingWorkflows recruiting;
   private final DevelopmentWorkflows development;
   private final PlanningWorkflows planning;
+  private final ApprovalWorkflows approvals;
 
   public TalentService(Store s, Environment e, Transactions r, Transactions w, Clock c) {
     super(s, e, r, w, c);
     recruiting = new RecruitingWorkflows(s, e, r, w, c);
     development = new DevelopmentWorkflows(s, e, r, w, c);
     planning = new PlanningWorkflows(s, e, r, w, c);
+    approvals = new ApprovalWorkflows(s, e, r, w, c);
+  }
+
+  public java.util.List<ResponsibilityHistory> delegationHistory(
+      String s, String k, String id, int page) {
+    return approvals.delegationHistory(s, k, id, page);
+  }
+
+  public java.util.List<ApprovalTask> approvalInbox(String s, int page) {
+    return approvals.approvalInbox(s, page);
+  }
+
+  public java.util.List<String> approvalDelegates(String s) {
+    return approvals.approvalDelegates(s);
+  }
+
+  public Delegation delegate(String s, Delegate c, String corr) {
+    return approvals.delegate(s, c, corr);
+  }
+
+  public DelegationRevocation revokeDelegation(
+      String s, String id, RevokeDelegation c, String corr) {
+    return approvals.revokeDelegation(s, id, c, corr);
   }
 
   public Requisition requisition(String s, RequisitionInput c, String corr) {

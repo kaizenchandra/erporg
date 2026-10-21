@@ -39,6 +39,12 @@ public final class EmploymentAccessFilter extends OncePerRequestFilter {
     var auth = SecurityContextHolder.getContext().getAuthentication();
     if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
       try {
+        workforce.verifyIssuer(
+            auth.getName(),
+            auth.getPrincipal()
+                    instanceof org.springframework.security.oauth2.core.oidc.user.OidcUser oidc
+                ? oidc.getIssuer().toString()
+                : "");
         var epoch = workforce.sessionEpoch(auth.getName());
         var session = request.getSession(false);
         if (session == null || !epoch.equals(session.getAttribute(EPOCH_ATTRIBUTE))) {

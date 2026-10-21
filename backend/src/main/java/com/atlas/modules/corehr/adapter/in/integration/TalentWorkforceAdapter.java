@@ -16,6 +16,10 @@ public final class TalentWorkforceAdapter implements TalentWorkforceAccess {
     roles = r;
   }
 
+  public java.util.List<String> hrReviewers(String s) {
+    return roles.hrReviewers(s);
+  }
+
   public boolean hasRole(String s, String e, String r) {
     return roles.hasRole(s, e, r);
   }

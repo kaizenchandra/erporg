@@ -21,6 +21,7 @@ public class TalentConfiguration {
       JdbcClient db,
       TalentWorkforceAccess w,
       TalentIntakeAccess p,
+      com.atlas.modules.payroll.api.CompensationAccess compensation,
       PlatformTransactionManager manager,
       Clock clock) {
     var r = new TransactionTemplate(manager);
@@ -31,7 +32,7 @@ public class TalentConfiguration {
     t.setTimeout(10);
     return new TalentService(
         new JdbcTalentStore(db),
-        new CoreHrTalentEnvironment(w, p),
+        new CoreHrTalentEnvironment(w, p, compensation),
         boundary(r),
         boundary(t),
         clock);

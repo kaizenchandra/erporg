@@ -11,8 +11,12 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 @Configuration
 public class TalentReferenceConfiguration {
   @Bean
-  TalentRoleUseCases talentRoles(PeopleUseCases p, JdbcClient db) {
-    return new TalentRoleService(p, new JdbcTalentRoleStore(db));
+  TalentRoleUseCases talentRoles(PeopleUseCases p, JdbcClient db, java.time.Clock clock) {
+    return new TalentRoleService(
+        p,
+        new JdbcTalentRoleStore(db),
+        new com.atlas.modules.corehr.adapter.out.persistence.JdbcPeopleStore(db),
+        clock);
   }
 
   @Bean

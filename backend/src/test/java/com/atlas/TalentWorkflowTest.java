@@ -39,6 +39,7 @@ class TalentWorkflowTest {
   @Autowired TalentUseCases talent;
   @Autowired PeopleUseCases people;
   @Autowired TalentIntakeUseCases payroll;
+  @Autowired com.atlas.modules.payroll.application.port.in.CompensationUseCases compensation;
   @Autowired JdbcTemplate db;
 
   String key() {
@@ -84,6 +85,162 @@ class TalentWorkflowTest {
         "Synthetic offer 100 units; no payment",
         "Synthetic recruitment",
         key());
+  }
+
+  @Test
+  void currentReviewResponsibilityRoutesToAuthorizedHrWithoutGrantingAccess() {
+    var r =
+        talent.review(
+            "marcus",
+            new ReviewInput(
+                "E003",
+                "Delegated synthetic review",
+                today(),
+                today().plusDays(10),
+                1,
+                5,
+                "Configured review",
+                key()),
+            "create");
+    r =
+        talent.reviewAction(
+            "sophia",
+            r.meta().id(),
+            new ReviewAction(
+                v(0),
+                "GOAL",
+                null,
+                "Complete a verified goal",
+                null,
+                null,
+                null,
+                "Own goal",
+                key()),
+            "goal");
+    r =
+        talent.reviewAction(
+            "sophia",
+            r.meta().id(),
+            new ReviewAction(
+                v(1),
+                "SUBMIT",
+                null,
+                null,
+                null,
+                "Evidence of completed goals",
+                null,
+                "Own submission",
+                key()),
+            "submit");
+    String id = r.meta().id();
+    var c =
+        new Delegate(
+            "reviews",
+            id,
+            v(2),
+            "E005",
+            today(),
+            today().plusDays(2),
+            "Manager routes responsibility to authorized HR",
+            key());
+    assertThrows(AccessDenied.class, () -> talent.delegate("sophia", c, "self"));
+    var d = talent.delegate("marcus", c, "delegate");
+    assertEquals(d, talent.delegate("marcus", c, "replay"));
+    assertTrue(
+        talent.approvalInbox("olivia", 0).stream()
+            .anyMatch(
+                t ->
+                    t.id().equals(id)
+                        && t.delegation() != null
+                        && t.delegation().delegateEmployee().equals("E005")));
+    assertTrue(talent.approvalInbox("outsider", 0).isEmpty());
+    assertThrows(
+        CommandConflict.class,
+        () ->
+            talent.delegate(
+                "marcus",
+                new Delegate(
+                    "reviews",
+                    id,
+                    v(2),
+                    "E001",
+                    today(),
+                    today().plusDays(3),
+                    "Overlapping responsibility",
+                    key()),
+                "overlap"));
+    var revoke = new RevokeDelegation("Manager recalls responsibility assignment", key());
+    var revoked = talent.revokeDelegation("marcus", d.id(), revoke, "revoke");
+    assertEquals(revoked, talent.revokeDelegation("marcus", d.id(), revoke, "retry"));
+    assertEquals(
+        revoked, talent.delegationHistory("marcus", "reviews", id, 0).getFirst().revocation());
+    d =
+        talent.delegate(
+            "marcus",
+            new Delegate(
+                "reviews",
+                id,
+                v(2),
+                "E005",
+                today(),
+                today().plusDays(2),
+                "Replacement assignment after explicit revocation",
+                key()),
+            "replace");
+    var done =
+        talent.reviewAction(
+            "olivia",
+            id,
+            new ReviewAction(
+                v(2),
+                "APPROVE",
+                null,
+                null,
+                null,
+                null,
+                4,
+                "Independent delegated HR decision",
+                key()),
+            "decide");
+    assertEquals("COMPLETED", done.meta().status());
+    assertTrue(talent.approvalInbox("olivia", 0).stream().noneMatch(t -> t.id().equals(id)));
+    assertEquals("olivia", talent.history("marcus", "reviews", id, 0).getLast().actor());
+    assertThrows(AccessDenied.class, () -> people.profile(people.actor("marcus"), "E005"));
+    assertThrows(
+        org.springframework.dao.DataAccessException.class,
+        () -> db.update("delete from tal_delegation where record_id=?", id));
+  }
+
+  @Test
+  void committedNoticesAreDeduplicatedScopedAndExportsAreAudited() {
+    var r = draft();
+    var id = r.meta().id();
+    var c = decision(0, "SUBMIT");
+    talent.requisitionAction("amelia", id, c, "notify");
+    talent.requisitionAction("amelia", id, c, "replay");
+    assertTrue(
+        talent.notices("olivia", 0).stream()
+            .anyMatch(n -> n.recordId().equals(id) && n.status().equals("SUBMITTED")));
+    assertTrue(talent.notices("sophia", 0).stream().noneMatch(n -> n.recordId().equals(id)));
+    assertEquals(
+        1,
+        db.queryForObject(
+            "select count(*) from tal_notice where employee_id='E005' and snapshot->>'recordId'=?",
+            Integer.class,
+            id));
+    var exported = talent.export("amelia", "requisitions", "", 0, "export");
+    assertTrue(exported.content().startsWith("id,status,revision,authorized_snapshot\r\n"));
+    assertTrue(exported.filename().endsWith(".csv"));
+    assertThrows(
+        AccessDenied.class, () -> talent.export("sophia", "requisitions", "", 0, "forbidden"));
+    assertEquals(
+        1,
+        db.queryForObject(
+            "select count(*) from tal_export_receipt where correlation_id='export'",
+            Integer.class));
+    assertThrows(
+        org.springframework.dao.DataAccessException.class,
+        () -> db.update("delete from tal_export_receipt where correlation_id='export'"));
   }
 
   @Test
@@ -404,6 +561,24 @@ class TalentWorkflowTest {
 
   @Test
   void budgetApprovalCreatesOnePayrollOwnedReceiptAndNeverClaimsPayment() {
+    var baseline =
+        compensation.propose(
+            "amelia",
+            new com.atlas.modules.payroll.application.model.CompensationModels.Baseline(
+                "E003",
+                "USD",
+                new BigDecimal("10000.00"),
+                new BigDecimal("2000.00"),
+                today().minusDays(30),
+                "Synthetic approved fixture",
+                key()),
+            "baseline");
+    compensation.decide(
+        "olivia",
+        baseline.id(),
+        new com.atlas.modules.payroll.application.model.CompensationModels.Decision(
+            "APPROVE", "Independent baseline review", key()),
+        "review");
     var proposals = List.of(new ProposalInput("E003", "10000.00", "11000.00", "500.25", today()));
     assertThrows(
         InputValidation.class,
@@ -434,7 +609,7 @@ class TalentWorkflowTest {
             .findFirst()
             .orElseThrow();
     assertEquals(p.payrollIntakeId(), input.id());
-    assertEquals("RECEIVED", input.status());
+    assertEquals("APPLIED", input.status());
     assertEquals(new BigDecimal("500.25"), input.awards().getFirst().bonus());
     assertThrows(AccessDenied.class, () -> payroll.pending("sophia", 0));
   }

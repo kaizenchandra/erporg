@@ -5,6 +5,8 @@ import java.time.LocalDate;
 public interface WorkforceAccess {
   void requireActive(String subject);
 
+  default void verifyIssuer(String subject, String issuer) {}
+
   String sessionEpoch(String subject);
 
   Context self(String subject);

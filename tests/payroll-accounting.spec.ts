@@ -231,6 +231,7 @@ test("approved time becomes a finalized payslip and a separately approved, poste
       .click();
     const d = page.getByRole("dialog");
     await d.getByLabel("Approved timesheet ID").fill(sourceId);
+    await d.getByLabel("Calculation source").selectOption("HOURLY");
     await d.getByLabel("Hourly rate (USD)").fill("20.125");
     await d.getByLabel("Voluntary deduction (USD)").fill("0.46");
     await d

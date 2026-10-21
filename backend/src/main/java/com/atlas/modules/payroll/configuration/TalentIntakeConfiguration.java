@@ -19,7 +19,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 public class TalentIntakeConfiguration {
   @Bean
   TalentIntakeUseCases talentIntake(
-      JdbcClient db, TalentWorkforceAccess w, PlatformTransactionManager manager, Clock clock) {
+      JdbcClient db,
+      TalentWorkforceAccess w,
+      PlatformTransactionManager manager,
+      Clock clock,
+      com.atlas.modules.payroll.application.port.in.CompensationUseCases compensation) {
     var t = new TransactionTemplate(manager);
     t.setTimeout(10);
     return new TalentIntakeService(
@@ -30,7 +34,8 @@ public class TalentIntakeConfiguration {
             return t.execute(s -> f.get());
           }
         },
-        clock);
+        clock,
+        compensation);
   }
 
   @Bean

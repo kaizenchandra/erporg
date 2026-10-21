@@ -1660,7 +1660,7 @@
             }
           }
         ],
-        "description": "No total-plan cap. Size1\u2013100; deterministic name C-collation order with ascending code tie-break. Offset pages can shift across concurrent creates; filter/order/size reset to page0. Demonstration eligibility only."
+        "description": "No total-plan cap. Size1–100; deterministic name C-collation order with ascending code tie-break. Offset pages can shift across concurrent creates; filter/order/size reset to page0. Demonstration eligibility only."
       },
       "post": {
         "summary": "HR creates immutable demonstration benefit plan",
@@ -2065,7 +2065,7 @@
         ]
       },
       "post": {
-        "summary": "Own private UTF-8 .txt upload \u226416384 bytes with ClamAV; unavailable scans quarantine. Max 100 documents per employee.",
+        "summary": "Own private UTF-8 .txt upload ≤16384 bytes with ClamAV; unavailable scans quarantine. Max 100 documents per employee.",
         "security": [
           {
             "session": []
@@ -6996,7 +6996,7 @@
             "schema": {
               "type": "string",
               "pattern": "^(?:0|[1-9][0-9]{0,18})$",
-              "description": "Untrusted maximum eligible ID, \u2264Long.MAX_VALUE; omitted to refresh"
+              "description": "Untrusted maximum eligible ID, ≤Long.MAX_VALUE; omitted to refresh"
             }
           }
         ]
@@ -7096,7 +7096,7 @@
             "schema": {
               "type": "string",
               "pattern": "^(?:0|[1-9][0-9]{0,18})$",
-              "description": "Untrusted maximum eligible ID, \u2264Long.MAX_VALUE; omitted to refresh"
+              "description": "Untrusted maximum eligible ID, ≤Long.MAX_VALUE; omitted to refresh"
             }
           }
         ]
@@ -8227,7 +8227,7 @@
     },
     "/api/v1/time/sheets/selected-actions": {
       "post": {
-        "summary": "Atomically review 1\u201320 explicitly selected submissions; scope/version checked for every item; whole-selection replay protection",
+        "summary": "Atomically review 1–20 explicitly selected submissions; scope/version checked for every item; whole-selection replay protection",
         "security": [
           {
             "session": []
@@ -9375,7 +9375,7 @@
         ]
       },
       "post": {
-        "summary": "Demonstration approved-minutes \u00d7 entered rate, voluntary deduction; preserves rule/input snapshots",
+        "summary": "Demonstration approved-minutes × entered rate, voluntary deduction; preserves rule/input snapshots",
         "security": [
           {
             "session": []
@@ -11573,7 +11573,11 @@
                         }
                       },
                       "status": {
-                        "const": "RECEIVED"
+                        "type": "string",
+                        "enum": [
+                          "RECEIVED",
+                          "APPLIED"
+                        ]
                       },
                       "receivedBy": {
                         "type": "string"
@@ -11592,6 +11596,1096 @@
             "description": "HR access required"
           }
         }
+      }
+    },
+    "/api/v1/initial-identities/employees/{employee}": {
+      "get": {
+        "summary": "HR-only initial identity context, latest 20 requests",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InitialIdentityContext"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Prepare exact provider subject binding for an approved new hire",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InitialIdentityBinding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InitialIdentitySubmit"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/initial-identities/{id}/review": {
+      "post": {
+        "summary": "Independent HR review; Employee binding atomic with approval",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InitialIdentityBinding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InitialIdentityReview"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payroll/compensation/employees/{employee}": {
+      "get": {
+        "summary": "HR-only latest 100 baseline requests and 200 salary revisions",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompensationState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/payroll/compensation/employees/{employee}/salary": {
+      "get": {
+        "summary": "Authoritative salary effective on requested date",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompensationSalary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/payroll/compensation/baselines": {
+      "post": {
+        "summary": "Submit an initial verified salary and explicit annual-hours basis",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompensationSetup"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompensationBaseline"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payroll/compensation/baselines/{id}/decisions": {
+      "post": {
+        "summary": "Independent baseline review",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompensationSetup"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompensationDecision"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payroll/compensation/calculations/{id}": {
+      "get": {
+        "summary": "Authorized immutable daily salary and once-only bonus consumption explanation",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompensationCalculation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/payroll/compensation-runs": {
+      "post": {
+        "summary": "Calculate approved time from effective authoritative compensation; no statutory processing",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayrollRun"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompensationPayrollPrepare"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payroll/talent-inputs/{source}/synchronize": {
+      "post": {
+        "summary": "Reconcile a previously received approved plan; duplicate-safe, backdated corrections blocked",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "sourceId",
+                    "currency",
+                    "awards",
+                    "status",
+                    "receivedBy",
+                    "recordedAt"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "sourceId": {
+                      "type": "string"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "awards": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TalentProposal"
+                      }
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "RECEIVED",
+                        "APPLIED"
+                      ]
+                    },
+                    "receivedBy": {
+                      "type": "string"
+                    },
+                    "recordedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "parameters": [
+          {
+            "name": "source",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TalentIntakeSynchronize"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/talent/notifications": {
+      "get": {
+        "summary": "Employee-scoped committed in-app notices with current record access checks",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TalentNotice"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/talent/exports": {
+      "post": {
+        "summary": "Audited CSV of current authorized register page, at most 10 rows; no all-filtered export",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result; financial decimals are strings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TalentExport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields; fieldErrors retained for correction"
+          },
+          "401": {
+            "description": "Authentication or current employment access denied"
+          },
+          "403": {
+            "description": "Tenant, ownership, issuer, role or CSRF denied"
+          },
+          "409": {
+            "description": "Stale state, revision, duplicate or missing prerequisite"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TalentExportInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/talent/approvals": {
+      "get": {
+        "summary": "Current authorized talent approval responsibility; delegation grants no additional permissions",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TalentApprovalTask"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields"
+          },
+          "401": {
+            "description": "Authentication denied"
+          },
+          "403": {
+            "description": "Current role, scope, independence or CSRF denied"
+          },
+          "409": {
+            "description": "State, overlap, revision or key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/talent/approvals/delegates": {
+      "get": {
+        "summary": "Current authorized talent approval responsibility; delegation grants no additional permissions",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields"
+          },
+          "401": {
+            "description": "Authentication denied"
+          },
+          "403": {
+            "description": "Current role, scope, independence or CSRF denied"
+          },
+          "409": {
+            "description": "State, overlap, revision or key conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/talent/approvals/history": {
+      "get": {
+        "summary": "Current authorized talent approval responsibility; delegation grants no additional permissions",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TalentResponsibilityHistory"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields"
+          },
+          "401": {
+            "description": "Authentication denied"
+          },
+          "403": {
+            "description": "Current role, scope, independence or CSRF denied"
+          },
+          "409": {
+            "description": "State, overlap, revision or key conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/talent/approvals/delegations": {
+      "post": {
+        "summary": "Current authorized talent approval responsibility; delegation grants no additional permissions",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TalentDelegation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields"
+          },
+          "401": {
+            "description": "Authentication denied"
+          },
+          "403": {
+            "description": "Current role, scope, independence or CSRF denied"
+          },
+          "409": {
+            "description": "State, overlap, revision or key conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TalentDelegateInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/talent/approvals/delegations/{id}/revoke": {
+      "post": {
+        "summary": "Current authorized talent approval responsibility; delegation grants no additional permissions",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TalentDelegationRevocation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields"
+          },
+          "401": {
+            "description": "Authentication denied"
+          },
+          "403": {
+            "description": "Current role, scope, independence or CSRF denied"
+          },
+          "409": {
+            "description": "State, overlap, revision or key conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TalentRevokeDelegation"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/talent/reminders": {
+      "get": {
+        "summary": "HR-only configured, durable, bounded in-app approval reminder processing",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TalentReminderContext"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Field validation"
+          },
+          "401": {
+            "description": "Current authentication denied"
+          },
+          "403": {
+            "description": "Current HR, tenant or CSRF denied"
+          },
+          "409": {
+            "description": "Policy revision, command-key or processing-state conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/talent/reminders/policy": {
+      "post": {
+        "summary": "HR-only configured, durable, bounded in-app approval reminder processing",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TalentReminderPolicy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Field validation"
+          },
+          "401": {
+            "description": "Current authentication denied"
+          },
+          "403": {
+            "description": "Current HR, tenant or CSRF denied"
+          },
+          "409": {
+            "description": "Policy revision, command-key or processing-state conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TalentReminderConfigure"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/talent/reminders/run": {
+      "post": {
+        "summary": "HR-only configured, durable, bounded in-app approval reminder processing",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TalentReminderRun"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Field validation"
+          },
+          "401": {
+            "description": "Current authentication denied"
+          },
+          "403": {
+            "description": "Current HR, tenant or CSRF denied"
+          },
+          "409": {
+            "description": "Policy revision, command-key or processing-state conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TalentReminderCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/talent/reminders/retry": {
+      "post": {
+        "summary": "HR-only configured, durable, bounded in-app approval reminder processing",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TalentReminderState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Field validation"
+          },
+          "401": {
+            "description": "Current authentication denied"
+          },
+          "403": {
+            "description": "Current HR, tenant or CSRF denied"
+          },
+          "409": {
+            "description": "Policy revision, command-key or processing-state conflict"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TalentReminderCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/talent/reminders/runs/{id}/items": {
+      "get": {
+        "summary": "HR-only configured, durable, bounded in-app approval reminder processing",
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted authorized result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TalentReminderItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Field validation"
+          },
+          "401": {
+            "description": "Current authentication denied"
+          },
+          "403": {
+            "description": "Current HR, tenant or CSRF denied"
+          },
+          "409": {
+            "description": "Policy revision, command-key or processing-state conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
       }
     }
   },
@@ -21891,7 +22985,10 @@
             ]
           },
           "currentSalary": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "proposedSalary": {
             "type": "string"
@@ -22461,6 +23558,1294 @@
             "const": 10
           }
         }
+      },
+      "InitialIdentitySubmit": {
+        "type": "object",
+        "properties": {
+          "employeeVersion": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "string",
+                "pattern": "^[0-9]+$"
+              }
+            ]
+          },
+          "federatedSubject": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "employeeVersion",
+          "federatedSubject",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "InitialIdentityReview": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVE",
+              "REJECT"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "InitialIdentityRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "federatedSubject": {
+            "type": "string"
+          },
+          "issuer": {
+            "type": "string"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "preparedBy": {
+            "type": "string"
+          },
+          "preparedEmployee": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "employeeVersion",
+          "federatedSubject",
+          "issuer",
+          "effectiveFrom",
+          "preparedBy",
+          "preparedEmployee",
+          "reason",
+          "idempotencyKey",
+          "recordedAt",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "InitialIdentityDecision": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "actorEmployee": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "requestId",
+          "decision",
+          "actor",
+          "actorEmployee",
+          "reason",
+          "idempotencyKey",
+          "recordedAt",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "InitialIdentityBinding": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/InitialIdentityRequest"
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InitialIdentityDecision"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "request",
+          "decision"
+        ],
+        "additionalProperties": false
+      },
+      "InitialIdentityContext": {
+        "type": "object",
+        "properties": {
+          "issuer": {
+            "type": "string"
+          },
+          "employeeVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "employmentStatus": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "bindings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InitialIdentityBinding"
+            }
+          }
+        },
+        "required": [
+          "issuer",
+          "employeeVersion",
+          "employmentStatus",
+          "startDate",
+          "bindings"
+        ],
+        "additionalProperties": false
+      },
+      "CompensationSalary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "annualSalary": {
+            "type": "string",
+            "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+          },
+          "annualHours": {
+            "type": "string",
+            "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "episodeStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "sourceId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "employeeId",
+          "currency",
+          "annualSalary",
+          "annualHours",
+          "effectiveDate",
+          "episodeStart",
+          "sourceId",
+          "revision"
+        ],
+        "additionalProperties": false
+      },
+      "CompensationBaseline": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "annualSalary": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+              }
+            ]
+          },
+          "annualHours": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+              }
+            ]
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "employeeId",
+          "currency",
+          "annualSalary",
+          "annualHours",
+          "effectiveDate",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "CompensationBaselineSnapshot": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "annualSalary": {
+            "type": "string",
+            "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+          },
+          "annualHours": {
+            "type": "string",
+            "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "employeeId",
+          "currency",
+          "annualSalary",
+          "annualHours",
+          "effectiveDate",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "CompensationSetup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "input": {
+            "$ref": "#/components/schemas/CompensationBaselineSnapshot"
+          },
+          "episodeStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "preparedBy": {
+            "type": "string"
+          },
+          "preparedEmployee": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "reviewedBy": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewedEmployee": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewReason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "input",
+          "episodeStart",
+          "preparedBy",
+          "preparedEmployee",
+          "status",
+          "reviewedBy",
+          "reviewedEmployee",
+          "reviewReason",
+          "recordedAt"
+        ],
+        "additionalProperties": false
+      },
+      "CompensationState": {
+        "type": "object",
+        "properties": {
+          "setups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompensationSetup"
+            }
+          },
+          "salaries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompensationSalary"
+            }
+          }
+        },
+        "required": [
+          "setups",
+          "salaries"
+        ],
+        "additionalProperties": false
+      },
+      "CompensationDecision": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "APPROVE",
+              "REJECT"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "action",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "CompensationDaily": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "minutes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "salary": {
+            "$ref": "#/components/schemas/CompensationSalary"
+          },
+          "hourlyRate": {
+            "type": "string",
+            "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+          }
+        },
+        "required": [
+          "date",
+          "minutes",
+          "salary",
+          "hourlyRate"
+        ],
+        "additionalProperties": false
+      },
+      "CompensationBonus": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "sourceId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "id",
+          "sourceId",
+          "amount",
+          "effectiveDate"
+        ],
+        "additionalProperties": false
+      },
+      "CompensationCalculation": {
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "entity": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/PayrollSource"
+          },
+          "days": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompensationDaily"
+            }
+          },
+          "bonuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompensationBonus"
+            }
+          },
+          "hourlyRate": {
+            "type": "string",
+            "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+          },
+          "baseGross": {
+            "type": "string",
+            "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+          },
+          "bonus": {
+            "type": "string",
+            "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+          },
+          "gross": {
+            "type": "string",
+            "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+          },
+          "ruleVersion": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "runId",
+          "employeeId",
+          "entity",
+          "currency",
+          "source",
+          "days",
+          "bonuses",
+          "hourlyRate",
+          "baseGross",
+          "bonus",
+          "gross",
+          "ruleVersion",
+          "actor",
+          "reason",
+          "recordedAt",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "TalentNotice": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "eventId": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "recordId": {
+            "type": "string"
+          },
+          "employeeId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "eventId",
+          "kind",
+          "recordId",
+          "employeeId",
+          "status",
+          "recordedAt"
+        ],
+        "additionalProperties": false
+      },
+      "TalentExport": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "filename",
+          "content"
+        ],
+        "additionalProperties": false
+      },
+      "TalentExportInput": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "employee": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "employee",
+          "page"
+        ],
+        "additionalProperties": false
+      },
+      "TalentIntakeSynchronize": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "CompensationPayrollPrepare": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "string",
+                "pattern": "^[0-9]+$"
+              }
+            ]
+          },
+          "entity": {
+            "type": "string"
+          },
+          "sheetId": {
+            "type": "string"
+          },
+          "costCentre": {
+            "type": "string"
+          },
+          "postingDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "hourlyRate": {
+            "type": "null"
+          },
+          "deduction": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^[0-9]+(?:\\.[0-9]+)?$"
+              }
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "version",
+          "entity",
+          "sheetId",
+          "costCentre",
+          "postingDate",
+          "hourlyRate",
+          "deduction",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "TalentDelegation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "recordId": {
+            "type": "string"
+          },
+          "recordVersion": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "originalEmployee": {
+            "type": "string"
+          },
+          "delegateEmployee": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string",
+            "format": "date"
+          },
+          "through": {
+            "type": "string",
+            "format": "date"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "commandKey": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "recordId",
+          "recordVersion",
+          "originalEmployee",
+          "delegateEmployee",
+          "from",
+          "through",
+          "actor",
+          "reason",
+          "commandKey",
+          "recordedAt",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "TalentDelegationRevocation": {
+        "type": "object",
+        "properties": {
+          "delegationId": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "actorEmployee": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "commandKey": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "delegationId",
+          "actor",
+          "actorEmployee",
+          "reason",
+          "commandKey",
+          "recordedAt",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "TalentApprovalTask": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "delegation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TalentDelegation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "id",
+          "title",
+          "version",
+          "delegation"
+        ],
+        "additionalProperties": false
+      },
+      "TalentResponsibilityHistory": {
+        "type": "object",
+        "properties": {
+          "delegation": {
+            "$ref": "#/components/schemas/TalentDelegation"
+          },
+          "revocation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TalentDelegationRevocation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "delegation",
+          "revocation"
+        ],
+        "additionalProperties": false
+      },
+      "TalentDelegateInput": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "recordId": {
+            "type": "string"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "string",
+                "pattern": "^[0-9]+$"
+              }
+            ]
+          },
+          "delegateEmployee": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string",
+            "format": "date"
+          },
+          "through": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "recordId",
+          "version",
+          "delegateEmployee",
+          "from",
+          "through",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "TalentRevokeDelegation": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "TalentReminderPolicy": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "thresholdMinutes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "frequencyMinutes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "owner": {
+            "type": "string"
+          },
+          "ownerEmployee": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "enabled",
+          "thresholdMinutes",
+          "frequencyMinutes",
+          "owner",
+          "ownerEmployee",
+          "reason",
+          "recordedAt",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "TalentReminderState": {
+        "type": "object",
+        "properties": {
+          "policyId": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "PAUSED",
+              "FAILED"
+            ]
+          },
+          "failures": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "nextDue": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "policyId",
+          "version",
+          "status",
+          "failures",
+          "nextDue"
+        ],
+        "additionalProperties": false
+      },
+      "TalentReminderRun": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "policyId": {
+            "type": "string"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "scheduled": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "COMMITTED",
+              "FAILED",
+              "RETRY_REQUESTED"
+            ]
+          },
+          "processed": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "delivered": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "skipped": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "policyId",
+          "actor",
+          "scheduled",
+          "status",
+          "processed",
+          "delivered",
+          "skipped",
+          "reason",
+          "recordedAt",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "TalentReminderItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "runId": {
+            "type": "string"
+          },
+          "eventId": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "recordId": {
+            "type": "string"
+          },
+          "day": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DELIVERED",
+              "SKIPPED"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recipients": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "runId",
+          "eventId",
+          "kind",
+          "recordId",
+          "day",
+          "status",
+          "reason",
+          "recipients"
+        ],
+        "additionalProperties": false
+      },
+      "TalentReminderContext": {
+        "type": "object",
+        "properties": {
+          "policy": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TalentReminderPolicy"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TalentReminderState"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "runs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TalentReminderRun"
+            }
+          },
+          "schedulerEnabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "policy",
+          "state",
+          "runs",
+          "schedulerEnabled"
+        ],
+        "additionalProperties": false
+      },
+      "TalentReminderConfigure": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "string",
+                "pattern": "^[0-9]+$"
+              }
+            ]
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "thresholdMinutes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 525600
+          },
+          "frequencyMinutes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 525600
+          },
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "version",
+          "enabled",
+          "thresholdMinutes",
+          "frequencyMinutes",
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "TalentReminderCommand": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
       }
     }
   }

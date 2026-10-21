@@ -35,6 +35,12 @@ public final class PayrollController {
     return p.prepare(a.getName(), c, correlation);
   }
 
+  @PostMapping("/compensation-runs")
+  Run prepareCompensation(
+      Principal a, @RequestBody Prepare c, @RequestAttribute("correlationId") String correlation) {
+    return p.prepareCompensation(a.getName(), c, correlation);
+  }
+
   @PostMapping("/runs/{id}/actions")
   Run action(
       Principal a,

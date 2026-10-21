@@ -12,6 +12,8 @@ public interface PayrollUseCases {
 
   Run prepare(String subject, Prepare c, String correlation);
 
+  Run prepareCompensation(String subject, Prepare c, String correlation);
+
   Run action(String subject, String id, Action c, String correlation);
 
   List<Audit> history(String subject, String id);

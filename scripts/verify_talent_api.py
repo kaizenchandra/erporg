@@ -51,7 +51,7 @@ def verify(origin):
     status,intakes=request(hr,'/api/v1/payroll/talent-inputs')
     expect(status==200 and bool(intakes),'Payroll receipt unavailable')
     for i in intakes:
-        expect(i['status']=='RECEIVED','Unexpected calculated/paid claim')
+        expect(i['status'] in ('RECEIVED','APPLIED'),'Unexpected calculated/paid claim')
         status,plan=request(hr,'/api/v1/talent/compensation/'+i['sourceId'])
         expect(status==200 and plan['meta']['status']=='APPROVED' and plan['payrollIntakeId']==i['id'] and plan['proposals']==i['awards'],'Payroll receipt does not reconcile')
     return {'recordedAt':datetime.now(timezone.utc).isoformat(),'result':'PASSED','scope':__doc__,'rolesChecked':4,'capabilityRegistersChecked':checked,'historiesAvailable':True,'ownershipAndTenantDenials':True,'sameTenantJoiningRecordDenied':True,'payrollIntakesReconciled':len(intakes)}

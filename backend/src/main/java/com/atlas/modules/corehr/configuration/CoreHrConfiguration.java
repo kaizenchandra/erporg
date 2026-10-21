@@ -344,8 +344,14 @@ public class CoreHrConfiguration {
   }
 
   @Bean
-  com.atlas.modules.corehr.api.WorkforceAccess workforceAccess(PeopleUseCases people) {
+  com.atlas.modules.corehr.api.WorkforceAccess workforceAccess(
+      PeopleUseCases people,
+      com.atlas.modules.corehr.application.port.in.InitialIdentityUseCases initialIdentities) {
     return new com.atlas.modules.corehr.api.WorkforceAccess() {
+      public void verifyIssuer(String subject, String issuer) {
+        initialIdentities.verifyIssuer(subject, issuer);
+      }
+
       public String sessionEpoch(String subject) {
         return people.sessionEpoch(subject);
       }

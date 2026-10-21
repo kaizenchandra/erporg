@@ -41,10 +41,16 @@ final class PlanningWorkflows extends TalentSupport {
                 p.effectiveDate() != null && !p.effectiveDate().isBefore(today()),
                 "effectiveDate",
                 "Use today or a future effective date.");
+            var current = env.currentSalary(s, p.employeeId(), p.effectiveDate(), c.currency());
+            require(
+                p.currentSalary() == null
+                    || money(p.currentSalary(), "currentSalary").compareTo(current) == 0,
+                "currentSalary",
+                "Authoritative salary changed. Refresh the proposal.");
             list.add(
                 new Proposal(
                     p.employeeId(),
-                    money(p.currentSalary(), "currentSalary"),
+                    current,
                     money(p.proposedSalary(), "proposedSalary"),
                     money(p.bonus(), "bonus"),
                     p.effectiveDate()));

@@ -1,4 +1,5 @@
 "use client";
+import { InitialIdentity } from "./identity";
 import type { Context, Onboarding, Requisition } from "./contracts";
 import {
   TalentForm,
@@ -196,6 +197,9 @@ export function JoiningDetail({
       <p>
         Core HR hire {r.hireId} · employee {r.employeeId}
       </p>
+      {context.actor.role === "HR" && (
+        <InitialIdentity employeeId={r.employeeId} />
+      )}
       <p>Joining form: {r.joiningForm || "Not completed"}</p>
       {r.meta.status === "OPEN" && (
         <>

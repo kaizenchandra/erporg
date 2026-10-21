@@ -15,6 +15,53 @@ public final class TalentController {
     this.p = p;
   }
 
+  @GetMapping("/approvals")
+  Object approvals(Principal a, @RequestParam(defaultValue = "0") int page) {
+    return p.approvalInbox(a.getName(), page);
+  }
+
+  @GetMapping("/approvals/delegates")
+  Object delegates(Principal a) {
+    return p.approvalDelegates(a.getName());
+  }
+
+  @GetMapping("/approvals/history")
+  Object delegationHistory(
+      Principal a,
+      @RequestParam String kind,
+      @RequestParam String id,
+      @RequestParam(defaultValue = "0") int page) {
+    return p.delegationHistory(a.getName(), kind, id, page);
+  }
+
+  @PostMapping("/approvals/delegations")
+  Delegation delegate(
+      Principal a, @RequestBody Delegate c, @RequestAttribute("correlationId") String corr) {
+    return p.delegate(a.getName(), c, corr);
+  }
+
+  @PostMapping("/approvals/delegations/{id}/revoke")
+  DelegationRevocation revoke(
+      Principal a,
+      @PathVariable String id,
+      @RequestBody RevokeDelegation c,
+      @RequestAttribute("correlationId") String corr) {
+    return p.revokeDelegation(a.getName(), id, c, corr);
+  }
+
+  @GetMapping("/notifications")
+  Object notices(Principal a, @RequestParam(defaultValue = "0") int page) {
+    return p.notices(a.getName(), page);
+  }
+
+  public record ExportInput(String kind, String employee, int page) {}
+
+  @PostMapping("/exports")
+  Export export(
+      Principal a, @RequestBody ExportInput c, @RequestAttribute("correlationId") String corr) {
+    return p.export(a.getName(), c.kind(), c.employee(), c.page(), corr);
+  }
+
   @GetMapping("/context")
   Context context(
       Principal a,

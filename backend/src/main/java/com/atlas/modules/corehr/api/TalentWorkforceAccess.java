@@ -31,6 +31,8 @@ public interface TalentWorkforceAccess {
 
   record Hire(String id, String status, String employeeId) {}
 
+  List<String> hrReviewers(String subject);
+
   Identity self(String subject);
 
   boolean hasRole(String subject, String employee, String role);

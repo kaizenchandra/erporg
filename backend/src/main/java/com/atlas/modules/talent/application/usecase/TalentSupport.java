@@ -180,6 +180,61 @@ abstract class TalentSupport {
         });
   }
 
+  public List<Notice> notices(String s, int page) {
+    require(page >= 0 && page <= 10000, "page", "Use a bounded notification page.");
+    return reads.run(
+        () -> {
+          var a = env.self(s);
+          var visible = new ArrayList<Notice>();
+          for (var n : db.notices(a.tenant(), a.employeeId(), page)) {
+            try {
+              load(a, n.kind(), n.recordId(), type(n.kind()));
+              visible.add(n);
+            } catch (AccessDenied denied) {
+              /* Revoked record access removes private context from inbox. */
+            }
+          }
+          return List.copyOf(visible);
+        });
+  }
+
+  private String csv(String value) {
+    if (value == null) value = "";
+    if (!value.isEmpty() && "=+-@\t\r\n".indexOf(value.charAt(0)) >= 0) value = "'" + value;
+    return "\"" + value.replace("\"", "\"\"") + "\"";
+  }
+
+  public Export export(String s, String kind, String employee, int page, String corr) {
+    return writes.run(
+        () -> {
+          var a = env.self(s);
+          var records = (Page<?>) page(s, kind, employee, page);
+          var out = new StringBuilder("id,status,revision,authorized_snapshot\r\n");
+          for (var r : records.items()) {
+            readAccess(a, kind, r);
+            var m = meta(r);
+            out.append(csv(m.id()))
+                .append(',')
+                .append(csv(m.status()))
+                .append(',')
+                .append(m.version())
+                .append(',')
+                .append(csv(db.encode(r)))
+                .append("\r\n");
+          }
+          db.exportReceipt(
+              a.tenant(),
+              a.subject(),
+              a.employeeId(),
+              kind,
+              page,
+              records.items().size(),
+              corr,
+              now());
+          return new Export("talent-" + kind + "-page-" + (page + 1) + ".csv", out.toString());
+        });
+  }
+
   protected String fingerprint(Object c) {
     try {
       return HexFormat.of()
@@ -226,10 +281,11 @@ abstract class TalentSupport {
           var m = meta(result);
           if (recordId == null) db.insert(a.tenant(), k, m.id(), result);
           else db.update(a.tenant(), k, m.id(), m.version() - 1, result);
+          var eventId = id();
           db.audit(
               a.tenant(),
               new Audit(
-                  id(),
+                  eventId,
                   k,
                   m.id(),
                   a.subject(),
@@ -240,6 +296,27 @@ abstract class TalentSupport {
                   db.encode(result),
                   now(),
                   correlation));
+          var recipients = new HashSet<String>();
+          recipients.add(m.preparedEmployee());
+          switch (result) {
+            case Review r -> {
+              recipients.add(r.employeeId());
+              if (m.status().equals("SUBMITTED")) {
+                var worker = env.worker(s, r.employeeId());
+                if (worker.managerId() != null && !worker.managerId().isBlank())
+                  recipients.add(worker.managerId());
+                recipients.addAll(env.hrReviewers(s));
+              }
+            }
+            case Onboarding r -> recipients.add(r.employeeId());
+            case Enrollment r -> recipients.add(r.employeeId());
+            default -> {
+              if (m.status().equals("SUBMITTED")) recipients.addAll(env.hrReviewers(s));
+            }
+          }
+          for (var employee : recipients)
+            db.notice(
+                a.tenant(), new Notice(id(), eventId, k, m.id(), employee, m.status(), now()));
           db.receipt(a.tenant(), a.subject(), key, fp, result);
           return result;
         });

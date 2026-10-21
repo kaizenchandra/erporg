@@ -208,9 +208,20 @@ public final class JdbcPeopleStore implements PeopleStore {
   }
 
   private static final String AUTH_ELIGIBLE_FROM =
-      " from identity_membership m join hr_employee e on e.tenant=m.tenant and e.id=m.employee_id left join hr_episode_access_current g on g.tenant=m.tenant and g.employee_id=m.employee_id and g.subject=m.subject and g.effective_date<=:date and g.rehire_id=(select p.rehire_id from hr_employment_episode p where p.tenant=m.tenant and p.employee_id=m.employee_id and p.start_date<=:date order by p.start_date desc,p.number desc limit 1) and not exists(select 1 from hr_rehire_access_revocation x where x.tenant=g.tenant and x.activation_id=g.id) where not exists(select 1 from hr_local_access_grant bound where bound.subject=m.subject and (bound.tenant<>m.tenant or bound.employee_id<>m.employee_id)) and not exists(select 1 from hr_rehire_access_revocation revoked where revoked.subject=m.subject) and hr_employment_status(e.tenant,e.id,e.status,:date)<>'Ended' and (not exists(select 1 from hr_employment_episode p where p.tenant=e.tenant and p.employee_id=e.id) or g.epoch is not null)";
+      " from identity_membership m join hr_employee e on e.tenant=m.tenant and e.id=m.employee_id left join hr_episode_access_current g on g.tenant=m.tenant and g.employee_id=m.employee_id and g.subject=m.subject and g.effective_date<=:date and g.rehire_id=(select p.rehire_id from hr_employment_episode p where p.tenant=m.tenant and p.employee_id=m.employee_id and p.start_date<=:date order by p.start_date desc,p.number desc limit 1) and not exists(select 1 from hr_rehire_access_revocation x where x.tenant=g.tenant and x.activation_id=g.id) where not exists(select 1 from hr_initial_identity_request initial join hr_initial_identity_decision reviewed on reviewed.tenant=initial.tenant and reviewed.request_id=initial.id where initial.snapshot->>'federatedSubject'=m.subject and reviewed.snapshot->>'decision'='APPROVE' and ((initial.snapshot->>'effectiveFrom')::date>:date or initial.tenant<>m.tenant or initial.employee_id<>m.employee_id or m.role<>'EMPLOYEE')) and not exists(select 1 from hr_local_access_grant bound where bound.subject=m.subject and (bound.tenant<>m.tenant or bound.employee_id<>m.employee_id)) and not exists(select 1 from hr_rehire_access_revocation revoked where revoked.subject=m.subject) and hr_employment_status(e.tenant,e.id,e.status,:date)<>'Ended' and (not exists(select 1 from hr_employment_episode p where p.tenant=e.tenant and p.employee_id=e.id) or g.epoch is not null)";
 
   private static final String AUTH_FROM = AUTH_ELIGIBLE_FROM + " and m.subject=:s";
+
+  public List<String> hrNotificationRecipients(String tenant, LocalDate date) {
+    return db.sql(
+            "select distinct m.employee_id"
+                + AUTH_ELIGIBLE_FROM
+                + " and m.tenant=:tenant and coalesce(g.role,m.role)='HR' order by m.employee_id limit 100")
+        .param("date", date)
+        .param("tenant", tenant)
+        .query(String.class)
+        .list();
+  }
 
   public Actor actor(String subject, LocalDate date) {
     return db.sql(

@@ -1,0 +1,10 @@
+
+Running 1 test using 1 worker
+
+(node:92308) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:92308) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/talent-approvals.spec.ts:49:5 › manager delegates a pending review to an already-authorized HR reviewer through the approval inbox (3.3s)
+
+  1 passed (5.1s)

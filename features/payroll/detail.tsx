@@ -11,6 +11,7 @@ import {
   useFinancialRead,
 } from "@/features/finance/shared";
 import type { Run } from "./contracts";
+import { CompensationSnapshot } from "./snapshot";
 export function PayrollDetail({
   id,
   actor,
@@ -80,6 +81,9 @@ export function PayrollDetail({
               {r.employeeId} · Week of {r.source.week}
             </h3>
             <Badge status={r.status} />
+            {r.ruleVersion.startsWith("DEMO-COMPENSATION") && (
+              <CompensationSnapshot id={r.id} />
+            )}
             <p>
               Run {r.id} · {r.entity} · Revision {r.version}
             </p>
@@ -95,8 +99,9 @@ export function PayrollDetail({
                     Gross {r.currency} {amount(r.gross)}
                   </h4>
                   <p>
-                    {r.source.totalMinutes} approved minutes × {r.hourlyRate}{" "}
-                    per hour.
+                    {r.ruleVersion.startsWith("DEMO-COMPENSATION")
+                      ? `Base pay uses the daily salary snapshots above, plus approved bonuses. Display rate ${r.hourlyRate} is derived from rounded base pay; it does not include bonuses.`
+                      : `${r.source.totalMinutes} approved minutes × ${r.hourlyRate} per hour.`}
                   </p>
                   <p>
                     Voluntary deduction {amount(r.deduction)} · Net{" "}
